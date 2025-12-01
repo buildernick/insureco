@@ -6,9 +6,13 @@
   background-color: var(--background-primary) !important;
   border-bottom: 1px solid var(--border-subtle) !important;
 
-  // Remove any white backgrounds from all header children
-  * {
-    background-color: transparent;
+  // Remove default white/light backgrounds from Carbon header elements
+  a,
+  button,
+  .cds--header__name--prefix,
+  .cds--header__menu-title,
+  .cds--header__menu-arrow {
+    background-color: transparent !important;
   }
   
   // Header name/brand
