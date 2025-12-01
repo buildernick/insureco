@@ -336,15 +336,18 @@ export default function SignUpPage() {
               onChange={(e) => updateFormData('carModel', e.target.value)}
               required
             />
-            <NumberInput
+            <Select
               id="carYear"
-              label="Year"
-              min={1900}
-              max={new Date().getFullYear() + 1}
+              labelText="Year"
               value={formData.carYear}
               onChange={(e) => updateFormData('carYear', e.target.value)}
               required
-            />
+            >
+              <SelectItem value="" text="Select year" />
+              {Array.from({ length: 2025 - 1960 + 1 }, (_, i) => 2025 - i).map(year => (
+                <SelectItem key={year} value={year.toString()} text={year.toString()} />
+              ))}
+            </Select>
             <TextInput
               id="carVin"
               labelText="VIN (Optional)"
