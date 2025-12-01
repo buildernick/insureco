@@ -1,0 +1,216 @@
+@use '../styles/tokens' as *;
+
+.theme-preview-page {
+  min-height: 100vh;
+  padding: var(--spacing-07);
+  background: var(--background-primary);
+
+  @media (max-width: 671px) {
+    padding: var(--spacing-05);
+  }
+}
+
+.theme-preview-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.theme-preview-header {
+  text-align: center;
+  margin-bottom: var(--spacing-09);
+  padding: var(--spacing-07) var(--spacing-05);
+  background: linear-gradient(
+    135deg,
+    var(--color-brand-red-60) 0%,
+    var(--color-brand-red-70) 100%
+  );
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 12px rgba(218, 30, 40, 0.15);
+}
+
+.theme-preview-title {
+  font-size: var(--heading-h2-size);
+  font-weight: var(--heading-h2-weight);
+  color: var(--text-on-color);
+  margin-bottom: var(--spacing-03);
+}
+
+.theme-preview-subtitle {
+  font-size: var(--body-lg-size);
+  color: var(--text-on-color);
+  opacity: 0.95;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.preview-section {
+  background: var(--background-secondary);
+  padding: var(--spacing-07);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-07);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-subtle);
+
+  @media (max-width: 671px) {
+    padding: var(--spacing-05);
+  }
+}
+
+.section-heading {
+  font-size: var(--heading-h3-size);
+  font-weight: var(--heading-h3-weight);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-06);
+  padding-bottom: var(--spacing-04);
+  border-bottom: 2px solid var(--interactive-primary);
+}
+
+.token-group {
+  margin-bottom: var(--spacing-07);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  h4 {
+    font-size: var(--heading-h4-size);
+    font-weight: var(--heading-h4-weight);
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-05);
+  }
+}
+
+.color-samples {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--spacing-05);
+
+  @media (max-width: 671px) {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: var(--spacing-04);
+  }
+}
+
+.color-sample {
+  .sample-box {
+    background: var(--background-primary);
+    padding: var(--spacing-06);
+    border-radius: var(--radius-md);
+    text-align: center;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.2s ease;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-03);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        var(--card-shadow),
+        0 4px 12px rgba(218, 30, 40, 0.1);
+    }
+
+    &.bg-sample {
+      border: 1px solid var(--border-subtle);
+    }
+
+    .large-text {
+      font-size: 32px;
+      font-weight: var(--font-weight-bold);
+      margin: 0;
+      line-height: 1;
+    }
+
+    .token-name {
+      font-size: var(--body-sm-size);
+      font-family: var(--font-family-mono);
+      color: var(--text-secondary);
+      word-break: break-all;
+      text-align: center;
+    }
+  }
+}
+
+.component-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-04);
+  align-items: center;
+
+  @media (max-width: 671px) {
+    flex-direction: column;
+    align-items: stretch;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+
+.contrast-example {
+  h4 {
+    margin: 0 0 var(--spacing-03) 0;
+    font-size: var(--heading-h5-size);
+    font-weight: var(--heading-h5-weight);
+  }
+
+  p {
+    margin: 0 0 var(--spacing-03) 0;
+    font-size: var(--body-md-size);
+  }
+
+  code {
+    font-family: var(--font-family-mono);
+    font-size: var(--body-sm-size);
+    opacity: 0.8;
+    word-break: break-all;
+  }
+}
+
+.preview-footer {
+  margin-top: var(--spacing-09);
+  padding: var(--spacing-07);
+  background: var(--background-secondary);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--interactive-primary);
+
+  p {
+    font-size: var(--body-lg-size);
+    margin: 0;
+  }
+}
+
+// Ensure all Carbon components within preview respect theme
+.theme-preview-page {
+  .cds--text-input,
+  .cds--select-input,
+  .cds--number input {
+    background-color: var(--field-background) !important;
+    color: var(--field-text) !important;
+  }
+
+  .cds--label {
+    color: var(--text-secondary);
+  }
+
+  .cds--form__helper-text {
+    color: var(--text-tertiary);
+  }
+
+  .cds--tile {
+    background-color: var(--background-primary);
+    border: 1px solid var(--border-subtle);
+  }
+
+  code {
+    background-color: var(--background-tertiary);
+    color: var(--text-primary);
+    padding: var(--spacing-02) var(--spacing-03);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-family-mono);
+    font-size: var(--body-sm-size);
+  }
+}
