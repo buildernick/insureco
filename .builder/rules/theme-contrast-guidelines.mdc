@@ -39,7 +39,7 @@ These tokens automatically provide proper contrast in both themes:
 --text-tertiary       // Subtle text (lower contrast, still readable)
 --text-on-color       // Text on colored backgrounds (always white/light)
 --text-error          // Error messages (maintains contrast in both themes)
-```
+
 
 ### Background Tokens (Theme-Aware)
 
@@ -229,10 +229,68 @@ Consider adding:
 **Problem**: Carbon's default styles may not always adapt to custom themes  
 **Solution**: Override with theme-aware tokens in `src/styles/components.scss`
 
-### Pitfall 2: CSS Specificity
+### Pitfall 2: CSS Specificity (CRITICAL)
 
-**Problem**: Your theme styles are overridden by more specific selectors  
-**Solution**: Use `!important` when necessary for theme overrides
+**Problem**: Your theme styles are overridden by Carbon's more specific default selectors
+
+**Why This Happens**:
+- Carbon's default styles use deeply nested selectors (e.g., `.cds--progress .cds--progress-step .cds--progress-label`)
+- Your override with fewer classes (e.g., `.cds--progress-indicator .cds--progress-label`) has lower specificity
+- Even with `!important`, if Carbon also uses `!important` AND loads after your styles, Carbon wins
+
+**Solution - Multi-Step Strategy**:
+
+1. **Increase Selector Specificity**: Match or exceed Carbon's nesting depth
+```scss
+// ❌ WRONG - Not specific enough (2 classes)
+.cds--progress-indicator .cds--progress-label {
+  color: var(--text-primary) !important;
+}
+
+// ✅ CORRECT - More specific (3 classes)
+.cds--progress-indicator .cds--progress-step .cds--progress-label {
+  color: var(--text-primary) !important;
+}
+```
+
+2. **Use `!important` for Theme Overrides**: Essential for overriding Carbon's default styles
+```scss
+// Always use !important when overriding Carbon component colors
+.cds--progress-step-button .cds--progress-label {
+  color: var(--text-primary) !important;  // !important is REQUIRED
+}
+```
+
+3. **Target All Component States**: Carbon may have different selectors for different states
+```scss
+// Override each state separately with high specificity
+.cds--progress-step--current .cds--progress-step-button .cds--progress-label {
+  color: var(--interactive-primary) !important;
+}
+
+.cds--progress-step--complete .cds--progress-step-button .cds--progress-label {
+  color: var(--text-primary) !important;
+}
+
+.cds--progress-step--incomplete .cds--progress-step-button .cds--progress-label {
+  color: var(--text-secondary) !important;
+}
+```
+
+4. **Add Explanatory Comments**: Document WHY you need high specificity
+```scss
+// IMPORTANT: High specificity required to override Carbon's defaults
+// Carbon's styles don't adapt to custom theme tokens, causing
+// dark-on-dark text in dark mode without these overrides
+.cds--progress-indicator .cds--progress-step .cds--progress-label {
+  color: var(--text-primary) !important;
+}
+```
+
+**Testing Your Override**:
+- Inspect element in browser DevTools
+- Check "Computed" tab to see which style wins
+- If Carbon's style is still applied, increase your specificity further
 
 ### Pitfall 3: Inherited Colors
 
