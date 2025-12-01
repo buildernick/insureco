@@ -81,6 +81,11 @@ $light-interactive-secondary: $color-grey-70;
 $light-interactive-hover: $color-brand-red-70;
 $light-interactive-active: $color-brand-red-80;
 
+// Form field specific
+$light-field-background: #ffffff;
+$light-field-text: $color-grey-100;
+$light-field-placeholder: $color-grey-60;
+
 // ============================================
 // Dark Theme Mappings
 // ============================================
@@ -105,6 +110,11 @@ $dark-interactive-primary: $color-brand-red-50;
 $dark-interactive-secondary: $color-grey-50;
 $dark-interactive-hover: $color-brand-red-40;
 $dark-interactive-active: $color-brand-red-30;
+
+// Form field specific
+$dark-field-background: $color-grey-90;
+$dark-field-text: $color-grey-10;
+$dark-field-placeholder: $color-grey-50;
 
 // ============================================
 // CSS Custom Properties
