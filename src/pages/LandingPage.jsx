@@ -258,7 +258,7 @@ export default function LandingPage() {
               <ul className="footer-links">
                 <li><a href="#car-insurance">Car Insurance</a></li>
                 <li><a href="#home-insurance">Home Insurance</a></li>
-                <li><button onClick={() => navigate('/signup')} style={{ background: 'none', border: 'none', padding: 0, color: 'var(--text-secondary)', cursor: 'pointer', fontSize: 'var(--body-sm-size)' }}>Bundle & Save</button></li>
+                <li><button onClick={() => navigate('/signup')} className="footer-link-button">Bundle & Save</button></li>
               </ul>
             </div>
           </Column>
