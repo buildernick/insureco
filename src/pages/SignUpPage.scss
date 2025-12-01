@@ -232,6 +232,14 @@
 
 .signup-review-section {
   padding: var(--spacing-05);
+  border-left: 3px solid var(--interactive-primary);
+  background: var(--background-primary);
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba(218, 30, 40, 0.1);
+    transform: translateX(2px);
+  }
 
   @media (min-width: 672px) {
     padding: var(--spacing-06);
@@ -241,13 +249,29 @@
 .signup-review-title {
   font-size: var(--body-lg-size);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--interactive-primary);
   margin: 0 0 var(--spacing-04) 0;
   padding-bottom: var(--spacing-03);
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 2px solid var(--color-brand-red-20);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-03);
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 20px;
+    background: var(--interactive-primary);
+    border-radius: var(--radius-sm);
+  }
 
   @media (min-width: 672px) {
     font-size: var(--heading-h5-size);
+
+    &::before {
+      height: 24px;
+    }
   }
 }
 
