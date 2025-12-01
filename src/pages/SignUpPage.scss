@@ -68,12 +68,9 @@
 
 .signup-progress {
   margin-bottom: var(--spacing-08);
-  background: var(--background-secondary);
   padding: var(--spacing-05);
-  border-radius: var(--radius-md);
   border: 2px solid transparent;
   border-top: 3px solid var(--interactive-primary);
-  box-shadow: var(--card-shadow);
 
   @media (min-width: 672px) {
     padding: var(--spacing-06);
@@ -118,11 +115,9 @@
 
 .signup-step-content {
   min-height: 400px;
-  margin-bottom: var(--spacing-07);
 
   @media (min-width: 672px) {
     min-height: 450px;
-    margin-bottom: var(--spacing-08);
   }
 }
 
@@ -168,16 +163,13 @@
 }
 
 .signup-actions {
-  display: flex;
-  gap: var(--spacing-04);
-  flex-direction: column;
   padding-top: var(--spacing-06);
   border-top: 2px solid var(--color-brand-red-20);
   margin-top: var(--spacing-06);
 
-  @media (min-width: 672px) {
-    flex-direction: row;
-    gap: var(--spacing-05);
+  // Override Stack's default flex-direction on mobile
+  @media (max-width: 671px) {
+    flex-direction: column !important;
   }
 
   // Make buttons full-width on mobile
