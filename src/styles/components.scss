@@ -275,6 +275,20 @@
 }
 
 // ============================================
+// Tooltips & Popovers
+// ============================================
+.cds--popover-content,
+.cds--tooltip-content {
+  background-color: var(--background-tertiary);
+  color: var(--text-primary);
+  box-shadow: var(--dropdown-shadow);
+}
+
+.cds--popover-caret {
+  background-color: var(--background-tertiary);
+}
+
+// ============================================
 // Content Area
 // ============================================
 .cds--content {
