@@ -9,6 +9,16 @@ alwaysApply: false
 
 # InsureCo Design Tokens
 
+## ⚠️ CRITICAL: Contrast Requirements
+
+**When using color tokens, ALWAYS ensure proper contrast**. Read `.builder/rules/theme-contrast-guidelines.mdc` for:
+- How to prevent dark text on dark backgrounds
+- How to prevent light text on light backgrounds
+- Which tokens to use for different scenarios
+- Testing requirements for both themes
+
+---
+
 This project uses a comprehensive design token system located in `src/styles/tokens/`. All tokens are defined as SCSS variables and CSS custom properties for maximum flexibility and theme support.
 
 ## Token Organization
@@ -163,7 +173,7 @@ Pre-defined spacing for common use cases:
 - Section spacing: 48px (standard), 64px (large)
 
 ### Usage
-```scss
+
 .card {
   padding: var(--card-padding); // 16px
   gap: var(--gap-md); // 16px
