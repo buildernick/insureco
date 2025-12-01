@@ -418,19 +418,6 @@
   }
 }
 
-// Progress indicator mobile optimizations
-.cds--progress {
-  @media (max-width: 671px) {
-    .cds--progress-step {
-      min-width: auto;
-    }
-
-    .cds--progress-line {
-      min-width: 20px;
-    }
-  }
-}
-
 // Ensure proper touch targets on mobile
 @media (max-width: 671px) {
   .cds--btn {
