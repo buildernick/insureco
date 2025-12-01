@@ -309,10 +309,12 @@ export default function LandingPage() {
         modalHeading="Request a Demo"
         primaryButtonText="Submit Request"
         secondaryButtonText="Cancel"
-        onRequestSubmit={() => {
+        onRequestSubmit={(e) => {
+          e.preventDefault();
           setDemoModalOpen(false);
           alert('Thank you for your interest! We will contact you soon.');
         }}
+        size="sm"
       >
         <Stack gap={6}>
           <TextInput
