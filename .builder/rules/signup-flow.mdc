@@ -1,0 +1,265 @@
+---
+description: Seven-step sign-up flow implementation with mobile-first design
+globs:
+  - "src/pages/SignUpPage.jsx"
+  - "src/pages/SignUpPage.scss"
+alwaysApply: false
+---
+
+# Sign-Up Flow Implementation
+
+## Overview
+
+The InsureCo sign-up flow is a **mobile-first**, multi-step form that guides users through the insurance sign-up process. The flow consists of up to 7 steps with conditional navigation based on insurance type selection.
+
+## Route
+
+- **Path**: `/signup`
+- **Component**: `SignUpPage.jsx`
+
+## Flow Steps
+
+### Always Shown Steps
+
+1. **Personal Info** - Basic user information (name, email, phone, DOB)
+2. **Address** - Primary residence address
+3. **Insurance Type** - Selection: Car, Home, or Both
+
+### Conditional Steps
+
+4. **Car Details** - Shown only if user selects "Car" or "Both"
+5. **Home Details** - Shown only if user selects "Home" or "Both"
+
+### Final Steps
+
+6. **Coverage Preferences** - Coverage level, deductible, additional options
+7. **Review & Confirm** - Summary of all entered information
+
+## Key Features
+
+### Mobile-First Design
+
+The entire flow is designed with mobile as the primary target:
+
+- **Full-width buttons** on mobile (< 672px)
+- **Larger touch targets** (48px minimum)
+- **16px font size** on inputs to prevent iOS zoom
+- **Stacked layout** for form fields
+- **Simplified progress indicator** with smaller labels
+- **Column layout** that transitions to rows on desktop
+
+### Conditional Step Navigation
+
+Steps are dynamically shown/hidden based on user selections:
+
+- If user selects **"Car Insurance Only"** → Skip Home Details step
+- If user selects **"Home Insurance Only"** → Skip Car Details step  
+- If user selects **"Both"** → Show both Car and Home Details steps
+
+### Progress Tracking
+
+Uses Carbon's `ProgressIndicator` component:
+
+- Shows current step
+- Marks completed steps
+- Displays step labels
+- Responsive: adapts labels for mobile screens
+
+### Form Validation
+
+Each step validates required fields before allowing progression:
+
+- **Step 1**: firstName, lastName, email, phone required
+- **Step 2**: streetAddress, city, state, zipCode required
+- **Step 3**: insuranceType required
+- **Step 4**: carMake, carModel, carYear required (if shown)
+- **Step 5**: homeType, homeYear, homeSquareFeet required (if shown)
+- **Step 6**: coverageLevel, deductible required
+- **Step 7**: Always valid (review only)
+
+The "Next" button is disabled until current step validation passes.
+
+### Navigation Controls
+
+- **Back Button**: Returns to previous step (hidden on first step)
+- **Next Button**: Advances to next step (shown on steps 1-6)
+- **Complete Sign Up Button**: Final submission (shown on step 7)
+- Scroll to top on step transitions
+
+### Final Submission
+
+On form completion:
+- Logs form data to console (mock submission)
+- Navigates user to `/dashboard`
+- In production: would POST to backend API
+
+## Form Data Structure
+
+
+{
+  // Personal Info
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  dateOfBirth: '',
+  
+  // Address
+  streetAddress: '',
+  city: '',
+  state: '',
+  zipCode: '',
+  
+  // Insurance Type
+  insuranceType: '', // 'car', 'home', 'both'
+  
+  // Car Details
+  carMake: '',
+  carModel: '',
+  carYear: '',
+  carVin: '',
+  
+  // Home Details
+  homeType: '',
+  homeYear: '',
+  homeSquareFeet: '',
+  homeValue: '',
+  
+  // Coverage
+  coverageLevel: '',
+  deductible: '',
+  additionalCoverage: [], // array of selected options
+}
+```
+
+## Carbon Components Used
+
+- `Grid`, `Column` - Responsive layout
+- `ProgressIndicator`, `ProgressStep` - Step tracking
+- `Form`, `Stack` - Form structure
+- `TextInput` - Text fields
+- `NumberInput` - Numeric fields (year, square feet, value)
+- `Select`, `SelectItem` - Dropdown selections
+- `RadioButtonGroup`, `RadioButton` - Single selection
+- `Checkbox` - Multiple selection
+- `Button` - Navigation and submission
+- `Tile` - Review section containers
+- `Heading` - Step titles
+
+## Icons Used
+
+From `@carbon/icons-react`:
+- `ArrowRight` - Next button
+- `ArrowLeft` - Back button
+- `Checkmark` - Submit button
+
+## Styling Approach
+
+### Mobile-First Breakpoints
+
+```scss
+// Base styles: Mobile (< 672px)
+// Tablet: 672px - 1055px
+// Desktop: 1056px+
+```
+
+### Key Mobile Optimizations
+
+1. **Touch Targets**: Minimum 48px height for all interactive elements
+2. **Font Sizes**: 16px minimum on inputs (prevents iOS zoom)
+3. **Full Width**: Buttons and inputs span full container width
+4. **Generous Spacing**: Larger padding and gaps for easier interaction
+5. **Stacked Layout**: Single column form layout
+6. **Simplified Progress**: Smaller labels in progress indicator
+
+### Desktop Enhancements
+
+1. **Multi-column Grid**: Review section uses 2-column layout
+2. **Horizontal Actions**: Back/Next buttons in a row
+3. **Larger Text**: Increased font sizes for headings
+4. **More Padding**: Additional spacing in containers
+5. **Constrained Width**: Max-width container for readability
+
+## Design Tokens Used
+
+### Spacing
+- `--spacing-02` through `--spacing-09` - Component spacing
+- Mobile uses smaller spacing, desktop increases
+
+### Colors
+- `--text-primary` - Main text
+- `--text-secondary` - Supporting text
+- `--background-primary` - Page background
+- `--background-secondary` - Card/form background
+- `--border-subtle` - Divider lines
+
+### Typography
+- `--heading-h2-size` through `--heading-h5-size` - Headings
+- `--body-sm-size`, `--body-md-size`, `--body-lg-size` - Body text
+- `--font-weight-semibold` - Emphasis
+
+### Effects
+- `--card-shadow` - Form container shadow
+- `--radius-md`, `--radius-lg` - Border radius
+
+## Accessibility Features
+
+- Semantic HTML structure
+- Proper form labels (Carbon provides)
+- Required field validation
+- Focus management on step navigation
+- Screen reader friendly progress indicator
+- High contrast in both light and dark modes
+- Keyboard navigation support (Carbon default)
+
+## Theme Support
+
+All styles use CSS custom properties for automatic theme adaptation:
+- Works in all Carbon themes (white, g10, g90, g100)
+- Text colors adjust automatically
+- Background colors respect theme
+- Shadows adapt for dark mode
+- Form inputs maintain proper contrast
+
+## State Management
+
+Uses React `useState` hooks:
+- `currentStep` - Tracks active step index
+- `formData` - Stores all form values
+- Step validity computed on-demand
+- Dynamic step list based on insurance type selection
+
+## Future Enhancements
+
+Per PRD future enhancements:
+- Real backend API integration
+- Data persistence (save progress)
+- Form validation with error messages
+- Real-time field validation
+- Auto-save draft functionality
+- Email verification
+- SMS verification for phone
+- Address autocomplete
+- VIN lookup for car details
+- Home value estimation API
+
+## Testing Considerations
+
+When testing the sign-up flow:
+1. Test on actual mobile devices (not just browser resize)
+2. Verify touch target sizes (min 48px)
+3. Test all three insurance type paths
+4. Verify step skipping logic
+5. Test form validation on each step
+6. Confirm data persists across step navigation
+7. Test in both light and dark themes
+8. Verify keyboard navigation
+9. Test with screen readers
+10. Check iOS Safari (font-size zoom prevention)
+
+## Integration Points
+
+- **Entry**: Landing page "Sign Up" buttons navigate to `/signup`
+- **Exit**: Final submission navigates to `/dashboard`
+- **Layout**: Wrapped by `Layout.jsx` (header, theme toggle visible)
+- **Routing**: Defined in `App.jsx` routes
