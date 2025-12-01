@@ -1,0 +1,99 @@
+// Layout Component Specific Styles
+@use '../styles/tokens' as *;
+
+// Ensure header adapts to theme
+.cds--header {
+  background-color: var(--background-primary) !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  
+  // Header name/brand
+  .cds--header__name {
+    color: var(--text-primary);
+    transition: color var(--motion-hover);
+    
+    &:hover {
+      color: var(--interactive-primary);
+    }
+    
+    // Prefix and main text
+    span {
+      color: var(--text-primary);
+    }
+  }
+  
+  // Navigation links
+  .cds--header__menu-item {
+    color: var(--text-primary);
+    
+    &:hover {
+      background-color: var(--background-hover);
+      color: var(--interactive-primary);
+    }
+    
+    button {
+      color: var(--text-primary);
+    }
+  }
+  
+  // Global action buttons (search, notifications, theme toggle, etc.)
+  .cds--header__action {
+    color: var(--text-primary);
+    background-color: transparent;
+    
+    &:hover {
+      background-color: var(--background-hover);
+    }
+    
+    &:focus {
+      border-color: var(--interactive-primary);
+    }
+    
+    svg {
+      fill: var(--text-primary);
+    }
+  }
+  
+  // Menu toggle button (hamburger)
+  .cds--header__menu-toggle {
+    color: var(--text-primary);
+    
+    &:hover {
+      background-color: var(--background-hover);
+    }
+    
+    svg {
+      fill: var(--text-primary);
+    }
+  }
+}
+
+// Side navigation
+.cds--side-nav {
+  background-color: var(--background-secondary) !important;
+  border-right: 1px solid var(--border-subtle);
+  
+  .cds--side-nav__link,
+  .cds--side-nav__menu-item {
+    color: var(--text-primary);
+    
+    &:hover {
+      background-color: var(--background-hover);
+      color: var(--interactive-primary);
+    }
+  }
+  
+  .cds--side-nav__link--current,
+  .cds--side-nav__link[aria-current="page"] {
+    background-color: var(--background-selected);
+    color: var(--interactive-primary);
+  }
+}
+
+// Tooltips in header
+.cds--header__action .cds--popover-container {
+  .cds--popover-content {
+    background-color: var(--background-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-subtle);
+  }
+}

@@ -85,16 +85,25 @@
 }
 
 .cds--header__menu-item,
-.cds--header__menu-item a {
+.cds--header__menu-item a,
+.cds--header__menu-item button {
   color: var(--text-primary);
 
   &:hover {
     background-color: var(--background-hover);
     color: var(--interactive-primary);
   }
+
+  &:focus {
+    border-color: var(--interactive-primary);
+  }
 }
 
 .cds--header__nav {
+  background-color: var(--background-primary);
+}
+
+.cds--header__menu-bar {
   background-color: var(--background-primary);
 }
 

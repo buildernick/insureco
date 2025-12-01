@@ -25,6 +25,7 @@ import {
   Search,
 } from "@carbon/icons-react";
 import ThemeToggle from "./ThemeToggle";
+import "./Layout.scss";
 
 export default function Layout({ children }) {
   const navigate = useNavigate();
