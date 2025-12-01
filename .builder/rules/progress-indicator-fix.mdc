@@ -1,12 +1,16 @@
 ---
-description: Progress Indicator Dark Mode Fix - CSS Specificity Solution
+description: ProgressIndicator Banned - Replaced with StepBreadcrumb
 globs:
-  - "src/styles/**/*.scss"
-  - "src/pages/SignUpPage.jsx"
-alwaysApply: false
+  - "**/*.jsx"
+  - "**/*.js"
+alwaysApply: true
 ---
 
-# Progress Indicator Dark Mode Fix
+# ProgressIndicator Component - BANNED
+
+**Status**: ❌ DO NOT USE
+**Replacement**: `StepBreadcrumb` (custom component)
+**See**: `.builder/rules/banned-components.mdc` for full documentation
 
 ## Issue Summary
 
@@ -93,7 +97,7 @@ Updated `src/styles/components.scss` with higher specificity selectors:
     }
   }
 }
-```
+
 
 **Key Changes**:
 - Changed from `.cds--progress-label` → `.cds--progress-step .cds--progress-label` (added one more class)
@@ -262,9 +266,30 @@ Consider:
 
 ## Summary
 
-**Problem**: Dark-on-dark text due to CSS specificity conflict  
-**Solution**: Increased specificity + theme tokens + comprehensive documentation  
-**Result**: All progress indicator labels readable in both light and dark modes  
-**Prevention**: Updated documentation to prevent future issues  
+**Problem**: Dark-on-dark text due to CSS specificity conflict
+**Attempted Solutions**:
+1. CSS overrides in `components.scss`
+2. Increased specificity with nested selectors
+3. Moving overrides to `index.scss` after `@use` imports
+4. Multiple iterations of selector combinations and `!important` declarations
 
-The theming system is now robust and well-documented for Carbon component overrides.
+**Result**: All attempts failed due to:
+- SCSS `@use` module loading order inconsistencies
+- Carbon's internal stylesheet cascade behavior
+- Vite's CSS bundling and chunking strategy
+- Unreliable load order in production builds
+
+**Final Resolution**:
+- **BANNED** Carbon's `ProgressIndicator` component from this project
+- **CREATED** custom `StepBreadcrumb` component (`src/components/StepBreadcrumb.jsx`)
+- **REPLACED** all uses of `ProgressIndicator` with `StepBreadcrumb`
+- **DOCUMENTED** ban in `.builder/rules/banned-components.mdc` (`alwaysApply: true`)
+
+**Current State**:
+- ✅ StepBreadcrumb works perfectly in both light and dark modes
+- ✅ Full control over styling and theming
+- ✅ No CSS specificity conflicts
+- ✅ WCAG AA contrast compliance guaranteed
+- ✅ All previous uses migrated successfully
+
+The theming system is now robust, and we have learned to avoid Carbon components that resist custom theming.
