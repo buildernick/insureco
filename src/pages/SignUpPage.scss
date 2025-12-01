@@ -123,7 +123,27 @@
   background: var(--background-secondary);
   border-radius: var(--radius-lg);
   padding: var(--spacing-06);
-  box-shadow: var(--card-shadow);
+  box-shadow:
+    var(--card-shadow),
+    0 0 0 1px var(--border-subtle);
+  position: relative;
+  overflow: hidden;
+
+  // Subtle red accent at top
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(
+      90deg,
+      var(--color-brand-red-60) 0%,
+      var(--color-brand-red-50) 50%,
+      var(--color-brand-red-60) 100%
+    );
+  }
 
   @media (min-width: 672px) {
     padding: var(--spacing-08);
