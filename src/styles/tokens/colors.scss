@@ -164,6 +164,11 @@ $dark-field-placeholder: $color-grey-50;
   --interactive-secondary: #{$light-interactive-secondary};
   --interactive-hover: #{$light-interactive-hover};
   --interactive-active: #{$light-interactive-active};
+
+  // Form fields
+  --field-background: #{$light-field-background};
+  --field-text: #{$light-field-text};
+  --field-placeholder: #{$light-field-placeholder};
 }
 
 // Dark theme
@@ -190,4 +195,9 @@ $dark-field-placeholder: $color-grey-50;
   --interactive-secondary: #{$dark-interactive-secondary};
   --interactive-hover: #{$dark-interactive-hover};
   --interactive-active: #{$dark-interactive-active};
+
+  // Form fields
+  --field-background: #{$dark-field-background};
+  --field-text: #{$dark-field-text};
+  --field-placeholder: #{$dark-field-placeholder};
 }
