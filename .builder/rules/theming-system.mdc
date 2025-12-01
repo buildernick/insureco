@@ -5,10 +5,22 @@ globs:
   - "src/components/ThemeToggle.jsx"
   - "**/*.jsx"
   - "**/*.scss"
-alwaysApply: false
+alwaysApply: true
 ---
 
 # Theming System
+
+## ⚠️ CRITICAL: Contrast Requirements
+
+**Before styling ANY component**, read `.builder/rules/theme-contrast-guidelines.mdc` to understand:
+- Why dark text on dark backgrounds is FORBIDDEN
+- Why light text on light backgrounds is FORBIDDEN
+- How to use semantic tokens correctly
+- How to test for proper contrast in both themes
+
+**Golden Rule**: Text must ALWAYS be readable in BOTH light AND dark modes.
+
+---
 
 This application uses a comprehensive theming system that combines Carbon Design System's built-in themes with custom InsureCo design tokens to support both light and dark modes.
 
@@ -62,7 +74,7 @@ const {
 ### Implementation Details
 
 **State Management:**
-```jsx
+
 const [theme, setTheme] = useState(() => {
   const saved = localStorage.getItem('insureco-theme');
   return saved || 'white'; // Default to light mode
