@@ -191,12 +191,17 @@
 }
 
 .signup-checkbox-group {
-  border: none;
-  padding: 0;
+  border: 2px solid var(--color-brand-red-20);
+  padding: var(--spacing-05);
   margin: 0;
+  border-radius: var(--radius-md);
+  background: var(--background-primary);
 
   legend {
     margin-bottom: var(--spacing-04);
+    color: var(--interactive-primary);
+    font-weight: var(--font-weight-semibold);
+    padding: 0 var(--spacing-03);
   }
 }
 
