@@ -79,21 +79,6 @@
     padding: var(--spacing-06);
     margin-bottom: var(--spacing-09);
   }
-
-  // Mobile-specific adjustments
-  .cds--progress {
-    @media (max-width: 671px) {
-      .cds--progress-label {
-        font-size: 12px;
-        max-width: 60px;
-      }
-
-      .cds--progress-step-button {
-        padding: 0;
-        min-width: auto;
-      }
-    }
-  }
 }
 
 .signup-form {
