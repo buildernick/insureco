@@ -43,7 +43,7 @@ These tokens automatically provide proper contrast in both themes:
 
 ### Background Tokens (Theme-Aware)
 
-```scss
+
 --background-primary      // Main background (white in light, dark in dark mode)
 --background-secondary    // Secondary surfaces (light grey → dark grey)
 --background-tertiary     // Tertiary surfaces
@@ -400,16 +400,20 @@ Reviewers should check:
    }
    ```
 
-3. **Progress Indicator** (`src/styles/components.scss`)
+3. **Progress Indicator** (`src/styles/components.scss`) - **Note: High specificity required**
    ```scss
-   .cds--progress-label {
+   // IMPORTANT: 3 classes needed to override Carbon's defaults
+   .cds--progress-indicator .cds--progress-step .cds--progress-label {
      color: var(--text-primary) !important;
    }
-   
-   .cds--progress-step--current .cds--progress-label {
+
+   // Current step - 4 classes for maximum specificity
+   .cds--progress-step--current .cds--progress-step-button .cds--progress-label {
      color: var(--interactive-primary) !important;
    }
    ```
+
+   **Why high specificity**: Carbon's default selector uses 3+ classes. Without matching or exceeding this specificity, Carbon's hardcoded colors win, causing dark-on-dark text in dark mode. See `.builder/rules/progress-indicator-fix.mdc` for full details.
 
 ### ❌ Bad Examples (Fixed)
 
