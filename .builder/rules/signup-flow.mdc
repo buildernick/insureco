@@ -93,6 +93,30 @@ On form completion:
 - Navigates user to `/dashboard`
 - In production: would POST to backend API
 
+## Insurance Type Selection (Step 3)
+
+The Insurance Type step uses **TileGroup + RadioTile** components from Carbon Design System for a visual, engaging selection experience:
+
+### Implementation Details
+- **Components**: `TileGroup` (parent) + `RadioTile` (children)
+- **Icons**: `Car` and `Home` icons from `@carbon/icons-react`
+- **Visual Design**: Large clickable tiles with icons and descriptive text
+- **Selected State**: Red border accent, light red background, red icon color
+- **Mobile Optimized**: Vertical layout with icons centered above text
+- **Desktop Layout**: Horizontal layout with icons beside text
+
+### Three Tile Options
+1. **Car Insurance** - Car icon + "Protect your vehicle with comprehensive coverage"
+2. **Home Insurance** - Home icon + "Secure your property and belongings"
+3. **Both Car & Home** - Both icons + "Bundle and save with combined coverage"
+
+### Styling Features
+- 2px border (3px when selected)
+- Hover effects with lift animation and red accent
+- Focus states for keyboard accessibility
+- Minimum 100px height on mobile, 120px on desktop
+- Red accent color throughout for brand consistency
+
 ## Form Data Structure
 
 
@@ -103,13 +127,13 @@ On form completion:
   email: '',
   phone: '',
   dateOfBirth: '',
-  
+
   // Address
   streetAddress: '',
   city: '',
   state: '',
   zipCode: '',
-  
+
   // Insurance Type
   insuranceType: '', // 'car', 'home', 'both'
   
@@ -130,7 +154,7 @@ On form completion:
   deductible: '',
   additionalCoverage: [], // array of selected options
 }
-```
+
 
 ## Carbon Components Used
 
