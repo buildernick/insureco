@@ -17,8 +17,10 @@ import {
   Heading,
   Tile,
   NumberInput,
+  TileGroup,
+  RadioTile,
 } from '@carbon/react';
-import { ArrowRight, ArrowLeft, Checkmark } from '@carbon/icons-react';
+import { ArrowRight, ArrowLeft, Checkmark, Car, Home as HomeIcon } from '@carbon/icons-react';
 import './SignUpPage.scss';
 
 export default function SignUpPage() {
