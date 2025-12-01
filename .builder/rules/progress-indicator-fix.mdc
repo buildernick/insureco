@@ -1,0 +1,270 @@
+---
+description: Progress Indicator Dark Mode Fix - CSS Specificity Solution
+globs:
+  - "src/styles/**/*.scss"
+  - "src/pages/SignUpPage.jsx"
+alwaysApply: false
+---
+
+# Progress Indicator Dark Mode Fix
+
+## Issue Summary
+
+**Problem**: Progress indicator labels (breadcrumb-like navigation) on the sign-up page were unreadable in dark mode due to dark text appearing on dark backgrounds.
+
+**Root Cause**: CSS specificity conflict between Carbon Design System's default styles and custom theme overrides.
+
+## Technical Analysis
+
+### Why It Happened
+
+1. **Carbon's Default Styles**: 
+   - Carbon Design System uses hardcoded colors in its default styles
+   - These colors work for Carbon's built-in themes but don't adapt to custom theme tokens
+   - Selectors use deep nesting with high specificity (3+ classes)
+
+2. **Our Initial Override Attempt**:
+   ```scss
+   // LOW specificity (2 classes)
+   .cds--progress-indicator .cds--progress-label {
+     color: var(--text-primary) !important;
+   }
+   ```
+
+3. **The Conflict**:
+   - Carbon's selector: `.cds--progress .cds--progress-step .cds--progress-label` (3 classes)
+   - Our selector: `.cds--progress-indicator .cds--progress-label` (2 classes)
+   - Carbon's styles loaded AFTER ours in the cascade
+   - Result: Carbon's hardcoded `color: #161616` won, causing dark text in dark mode
+
+### Visual Impact
+
+**In Dark Mode (`g100` theme)**:
+- Background: `--background-secondary` = `#262626` (dark grey)
+- Text (before fix): `#161616` (near black, from Carbon defaults)
+- Contrast ratio: ~1.5:1 ❌ (WCAG AA requires 4.5:1)
+- Result: **Unreadable**
+
+**After Fix**:
+- Text: `var(--text-primary)` = `#f4f4f4` (light grey in dark mode)
+- Contrast ratio: ~13:1 ✅
+- Result: **Readable**
+
+## The Solution
+
+### 1. Increased CSS Specificity
+
+Updated `src/styles/components.scss` with higher specificity selectors:
+
+
+// ============================================
+// Progress Indicators
+// ============================================
+
+// IMPORTANT: High specificity selectors to override Carbon's default styles
+// Carbon's default styles don't adapt to custom theme tokens, so we need
+// to use more specific selectors to ensure our theme-aware colors are applied.
+// Without this specificity, Carbon's defaults win and cause dark-on-dark text in dark mode.
+.cds--progress-indicator {
+  // All step labels - 3 classes (matches Carbon's specificity)
+  .cds--progress-step .cds--progress-label {
+    color: var(--text-primary) !important;
+  }
+
+  // Current step styling - 4 classes (exceeds Carbon's specificity)
+  .cds--progress-step--current {
+    .cds--progress-step-button .cds--progress-label {
+      color: var(--interactive-primary) !important;
+      font-weight: var(--font-weight-semibold);
+    }
+  }
+
+  // Completed steps
+  .cds--progress-step--complete {
+    .cds--progress-step-button .cds--progress-label {
+      color: var(--text-primary) !important;
+    }
+  }
+
+  // Incomplete/upcoming steps
+  .cds--progress-step--incomplete {
+    .cds--progress-step-button .cds--progress-label {
+      color: var(--text-secondary) !important;
+    }
+  }
+}
+```
+
+**Key Changes**:
+- Changed from `.cds--progress-label` → `.cds--progress-step .cds--progress-label` (added one more class)
+- Added `.cds--progress-step-button` in state-specific overrides for maximum specificity
+- Maintained `!important` on all color declarations
+- Added detailed comments explaining WHY high specificity is needed
+
+### 2. Updated Documentation
+
+#### A. Theme Contrast Guidelines (`.builder/rules/theme-contrast-guidelines.mdc`)
+
+**Added**: Comprehensive CSS Specificity section in "Pitfall 2" with:
+- Explanation of why specificity matters
+- Multi-step strategy for overriding Carbon components
+- Before/after code examples
+- Testing instructions using browser DevTools
+
+#### B. Carbon Design System Guide (`.builder/rules/carbon-design-system.mdc`)
+
+**Added**: New section "Overriding Carbon Component Styles" with:
+- Problem explanation and visual examples
+- Step-by-step specificity hierarchy guide
+- Component-specific override patterns
+- Testing checklist
+- Documentation requirements for future overrides
+
+## Testing Performed
+
+✅ **Light Mode (`white` theme)**:
+- All progress labels visible
+- Current step uses brand red
+- Completed steps use primary text color
+- Incomplete steps use secondary text color
+
+✅ **Dark Mode (`g100` theme)**:
+- All progress labels visible (primary concern - FIXED)
+- Current step uses lighter brand red (`#fa4d56`)
+- Completed steps use light text (`#f4f4f4`)
+- Incomplete steps use subtle but readable grey (`#c6c6c6`)
+
+✅ **Interactive States**:
+- Hover states work correctly
+- Focus states maintain visibility
+- All states have sufficient contrast
+
+✅ **Browser DevTools Verification**:
+- Inspected "Computed" styles - our overrides are applied
+- Confirmed Carbon's defaults are crossed out (overridden)
+- Contrast ratio checker shows 13:1 for dark mode
+
+## Files Modified
+
+1. **`src/styles/components.scss`**:
+   - Lines 222-297: Progress indicator overrides
+   - Increased selector specificity
+   - Added explanatory comments
+
+2. **`.builder/rules/theme-contrast-guidelines.mdc`**:
+   - Lines 232-290: Expanded "Pitfall 2: CSS Specificity"
+   - Added multi-step strategy
+   - Added testing instructions
+
+3. **`.builder/rules/carbon-design-system.mdc`**:
+   - Lines 338-560+: New section "Overriding Carbon Component Styles"
+   - Comprehensive guide on specificity
+   - Component-specific examples
+   - Documentation checklist
+
+4. **`.builder/rules/progress-indicator-fix.mdc`** (this file):
+   - New documentation for this specific fix
+
+## Prevention Strategy
+
+### For Developers
+
+**When adding new Carbon components**:
+
+1. **Check if custom theme tokens are needed**:
+   - Does the component use colors?
+   - Do those colors adapt to your custom theme?
+   - If not, you need an override
+
+2. **Inspect the component in DevTools**:
+   ```
+   Right-click → Inspect
+   → Look at "Styles" panel
+   → Count Carbon's selector specificity
+   → Match or exceed it in your override
+   ```
+
+3. **Use the documentation template**:
+   ```scss
+   // ============================================
+   // [Component Name]
+   // ============================================
+   
+   // IMPORTANT: Override Carbon's [specific issue]
+   // Without this, [specific problem in dark mode]
+   // Specificity: X classes to override Carbon's Y-class default
+   .cds--component .cds--element {
+     color: var(--text-primary) !important;
+   }
+   ```
+
+4. **Test in BOTH themes**:
+   - Light mode
+   - Dark mode
+   - All interactive states
+   - Use DevTools contrast checker
+
+### For AI Assistants
+
+**When styling Carbon components**:
+
+1. **Read these docs FIRST**:
+   - `.builder/rules/theme-contrast-guidelines.mdc` (alwaysApply: true)
+   - `.builder/rules/carbon-design-system.mdc` section "Overriding Carbon Component Styles"
+
+2. **Always use theme tokens**:
+   - `--text-primary`, `--text-secondary`, `--text-tertiary`
+   - `--background-primary`, `--background-secondary`
+   - `--interactive-primary`, `--interactive-hover`
+   - **NEVER** hardcoded colors like `#161616` or `#ffffff`
+
+3. **Match Carbon's specificity**:
+   - Use 3+ class selectors: `.cds--parent .cds--child .cds--element`
+   - Always use `!important` for color overrides
+   - Target all component states separately
+
+4. **Document your overrides**:
+   - Add comment explaining WHY override is needed
+   - Note the specificity level
+   - Reference the theme token used
+
+## Impact
+
+This fix prevents:
+- ✅ Unreadable text in dark mode (primary issue - RESOLVED)
+- ✅ Unreadable text in light mode (not observed but prevented)
+- ✅ Future contrast issues in ALL Carbon components (via documentation)
+- ✅ Developer confusion about CSS specificity (comprehensive guides added)
+
+## Related Issues
+
+This same specificity issue may affect other Carbon components:
+- **Header navigation** - already fixed in previous update
+- **Form fields** - already fixed in previous update
+- **Tables** - may need review
+- **Modals** - may need review
+- **Tabs** - may need review
+
+If any component shows theme contrast issues, apply the same solution:
+1. Inspect Carbon's selector specificity
+2. Match or exceed it in your override
+3. Use theme tokens with `!important`
+4. Test in both themes
+5. Document the override
+
+## Future Improvements
+
+Consider:
+1. **Automated contrast testing**: CI/CD check for WCAG AA compliance
+2. **Visual regression tests**: Screenshot comparison in light/dark modes
+3. **ESLint rule**: Prevent hardcoded colors in component styles
+4. **Stylelint rule**: Require theme tokens for color properties
+
+## Summary
+
+**Problem**: Dark-on-dark text due to CSS specificity conflict  
+**Solution**: Increased specificity + theme tokens + comprehensive documentation  
+**Result**: All progress indicator labels readable in both light and dark modes  
+**Prevention**: Updated documentation to prevent future issues  
+
+The theming system is now robust and well-documented for Carbon component overrides.
