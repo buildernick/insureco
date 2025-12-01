@@ -1,0 +1,333 @@
+---
+description: Theme Preview Page - Visual reference for all design tokens and components
+globs:
+  - "src/pages/ThemePreviewPage.jsx"
+  - "src/pages/ThemePreviewPage.scss"
+alwaysApply: false
+---
+
+# Theme Preview Page
+
+## Overview
+
+The Theme Preview Page (`/theme-preview`) is a comprehensive visual reference that displays all design tokens and components in their current theme context. This page is essential for:
+
+- **Quality Assurance**: Verifying all components work in both light and dark modes
+- **Design Review**: Confirming color contrast and accessibility
+- **Developer Reference**: Seeing all available tokens and components in one place
+- **Theme Testing**: Quickly switching between themes to spot issues
+
+## Access
+
+**URL**: `/theme-preview`
+
+**Navigation**: Not included in main navigation (developer/QA tool)
+
+Direct access by typing the URL in the browser.
+
+## Page Structure
+
+### 1. Color Tokens Section
+
+Displays all color tokens with visual samples:
+
+#### Text Colors
+- `--text-primary` - Main content text
+- `--text-secondary` - Supporting text
+- `--text-tertiary` - Subtle text
+- `--text-on-color` - Text on colored backgrounds
+- `--text-error` - Error messages
+
+#### Background Colors
+- `--background-primary` - Main page background
+- `--background-secondary` - Cards and secondary surfaces
+- `--background-tertiary` - Tertiary surfaces
+- `--background-selected` - Selected state background
+
+#### Interactive Colors
+- `--interactive-primary` - Primary brand red
+- `--interactive-hover` - Hover state
+- `--interactive-active` - Active/pressed state
+
+#### Brand Colors
+- Brand Red
+- Success Green
+- Warning Yellow
+- Error Red
+- Info Blue
+
+### 2. Typography Section
+
+Shows all heading and body text sizes:
+
+- Heading 1-4 with actual size examples
+- Body Large, Medium, Small
+- Code/monospace font examples
+- Each with its corresponding token name
+
+### 3. Buttons Section
+
+All button variants:
+
+- Primary Button
+- Secondary Button
+- Tertiary Button
+- Ghost Button
+- Disabled Button
+- Danger Button
+- Button with Icon
+
+### 4. Form Fields Section
+
+All form input components:
+
+- Text Input (normal and error states)
+- Select Dropdown
+- Number Input
+- Checkboxes
+- Radio Buttons
+- Toggle Switch
+- All with proper labels and helper text
+
+### 5. Tiles Section
+
+Tile components:
+
+- Standard Tile
+- Selectable RadioTiles (with icons)
+- Shows selected and unselected states
+
+### 6. Progress Indicator Section
+
+Multi-step progress indicator showing:
+
+- Completed steps
+- Current step (highlighted)
+- Upcoming/incomplete steps
+- Proper contrast in both themes
+
+### 7. Tags Section
+
+Tag components in various colors:
+
+- Red Tag
+- Green Tag
+- Blue Tag
+- Gray Tag
+- Purple Tag
+
+### 8. Notifications Section
+
+All notification types:
+
+- Info Notification
+- Success Notification
+- Warning Notification
+- Error Notification
+
+### 9. Links Section
+
+Link states:
+
+- Standard Link
+- Visited Link
+- Disabled Link
+
+### 10. Contrast Examples Section
+
+**Critical Section** - Shows proper text/background pairings:
+
+1. Primary Background + Primary Text
+2. Secondary Background + Primary Text
+3. Primary Red + On-Color Text
+4. Form Field Background + Field Text
+
+Each example displays:
+- Visual representation
+- Description of use case
+- Exact token combination used
+
+## Usage
+
+### For QA Testing
+
+1. Navigate to `/theme-preview`
+2. Review all components in current theme
+3. Click theme toggle in header
+4. Review all components in opposite theme
+5. Verify:
+   - All text is readable
+   - No dark-on-dark or light-on-light issues
+   - Colors maintain proper contrast
+   - Interactive states are visible
+
+### For Development
+
+1. Reference when implementing new components
+2. Check which tokens to use for specific scenarios
+3. Copy token names directly from the page
+4. Use contrast examples as templates
+
+### For Design Review
+
+1. Show stakeholders all color combinations
+2. Verify brand colors in both themes
+3. Confirm typography scale
+4. Review component styling consistency
+
+## Mobile Responsiveness
+
+The page is fully responsive:
+
+- **Mobile (< 672px)**:
+  - Color samples in 2-column grid
+  - Buttons stack vertically
+  - Full-width form fields
+  - Reduced padding
+
+- **Tablet (672px - 1056px)**:
+  - Color samples in 3-4 column grid
+  - Components in rows
+  - Comfortable spacing
+
+- **Desktop (> 1056px)**:
+  - Color samples in 5+ column grid
+  - Optimal viewing experience
+  - Maximum spacing
+
+## Implementation Details
+
+### Files
+
+- **Component**: `src/pages/ThemePreviewPage.jsx` (538 lines)
+- **Styles**: `src/pages/ThemePreviewPage.scss` (217 lines)
+- **Route**: `/theme-preview` in `src/App.jsx`
+
+### Key Features
+
+1. **Live Theme Updates**: Uses CSS custom properties so colors update instantly when theme changes
+
+2. **Interactive Components**: Form fields are functional to test interaction states
+
+3. **Hover Effects**: Color samples have hover states to show they're interactive
+
+4. **Token Labels**: Each color sample shows its token name for easy reference
+
+5. **Contrast Examples**: Dedicated section showing correct token pairings
+
+### Carbon Components Used
+
+- Grid, Column - Layout
+- Heading, Stack - Structure
+- Button (all variants)
+- TextInput, Select, NumberInput
+- Checkbox, RadioButton, RadioButtonGroup, Toggle
+- Tile, TileGroup, RadioTile
+- ProgressIndicator, ProgressStep
+- Tag (all types)
+- InlineNotification (all types)
+- Link
+
+## Testing Checklist
+
+Use this page to verify:
+
+### Light Mode
+- [ ] All text colors are visible
+- [ ] Background colors show proper hierarchy
+- [ ] Interactive colors stand out
+- [ ] Form fields are readable
+- [ ] Progress indicator labels visible
+- [ ] All buttons have proper contrast
+- [ ] Notifications are distinguishable
+- [ ] Links are underlined/styled
+
+### Dark Mode
+- [ ] All text colors are visible (no dark-on-dark)
+- [ ] Background colors show proper hierarchy
+- [ ] Interactive colors maintain brand identity
+- [ ] Form fields maintain contrast
+- [ ] Progress indicator labels visible
+- [ ] All buttons have proper contrast
+- [ ] Notifications are distinguishable
+- [ ] Links are visible
+
+### Both Themes
+- [ ] Brand red is recognizable
+- [ ] Success/warning/error colors work
+- [ ] Hover states are visible
+- [ ] Focus states are visible
+- [ ] Disabled states are clear
+- [ ] Selected states are obvious
+
+## Common Issues to Spot
+
+This page helps identify:
+
+1. **Contrast Issues**: Text that's hard to read
+2. **Missing Tokens**: Components not using semantic tokens
+3. **Hardcoded Colors**: Elements that don't change with theme
+4. **Inconsistent Styling**: Components that look different than expected
+5. **Accessibility Problems**: Insufficient color contrast
+
+## Maintenance
+
+When adding new:
+
+### Design Tokens
+1. Add to appropriate section (Colors, Typography, etc.)
+2. Show visual sample
+3. Display token name
+4. Add to contrast examples if relevant
+
+### Components
+1. Add to relevant section
+2. Show all variants/states
+3. Ensure proper labeling
+4. Test in both themes
+
+### Color Combinations
+1. Add to Contrast Examples section
+2. Show visual example
+3. Document use case
+4. List exact tokens used
+
+## Future Enhancements
+
+Potential additions:
+
+1. **Contrast Ratio Calculator**: Show actual WCAG ratios
+2. **Export Functionality**: Generate token documentation
+3. **Screenshot Mode**: Capture examples for documentation
+4. **Comparison View**: Side-by-side light/dark theme
+5. **Animation Showcase**: Motion token demonstrations
+6. **Spacing Grid**: Visual spacing scale
+7. **Shadow Samples**: Elevation token examples
+8. **Icon Library**: All available icons
+
+## Related Documentation
+
+- **Theme System**: `.builder/rules/theming-system.mdc`
+- **Contrast Guidelines**: `.builder/rules/theme-contrast-guidelines.mdc`
+- **Design Tokens**: `.builder/rules/design-tokens.mdc`
+- **Component Structure**: `.builder/rules/component-structure.mdc`
+
+## Best Practices
+
+1. **Always check this page** after making theme changes
+2. **Test in both themes** before committing
+3. **Reference contrast examples** when styling new components
+4. **Share with stakeholders** for design approval
+5. **Use as documentation** for new team members
+
+## Quick Tips
+
+- **Bookmark this page** for quick access during development
+- **Open in two windows** to compare themes side-by-side
+- **Use browser DevTools** to inspect token values
+- **Take screenshots** for documentation
+- **Reference token names** directly from the page
+
+---
+
+The Theme Preview Page is a critical tool for maintaining theme consistency and accessibility across the entire application.
