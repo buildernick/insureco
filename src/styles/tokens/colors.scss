@@ -86,6 +86,10 @@ $light-field-background: #ffffff;
 $light-field-text: $color-grey-100;
 $light-field-placeholder: $color-grey-60;
 
+// Contrast-safe colors (always readable)
+$light-text-on-light: $color-grey-100;  // Dark text for light backgrounds
+$light-text-on-dark: #ffffff;  // Light text for dark backgrounds
+
 // ============================================
 // Dark Theme Mappings
 // ============================================
@@ -115,6 +119,10 @@ $dark-interactive-active: $color-brand-red-30;
 $dark-field-background: $color-grey-90;
 $dark-field-text: $color-grey-10;
 $dark-field-placeholder: $color-grey-50;
+
+// Contrast-safe colors (always readable)
+$dark-text-on-light: $color-grey-100;  // Dark text for light backgrounds
+$dark-text-on-dark: $color-grey-10;  // Light text for dark backgrounds
 
 // ============================================
 // CSS Custom Properties
