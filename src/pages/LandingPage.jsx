@@ -153,8 +153,8 @@ export default function LandingPage() {
           <Column lg={8} md={4} sm={4}>
             <div className="product-image">
               <img
-                src="https://images.pexels.com/photos/7925480/pexels-photo-7925480.jpeg?auto=compress&cs=tinysrgb&w=800"
-                alt="Luxury red sports car showcasing quality auto insurance coverage"
+                src="https://images.pexels.com/photos/220309/pexels-photo-220309.jpeg?auto=compress&cs=tinysrgb&w=800"
+                alt="Modern blue sedan representing everyday auto insurance coverage"
                 loading="lazy"
               />
             </div>
