@@ -80,9 +80,8 @@
     margin-bottom: var(--spacing-09);
   }
 
-  // Override Carbon ProgressIndicator for mobile
+  // Mobile-specific adjustments
   .cds--progress {
-    // Make labels smaller on mobile
     @media (max-width: 671px) {
       .cds--progress-label {
         font-size: 12px;
@@ -92,28 +91,6 @@
       .cds--progress-step-button {
         padding: 0;
         min-width: auto;
-      }
-    }
-
-    // Add red accent to current step
-    .cds--progress-step--current {
-      .cds--progress-step-button {
-        &::before {
-          background-color: var(--interactive-primary);
-          border-color: var(--interactive-primary);
-        }
-      }
-
-      .cds--progress-label {
-        color: var(--interactive-primary);
-        font-weight: var(--font-weight-semibold);
-      }
-    }
-
-    // Completed steps with red checkmark
-    .cds--progress-step--complete {
-      svg {
-        fill: var(--interactive-primary);
       }
     }
   }
