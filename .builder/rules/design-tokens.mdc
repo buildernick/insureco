@@ -30,6 +30,8 @@ All tokens are imported through `src/styles/tokens/index.scss` using `@forward`.
 
 This project uses **Carbon Design System** (from `@carbon/react`) as the UI component library. The custom design tokens complement and extend Carbon's existing token system while maintaining compatibility.
 
+**Related Documentation:** See `.builder/rules/theming-system.mdc` for complete theming system documentation including how themes work, theme switching, and theme persistence.
+
 ## Color Tokens
 
 ### Brand Identity
@@ -73,7 +75,7 @@ The color system supports both light and dark themes using CSS custom properties
   background-color: var(--interactive-primary);
   color: var(--text-primary);
 }
-```
+
 
 **Best Practice**: Use theme-aware CSS custom properties (e.g., `--text-primary`, `--background-primary`) instead of static colors to ensure proper dark/light theme support.
 
