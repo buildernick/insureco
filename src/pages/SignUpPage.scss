@@ -3,7 +3,11 @@
 .signup-page {
   min-height: 100vh;
   padding: var(--spacing-05);
-  background: var(--background-primary);
+  background: linear-gradient(
+    135deg,
+    var(--background-primary) 0%,
+    var(--background-secondary) 100%
+  );
 
   // Mobile-first: More padding on larger screens
   @media (min-width: 672px) {
@@ -23,16 +27,25 @@
 .signup-header {
   text-align: center;
   margin-bottom: var(--spacing-07);
+  padding: var(--spacing-07) var(--spacing-05);
+  background: linear-gradient(
+    135deg,
+    var(--color-brand-red-60) 0%,
+    var(--color-brand-red-70) 100%
+  );
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 12px rgba(218, 30, 40, 0.15);
 
   @media (min-width: 672px) {
     margin-bottom: var(--spacing-09);
+    padding: var(--spacing-09) var(--spacing-07);
   }
 }
 
 .signup-title {
   font-size: var(--heading-h3-size);
   font-weight: var(--heading-h3-weight);
-  color: var(--text-primary);
+  color: var(--text-on-color);
   margin-bottom: var(--spacing-03);
 
   @media (min-width: 672px) {
@@ -43,7 +56,8 @@
 
 .signup-subtitle {
   font-size: var(--body-md-size);
-  color: var(--text-secondary);
+  color: var(--text-on-color);
+  opacity: 0.95;
   max-width: 600px;
   margin: 0 auto;
 
