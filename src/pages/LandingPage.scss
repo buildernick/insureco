@@ -8,16 +8,36 @@
 // Hero Section
 .hero-section {
   padding: var(--spacing-13) var(--spacing-05);
-  background: linear-gradient(135deg, var(--interactive-primary) 0%, var(--color-brand-red-70) 100%);
+  background-image:
+    linear-gradient(135deg,
+      rgba(218, 30, 40, 0.85) 0%,
+      rgba(162, 25, 31, 0.85) 100%),
+    url('https://images.pexels.com/photos/4145355/pexels-photo-4145355.jpeg?auto=compress&cs=tinysrgb&w=1920');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   color: var(--text-on-color);
   text-align: center;
   min-height: 600px;
   display: flex;
   align-items: center;
+  position: relative;
+
+  // Dark theme adjustment for better visibility
+  :root[data-carbon-theme="g90"] &,
+  :root[data-carbon-theme="g100"] & {
+    background-image:
+      linear-gradient(135deg,
+        rgba(250, 77, 86, 0.80) 0%,
+        rgba(218, 30, 40, 0.80) 100%),
+      url('https://images.pexels.com/photos/4145355/pexels-photo-4145355.jpeg?auto=compress&cs=tinysrgb&w=1920');
+  }
 
   .hero-content {
     max-width: 800px;
     margin: 0 auto;
+    position: relative;
+    z-index: 1;
   }
 
   .hero-heading {
@@ -295,6 +315,7 @@
   .hero-section {
     padding: var(--spacing-09) var(--spacing-05);
     min-height: 500px;
+    background-position: 65% center;
 
     .hero-heading {
       font-size: var(--heading-h2-size);
