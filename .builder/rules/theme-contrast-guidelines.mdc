@@ -1,0 +1,381 @@
+---
+description: Theme contrast guidelines - preventing dark text on dark backgrounds and light text on light backgrounds
+globs:
+  - "src/styles/**/*.scss"
+  - "src/**/*.jsx"
+alwaysApply: true
+---
+
+# Theme Contrast Guidelines
+
+## Critical Rule: Never Break Contrast
+
+**The Golden Rule**: Text must ALWAYS have sufficient contrast with its background, regardless of theme.
+
+### What NOT to Do
+
+❌ **NEVER** use dark text on dark backgrounds  
+❌ **NEVER** use light text on light backgrounds  
+❌ **NEVER** hardcode text colors without considering the background  
+❌ **NEVER** assume a component will only be used in one theme  
+
+### What TO Do
+
+✅ **ALWAYS** use semantic tokens that adapt to themes  
+✅ **ALWAYS** test components in both light AND dark modes  
+✅ **ALWAYS** ensure WCAG AA contrast ratios (4.5:1 for normal text)  
+✅ **ALWAYS** use `--text-primary`, `--text-secondary`, etc. instead of hardcoded colors  
+
+## Understanding the Token System
+
+### Semantic Text Tokens (Theme-Aware)
+
+These tokens automatically provide proper contrast in both themes:
+
+
+// PRIMARY USE CASE: Use these for most text
+--text-primary        // Main content text (dark in light mode, light in dark mode)
+--text-secondary      // Supporting text (medium contrast)
+--text-tertiary       // Subtle text (lower contrast, still readable)
+--text-on-color       // Text on colored backgrounds (always white/light)
+--text-error          // Error messages (maintains contrast in both themes)
+```
+
+### Background Tokens (Theme-Aware)
+
+```scss
+--background-primary      // Main background (white in light, dark in dark mode)
+--background-secondary    // Secondary surfaces (light grey → dark grey)
+--background-tertiary     // Tertiary surfaces
+--background-hover        // Hover state backgrounds
+--background-selected     // Selected state backgrounds
+```
+
+### Contrast-Safe Tokens (When Backgrounds Are Known)
+
+Use these when you need explicit control:
+
+```scss
+--text-on-light-bg    // ALWAYS dark text (for white/light backgrounds)
+--text-on-dark-bg     // ALWAYS light text (for dark/colored backgrounds)
+```
+
+## Common Scenarios
+
+### Scenario 1: Text on Primary Background
+
+```scss
+// ✅ CORRECT - Adapts to theme
+.my-component {
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+}
+```
+
+```scss
+// ❌ WRONG - Breaks in dark mode
+.my-component {
+  background-color: var(--background-primary);
+  color: #161616;  // Always dark, unreadable in dark mode!
+}
+```
+
+### Scenario 2: Text on Colored Background
+
+```scss
+// ✅ CORRECT - Light text on red background
+.banner {
+  background-color: var(--color-brand-red-60);
+  color: var(--text-on-color);  // Always light/white
+}
+```
+
+```scss
+// ❌ WRONG - Could be dark text on dark red
+.banner {
+  background-color: var(--color-brand-red-60);
+  color: var(--text-primary);  // Dark in dark mode!
+}
+```
+
+### Scenario 3: Progress Indicators / Breadcrumbs
+
+Progress indicators must have readable text in all states:
+
+```scss
+// ✅ CORRECT - All states are readable
+.cds--progress-label {
+  color: var(--text-primary) !important;  // Adapts to theme
+}
+
+.cds--progress-step--current .cds--progress-label {
+  color: var(--interactive-primary) !important;  // Red, but still readable
+}
+
+.cds--progress-step--incomplete .cds--progress-label {
+  color: var(--text-secondary) !important;  // Subtle but readable
+}
+```
+
+```scss
+// ❌ WRONG - Hardcoded colors break in dark mode
+.cds--progress-label {
+  color: #161616;  // Always dark - unreadable in dark mode!
+}
+```
+
+### Scenario 4: Buttons
+
+```scss
+// ✅ CORRECT - Theme-aware button colors
+.cds--btn--primary {
+  background-color: var(--interactive-primary);
+  color: var(--text-on-color);  // Always light on colored background
+}
+
+.cds--btn--secondary {
+  background-color: transparent;
+  border: 1px solid var(--border-interactive);
+  color: var(--interactive-primary);  // Adapts to theme
+}
+```
+
+### Scenario 5: Form Fields
+
+```scss
+// ✅ CORRECT - Theme-aware field colors
+.cds--text-input {
+  background-color: var(--field-background) !important;
+  color: var(--field-text) !important;
+}
+
+.cds--text-input::placeholder {
+  color: var(--field-placeholder);
+}
+```
+
+## Component Checklist
+
+Before styling any component, ask:
+
+1. **What background will this text be on?**
+   - Primary background? → Use `--text-primary`
+   - Colored background? → Use `--text-on-color`
+   - Known light background? → Use `--text-on-light-bg`
+   - Known dark background? → Use `--text-on-dark-bg`
+
+2. **Does this component work in both themes?**
+   - Test in light mode ✓
+   - Test in dark mode ✓
+   - Test state changes (hover, focus, active) ✓
+
+3. **Are you using semantic tokens?**
+   - Using `--text-primary`? ✓
+   - Using `--background-primary`? ✓
+   - No hardcoded colors? ✓
+
+4. **Is the contrast ratio sufficient?**
+   - Normal text: 4.5:1 minimum (WCAG AA)
+   - Large text: 3:1 minimum (WCAG AA)
+   - Use browser DevTools to check contrast
+
+## Carbon Component Overrides
+
+When overriding Carbon components, ensure theme compatibility:
+
+```scss
+// ✅ CORRECT - Theme-aware override
+.cds--header__name {
+  color: var(--text-primary) !important;
+  background-color: transparent !important;
+  
+  &:hover {
+    color: var(--interactive-primary) !important;
+  }
+}
+```
+
+```scss
+// ❌ WRONG - Hardcoded override
+.cds--header__name {
+  color: #161616 !important;  // Breaks in dark mode!
+}
+```
+
+## Testing Requirements
+
+### Manual Testing Checklist
+
+For EVERY component you style:
+
+- [ ] View in light mode (white theme)
+- [ ] View in dark mode (g90 or g100 theme)
+- [ ] Check all interactive states (hover, focus, active, disabled)
+- [ ] Check with browser's contrast checker
+- [ ] Verify on actual mobile devices (not just responsive mode)
+- [ ] Test with browser zoom at 200%
+
+### Automated Testing (Future)
+
+Consider adding:
+- Contrast ratio testing in CI/CD
+- Visual regression tests for both themes
+- Accessibility audits with axe or Lighthouse
+
+## Common Pitfalls
+
+### Pitfall 1: Carbon Default Styles
+
+**Problem**: Carbon's default styles may not always adapt to custom themes  
+**Solution**: Override with theme-aware tokens in `src/styles/components.scss`
+
+### Pitfall 2: CSS Specificity
+
+**Problem**: Your theme styles are overridden by more specific selectors  
+**Solution**: Use `!important` when necessary for theme overrides
+
+### Pitfall 3: Inherited Colors
+
+**Problem**: Text inherits color from parent, parent changes theme  
+**Solution**: Explicitly set `color` on components that should adapt
+
+### Pitfall 4: SVG Fill Colors
+
+**Problem**: SVG icons don't change color with theme  
+**Solution**: Use `fill: currentColor` or explicit `fill: var(--text-primary)`
+
+```scss
+// ✅ CORRECT - Icon adapts to text color
+.my-icon {
+  fill: currentColor;
+}
+
+// OR explicitly set
+svg {
+  fill: var(--text-primary);
+}
+```
+
+## File Structure
+
+Theme-related files:
+
+```
+src/styles/
+├── tokens/
+│   ├── colors.scss       ← Define theme tokens here
+│   ├── typography.scss   ← Text size/weight tokens
+│   └── index.scss        ← Export all tokens
+├── components.scss       ← Global component overrides
+└── index.scss            ← Import tokens and components
+
+.builder/rules/
+├── theme-contrast-guidelines.mdc  ← This file
+├── theming-system.mdc             ← General theming docs
+├── design-tokens.mdc              ← Token documentation
+└── form-field-theming.mdc         ← Form-specific theming
+```
+
+## Quick Reference Card
+
+### Most Common Token Pairs
+
+| Use Case | Background Token | Text Token |
+|----------|------------------|------------|
+| Page content | `--background-primary` | `--text-primary` |
+| Cards/Tiles | `--background-secondary` | `--text-primary` |
+| Buttons (primary) | `--interactive-primary` | `--text-on-color` |
+| Buttons (secondary) | `transparent` | `--interactive-primary` |
+| Form fields | `--field-background` | `--field-text` |
+| Placeholders | `--field-background` | `--field-placeholder` |
+| Headers | `--background-primary` | `--text-primary` |
+| Colored banners | `--color-brand-red-60` | `--text-on-color` |
+| Hover states | `--background-hover` | `--text-primary` |
+| Disabled states | `--background-secondary` | `--text-tertiary` |
+
+## Enforcement
+
+### Code Review Checklist
+
+Reviewers should check:
+
+- [ ] No hardcoded color values in component styles
+- [ ] All text uses semantic tokens
+- [ ] Component screenshots show both light and dark modes
+- [ ] Contrast ratios meet WCAG AA standards
+- [ ] No `color: #000` or `color: #fff` without context
+
+### Developer Workflow
+
+1. **Before styling**: Check which background the text will be on
+2. **While styling**: Use only semantic tokens from the approved list
+3. **After styling**: Test in both themes
+4. **Before commit**: Verify no hardcoded colors in diff
+
+## Resources
+
+- **Design Tokens**: See `.builder/rules/design-tokens.mdc`
+- **Theming System**: See `.builder/rules/theming-system.mdc`
+- **Form Fields**: See `.builder/rules/form-field-theming.mdc`
+- **WCAG Guidelines**: https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html
+- **Contrast Checker**: https://webaim.org/resources/contrastchecker/
+
+## Examples from This Project
+
+### ✅ Good Examples
+
+1. **Header Navigation** (`src/components/Layout.jsx` + `src/styles/components.scss`)
+   ```scss
+   .cds--header__name {
+     color: var(--text-primary) !important;
+     &:hover {
+       color: var(--interactive-primary) !important;
+     }
+   }
+   ```
+
+2. **Form Fields** (`src/styles/components.scss`)
+   ```scss
+   .cds--text-input {
+     background-color: var(--field-background) !important;
+     color: var(--field-text) !important;
+   }
+   ```
+
+3. **Progress Indicator** (`src/styles/components.scss`)
+   ```scss
+   .cds--progress-label {
+     color: var(--text-primary) !important;
+   }
+   
+   .cds--progress-step--current .cds--progress-label {
+     color: var(--interactive-primary) !important;
+   }
+   ```
+
+### ❌ Bad Examples (Fixed)
+
+1. **Progress labels without theme support** (BEFORE FIX)
+   ```scss
+   // This broke in dark mode - dark text on dark background
+   .cds--progress-label {
+     color: #161616;  // WRONG!
+   }
+   ```
+
+2. **Hardcoded input colors** (BEFORE FIX)
+   ```scss
+   // White background appeared in dark mode
+   .cds--text-input {
+     background-color: #ffffff;  // WRONG!
+     color: #000000;  // WRONG!
+   }
+   ```
+
+## Future Improvements
+
+- Add ESLint rule to prevent hardcoded colors
+- Add Stylelint rule to require semantic tokens
+- Create visual regression tests for both themes
+- Add contrast ratio calculator to build process
+- Create theme preview component for development
