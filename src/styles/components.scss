@@ -228,19 +228,25 @@
   }
 }
 
+// IMPORTANT: High specificity selectors to override Carbon's default styles
+// Carbon's default styles don't adapt to custom theme tokens, so we need
+// to use more specific selectors to ensure our theme-aware colors are applied.
+// Without this specificity, Carbon's defaults win and cause dark-on-dark text in dark mode.
 .cds--progress-indicator {
   // All step labels must be readable in both themes
-  .cds--progress-label {
+  // Use multiple class selectors to increase specificity above Carbon's defaults
+  .cds--progress-step .cds--progress-label {
     color: var(--text-primary) !important;
   }
 
-  // Current step styling
+  // Current step styling - highest specificity for active state
   .cds--progress-step--current {
     .cds--progress-line {
       background-color: var(--interactive-primary);
     }
 
-    .cds--progress-label {
+    // Multi-class selector ensures we override Carbon's default color
+    .cds--progress-step-button .cds--progress-label {
       color: var(--interactive-primary) !important;
       font-weight: var(--font-weight-semibold);
     }
@@ -251,9 +257,9 @@
     }
   }
 
-  // Completed steps
+  // Completed steps - ensure checkmark and label are visible
   .cds--progress-step--complete {
-    .cds--progress-label {
+    .cds--progress-step-button .cds--progress-label {
       color: var(--text-primary) !important;
     }
 
@@ -262,9 +268,9 @@
     }
   }
 
-  // Incomplete/upcoming steps
+  // Incomplete/upcoming steps - subtle but still readable
   .cds--progress-step--incomplete {
-    .cds--progress-label {
+    .cds--progress-step-button .cds--progress-label {
       color: var(--text-secondary) !important;
     }
 
