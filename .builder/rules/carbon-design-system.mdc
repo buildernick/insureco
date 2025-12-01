@@ -21,7 +21,7 @@ Carbon is already installed and configured:
     "@carbon/react": "^1.83.0-rc.0"
   }
 }
-```
+
 
 Global Carbon styles are imported in `src/index.scss`.
 
@@ -76,6 +76,8 @@ Carbon provides a comprehensive set of components. Refer to `design-system-docs/
 
 ## Theme System
 
+**📘 For complete theming documentation, see `.builder/rules/theming-system.mdc`**
+
 ### Theme Switching
 Carbon supports multiple themes via the `data-carbon-theme` attribute:
 - **white** - Light theme (default)
@@ -94,7 +96,7 @@ import { useTheme } from './contexts/ThemeContext';
 
 function MyComponent() {
   const { theme, setTheme } = useTheme();
-  
+
   return (
     <button onClick={() => setTheme('g100')}>
       Switch to Dark
