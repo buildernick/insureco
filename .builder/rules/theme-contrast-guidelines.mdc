@@ -49,7 +49,7 @@ These tokens automatically provide proper contrast in both themes:
 --background-tertiary     // Tertiary surfaces
 --background-hover        // Hover state backgrounds
 --background-selected     // Selected state backgrounds
-```
+
 
 ### Contrast-Safe Tokens (When Backgrounds Are Known)
 
@@ -59,6 +59,41 @@ Use these when you need explicit control:
 --text-on-light-bg    // ALWAYS dark text (for white/light backgrounds)
 --text-on-dark-bg     // ALWAYS light text (for dark/colored backgrounds)
 ```
+
+## CSS Specificity for Carbon Component Overrides
+
+### ⚠️ Critical Rule
+
+**When overriding Carbon components, your CSS selector MUST have equal or higher specificity than Carbon's defaults.**
+
+**Why**: Carbon's default styles use deeply nested selectors (3+ classes) with hardcoded colors that don't adapt to custom themes. Without sufficient specificity, Carbon's defaults win → dark-on-dark text in dark mode.
+
+### Quick Reference
+
+| Specificity Level | Example | When to Use |
+|-------------------|---------|-------------|
+| ❌ Too Low (1-2 classes) | `.cds--progress-label` | Never for Carbon overrides |
+| ✅ Good (3 classes) | `.cds--progress-indicator .cds--progress-step .cds--progress-label` | Most Carbon overrides |
+| ✅ Better (4+ classes) | `.cds--progress-step--current .cds--progress-step-button .cds--progress-label` | Component states |
+
+### How to Check
+
+1. **Inspect element** in browser DevTools
+2. **Look at "Styles" panel** - your override should NOT be crossed out
+3. **If crossed out** → Carbon's style has higher specificity
+4. **Solution** → Add more class selectors to match/exceed Carbon's specificity
+
+### Template for Carbon Overrides
+
+```scss
+// IMPORTANT: High specificity needed to override Carbon's defaults
+// Carbon's [component] uses [X] classes, so we need [X or more] classes
+.cds--parent .cds--child .cds--element {
+  color: var(--text-primary) !important;  // !important is REQUIRED
+}
+```
+
+**See**: `.builder/rules/carbon-design-system.mdc` section "Overriding Carbon Component Styles" for complete guide.
 
 ## Common Scenarios
 
