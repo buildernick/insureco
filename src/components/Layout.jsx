@@ -32,7 +32,7 @@ export default function Layout({ children }) {
     <HeaderContainer
       render={({ isSideNavExpanded, onClickSideNavExpand }) => (
         <>
-          <Header aria-label="Carbon Dashboard">
+          <Header aria-label="InsureCo">
             <SkipToContent />
             <HeaderMenuButton
               aria-label={isSideNavExpanded ? "Close menu" : "Open menu"}
@@ -40,30 +40,22 @@ export default function Layout({ children }) {
               isActive={isSideNavExpanded}
               aria-expanded={isSideNavExpanded}
             />
-            <HeaderName href="#" prefix="InsureCo">
-
+            <HeaderName onClick={() => navigate("/")} prefix="InsureCo">
+              Insurance
             </HeaderName>
-            <HeaderNavigation aria-label="Carbon Dashboard">
+            <HeaderNavigation aria-label="InsureCo Navigation">
               <HeaderMenuItem onClick={() => navigate("/")}>
                 Home
+              </HeaderMenuItem>
+              <HeaderMenuItem onClick={() => navigate("/dashboard")}>
+                Dashboard
+              </HeaderMenuItem>
+              <HeaderMenuItem onClick={() => navigate("/signup")}>
+                Sign Up
               </HeaderMenuItem>
               <HeaderMenuItem onClick={() => navigate("/about")}>
                 About
               </HeaderMenuItem>
-              <HeaderMenu aria-label="More" menuLinkName="More">
-                <HeaderMenuItem
-                  href="https://carbondesignsystem.com/"
-                  target="_blank"
-                >
-                  Carbon Docs
-                </HeaderMenuItem>
-                <HeaderMenuItem
-                  href="https://github.com/carbon-design-system/carbon"
-                  target="_blank"
-                >
-                  GitHub
-                </HeaderMenuItem>
-              </HeaderMenu>
             </HeaderNavigation>
             <HeaderGlobalBar>
               <HeaderGlobalAction aria-label="Search">
@@ -91,21 +83,16 @@ export default function Layout({ children }) {
                   <HeaderMenuItem onClick={() => navigate("/")}>
                     Home
                   </HeaderMenuItem>
+                  <HeaderMenuItem onClick={() => navigate("/dashboard")}>
+                    Dashboard
+                  </HeaderMenuItem>
+                  <HeaderMenuItem onClick={() => navigate("/signup")}>
+                    Sign Up
+                  </HeaderMenuItem>
                   <HeaderMenuItem onClick={() => navigate("/about")}>
                     About
                   </HeaderMenuItem>
                 </HeaderSideNavItems>
-                <SideNavMenu title="Widgets">
-                  <SideNavMenuItem href="#">Data Table</SideNavMenuItem>
-                  <SideNavMenuItem href="#">Charts</SideNavMenuItem>
-                  <SideNavMenuItem href="#">Tabs</SideNavMenuItem>
-                </SideNavMenu>
-                <SideNavLink
-                  href="https://carbondesignsystem.com/"
-                  target="_blank"
-                >
-                  Carbon Docs
-                </SideNavLink>
               </SideNavItems>
             </SideNav>
           </Header>
