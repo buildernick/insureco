@@ -258,28 +258,58 @@ export default function SignUpPage() {
             <p className="signup-step-description">
               What type of insurance coverage do you need?
             </p>
-            <RadioButtonGroup
+            <TileGroup
+              className="signup-tile-group"
+              legend="Select your insurance coverage type"
               name="insuranceType"
-              orientation="vertical"
               valueSelected={formData.insuranceType}
               onChange={(value) => updateFormData('insuranceType', value)}
             >
-              <RadioButton
-                labelText="Car Insurance Only"
-                value="car"
+              <RadioTile
                 id="insurance-car"
-              />
-              <RadioButton
-                labelText="Home Insurance Only"
-                value="home"
+                value="car"
+                className="signup-radio-tile"
+              >
+                <div className="tile-content">
+                  <Car size={32} className="tile-icon" />
+                  <div className="tile-text">
+                    <h4>Car Insurance</h4>
+                    <p>Protect your vehicle with comprehensive coverage</p>
+                  </div>
+                </div>
+              </RadioTile>
+
+              <RadioTile
                 id="insurance-home"
-              />
-              <RadioButton
-                labelText="Both Car and Home Insurance"
-                value="both"
+                value="home"
+                className="signup-radio-tile"
+              >
+                <div className="tile-content">
+                  <HomeIcon size={32} className="tile-icon" />
+                  <div className="tile-text">
+                    <h4>Home Insurance</h4>
+                    <p>Secure your property and belongings</p>
+                  </div>
+                </div>
+              </RadioTile>
+
+              <RadioTile
                 id="insurance-both"
-              />
-            </RadioButtonGroup>
+                value="both"
+                className="signup-radio-tile"
+              >
+                <div className="tile-content">
+                  <div className="tile-icon-group">
+                    <Car size={24} />
+                    <HomeIcon size={24} />
+                  </div>
+                  <div className="tile-text">
+                    <h4>Both Car & Home</h4>
+                    <p>Bundle and save with combined coverage</p>
+                  </div>
+                </div>
+              </RadioTile>
+            </TileGroup>
           </Stack>
         );
 
