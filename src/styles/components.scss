@@ -46,14 +46,46 @@
 .cds--text-area,
 .cds--select-input,
 .cds--number__input-wrapper input {
-  background-color: var(--background-primary);
-  color: var(--text-primary);
+  background-color: var(--background-primary) !important;
+  color: var(--text-primary) !important;
   border-bottom-color: var(--border-strong);
-  
+
   &:focus {
     outline-color: var(--interactive-primary);
     border-bottom-color: var(--interactive-primary);
+    background-color: var(--background-primary) !important;
   }
+
+  // Ensure text remains visible in all states
+  &:disabled {
+    background-color: var(--background-secondary) !important;
+    color: var(--text-tertiary) !important;
+  }
+
+  // Handle autofill states (browser autofill)
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px var(--background-primary) inset !important;
+    -webkit-text-fill-color: var(--text-primary) !important;
+    border-bottom-color: var(--border-strong);
+  }
+
+  // Firefox autofill
+  &:-moz-autofill,
+  &:-moz-autofill-preview {
+    background-color: var(--background-primary) !important;
+    color: var(--text-primary) !important;
+  }
+}
+
+// Placeholder text styling
+.cds--text-input::placeholder,
+.cds--text-area::placeholder,
+.cds--select-input::placeholder {
+  color: var(--text-tertiary);
+  opacity: 0.6;
 }
 
 .cds--label {
