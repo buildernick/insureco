@@ -76,33 +76,3 @@ h6 {
   line-height: var(--heading-h6-line-height);
   color: var(--text-primary);
 }
-
-/* ============================================
-   CRITICAL: Progress Indicator Dark Mode Fix
-   ============================================
-   These styles MUST come after @use imports to ensure proper cascade.
-   High specificity is required to override Carbon's default hardcoded colors.
-   Without these overrides, progress labels show dark-on-dark in dark mode.
-*/
-.cds--progress-indicator {
-  /* Base label styling - ALL states */
-  .cds--progress-step .cds--progress-label {
-    color: var(--text-primary) !important;
-  }
-
-  /* Current step - uses brand color */
-  .cds--progress-step--current .cds--progress-step-button .cds--progress-label {
-    color: var(--interactive-primary) !important;
-    font-weight: 600;
-  }
-
-  /* Complete step - readable in both themes */
-  .cds--progress-step--complete .cds--progress-step-button .cds--progress-label {
-    color: var(--text-primary) !important;
-  }
-
-  /* Incomplete step - subtle but still readable */
-  .cds--progress-step--incomplete .cds--progress-step-button .cds--progress-label {
-    color: var(--text-secondary) !important;
-  }
-}
