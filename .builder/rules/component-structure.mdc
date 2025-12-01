@@ -16,7 +16,9 @@ The application uses a clear separation of concerns:
 src/
 ├── components/          # Reusable UI components
 │   ├── Layout.jsx      # Main app layout with header/sidebar
-│   └── ThemeToggle.jsx # Theme switching component
+│   ├── ThemeToggle.jsx # Theme switching component
+│   ├── StepBreadcrumb.jsx  # Custom step/progress indicator
+│   └── StepBreadcrumb.scss # StepBreadcrumb styles
 ├── pages/              # Page-level components
 │   ├── DashboardHome.jsx  # Dashboard main page
 │   └── AboutPage.jsx      # About page
@@ -26,7 +28,7 @@ src/
     ├── tokens/         # Design tokens (SCSS)
     ├── components.scss # Component-specific styles
     └── index.scss      # Global styles entry point
-```
+
 
 ## Technology Stack
 
@@ -62,6 +64,15 @@ Always prefer Carbon Design System components over building custom UI:
 - Form inputs → `<TextInput>`, `<Dropdown>`, etc.
 - Data tables → `<DataTable>` and related components
 - Layout → `<Grid>`, `<Column>`, etc.
+
+**Exception**: Some Carbon components are banned due to theming issues. See `.builder/rules/banned-components.mdc` for the list.
+
+### Custom Components
+When Carbon components don't meet requirements or have theming issues:
+- **StepBreadcrumb** (`src/components/StepBreadcrumb.jsx`) - Custom step indicator
+  - Replaces Carbon's `ProgressIndicator` (which is banned)
+  - Fully theme-aware, works in light and dark modes
+  - See `.builder/rules/banned-components.mdc` for usage
 
 ### When to Use Custom Tokens
 Use InsureCo design tokens for:
