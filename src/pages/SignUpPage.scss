@@ -329,15 +329,18 @@
   margin: 0 0 var(--spacing-03) 0;
   padding-bottom: var(--spacing-02);
   border-bottom: 1px solid var(--interactive-primary);
-  display: inline-block;
+  display: block; // Changed from inline-block to ensure proper wrapping
   max-width: 100%;
   overflow-wrap: break-word;
   word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
 
   @media (min-width: 480px) {
     font-size: var(--heading-h4-size);
     padding-bottom: var(--spacing-03);
     margin-bottom: var(--spacing-04);
+    display: inline-block; // Can use inline-block on larger screens
   }
 
   @media (min-width: 672px) {
@@ -357,6 +360,10 @@
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
+  hyphens: auto;
+  white-space: normal;
+  display: block;
+  width: 100%;
 
   @media (min-width: 672px) {
     font-size: var(--body-md-size);
