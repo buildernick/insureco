@@ -1,0 +1,226 @@
+@use '../styles/tokens' as *;
+
+.confirmation-page {
+  min-height: 100vh;
+  padding: var(--spacing-07);
+  background: var(--background-primary);
+
+  @media (min-width: 672px) {
+    padding: var(--spacing-09);
+  }
+}
+
+.confirmation-container {
+  margin-top: var(--spacing-07);
+
+  @media (min-width: 672px) {
+    margin-top: var(--spacing-09);
+  }
+}
+
+.confirmation-card {
+  padding: var(--spacing-07);
+  background: var(--background-secondary);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    0 4px 16px rgba(0, 0, 0, 0.05);
+  text-align: center;
+
+  @media (min-width: 672px) {
+    padding: var(--spacing-09);
+  }
+}
+
+.confirmation-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--spacing-06);
+}
+
+.confirmation-icon-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  background: var(--interactive-primary);
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(218, 30, 40, 0.25);
+  animation: scaleIn 0.4s ease-out;
+
+  svg {
+    fill: var(--text-on-color);
+  }
+
+  @media (min-width: 672px) {
+    width: 120px;
+    height: 120px;
+
+    svg {
+      width: 64px;
+      height: 64px;
+    }
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.confirmation-content {
+  align-items: center;
+  text-align: center;
+}
+
+.confirmation-header {
+  margin-bottom: var(--spacing-05);
+}
+
+.confirmation-title {
+  font-size: var(--heading-h3-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-03) 0;
+
+  @media (min-width: 672px) {
+    font-size: var(--heading-h2-size);
+  }
+}
+
+.confirmation-subtitle {
+  font-size: var(--body-lg-size);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-secondary);
+  margin: 0;
+
+  @media (min-width: 672px) {
+    font-size: var(--heading-h5-size);
+  }
+}
+
+.confirmation-number-card {
+  padding: var(--spacing-06);
+  background: var(--background-primary);
+  border: 2px solid var(--interactive-primary);
+  border-radius: var(--radius-md);
+  max-width: 500px;
+  margin: 0 auto;
+
+  @media (min-width: 672px) {
+    padding: var(--spacing-07);
+  }
+}
+
+.confirmation-number-label {
+  font-size: var(--body-sm-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 var(--spacing-03) 0;
+
+  @media (min-width: 672px) {
+    font-size: var(--body-md-size);
+  }
+}
+
+.confirmation-number {
+  font-size: 28px;
+  font-weight: var(--font-weight-bold);
+  font-family: var(--font-family-mono);
+  color: var(--interactive-primary);
+  letter-spacing: 2px;
+  margin: 0 0 var(--spacing-03) 0;
+
+  @media (min-width: 672px) {
+    font-size: 36px;
+    letter-spacing: 3px;
+  }
+}
+
+.confirmation-number-note {
+  font-size: var(--body-sm-size);
+  color: var(--text-tertiary);
+  font-style: italic;
+  margin: 0;
+}
+
+.confirmation-message {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.confirmation-text {
+  font-size: var(--body-md-size);
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin: 0 0 var(--spacing-04) 0;
+
+  strong {
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+  }
+
+  @media (min-width: 672px) {
+    font-size: var(--body-lg-size);
+  }
+}
+
+.confirmation-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--spacing-04) 0 0 0;
+
+  li {
+    position: relative;
+    padding-left: var(--spacing-06);
+    font-size: var(--body-md-size);
+    color: var(--text-primary);
+    line-height: 1.6;
+    margin-bottom: var(--spacing-03);
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 8px;
+      height: 8px;
+      background: var(--interactive-primary);
+      border-radius: 50%;
+    }
+
+    @media (min-width: 672px) {
+      font-size: var(--body-lg-size);
+
+      &::before {
+        top: 10px;
+      }
+    }
+  }
+}
+
+.confirmation-actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-04);
+  margin-top: var(--spacing-06);
+
+  button {
+    min-width: 180px;
+
+    @media (max-width: 480px) {
+      width: 100%;
+      max-width: none;
+    }
+  }
+}

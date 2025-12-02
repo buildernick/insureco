@@ -121,9 +121,20 @@ export default function SignUpPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Generate confirmation number
+    const timestamp = Date.now();
+    const random = Math.floor(Math.random() * 10000);
+    const confirmationNumber = `IC-${timestamp.toString().slice(-6)}-${random.toString().padStart(4, '0')}`;
+
     // Mock submission - in real app would send to backend
     console.log('Form submitted:', formData);
-    navigate('/dashboard');
+    console.log('Confirmation Number:', confirmationNumber);
+
+    // Navigate to confirmation page with confirmation number
+    navigate('/signup/confirmation', {
+      state: { confirmationNumber }
+    });
   };
 
   const isStepValid = () => {
