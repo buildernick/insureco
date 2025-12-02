@@ -78,6 +78,26 @@
   // Carbon ProgressIndicator overrides for exact Figma match
   .cds--progress-indicator {
     gap: 0;
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+
+    // Hide scrollbar but keep functionality
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-subtle) transparent;
+
+    &::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--border-subtle);
+      border-radius: 2px;
+    }
   }
 
   // Target the actual progress line element instead of using border-top
@@ -94,13 +114,26 @@
     background-color: #0f62fe !important;
   }
 
+  // Make labels appear below icons
+  .cds--progress-step-button {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: var(--spacing-03) !important;
+  }
+
+  // Icon and label layout
+  .cds--progress-step-button-icon {
+    margin: 0 !important;
+  }
+
   // Current step styling
   .cds--progress-step--current {
     .cds--progress-label {
       color: var(--text-primary) !important;
       font-family: var(--font-family-sans);
       font-size: var(--body-sm-size);
-      font-weight: var(--font-weight-regular);
+      font-weight: var(--font-weight-semibold);
       line-height: 1.29;
       letter-spacing: 0.16px;
     }
@@ -130,6 +163,7 @@
   .cds--progress-step--complete {
     .cds--progress-label {
       color: var(--text-primary) !important;
+      font-weight: var(--font-weight-semibold);
     }
 
     svg {
@@ -137,22 +171,37 @@
     }
   }
 
-  // Optional label (description) styling
+  // Optional label (description) styling - hide on mobile
   .cds--progress-optional {
     color: var(--text-secondary) !important;
     font-family: var(--font-family-sans);
-    font-size: 12px;
+    font-size: 10px;
     font-weight: var(--font-weight-regular);
-    line-height: 1.33;
-    letter-spacing: 0.32px;
-    padding-left: 24px;
+    line-height: 1.2;
+    letter-spacing: 0.16px;
+    padding-left: 0 !important;
+    margin-top: var(--spacing-02);
+
+    @media (max-width: 671px) {
+      display: none; // Hide description on mobile to save space
+    }
   }
 
   // Ensure consistent spacing between steps
   .cds--progress-step {
     flex: 1 0 0;
-    min-width: 128px;
-    padding: 10px 16px 0 0;
+    min-width: 90px; // Reduced for mobile
+    padding: 10px 8px 0 8px; // Reduced horizontal padding
+
+    @media (min-width: 672px) {
+      min-width: 120px;
+      padding: 10px 12px 0 12px;
+    }
+
+    @media (min-width: 1056px) {
+      min-width: 140px;
+      padding: 10px 16px 0 16px;
+    }
   }
 }
 
