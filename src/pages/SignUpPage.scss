@@ -679,9 +679,21 @@
 
   // Specifically target the step content stack
   .signup-step-content.cds--stack {
-    max-width: 100%;
-    width: 100%;
+    max-width: 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
     overflow: visible;
+  }
+
+  // DatePicker specific overrides for narrow screens
+  .cds--date-picker,
+  .cds--date-picker-container,
+  .cds--date-picker-input__wrapper,
+  .cds--date-picker__input {
+    max-width: 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
   }
 
   .cds--label {
