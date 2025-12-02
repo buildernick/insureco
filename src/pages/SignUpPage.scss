@@ -570,9 +570,11 @@
   // Make form inputs easier to tap on mobile
   .cds--text-input,
   .cds--select-input,
-  .cds--number input {
+  .cds--number input,
+  .cds--date-picker__input {
     max-width: 100% !important;
     width: 100% !important;
+    min-width: 0 !important; // Critical: allows inputs to shrink on narrow screens
     box-sizing: border-box !important;
 
     @media (max-width: 671px) {
