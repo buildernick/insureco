@@ -641,9 +641,22 @@
   .cds--number__input-wrapper,
   .cds--date-picker__input,
   .cds--date-picker-container {
-    max-width: 100%;
-    width: 100%;
-    box-sizing: border-box;
+    max-width: 100% !important;
+    width: 100% !important;
+    min-width: 0 !important; // Critical: allows inputs to shrink below default min-width
+    box-sizing: border-box !important;
+  }
+
+  // Extra specificity for nested field wrappers
+  .cds--text-input-wrapper .cds--text-input__field-wrapper {
+    max-width: 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  // Ensure form-item containers don't have min-width
+  .cds--form-item {
+    min-width: 0 !important;
   }
 
   // Carbon Stack component width constraint
