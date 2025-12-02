@@ -55,11 +55,15 @@
 }
 
 .signup-title {
-  font-size: var(--heading-h3-size);
+  font-size: var(--heading-h4-size);
   font-weight: var(--font-weight-regular);
   line-height: 1.2;
   color: var(--text-on-color);
   margin-bottom: var(--spacing-03);
+
+  @media (min-width: 480px) {
+    font-size: var(--heading-h3-size);
+  }
 
   @media (min-width: 672px) {
     font-size: var(--heading-h2-size);
@@ -68,13 +72,17 @@
 }
 
 .signup-subtitle {
-  font-size: var(--body-md-size);
+  font-size: var(--body-sm-size);
   font-weight: var(--font-weight-regular);
   line-height: 1.5;
   color: var(--text-on-color);
   opacity: 0.95;
   max-width: 600px;
   margin: 0 auto;
+
+  @media (min-width: 480px) {
+    font-size: var(--body-md-size);
+  }
 
   @media (min-width: 672px) {
     font-size: var(--body-lg-size);
@@ -281,14 +289,20 @@
 }
 
 .signup-step-heading {
-  font-size: var(--heading-h4-size);
+  font-size: var(--heading-h5-size);
   font-weight: var(--font-weight-regular);
   line-height: 1.2;
   color: var(--text-primary);
-  margin: 0 0 var(--spacing-04) 0;
-  padding-bottom: var(--spacing-03);
+  margin: 0 0 var(--spacing-03) 0;
+  padding-bottom: var(--spacing-02);
   border-bottom: 1px solid var(--interactive-primary);
   display: inline-block;
+
+  @media (min-width: 480px) {
+    font-size: var(--heading-h4-size);
+    padding-bottom: var(--spacing-03);
+    margin-bottom: var(--spacing-04);
+  }
 
   @media (min-width: 672px) {
     font-size: var(--heading-h3-size);
