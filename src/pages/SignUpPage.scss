@@ -3,11 +3,7 @@
 .signup-page {
   min-height: 100vh;
   padding: var(--spacing-05);
-  background: linear-gradient(
-    135deg,
-    var(--background-primary) 0%,
-    var(--background-secondary) 100%
-  );
+  background: linear-gradient(135deg, #f4f4f4 70.71%, #fff 0%);
 
   // Mobile-first: More padding on larger screens
   @media (min-width: 672px) {
@@ -28,13 +24,9 @@
   text-align: center;
   margin-bottom: var(--spacing-07);
   padding: var(--spacing-07) var(--spacing-05);
-  background: linear-gradient(
-    135deg,
-    var(--color-brand-red-60) 0%,
-    var(--color-brand-red-70) 100%
-  );
+  background: linear-gradient(135deg, #a2191f 70.71%, #da1e28 0%);
   border-radius: var(--radius-lg);
-  box-shadow: 0 4px 12px rgba(218, 30, 40, 0.15);
+  box-shadow: 0 4px 12px 0 rgba(218, 30, 40, 0.15);
 
   @media (min-width: 672px) {
     margin-bottom: var(--spacing-09);
