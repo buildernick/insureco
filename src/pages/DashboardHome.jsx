@@ -20,7 +20,7 @@ import {
 import {
   DocumentBlank,
   Wallet,
-  ClipboardCheck,
+  Task,
   ArrowRight,
   CheckmarkFilled,
   ErrorFilled,
@@ -147,7 +147,7 @@ export default function DashboardHome() {
 
           <ClickableTile className="action-tile">
             <div className="action-icon">
-              <ClipboardCheck size={32} />
+              <Task size={32} />
             </div>
             <div className="action-content">
               <h4>File a Claim</h4>
@@ -189,7 +189,7 @@ export default function DashboardHome() {
         <Tile className="stat-tile">
           <div className="stat-content">
             <div className="stat-icon-wrapper stat-icon-warning">
-              <ClipboardCheck size={24} />
+              <Task size={24} />
             </div>
             <div className="stat-details">
               <p className="stat-label">Open Claims</p>
