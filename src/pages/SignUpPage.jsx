@@ -324,12 +324,12 @@ export default function SignUpPage() {
           <Stack gap={6}>
             <Heading className="signup-step-heading">Car Details</Heading>
             <p className="signup-step-description">
-              Tell us about the vehicle you want to insure.
+              Tell us about your car
             </p>
             <TextInput
               id="carMake"
               labelText="Make"
-              placeholder="e.g., Toyota, Honda, Ford"
+              placeholder="e.g. Toyota, Ford"
               value={formData.carMake}
               onChange={(e) => updateFormData('carMake', e.target.value)}
               required
@@ -337,7 +337,7 @@ export default function SignUpPage() {
             <TextInput
               id="carModel"
               labelText="Model"
-              placeholder="e.g., Camry, Civic, F-150"
+              placeholder="e.g. Corolla, Bronco"
               value={formData.carModel}
               onChange={(e) => updateFormData('carModel', e.target.value)}
               required
@@ -349,15 +349,16 @@ export default function SignUpPage() {
               onChange={(e) => updateFormData('carYear', e.target.value)}
               required
             >
-              <SelectItem value="" text="Select year" />
+              <SelectItem value="" text="" />
               {Array.from({ length: 2025 - 1960 + 1 }, (_, i) => 2025 - i).map(year => (
                 <SelectItem key={year} value={year.toString()} text={year.toString()} />
               ))}
             </Select>
             <TextInput
               id="carVin"
-              labelText="VIN (Optional)"
-              placeholder="Vehicle Identification Number"
+              labelText="VIN (optional)"
+              placeholder=""
+              helperText="17 digits"
               value={formData.carVin}
               onChange={(e) => updateFormData('carVin', e.target.value)}
             />
@@ -367,9 +368,9 @@ export default function SignUpPage() {
       case 'home':
         return (
           <Stack gap={6}>
-            <Heading className="signup-step-heading">Home Details</Heading>
+            <Heading className="signup-step-heading">Car Details</Heading>
             <p className="signup-step-description">
-              Tell us about the home you want to insure.
+              Tell us about your car
             </p>
             <Select
               id="homeType"
@@ -378,22 +379,25 @@ export default function SignUpPage() {
               onChange={(e) => updateFormData('homeType', e.target.value)}
               required
             >
-              <SelectItem value="" text="Select home type" />
+              <SelectItem value="" text="" />
               <SelectItem value="single-family" text="Single Family Home" />
               <SelectItem value="condo" text="Condominium" />
               <SelectItem value="townhouse" text="Townhouse" />
               <SelectItem value="apartment" text="Apartment" />
               <SelectItem value="mobile" text="Mobile Home" />
             </Select>
-            <NumberInput
+            <Select
               id="homeYear"
-              label="Year Built"
-              min={1800}
-              max={new Date().getFullYear()}
+              labelText="Year Built"
               value={formData.homeYear}
-              onChange={(e, { value }) => updateFormData('homeYear', value ?? '')}
+              onChange={(e) => updateFormData('homeYear', e.target.value)}
               required
-            />
+            >
+              <SelectItem value="" text="" />
+              {Array.from({ length: 2025 - 1800 + 1 }, (_, i) => 2025 - i).map(year => (
+                <SelectItem key={year} value={year.toString()} text={year.toString()} />
+              ))}
+            </Select>
             <NumberInput
               id="homeSquareFeet"
               label="Square Feet"
@@ -401,16 +405,18 @@ export default function SignUpPage() {
               max={50000}
               value={formData.homeSquareFeet}
               onChange={(e, { value }) => updateFormData('homeSquareFeet', value ?? '')}
+              helperText="We'll confirm this more accurately later"
               required
             />
             <NumberInput
               id="homeValue"
-              label="Estimated Home Value ($)"
+              label="Estimated Home Value"
               min={10000}
               max={10000000}
               step={1000}
               value={formData.homeValue}
               onChange={(e, { value }) => updateFormData('homeValue', value ?? '')}
+              helperText="We'll confirm this more accurately later"
             />
           </Stack>
         );
