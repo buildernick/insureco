@@ -9,6 +9,24 @@ alwaysApply: false
 
 # InsureCo Design Tokens
 
+## 📖 Visual Reference: ThemePreviewPage
+
+**The ThemePreviewPage (`src/pages/ThemePreviewPage.jsx`) is the single source of truth for all design tokens and global CSS settings.**
+
+Visit `/theme-preview` to see:
+- All color tokens in both light and dark modes
+- Typography scale and font sizes
+- Button styles (primary, secondary, tertiary, ghost)
+- Form fields and inputs
+- Component examples with proper theming
+- Contrast examples demonstrating correct token usage
+
+**ALWAYS reference ThemePreviewPage when:**
+- Adding new components to ensure consistency
+- Choosing which tokens to use
+- Verifying theme compatibility
+- Debugging styling issues
+
 ## ⚠️ CRITICAL: Contrast Requirements
 
 **When using color tokens, ALWAYS ensure proper contrast**. Read `.builder/rules/theme-contrast-guidelines.mdc` for:
@@ -178,7 +196,7 @@ Pre-defined spacing for common use cases:
   padding: var(--card-padding); // 16px
   gap: var(--gap-md); // 16px
 }
-```
+
 
 ## Sizing Tokens
 
