@@ -3,7 +3,7 @@
 .signup-page {
   min-height: 100vh;
   padding: var(--spacing-05);
-  background: linear-gradient(135deg, #f4f4f4 70.71%, #fff 0%);
+  background: var(--background-primary);
 
   // Mobile-first: More padding on larger screens
   @media (min-width: 672px) {
@@ -65,7 +65,7 @@
   margin-bottom: var(--spacing-08);
   padding: 0 var(--spacing-05) var(--spacing-05) var(--spacing-05);
   border-radius: var(--radius-sm);
-  background: #f4f4f4;
+  background: var(--background-secondary);
   box-shadow:
     0 1px 2px 0 rgba(0, 0, 0, 0.1),
     0 1px 3px 0 rgba(0, 0, 0, 0.1);
@@ -85,7 +85,7 @@
     border-top: 2px solid #0f62fe !important;
 
     .cds--progress-label {
-      color: #161616 !important;
+      color: var(--text-primary) !important;
       font-family: var(--font-family-sans);
       font-size: var(--body-sm-size);
       font-weight: var(--font-weight-regular);
@@ -100,10 +100,10 @@
 
   // Incomplete step styling (grey border)
   .cds--progress-step--incomplete {
-    border-top: 2px solid #e0e0e0 !important;
+    border-top: 2px solid var(--border-subtle) !important;
 
     .cds--progress-label {
-      color: #161616 !important;
+      color: var(--text-primary) !important;
       font-family: var(--font-family-sans);
       font-size: var(--body-sm-size);
       font-weight: var(--font-weight-regular);
@@ -112,7 +112,7 @@
     }
 
     svg {
-      fill: #161616;
+      fill: var(--text-primary);
     }
   }
 
@@ -121,7 +121,7 @@
     border-top: 2px solid #0f62fe !important;
 
     .cds--progress-label {
-      color: #161616 !important;
+      color: var(--text-primary) !important;
     }
 
     svg {
@@ -131,7 +131,7 @@
 
   // Optional label (description) styling
   .cds--progress-optional {
-    color: #525252 !important;
+    color: var(--text-secondary) !important;
     font-family: var(--font-family-sans);
     font-size: 12px;
     font-weight: var(--font-weight-regular);
@@ -149,7 +149,7 @@
 }
 
 .signup-form {
-  background: #f4f4f4;
+  background: var(--background-secondary);
   border-radius: var(--radius-lg);
   border-top: 5px solid #fb0c0c;
   padding: var(--spacing-06);
@@ -180,7 +180,7 @@
   font-size: var(--heading-h4-size);
   font-weight: var(--font-weight-regular);
   line-height: 1.2;
-  color: #000;
+  color: var(--text-primary);
   margin: 0 0 var(--spacing-04) 0;
   padding-bottom: var(--spacing-03);
   border-bottom: 1px solid #fc0404;
@@ -197,7 +197,7 @@
   font-size: var(--body-sm-size);
   font-weight: var(--font-weight-regular);
   line-height: 1.5;
-  color: #000;
+  color: var(--text-primary);
   margin: 0;
 
   @media (min-width: 672px) {
