@@ -58,6 +58,26 @@ src/
 
 ## Styling Approach
 
+### ⚠️ CRITICAL: Always Use Global CSS Settings
+
+**NEVER create page-specific style overrides that conflict with global settings.**
+
+All styling should use the global design tokens and CSS variables defined in `src/styles/tokens/`. The **ThemePreviewPage** (`src/pages/ThemePreviewPage.jsx`) serves as the **single source of truth** for:
+- Color usage (text, backgrounds, interactive elements)
+- Typography (headings, body text, font sizes)
+- Spacing and sizing (padding, margins, gaps)
+- Component styling (buttons, form fields, tiles)
+
+**Rules:**
+1. ✅ **DO**: Use global CSS variables (e.g., `var(--interactive-primary)`, `var(--text-primary)`)
+2. ✅ **DO**: Reference ThemePreviewPage for examples of proper token usage
+3. ✅ **DO**: Ensure all components work in BOTH light and dark themes
+4. ❌ **DON'T**: Add page-specific overrides (e.g., custom button gradients in `SignUpPage.scss`)
+5. ❌ **DON'T**: Hardcode colors like `#da1e28` or `#ffffff` - always use tokens
+6. ❌ **DON'T**: Create custom styling that only works in one theme
+
+**See `src/pages/ThemePreviewPage.jsx`** for visual examples of all components and tokens in action. Test all new components against ThemePreviewPage to ensure consistency.
+
 ### Use Carbon Components First
 Always prefer Carbon Design System components over building custom UI:
 - Buttons → `<Button>` from `@carbon/react`
@@ -82,7 +102,7 @@ Use InsureCo design tokens for:
 - Overriding Carbon component styles when necessary
 
 ### SCSS Import Pattern
-```jsx
+
 import './MyComponent.scss';
 ```
 
@@ -93,6 +113,13 @@ In SCSS:
 .my-component {
   padding: var(--spacing-05);
   background: var(--background-primary);
+  color: var(--text-primary); // Theme-aware
+
+  button {
+    // Use global button styles - NO custom gradients or overrides
+    background: var(--interactive-primary);
+    color: var(--text-on-color);
+  }
 }
 ```
 
