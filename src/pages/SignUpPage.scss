@@ -2,10 +2,15 @@
 
 .signup-page {
   min-height: 100vh;
-  padding: var(--spacing-05);
+  padding: var(--spacing-03);
   background: var(--background-primary);
+  overflow-x: hidden; // Prevent horizontal scroll
 
   // Mobile-first: More padding on larger screens
+  @media (min-width: 480px) {
+    padding: var(--spacing-05);
+  }
+
   @media (min-width: 672px) {
     padding: var(--spacing-07);
   }
@@ -22,11 +27,15 @@
 
 .signup-header {
   text-align: center;
-  margin-bottom: var(--spacing-07);
-  padding: var(--spacing-07) var(--spacing-05);
+  margin-bottom: var(--spacing-05);
+  padding: var(--spacing-05) var(--spacing-04);
   background: linear-gradient(135deg, #a2191f 70.71%, #da1e28 0%);
   border-radius: var(--radius-lg);
   box-shadow: 0 4px 12px 0 rgba(218, 30, 40, 0.15);
+
+  @media (min-width: 480px) {
+    padding: var(--spacing-06) var(--spacing-05);
+  }
 
   @media (min-width: 672px) {
     margin-bottom: var(--spacing-09);
@@ -62,13 +71,19 @@
 }
 
 .signup-progress {
-  margin-bottom: var(--spacing-08);
-  padding: 0 var(--spacing-05) var(--spacing-05) var(--spacing-05);
+  margin-bottom: var(--spacing-06);
+  padding: 0 var(--spacing-03) var(--spacing-04) var(--spacing-03);
   border-radius: var(--radius-sm);
   background: var(--background-secondary);
   box-shadow:
     0 1px 2px 0 rgba(0, 0, 0, 0.1),
     0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  overflow-x: auto; // Allow horizontal scroll for progress bar
+  -webkit-overflow-scrolling: touch;
+
+  @media (min-width: 480px) {
+    padding: 0 var(--spacing-04) var(--spacing-04) var(--spacing-04);
+  }
 
   @media (min-width: 672px) {
     padding: 0 var(--spacing-06) var(--spacing-05) var(--spacing-06);
@@ -190,8 +205,13 @@
   // Ensure consistent spacing between steps
   .cds--progress-step {
     flex: 1 0 0;
-    min-width: 90px; // Reduced for mobile
-    padding: 10px 8px 0 8px; // Reduced horizontal padding
+    min-width: 75px; // Further reduced for very small screens
+    padding: 10px 4px 0 4px; // Minimal horizontal padding on mobile
+
+    @media (min-width: 480px) {
+      min-width: 90px;
+      padding: 10px 8px 0 8px;
+    }
 
     @media (min-width: 672px) {
       min-width: 120px;
@@ -209,12 +229,16 @@
   background: var(--background-secondary);
   border-radius: var(--radius-lg);
   border-top: 5px solid var(--color-brand-red-60);
-  padding: var(--spacing-06);
+  padding: var(--spacing-04);
   box-shadow:
     0 0 0 0 var(--border-subtle),
     0 1px 2px 0 rgba(0, 0, 0, 0.1),
     0 1px 3px 0 rgba(0, 0, 0, 0.1);
   position: relative;
+
+  @media (min-width: 480px) {
+    padding: var(--spacing-06);
+  }
 
   @media (min-width: 672px) {
     padding: var(--spacing-08);
