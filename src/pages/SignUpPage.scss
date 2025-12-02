@@ -32,8 +32,16 @@
 .signup-container {
   max-width: 1200px;
   margin: 0 auto;
-  width: 100%;
+  width: 100% !important;
   overflow-x: hidden;
+  box-sizing: border-box;
+
+  // Ensure columns don't overflow on ANY screen size
+  .cds--col,
+  .cds--css-grid-column {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
 
   // Override Carbon Grid gutters on very small screens
   @media (max-width: 479px) {
@@ -43,7 +51,6 @@
     .cds--col {
       padding-left: 0 !important;
       padding-right: 0 !important;
-      max-width: 100% !important;
     }
 
     // Ensure the grid itself doesn't overflow
