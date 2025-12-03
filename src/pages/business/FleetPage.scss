@@ -1,0 +1,192 @@
+@use '../../styles/tokens' as *;
+
+.fleet-page {
+  padding: var(--spacing-06) 0;
+
+  // Page Header
+  .page-header {
+    margin-bottom: var(--spacing-06);
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: var(--spacing-05);
+
+      @media (max-width: 672px) {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+
+    .header-text {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-04);
+      flex: 1;
+
+      .page-icon {
+        color: var(--interactive-primary);
+        flex-shrink: 0;
+        margin-top: var(--spacing-02);
+      }
+    }
+
+    .page-title {
+      font-size: var(--heading-h2-size);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+      margin: 0 0 var(--spacing-02) 0;
+    }
+
+    .page-subtitle {
+      font-size: var(--body-md-size);
+      color: var(--text-secondary);
+      margin: 0;
+    }
+  }
+
+  // Summary Stats
+  .summary-stat {
+    padding: var(--spacing-05);
+    height: 100%;
+
+    .summary-label {
+      font-size: var(--body-sm-size);
+      color: var(--text-secondary);
+      margin: 0 0 var(--spacing-03) 0;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .summary-value {
+      font-size: var(--heading-h3-size);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+      margin: 0 0 var(--spacing-02) 0;
+    }
+
+    .summary-detail {
+      font-size: var(--body-sm-size);
+      color: var(--text-tertiary);
+      margin: 0;
+    }
+  }
+
+  // Filters Section
+  .filters-tile {
+    padding: var(--spacing-05);
+    margin-bottom: var(--spacing-05);
+
+    .filters-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-05);
+      gap: var(--spacing-04);
+
+      @media (max-width: 672px) {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    .filters-title {
+      font-size: var(--heading-h4-size);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .filter-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-03);
+    }
+
+    .filters-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: var(--spacing-05);
+
+      @media (max-width: 1056px) {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      @media (max-width: 672px) {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+
+  // Data Table Section
+  .data-tile {
+    padding: var(--spacing-05);
+
+    .tile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-05);
+      padding-bottom: var(--spacing-04);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .tile-title {
+      font-size: var(--heading-h4-size);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+      margin: 0;
+    }
+  }
+
+  // Empty State
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-09) var(--spacing-05);
+    text-align: center;
+
+    svg {
+      color: var(--text-tertiary);
+      margin-bottom: var(--spacing-05);
+    }
+
+    h4 {
+      font-size: var(--heading-h4-size);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+      margin: 0 0 var(--spacing-03) 0;
+    }
+
+    p {
+      font-size: var(--body-md-size);
+      color: var(--text-secondary);
+      margin: 0 0 var(--spacing-05) 0;
+    }
+  }
+
+  // Responsive adjustments
+  @media (max-width: 672px) {
+    padding: var(--spacing-05) 0;
+
+    .page-header {
+      margin-bottom: var(--spacing-05);
+    }
+
+    .summary-stat {
+      padding: var(--spacing-04);
+
+      .summary-value {
+        font-size: var(--heading-h4-size);
+      }
+    }
+
+    .filters-tile,
+    .data-tile {
+      padding: var(--spacing-04);
+    }
+  }
+}

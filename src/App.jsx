@@ -11,6 +11,7 @@ import ThemePreviewPage from "./pages/ThemePreviewPage";
 import BusinessComingSoon from "./pages/business/BusinessComingSoon";
 import BusinessDashboard from "./pages/business/BusinessDashboard";
 import PropertiesPage from "./pages/business/PropertiesPage";
+import FleetPage from "./pages/business/FleetPage";
 
 export default function App() {
   return (
@@ -29,7 +30,8 @@ export default function App() {
         <Route path="/business/dashboard" element={<BusinessDashboard />} />
         <Route path="/business/properties" element={<PropertiesPage />} />
         <Route path="/business/properties/:propertyId" element={<BusinessComingSoon />} />
-        <Route path="/business/fleet" element={<BusinessComingSoon />} />
+        <Route path="/business/fleet" element={<FleetPage />} />
+        <Route path="/business/fleet/:vehicleId" element={<BusinessComingSoon />} />
         <Route path="/business/map" element={<BusinessComingSoon />} />
         <Route path="/business/claims" element={<BusinessComingSoon />} />
         <Route path="/business/payments" element={<BusinessComingSoon />} />
