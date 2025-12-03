@@ -18,7 +18,7 @@ import {
   SideNavMenu,
   SideNavMenuItem,
 } from "@carbon/react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import {
   Switcher as SwitcherIcon,
   Notification,
@@ -59,22 +59,22 @@ export default function Layout({ children }) {
 
               {/* Business Menu with Dropdown */}
               <HeaderMenu aria-label="Business" menuLinkName="Business">
-                <HeaderMenuItem href="/business/dashboard">
+                <HeaderMenuItem element={Link} to="/business/dashboard">
                   Overview
                 </HeaderMenuItem>
-                <HeaderMenuItem href="/business/properties">
+                <HeaderMenuItem element={Link} to="/business/properties">
                   Properties
                 </HeaderMenuItem>
-                <HeaderMenuItem href="/business/fleet">
+                <HeaderMenuItem element={Link} to="/business/fleet">
                   Fleet
                 </HeaderMenuItem>
-                <HeaderMenuItem href="/business/map">
+                <HeaderMenuItem element={Link} to="/business/map">
                   Map View
                 </HeaderMenuItem>
-                <HeaderMenuItem href="/business/claims">
+                <HeaderMenuItem element={Link} to="/business/claims">
                   Claims
                 </HeaderMenuItem>
-                <HeaderMenuItem href="/business/payments">
+                <HeaderMenuItem element={Link} to="/business/payments">
                   Payments
                 </HeaderMenuItem>
               </HeaderMenu>
@@ -121,22 +121,22 @@ export default function Layout({ children }) {
 
                   {/* Business Section in Sidebar with Submenu */}
                   <SideNavMenu title="Business">
-                    <SideNavMenuItem href="/business/dashboard">
+                    <SideNavMenuItem element={Link} to="/business/dashboard">
                       Overview
                     </SideNavMenuItem>
-                    <SideNavMenuItem href="/business/properties">
+                    <SideNavMenuItem element={Link} to="/business/properties">
                       Properties
                     </SideNavMenuItem>
-                    <SideNavMenuItem href="/business/fleet">
+                    <SideNavMenuItem element={Link} to="/business/fleet">
                       Fleet
                     </SideNavMenuItem>
-                    <SideNavMenuItem href="/business/map">
+                    <SideNavMenuItem element={Link} to="/business/map">
                       Map View
                     </SideNavMenuItem>
-                    <SideNavMenuItem href="/business/claims">
+                    <SideNavMenuItem element={Link} to="/business/claims">
                       Claims
                     </SideNavMenuItem>
-                    <SideNavMenuItem href="/business/payments">
+                    <SideNavMenuItem element={Link} to="/business/payments">
                       Payments
                     </SideNavMenuItem>
                   </SideNavMenu>
