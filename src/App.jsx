@@ -11,7 +11,11 @@ import ThemePreviewPage from "./pages/ThemePreviewPage";
 import BusinessComingSoon from "./pages/business/BusinessComingSoon";
 import BusinessDashboard from "./pages/business/BusinessDashboard";
 import PropertiesPage from "./pages/business/PropertiesPage";
+import PropertyDetailPage from "./pages/business/PropertyDetailPage";
 import FleetPage from "./pages/business/FleetPage";
+import VehicleDetailPage from "./pages/business/VehicleDetailPage";
+import FileClaimPage from "./pages/business/FileClaimPage";
+import MakePaymentPage from "./pages/business/MakePaymentPage";
 
 export default function App() {
   return (
@@ -29,14 +33,14 @@ export default function App() {
         <Route path="/business" element={<Navigate to="/business/dashboard" replace />} />
         <Route path="/business/dashboard" element={<BusinessDashboard />} />
         <Route path="/business/properties" element={<PropertiesPage />} />
-        <Route path="/business/properties/:propertyId" element={<BusinessComingSoon />} />
+        <Route path="/business/properties/:propertyId" element={<PropertyDetailPage />} />
         <Route path="/business/fleet" element={<FleetPage />} />
-        <Route path="/business/fleet/:vehicleId" element={<BusinessComingSoon />} />
+        <Route path="/business/fleet/:vehicleId" element={<VehicleDetailPage />} />
         <Route path="/business/map" element={<BusinessComingSoon />} />
         <Route path="/business/claims" element={<BusinessComingSoon />} />
         <Route path="/business/payments" element={<BusinessComingSoon />} />
-        <Route path="/business/file-claim" element={<BusinessComingSoon />} />
-        <Route path="/business/make-payment" element={<BusinessComingSoon />} />
+        <Route path="/business/file-claim" element={<FileClaimPage />} />
+        <Route path="/business/make-payment" element={<MakePaymentPage />} />
       </Routes>
     </Layout>
   );
