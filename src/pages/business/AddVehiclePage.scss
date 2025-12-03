@@ -6,7 +6,7 @@
   // Header Banner Section
   .header-banner-section {
     padding: 0;
-    margin-bottom: var(--spacing-06);
+    margin-bottom: var(--spacing-08);
   }
 
   .header-banner {
@@ -39,13 +39,13 @@
 
   // Progress Section
   .progress-section {
-    margin-bottom: var(--spacing-06);
+    margin-bottom: var(--spacing-08);
   }
 
   // Form Tile
   .form-tile {
     padding: var(--spacing-06) var(--spacing-05);
-    margin-bottom: var(--spacing-06);
+    margin-bottom: var(--spacing-08);
     border-top: 5px solid var(--interactive-primary);
 
     .step-content {
@@ -130,7 +130,7 @@
     justify-content: space-between;
     align-items: center;
     gap: var(--spacing-04);
-    padding: var(--spacing-06) 0 var(--spacing-05) 0;
+    padding: var(--spacing-07) 0 var(--spacing-05) 0;
     border-top: 1px solid var(--interactive-primary);
 
     .right-buttons {
