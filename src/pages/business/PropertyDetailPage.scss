@@ -5,12 +5,12 @@
 
   // Breadcrumb Section
   .breadcrumb-section {
-    margin-bottom: var(--spacing-05);
+    margin-bottom: var(--spacing-06);
   }
 
   // Page Header
   .page-header {
-    margin-bottom: var(--spacing-06);
+    margin-bottom: var(--spacing-08);
 
     .header-content {
       display: flex;
@@ -59,6 +59,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--spacing-04);
+    margin-bottom: var(--spacing-07);
 
     .stat-icon {
       color: var(--interactive-primary);
@@ -331,7 +332,7 @@
     display: flex;
     gap: var(--spacing-04);
     flex-wrap: wrap;
-    padding: var(--spacing-05) 0;
+    padding: var(--spacing-06) 0;
   }
 
   // Responsive
@@ -350,6 +351,7 @@
 
     .stat-card {
       padding: var(--spacing-04);
+      margin-bottom: var(--spacing-06);
 
       .stat-value {
         font-size: var(--heading-h4-size);

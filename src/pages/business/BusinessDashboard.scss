@@ -14,10 +14,10 @@
 
   // Header Section
   .dashboard-header {
-    margin-bottom: var(--spacing-06);
+    margin-bottom: var(--spacing-08);
 
     @media (min-width: 672px) {
-      margin-bottom: var(--spacing-07);
+      margin-bottom: var(--spacing-09);
     }
   }
 
@@ -46,7 +46,7 @@
   .quick-actions {
     display: grid;
     gap: var(--spacing-04);
-    margin-bottom: var(--spacing-06);
+    margin-bottom: var(--spacing-08);
     grid-template-columns: 1fr;
 
     @media (min-width: 672px) {
@@ -128,7 +128,7 @@
 
   // Stat Tiles - COMPACT VERSION
   .stat-tile {
-    margin-bottom: var(--spacing-05);
+    margin-bottom: var(--spacing-07);
     padding: var(--spacing-05);
     background: var(--background-secondary);
     border-radius: var(--radius-md);
@@ -207,7 +207,7 @@
 
   // Data Table Tiles
   .data-tile {
-    margin-bottom: var(--spacing-06);
+    margin-bottom: var(--spacing-08);
     padding: var(--spacing-06);
     background: var(--background-secondary);
     border-radius: var(--radius-md);
@@ -258,6 +258,7 @@
 
     .stat-tile {
       padding: var(--spacing-04);
+      margin-bottom: var(--spacing-06);
 
       .stat-icon-wrapper {
         width: 36px;

@@ -5,7 +5,7 @@
 
   // Page Header
   .page-header {
-    margin-bottom: var(--spacing-06);
+    margin-bottom: var(--spacing-08);
 
     .header-content {
       display: flex;
@@ -50,6 +50,7 @@
   .summary-stat {
     padding: var(--spacing-05);
     height: 100%;
+    margin-bottom: var(--spacing-07);
 
     .summary-label {
       font-size: var(--body-sm-size);
@@ -76,7 +77,7 @@
   // Filters Section
   .filters-tile {
     padding: var(--spacing-05);
-    margin-bottom: var(--spacing-05);
+    margin-bottom: var(--spacing-08);
 
     .filters-header {
       display: flex;
@@ -122,6 +123,7 @@
   // Data Table Section
   .data-tile {
     padding: var(--spacing-05);
+    margin-bottom: var(--spacing-07);
 
     .tile-header {
       display: flex;
@@ -173,20 +175,26 @@
     padding: var(--spacing-05) 0;
 
     .page-header {
-      margin-bottom: var(--spacing-05);
+      margin-bottom: var(--spacing-06);
     }
 
     .summary-stat {
       padding: var(--spacing-04);
+      margin-bottom: var(--spacing-06);
 
       .summary-value {
         font-size: var(--heading-h4-size);
       }
     }
 
-    .filters-tile,
+    .filters-tile {
+      padding: var(--spacing-04);
+      margin-bottom: var(--spacing-07);
+    }
+
     .data-tile {
       padding: var(--spacing-04);
+      margin-bottom: var(--spacing-06);
     }
   }
 }
