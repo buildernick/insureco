@@ -14,7 +14,7 @@
   .cds--header__menu-arrow {
     background-color: transparent !important;
   }
-  
+
   // Header name/brand
   .cds--header__name {
     color: var(--text-primary) !important;
@@ -37,7 +37,7 @@
       background-color: transparent !important;
     }
   }
-  
+
   // Navigation links
   .cds--header__menu-item {
     color: var(--text-primary) !important;
@@ -60,33 +60,80 @@
   .cds--header__menu-bar {
     background-color: transparent !important;
   }
-  
+
+  // Header menu (dropdown) styles
+  .cds--header__menu {
+    // Menu trigger button
+    .cds--header__menu-trigger {
+      color: var(--text-primary) !important;
+      background-color: transparent !important;
+
+      &:hover {
+        background-color: var(--background-hover) !important;
+        color: var(--interactive-primary) !important;
+      }
+
+      &[aria-expanded="true"] {
+        background-color: var(--background-hover) !important;
+      }
+
+      // Arrow icon
+      svg {
+        fill: var(--text-primary) !important;
+      }
+    }
+
+    // Dropdown menu panel
+    .cds--header__menu-title {
+      color: var(--text-primary) !important;
+      background-color: transparent !important;
+
+      &:hover {
+        color: var(--interactive-primary) !important;
+      }
+    }
+
+    // Ensure menu items in dropdown are styled
+    .cds--header__menu-item {
+      a,
+      button {
+        color: var(--text-primary) !important;
+        background-color: transparent !important;
+
+        &:hover {
+          background-color: var(--background-hover) !important;
+          color: var(--interactive-primary) !important;
+        }
+      }
+    }
+  }
+
   // Global action buttons (search, notifications, theme toggle, etc.)
   .cds--header__action {
     color: var(--text-primary);
     background-color: transparent;
-    
+
     &:hover {
       background-color: var(--background-hover);
     }
-    
+
     &:focus {
       border-color: var(--interactive-primary);
     }
-    
+
     svg {
       fill: var(--text-primary);
     }
   }
-  
+
   // Menu toggle button (hamburger)
   .cds--header__menu-toggle {
     color: var(--text-primary);
-    
+
     &:hover {
       background-color: var(--background-hover);
     }
-    
+
     svg {
       fill: var(--text-primary);
     }
@@ -97,21 +144,61 @@
 .cds--side-nav {
   background-color: var(--background-secondary) !important;
   border-right: 1px solid var(--border-subtle);
-  
+
   .cds--side-nav__link,
   .cds--side-nav__menu-item {
     color: var(--text-primary);
-    
+
     &:hover {
       background-color: var(--background-hover);
       color: var(--interactive-primary);
     }
   }
-  
+
   .cds--side-nav__link--current,
   .cds--side-nav__link[aria-current="page"] {
     background-color: var(--background-selected);
     color: var(--interactive-primary);
+  }
+
+  // Side nav menu (collapsible sections like Business)
+  .cds--side-nav__menu {
+    // Menu title button
+    .cds--side-nav__menu-item {
+      color: var(--text-primary);
+      background-color: transparent;
+
+      &:hover {
+        background-color: var(--background-hover);
+        color: var(--interactive-primary);
+      }
+
+      // Arrow icon
+      svg {
+        fill: var(--text-primary);
+      }
+    }
+
+    // Submenu items
+    .cds--side-nav__menu-item {
+      button,
+      a {
+        color: var(--text-primary);
+        background-color: transparent;
+
+        &:hover {
+          background-color: var(--background-hover);
+          color: var(--interactive-primary);
+        }
+      }
+    }
+  }
+
+  // Expanded state styling
+  .cds--side-nav__menu[aria-expanded="true"] {
+    .cds--side-nav__menu-item {
+      background-color: var(--background-tertiary);
+    }
   }
 }
 

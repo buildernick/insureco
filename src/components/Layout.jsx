@@ -33,6 +33,7 @@ export default function Layout({ children }) {
 
   // Remove padding for landing page
   const isLandingPage = location.pathname === '/';
+
   return (
     <HeaderContainer
       render={({ isSideNavExpanded, onClickSideNavExpand }) => (
@@ -55,6 +56,29 @@ export default function Layout({ children }) {
               <HeaderMenuItem onClick={() => navigate("/dashboard")}>
                 Dashboard
               </HeaderMenuItem>
+
+              {/* Business Menu with Dropdown */}
+              <HeaderMenu aria-label="Business" menuLinkName="Business">
+                <HeaderMenuItem onClick={() => navigate("/business/dashboard")}>
+                  Overview
+                </HeaderMenuItem>
+                <HeaderMenuItem onClick={() => navigate("/business/properties")}>
+                  Properties
+                </HeaderMenuItem>
+                <HeaderMenuItem onClick={() => navigate("/business/fleet")}>
+                  Fleet
+                </HeaderMenuItem>
+                <HeaderMenuItem onClick={() => navigate("/business/map")}>
+                  Map View
+                </HeaderMenuItem>
+                <HeaderMenuItem onClick={() => navigate("/business/claims")}>
+                  Claims
+                </HeaderMenuItem>
+                <HeaderMenuItem onClick={() => navigate("/business/payments")}>
+                  Payments
+                </HeaderMenuItem>
+              </HeaderMenu>
+
               <HeaderMenuItem onClick={() => navigate("/login")}>
                 Login
               </HeaderMenuItem>
@@ -94,6 +118,29 @@ export default function Layout({ children }) {
                   <HeaderMenuItem onClick={() => navigate("/dashboard")}>
                     Dashboard
                   </HeaderMenuItem>
+
+                  {/* Business Section in Sidebar with Submenu */}
+                  <SideNavMenu title="Business">
+                    <SideNavMenuItem onClick={() => navigate("/business/dashboard")}>
+                      Overview
+                    </SideNavMenuItem>
+                    <SideNavMenuItem onClick={() => navigate("/business/properties")}>
+                      Properties
+                    </SideNavMenuItem>
+                    <SideNavMenuItem onClick={() => navigate("/business/fleet")}>
+                      Fleet
+                    </SideNavMenuItem>
+                    <SideNavMenuItem onClick={() => navigate("/business/map")}>
+                      Map View
+                    </SideNavMenuItem>
+                    <SideNavMenuItem onClick={() => navigate("/business/claims")}>
+                      Claims
+                    </SideNavMenuItem>
+                    <SideNavMenuItem onClick={() => navigate("/business/payments")}>
+                      Payments
+                    </SideNavMenuItem>
+                  </SideNavMenu>
+
                   <HeaderMenuItem onClick={() => navigate("/login")}>
                     Login
                   </HeaderMenuItem>

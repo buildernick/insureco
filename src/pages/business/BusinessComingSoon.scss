@@ -1,0 +1,111 @@
+@use '../../styles/tokens' as *;
+
+.business-coming-soon {
+  min-height: calc(100vh - 3rem);
+  padding: var(--spacing-07) 0;
+  background: var(--background-primary);
+
+  .coming-soon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+  }
+
+  .coming-soon-tile {
+    max-width: 600px;
+    padding: var(--spacing-09);
+    text-align: center;
+    background: var(--background-secondary);
+    box-shadow: var(--card-shadow);
+  }
+
+  .coming-soon-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--spacing-06);
+
+    svg {
+      color: var(--interactive-primary);
+    }
+  }
+
+  .coming-soon-title {
+    margin-bottom: var(--spacing-05);
+    color: var(--text-primary);
+  }
+
+  .coming-soon-subtitle {
+    font-size: var(--heading-h3-size);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-05);
+  }
+
+  .coming-soon-description {
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-07);
+    line-height: 1.6;
+  }
+
+  .coming-soon-features {
+    text-align: left;
+    background: var(--background-tertiary);
+    padding: var(--spacing-05);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-07);
+
+    h4 {
+      color: var(--text-primary);
+      font-weight: var(--font-weight-semibold);
+      margin-bottom: var(--spacing-04);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        color: var(--text-secondary);
+        padding: var(--spacing-03) 0;
+        position: relative;
+        padding-left: var(--spacing-06);
+
+        &::before {
+          content: '✓';
+          position: absolute;
+          left: 0;
+          color: var(--interactive-primary);
+          font-weight: var(--font-weight-bold);
+        }
+      }
+    }
+  }
+
+  .coming-soon-actions {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-05);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 672px) {
+  .business-coming-soon {
+    padding: var(--spacing-05) 0;
+
+    .coming-soon-tile {
+      padding: var(--spacing-07);
+    }
+
+    .coming-soon-icon svg {
+      width: 48px;
+      height: 48px;
+    }
+
+    .coming-soon-subtitle {
+      font-size: var(--heading-h4-size);
+    }
+  }
+}
