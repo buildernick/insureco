@@ -51,11 +51,14 @@
     padding: var(--spacing-05);
     height: 100%;
     margin-bottom: var(--spacing-07);
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
 
     .summary-label {
       font-size: var(--body-sm-size);
       color: var(--text-secondary);
-      margin: 0 0 var(--spacing-03) 0;
+      margin: 0;
       text-transform: uppercase;
       letter-spacing: 0.02em;
     }
@@ -64,7 +67,7 @@
       font-size: var(--heading-h3-size);
       font-weight: var(--font-weight-semibold);
       color: var(--text-primary);
-      margin: 0 0 var(--spacing-02) 0;
+      margin: 0;
     }
 
     .summary-detail {
