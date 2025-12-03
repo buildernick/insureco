@@ -1,0 +1,34 @@
+@use '../../styles/tokens' as *;
+
+.property-table {
+  .clickable-row {
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background-color: var(--background-hover);
+    }
+  }
+
+  // Ensure table uses theme colors
+  .cds--data-table {
+    background: transparent;
+    color: var(--text-primary);
+  }
+
+  .cds--data-table th,
+  .cds--data-table td {
+    color: var(--text-primary);
+    border-bottom-color: var(--border-subtle);
+  }
+
+  .cds--data-table thead {
+    background: var(--background-tertiary);
+  }
+
+  // Status tag styling
+  .cds--tag {
+    min-width: 70px;
+    justify-content: center;
+  }
+}

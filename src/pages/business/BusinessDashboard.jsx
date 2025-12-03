@@ -5,6 +5,7 @@ import {
   Column,
   Tile,
   ClickableTile,
+  Button,
   Heading,
 } from '@carbon/react';
 import {
@@ -15,6 +16,8 @@ import {
   Wallet,
   ArrowRight,
 } from '@carbon/icons-react';
+import PropertyTable from '../../components/business/PropertyTable';
+import FleetTable from '../../components/business/FleetTable';
 import {
   mockProperties,
   mockVehicles,
@@ -27,7 +30,7 @@ import './BusinessDashboard.scss';
 
 /**
  * BusinessDashboard - Main business insurance dashboard
- * Shows portfolio overview with statistics and quick actions
+ * Shows portfolio overview with statistics, quick actions, and data tables
  */
 export default function BusinessDashboard() {
   const navigate = useNavigate();
@@ -57,11 +60,11 @@ export default function BusinessDashboard() {
             onClick={() => navigate('/business/properties')}
           >
             <div className="action-icon">
-              <Building size={32} />
+              <Building size={24} />
             </div>
             <div className="action-content">
               <h4>View All Properties</h4>
-              <p>Manage your commercial properties</p>
+              <p>Manage commercial properties</p>
             </div>
             <ArrowRight size={20} className="action-arrow" />
           </ClickableTile>
@@ -71,11 +74,11 @@ export default function BusinessDashboard() {
             onClick={() => navigate('/business/fleet')}
           >
             <div className="action-icon">
-              <CarFront size={32} />
+              <CarFront size={24} />
             </div>
             <div className="action-content">
               <h4>View Fleet</h4>
-              <p>Monitor your business vehicles</p>
+              <p>Monitor business vehicles</p>
             </div>
             <ArrowRight size={20} className="action-arrow" />
           </ClickableTile>
@@ -85,11 +88,11 @@ export default function BusinessDashboard() {
             onClick={() => navigate('/business/map')}
           >
             <div className="action-icon">
-              <Map size={32} />
+              <Map size={24} />
             </div>
             <div className="action-content">
               <h4>Map View</h4>
-              <p>See assets on interactive map</p>
+              <p>See assets on map</p>
             </div>
             <ArrowRight size={20} className="action-arrow" />
           </ClickableTile>
@@ -99,11 +102,11 @@ export default function BusinessDashboard() {
             onClick={() => navigate('/business/file-claim')}
           >
             <div className="action-icon">
-              <DocumentAdd size={32} />
+              <DocumentAdd size={24} />
             </div>
             <div className="action-content">
               <h4>File a Claim</h4>
-              <p>Submit a new insurance claim</p>
+              <p>Submit insurance claim</p>
             </div>
             <ArrowRight size={20} className="action-arrow" />
           </ClickableTile>
@@ -113,7 +116,7 @@ export default function BusinessDashboard() {
             onClick={() => navigate('/business/make-payment')}
           >
             <div className="action-icon">
-              <Wallet size={32} />
+              <Wallet size={24} />
             </div>
             <div className="action-content">
               <h4>Make a Payment</h4>
@@ -129,7 +132,7 @@ export default function BusinessDashboard() {
         <Tile className="stat-tile">
           <div className="stat-content">
             <div className="stat-icon-wrapper stat-icon-primary">
-              <Building size={24} />
+              <Building size={20} />
             </div>
             <div className="stat-details">
               <p className="stat-label">Total Properties</p>
@@ -146,7 +149,7 @@ export default function BusinessDashboard() {
         <Tile className="stat-tile">
           <div className="stat-content">
             <div className="stat-icon-wrapper stat-icon-secondary">
-              <CarFront size={24} />
+              <CarFront size={20} />
             </div>
             <div className="stat-details">
               <p className="stat-label">Fleet Vehicles</p>
@@ -163,28 +166,52 @@ export default function BusinessDashboard() {
         <Tile className="stat-tile">
           <div className="stat-content">
             <div className="stat-icon-wrapper stat-icon-success">
-              <Wallet size={24} />
+              <Wallet size={20} />
             </div>
             <div className="stat-details">
-              <p className="stat-label">Total Monthly Premium</p>
-              <h3 className="stat-value">{formatCurrency(totalMonthlyPremium)}</h3>
+              <p className="stat-label">Monthly Premium</p>
+              <h3 className="stat-value">{formatCurrency(totalMonthlyPremium, false)}</h3>
               <p className="stat-change">
-                For {totalProperties + totalVehicles} assets
+                {totalProperties + totalVehicles} assets
               </p>
             </div>
           </div>
         </Tile>
       </Column>
 
-      {/* Placeholder for future table sections */}
+      {/* Properties Table Section */}
       <Column lg={16} md={8} sm={4}>
-        <Tile className="info-tile">
-          <Heading className="tile-title">Portfolio Overview</Heading>
-          <p className="tile-description">
-            Your business insurance portfolio includes {totalProperties} commercial properties 
-            and {totalVehicles} fleet vehicles. Detailed tables and claims history will be 
-            available in the next update.
-          </p>
+        <Tile className="data-tile">
+          <div className="tile-header">
+            <Heading className="tile-title">Properties</Heading>
+            <Button 
+              kind="ghost" 
+              size="sm" 
+              renderIcon={ArrowRight}
+              onClick={() => navigate('/business/properties')}
+            >
+              View All
+            </Button>
+          </div>
+          <PropertyTable properties={mockProperties} compact maxRows={5} />
+        </Tile>
+      </Column>
+
+      {/* Fleet Vehicles Table Section */}
+      <Column lg={16} md={8} sm={4}>
+        <Tile className="data-tile">
+          <div className="tile-header">
+            <Heading className="tile-title">Fleet Vehicles</Heading>
+            <Button 
+              kind="ghost" 
+              size="sm" 
+              renderIcon={ArrowRight}
+              onClick={() => navigate('/business/fleet')}
+            >
+              View All
+            </Button>
+          </div>
+          <FleetTable vehicles={mockVehicles} compact maxRows={5} />
         </Tile>
       </Column>
     </Grid>
