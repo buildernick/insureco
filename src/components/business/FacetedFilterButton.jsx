@@ -154,7 +154,7 @@ export default function FacetedFilterButton({
                   <Button
                     kind="ghost"
                     size="sm"
-                    onClick={() => handleOptionToggle(activeFacet, null)}
+                    onClick={() => setPendingFilters(prev => ({ ...prev, [activeFacet]: [] }))}
                   >
                     Clear
                   </Button>
