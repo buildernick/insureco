@@ -53,9 +53,6 @@
     }
 
     .facet-menu-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       padding: var(--spacing-04) var(--spacing-05);
       font-size: var(--body-xs-size);
       font-weight: var(--font-weight-semibold);
@@ -63,12 +60,6 @@
       text-transform: uppercase;
       letter-spacing: 0.02em;
       border-bottom: 1px solid var(--border-subtle);
-      gap: var(--spacing-03);
-
-      .apply-button {
-        text-transform: none;
-        letter-spacing: normal;
-      }
     }
 
     .facet-item {

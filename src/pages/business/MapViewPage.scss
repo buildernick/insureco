@@ -129,6 +129,22 @@
         }
       }
     }
+
+    .filters-footer {
+      margin-top: var(--spacing-05);
+      padding-top: var(--spacing-05);
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: flex-end;
+
+      @media (max-width: 672px) {
+        justify-content: stretch;
+
+        button {
+          width: 100%;
+        }
+      }
+    }
   }
 
   // Map Tile
