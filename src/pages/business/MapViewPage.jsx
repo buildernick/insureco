@@ -7,11 +7,11 @@ import {
   Button,
   Heading,
   Search,
-  Toggle,
   Tag,
   DataTableSkeleton,
 } from '@carbon/react';
 import { Map as MapIcon, Add } from '@carbon/icons-react';
+import FacetedFilterButton from '../../components/business/FacetedFilterButton';
 import {
   mockProperties,
   mockVehicles,
@@ -29,12 +29,135 @@ const MapView = lazy(() => import('../../components/business/MapView'));
 export default function MapViewPage() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  const [showProperties, setShowProperties] = useState(true);
-  const [showVehicles, setShowVehicles] = useState(true);
 
-  // Transform properties into marker format
+  // Faceted filter state
+  const [vehicleFilters, setVehicleFilters] = useState({
+    status: [],
+    vehicleType: [],
+    department: [],
+    city: []
+  });
+
+  const [propertyFilters, setPropertyFilters] = useState({
+    status: [],
+    propertyType: [],
+    city: []
+  });
+
+  // Extract unique values for filter options
+  const vehicleFacets = useMemo(() => {
+    const statuses = [...new Set(mockVehicles.map(v => v.status))].sort();
+    const types = [...new Set(mockVehicles.map(v => v.vehicleType))].sort();
+    const departments = [...new Set(mockVehicles.map(v => v.department))].sort();
+    const cities = [...new Set(mockVehicles.map(v => {
+      const match = v.lastKnownLocation;
+      // Extract city from coordinates (for demo, use simple mapping)
+      if (match.lat > 38.5) return 'Sacramento';
+      if (match.lat > 37.8) return 'Oakland';
+      if (match.lat > 37.5) return 'San Francisco';
+      if (match.lat > 37.3) return 'San Jose';
+      return 'Other';
+    }))].sort();
+
+    return [
+      {
+        key: 'status',
+        label: 'Status',
+        options: statuses.map(s => ({
+          value: s,
+          label: s,
+          count: mockVehicles.filter(v => v.status === s).length
+        }))
+      },
+      {
+        key: 'vehicleType',
+        label: 'Vehicle Type',
+        options: types.map(t => ({
+          value: t,
+          label: t,
+          count: mockVehicles.filter(v => v.vehicleType === t).length
+        }))
+      },
+      {
+        key: 'department',
+        label: 'Department',
+        options: departments.map(d => ({
+          value: d,
+          label: d,
+          count: mockVehicles.filter(v => v.department === d).length
+        }))
+      },
+      {
+        key: 'city',
+        label: 'Location',
+        options: cities.map(c => ({
+          value: c,
+          label: c,
+          count: mockVehicles.filter(v => {
+            const match = v.lastKnownLocation;
+            if (match.lat > 38.5) return c === 'Sacramento';
+            if (match.lat > 37.8) return c === 'Oakland';
+            if (match.lat > 37.5) return c === 'San Francisco';
+            if (match.lat > 37.3) return c === 'San Jose';
+            return c === 'Other';
+          }).length
+        }))
+      }
+    ];
+  }, []);
+
+  const propertyFacets = useMemo(() => {
+    const statuses = [...new Set(mockProperties.map(p => p.status))].sort();
+    const types = [...new Set(mockProperties.map(p => p.propertyType))].sort();
+    const cities = [...new Set(mockProperties.map(p => p.city))].sort();
+
+    return [
+      {
+        key: 'status',
+        label: 'Status',
+        options: statuses.map(s => ({
+          value: s,
+          label: s,
+          count: mockProperties.filter(p => p.status === s).length
+        }))
+      },
+      {
+        key: 'propertyType',
+        label: 'Property Type',
+        options: types.map(t => ({
+          value: t,
+          label: t,
+          count: mockProperties.filter(p => p.propertyType === t).length
+        }))
+      },
+      {
+        key: 'city',
+        label: 'Location',
+        options: cities.map(c => ({
+          value: c,
+          label: c,
+          count: mockProperties.filter(p => p.city === c).length
+        }))
+      }
+    ];
+  }, []);
+
+  // Transform properties into marker format with filtering
   const propertyMarkers = useMemo(() => {
-    return mockProperties.map(property => ({
+    let filtered = mockProperties;
+
+    // Apply faceted filters
+    if (propertyFilters.status.length > 0) {
+      filtered = filtered.filter(p => propertyFilters.status.includes(p.status));
+    }
+    if (propertyFilters.propertyType.length > 0) {
+      filtered = filtered.filter(p => propertyFilters.propertyType.includes(p.propertyType));
+    }
+    if (propertyFilters.city.length > 0) {
+      filtered = filtered.filter(p => propertyFilters.city.includes(p.city));
+    }
+
+    return filtered.map(property => ({
       id: property.id,
       type: 'property',
       name: property.name,
@@ -44,11 +167,35 @@ export default function MapViewPage() {
       premium: property.monthlyPremium,
       status: property.status,
     }));
-  }, []);
+  }, [propertyFilters]);
 
-  // Transform vehicles into marker format
+  // Transform vehicles into marker format with filtering
   const vehicleMarkers = useMemo(() => {
-    return mockVehicles.map(vehicle => ({
+    let filtered = mockVehicles;
+
+    // Apply faceted filters
+    if (vehicleFilters.status.length > 0) {
+      filtered = filtered.filter(v => vehicleFilters.status.includes(v.status));
+    }
+    if (vehicleFilters.vehicleType.length > 0) {
+      filtered = filtered.filter(v => vehicleFilters.vehicleType.includes(v.vehicleType));
+    }
+    if (vehicleFilters.department.length > 0) {
+      filtered = filtered.filter(v => vehicleFilters.department.includes(v.department));
+    }
+    if (vehicleFilters.city.length > 0) {
+      filtered = filtered.filter(v => {
+        const match = v.lastKnownLocation;
+        let city = 'Other';
+        if (match.lat > 38.5) city = 'Sacramento';
+        else if (match.lat > 37.8) city = 'Oakland';
+        else if (match.lat > 37.5) city = 'San Francisco';
+        else if (match.lat > 37.3) city = 'San Jose';
+        return vehicleFilters.city.includes(city);
+      });
+    }
+
+    return filtered.map(vehicle => ({
       id: vehicle.id,
       type: 'vehicle',
       name: `${vehicle.year} ${vehicle.make} ${vehicle.model}`,
@@ -58,19 +205,11 @@ export default function MapViewPage() {
       driver: vehicle.assignedDriver,
       status: vehicle.status,
     }));
-  }, []);
+  }, [vehicleFilters]);
 
-  // Combine and filter markers based on toggles and search
+  // Combine and filter markers based on search
   const filteredMarkers = useMemo(() => {
-    let allMarkers = [];
-
-    if (showProperties) {
-      allMarkers = [...allMarkers, ...propertyMarkers];
-    }
-
-    if (showVehicles) {
-      allMarkers = [...allMarkers, ...vehicleMarkers];
-    }
+    let allMarkers = [...propertyMarkers, ...vehicleMarkers];
 
     // Apply search filter
     if (searchTerm) {
@@ -87,32 +226,28 @@ export default function MapViewPage() {
   }, [propertyMarkers, vehicleMarkers, showProperties, showVehicles, searchTerm]);
 
   // Calculate summary statistics
-  const totalProperties = showProperties ? propertyMarkers.length : 0;
-  const totalVehicles = showVehicles ? vehicleMarkers.length : 0;
+  const totalProperties = propertyMarkers.length;
+  const totalVehicles = vehicleMarkers.length;
   const totalAssets = filteredMarkers.length;
 
   const totalMonthlyPremium = useMemo(() => {
-    let sum = 0;
-    if (showProperties) {
-      sum += mockProperties.reduce((acc, p) => acc + p.monthlyPremium, 0);
-    }
-    if (showVehicles) {
-      sum += mockVehicles.reduce((acc, v) => acc + v.monthlyPremium, 0);
-    }
-    return sum;
-  }, [showProperties, showVehicles]);
+    const propertySum = propertyMarkers.reduce((sum, m) => sum + (m.premium || 0), 0);
+    const vehicleSum = mockVehicles
+      .filter(v => vehicleMarkers.some(vm => vm.id === v.id))
+      .reduce((sum, v) => sum + v.monthlyPremium, 0);
+    return propertySum + vehicleSum;
+  }, [propertyMarkers, vehicleMarkers]);
 
   const handleClearFilters = () => {
     setSearchTerm('');
-    setShowProperties(true);
-    setShowVehicles(true);
+    setVehicleFilters({ status: [], vehicleType: [], department: [], city: [] });
+    setPropertyFilters({ status: [], propertyType: [], city: [] });
   };
 
-  const activeFilterCount = [
-    !showProperties,
-    !showVehicles,
-    searchTerm !== ''
-  ].filter(Boolean).length;
+  // Count active filters
+  const vehicleFilterCount = Object.values(vehicleFilters).reduce((sum, arr) => sum + arr.length, 0);
+  const propertyFilterCount = Object.values(propertyFilters).reduce((sum, arr) => sum + arr.length, 0);
+  const activeFilterCount = vehicleFilterCount + propertyFilterCount + (searchTerm ? 1 : 0);
 
   return (
     <Grid fullWidth className="map-view-page">
@@ -145,7 +280,9 @@ export default function MapViewPage() {
         <Tile className="summary-stat">
           <p className="summary-label">Total Properties</p>
           <p className="summary-value">{totalProperties}</p>
-          <p className="summary-detail">{showProperties ? 'Showing on map' : 'Hidden'}</p>
+          <p className="summary-detail">
+            {propertyFilterCount > 0 ? `${propertyFilterCount} filters applied` : 'All properties'}
+          </p>
         </Tile>
       </Column>
 
@@ -153,7 +290,9 @@ export default function MapViewPage() {
         <Tile className="summary-stat">
           <p className="summary-label">Total Vehicles</p>
           <p className="summary-value">{totalVehicles}</p>
-          <p className="summary-detail">{showVehicles ? 'Showing on map' : 'Hidden'}</p>
+          <p className="summary-detail">
+            {vehicleFilterCount > 0 ? `${vehicleFilterCount} filters applied` : 'All vehicles'}
+          </p>
         </Tile>
       </Column>
 
@@ -207,20 +346,18 @@ export default function MapViewPage() {
               onClear={() => setSearchTerm('')}
             />
 
-            <div className="filter-toggles">
-              <Toggle
-                id="toggle-properties"
-                labelText="Show Properties"
-                toggled={showProperties}
-                onToggle={(checked) => setShowProperties(checked)}
-                size="sm"
+            <div className="filter-buttons">
+              <FacetedFilterButton
+                label="Filter Vehicles"
+                facets={vehicleFacets}
+                selectedFilters={vehicleFilters}
+                onApplyFilters={setVehicleFilters}
               />
-              <Toggle
-                id="toggle-vehicles"
-                labelText="Show Vehicles"
-                toggled={showVehicles}
-                onToggle={(checked) => setShowVehicles(checked)}
-                size="sm"
+              <FacetedFilterButton
+                label="Filter Properties"
+                facets={propertyFacets}
+                selectedFilters={propertyFilters}
+                onApplyFilters={setPropertyFilters}
               />
             </div>
           </div>
@@ -253,13 +390,11 @@ export default function MapViewPage() {
               <MapIcon size={48} />
               <h4>No assets to display</h4>
               <p>
-                {!showProperties && !showVehicles
-                  ? 'Enable at least one asset type in the filters above'
-                  : searchTerm
+                {searchTerm || activeFilterCount > 0
                   ? 'No assets match your search criteria'
                   : 'No assets found'}
               </p>
-              {(searchTerm || !showProperties || !showVehicles) && (
+              {activeFilterCount > 0 && (
                 <Button kind="tertiary" onClick={handleClearFilters}>
                   Clear filters
                 </Button>
