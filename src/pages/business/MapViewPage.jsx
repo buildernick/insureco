@@ -223,7 +223,7 @@ export default function MapViewPage() {
     }
 
     return allMarkers;
-  }, [propertyMarkers, vehicleMarkers, showProperties, showVehicles, searchTerm]);
+  }, [propertyMarkers, vehicleMarkers, searchTerm]);
 
   // Calculate summary statistics
   const totalProperties = propertyMarkers.length;
