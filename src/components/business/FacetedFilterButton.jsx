@@ -46,8 +46,8 @@ export default function FacetedFilterButton({
     }
   }, [isOpen, selectedFilters]);
 
-  // Count total active filters
-  const activeFilterCount = Object.values(selectedFilters).reduce(
+  // Count total applied filters (shown on button badge)
+  const appliedFilterCount = Object.values(selectedFilters).reduce(
     (sum, values) => sum + values.length,
     0
   );
@@ -103,9 +103,9 @@ export default function FacetedFilterButton({
       >
         <Filter size={16} />
         <span className="filter-label">{label}</span>
-        {activeFilterCount > 0 && (
+        {appliedFilterCount > 0 && (
           <Tag type="blue" size="sm" className="filter-count">
-            {activeFilterCount}
+            {appliedFilterCount}
           </Tag>
         )}
       </Button>
