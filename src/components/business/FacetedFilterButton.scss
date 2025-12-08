@@ -21,6 +21,7 @@
     position: absolute;
     top: calc(100% + var(--spacing-02));
     left: 0;
+    right: auto;
     z-index: 9999;
     display: flex;
     background: var(--background-primary);
@@ -28,14 +29,33 @@
     border-radius: var(--radius-md);
     box-shadow: var(--modal-shadow);
     min-width: 500px;
+    max-width: calc(100vw - 2rem);
     max-height: 500px;
     overflow: hidden;
+
+    // Prevent overflow on right side
+    @media (min-width: 673px) {
+      // If dropdown would overflow, align to right edge instead
+      &::before {
+        content: '';
+        position: absolute;
+        right: 100%;
+      }
+    }
 
     @media (max-width: 672px) {
       min-width: 320px;
       max-width: calc(100vw - var(--spacing-05));
       flex-direction: column;
+      left: 50%;
+      transform: translateX(-50%);
     }
+  }
+
+  // When button is on the right side, align dropdown to right
+  &:last-child .filter-dropdown {
+    left: auto;
+    right: 0;
   }
 
   // Facet Menu (left side)
