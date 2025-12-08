@@ -30,7 +30,7 @@ export default function MapViewPage() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Faceted filter state
+  // Applied filters (used for actual filtering)
   const [vehicleFilters, setVehicleFilters] = useState({
     status: [],
     vehicleType: [],
@@ -39,6 +39,20 @@ export default function MapViewPage() {
   });
 
   const [propertyFilters, setPropertyFilters] = useState({
+    status: [],
+    propertyType: [],
+    city: []
+  });
+
+  // Pending filters (user selections not yet applied)
+  const [pendingVehicleFilters, setPendingVehicleFilters] = useState({
+    status: [],
+    vehicleType: [],
+    department: [],
+    city: []
+  });
+
+  const [pendingPropertyFilters, setPendingPropertyFilters] = useState({
     status: [],
     propertyType: [],
     city: []
@@ -238,16 +252,33 @@ export default function MapViewPage() {
     return propertySum + vehicleSum;
   }, [propertyMarkers, vehicleMarkers]);
 
-  const handleClearFilters = () => {
-    setSearchTerm('');
-    setVehicleFilters({ status: [], vehicleType: [], department: [], city: [] });
-    setPropertyFilters({ status: [], propertyType: [], city: [] });
+  const handleApplyFilters = () => {
+    setVehicleFilters(pendingVehicleFilters);
+    setPropertyFilters(pendingPropertyFilters);
   };
 
-  // Count active filters
+  const handleClearFilters = () => {
+    setSearchTerm('');
+    const emptyVehicleFilters = { status: [], vehicleType: [], department: [], city: [] };
+    const emptyPropertyFilters = { status: [], propertyType: [], city: [] };
+    setVehicleFilters(emptyVehicleFilters);
+    setPropertyFilters(emptyPropertyFilters);
+    setPendingVehicleFilters(emptyVehicleFilters);
+    setPendingPropertyFilters(emptyPropertyFilters);
+  };
+
+  // Count active and pending filters
   const vehicleFilterCount = Object.values(vehicleFilters).reduce((sum, arr) => sum + arr.length, 0);
   const propertyFilterCount = Object.values(propertyFilters).reduce((sum, arr) => sum + arr.length, 0);
   const activeFilterCount = vehicleFilterCount + propertyFilterCount + (searchTerm ? 1 : 0);
+
+  const pendingVehicleCount = Object.values(pendingVehicleFilters).reduce((sum, arr) => sum + arr.length, 0);
+  const pendingPropertyCount = Object.values(pendingPropertyFilters).reduce((sum, arr) => sum + arr.length, 0);
+  const totalPendingCount = pendingVehicleCount + pendingPropertyCount;
+
+  // Check if pending filters differ from applied filters
+  const hasPendingChanges = JSON.stringify(pendingVehicleFilters) !== JSON.stringify(vehicleFilters) ||
+                            JSON.stringify(pendingPropertyFilters) !== JSON.stringify(propertyFilters);
 
   return (
     <Grid fullWidth className="map-view-page">
@@ -350,17 +381,31 @@ export default function MapViewPage() {
               <FacetedFilterButton
                 label="Filter Vehicles"
                 facets={vehicleFacets}
-                selectedFilters={vehicleFilters}
-                onApplyFilters={setVehicleFilters}
+                selectedFilters={pendingVehicleFilters}
+                onFiltersChange={setPendingVehicleFilters}
               />
               <FacetedFilterButton
                 label="Filter Properties"
                 facets={propertyFacets}
-                selectedFilters={propertyFilters}
-                onApplyFilters={setPropertyFilters}
+                selectedFilters={pendingPropertyFilters}
+                onFiltersChange={setPendingPropertyFilters}
               />
             </div>
           </div>
+
+          {/* Apply Filters Footer */}
+          {(totalPendingCount > 0 || hasPendingChanges) && (
+            <div className="filters-footer">
+              <Button
+                kind="primary"
+                size="md"
+                onClick={handleApplyFilters}
+                disabled={!hasPendingChanges}
+              >
+                Apply Filters {totalPendingCount > 0 && `(${totalPendingCount})`}
+              </Button>
+            </div>
+          )}
         </Tile>
       </Column>
 

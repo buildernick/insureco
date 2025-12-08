@@ -15,7 +15,7 @@ export default function FacetedFilterButton({
   label,
   facets = [],
   selectedFilters = {},
-  onApplyFilters,
+  onFiltersChange,
   disabled = false
 }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,23 +64,14 @@ export default function FacetedFilterButton({
 
   // Toggle checkbox for a specific option
   const handleOptionToggle = (facetKey, optionValue) => {
-    setPendingFilters(prev => {
-      const currentValues = prev[facetKey] || [];
-      const newValues = currentValues.includes(optionValue)
-        ? currentValues.filter(v => v !== optionValue)
-        : [...currentValues, optionValue];
-      
-      return {
-        ...prev,
-        [facetKey]: newValues
-      };
-    });
-  };
-
-  // Apply filters and close dropdown
-  const handleApply = () => {
-    onApplyFilters(pendingFilters);
-    setIsOpen(false);
+    const updatedFilters = {
+      ...pendingFilters,
+      [facetKey]: pendingFilters[facetKey]?.includes(optionValue)
+        ? pendingFilters[facetKey].filter(v => v !== optionValue)
+        : [...(pendingFilters[facetKey] || []), optionValue]
+    };
+    setPendingFilters(updatedFilters);
+    onFiltersChange(updatedFilters);
   };
 
   // Clear all filters
@@ -90,6 +81,7 @@ export default function FacetedFilterButton({
       return acc;
     }, {});
     setPendingFilters(clearedFilters);
+    onFiltersChange(clearedFilters);
   };
 
   // Count pending filters (for "Apply" button)
@@ -124,15 +116,6 @@ export default function FacetedFilterButton({
           <div className="facet-menu">
             <div className="facet-menu-header">
               <span>Filter by</span>
-              <Button
-                kind="primary"
-                size="sm"
-                onClick={handleApply}
-                renderIcon={Checkmark}
-                className="apply-button"
-              >
-                Apply {pendingFilterCount > 0 && `(${pendingFilterCount})`}
-              </Button>
             </div>
             {facets.map((facet) => {
               const facetFilterCount = (pendingFilters[facet.key] || []).length;
@@ -163,7 +146,11 @@ export default function FacetedFilterButton({
                   <Button
                     kind="ghost"
                     size="sm"
-                    onClick={() => setPendingFilters(prev => ({ ...prev, [activeFacet]: [] }))}
+                    onClick={() => {
+                      const updated = { ...pendingFilters, [activeFacet]: [] };
+                      setPendingFilters(updated);
+                      onFiltersChange(updated);
+                    }}
                   >
                     Clear
                   </Button>
