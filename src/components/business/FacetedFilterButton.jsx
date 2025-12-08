@@ -124,6 +124,15 @@ export default function FacetedFilterButton({
           <div className="facet-menu">
             <div className="facet-menu-header">
               <span>Filter by</span>
+              <Button
+                kind="primary"
+                size="sm"
+                onClick={handleApply}
+                renderIcon={Checkmark}
+                className="apply-button"
+              >
+                Apply {pendingFilterCount > 0 && `(${pendingFilterCount})`}
+              </Button>
             </div>
             {facets.map((facet) => {
               const facetFilterCount = (pendingFilters[facet.key] || []).length;
@@ -193,14 +202,6 @@ export default function FacetedFilterButton({
               disabled={pendingFilterCount === 0}
             >
               Clear all
-            </Button>
-            <Button
-              kind="primary"
-              size="sm"
-              onClick={handleApply}
-              renderIcon={Checkmark}
-            >
-              Apply {pendingFilterCount > 0 && `(${pendingFilterCount})`}
             </Button>
           </div>
         </div>
