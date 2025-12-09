@@ -263,6 +263,9 @@
       flex-direction: column;
       width: 100%;
       min-height: auto;
+      left: 0;
+      right: 0;
+      max-width: 100%;
 
       .filter-categories {
         width: 100%;
