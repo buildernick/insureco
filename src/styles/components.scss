@@ -98,6 +98,35 @@
 }
 
 // ============================================
+// Content Switcher
+// ============================================
+.cds--content-switcher {
+  background-color: var(--background-secondary);
+}
+
+.cds--content-switcher-btn {
+  color: var(--text-primary) !important;
+  background-color: transparent;
+
+  &:hover {
+    background-color: var(--background-hover);
+  }
+
+  &:focus {
+    outline-color: var(--interactive-primary);
+  }
+}
+
+.cds--content-switcher--selected {
+  background-color: var(--background-primary) !important;
+  color: var(--text-primary) !important;
+
+  &:hover {
+    background-color: var(--background-primary) !important;
+  }
+}
+
+// ============================================
 // Dropdowns
 // ============================================
 // IMPORTANT: Override Carbon's Dropdown default styles for theme support
