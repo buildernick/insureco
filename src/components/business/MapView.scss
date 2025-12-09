@@ -80,8 +80,6 @@
 // ============================================
 
 .marker-cluster {
-  background: var(--background-interactive);
-  border: 2px solid var(--border-interactive);
   border-radius: 50%;
   color: var(--text-on-color);
   font-weight: var(--font-weight-semibold);
@@ -101,6 +99,46 @@
     align-items: center;
     justify-content: center;
     color: var(--text-on-color);
+    border-radius: 50%;
+  }
+  
+  span {
+    color: var(--text-on-color);
+    font-size: inherit;
+    font-weight: var(--font-weight-semibold);
+  }
+}
+
+// Property clusters (red)
+.marker-cluster-property {
+  background: var(--interactive-primary);
+  border: 2px solid var(--interactive-primary);
+  
+  div {
+    background: var(--interactive-primary);
+  }
+}
+
+// Vehicle clusters (blue)
+.marker-cluster-vehicle {
+  background: var(--color-brand-blue-60);
+  border: 2px solid var(--color-brand-blue-60);
+  
+  div {
+    background: var(--color-brand-blue-60);
+  }
+}
+
+// Dark theme adjustments for vehicle clusters
+:root[data-carbon-theme="g90"],
+:root[data-carbon-theme="g100"] {
+  .marker-cluster-vehicle {
+    background: var(--color-brand-blue-50);
+    border-color: var(--color-brand-blue-50);
+    
+    div {
+      background: var(--color-brand-blue-50);
+    }
   }
 }
 
@@ -120,6 +158,47 @@
   width: 60px;
   height: 60px;
   font-size: var(--font-size-lg);
+}
+
+// ============================================
+// Spiderfy Lines (Cluster Expansion Lines)
+// ============================================
+
+// Make spiderfy lines match cluster color
+.leaflet-cluster-spider-leg {
+  stroke-opacity: 0.5;
+  stroke-width: 1.5;
+  
+  // Default stroke (for mixed or unknown)
+  stroke: var(--interactive-primary);
+}
+
+// ============================================
+// Fix for Spiderfied Markers
+// ============================================
+
+// Ensure custom markers display correctly during spiderfy animation
+.leaflet-marker-icon.custom-marker {
+  // Force custom icon display
+  opacity: 1 !important;
+  visibility: visible !important;
+  
+  // Prevent default marker from showing
+  background-image: none !important;
+}
+
+// Hide default Leaflet marker icon when custom icons are present
+.leaflet-marker-pane {
+  // Only show custom markers, hide defaults
+  .leaflet-marker-icon:not(.custom-marker):not(.marker-cluster) {
+    display: none !important;
+  }
+}
+
+// Ensure spiderfied custom markers are visible
+.leaflet-marker-pane .custom-marker {
+  display: block !important;
+  opacity: 1 !important;
 }
 
 // ============================================

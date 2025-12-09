@@ -43,6 +43,42 @@ const vehicleIcon = new L.DivIcon({
   popupAnchor: [0, -32],
 });
 
+// Custom cluster icon function for properties (red clusters)
+const createPropertyClusterIcon = (cluster) => {
+  const count = cluster.getChildCount();
+  let sizeClass = 'marker-cluster-small';
+  
+  if (count >= 100) {
+    sizeClass = 'marker-cluster-large';
+  } else if (count >= 10) {
+    sizeClass = 'marker-cluster-medium';
+  }
+  
+  return L.divIcon({
+    html: `<div><span>${count}</span></div>`,
+    className: `marker-cluster marker-cluster-property ${sizeClass}`,
+    iconSize: L.point(40, 40, true),
+  });
+};
+
+// Custom cluster icon function for vehicles (blue clusters)
+const createVehicleClusterIcon = (cluster) => {
+  const count = cluster.getChildCount();
+  let sizeClass = 'marker-cluster-small';
+  
+  if (count >= 100) {
+    sizeClass = 'marker-cluster-large';
+  } else if (count >= 10) {
+    sizeClass = 'marker-cluster-medium';
+  }
+  
+  return L.divIcon({
+    html: `<div><span>${count}</span></div>`,
+    className: `marker-cluster marker-cluster-vehicle ${sizeClass}`,
+    iconSize: L.point(40, 40, true),
+  });
+};
+
 // Component to fit map bounds to markers
 function FitBounds({ positions }) {
   const map = useMap();
@@ -113,9 +149,16 @@ export default function MapView({ properties = [], vehicles = [], selectedAssetT
         {/* Fit bounds to all markers */}
         <FitBounds positions={allPositions} />
 
-        {/* Property Markers with Clustering */}
+        {/* Property Markers with Clustering (Red) */}
         {showProperties && (
-          <MarkerClusterGroup chunkedLoading>
+          <MarkerClusterGroup 
+            chunkedLoading
+            iconCreateFunction={createPropertyClusterIcon}
+            spiderfyOnMaxZoom={true}
+            showCoverageOnHover={false}
+            zoomToBoundsOnClick={true}
+            maxClusterRadius={80}
+          >
             {properties.map((property) => {
               if (!property.lat || !property.lng) return null;
 
@@ -169,9 +212,16 @@ export default function MapView({ properties = [], vehicles = [], selectedAssetT
           </MarkerClusterGroup>
         )}
 
-        {/* Vehicle Markers with Clustering */}
+        {/* Vehicle Markers with Clustering (Blue) */}
         {showVehicles && (
-          <MarkerClusterGroup chunkedLoading>
+          <MarkerClusterGroup 
+            chunkedLoading
+            iconCreateFunction={createVehicleClusterIcon}
+            spiderfyOnMaxZoom={true}
+            showCoverageOnHover={false}
+            zoomToBoundsOnClick={true}
+            maxClusterRadius={80}
+          >
             {vehicles.map((vehicle) => {
               if (!vehicle.lastKnownLocation?.lat || !vehicle.lastKnownLocation?.lng) return null;
 
