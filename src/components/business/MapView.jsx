@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
@@ -64,6 +64,20 @@ function FitBounds({ positions }) {
 export default function MapView({ properties = [], vehicles = [], selectedAssetType = 'all' }) {
   const navigate = useNavigate();
 
+  // State to control map rendering - prevents React Strict Mode double-mount issue
+  const [mapReady, setMapReady] = useState(false);
+
+  // Use effect to delay map rendering until after first render cycle
+  // This prevents "Map container is already initialized" error in React Strict Mode
+  useEffect(() => {
+    setMapReady(true);
+
+    // Cleanup on unmount
+    return () => {
+      setMapReady(false);
+    };
+  }, [selectedAssetType]); // Reset when asset type changes
+
   // Determine which assets to show
   const showProperties = selectedAssetType === 'all' || selectedAssetType === 'properties';
   const showVehicles = selectedAssetType === 'all' || selectedAssetType === 'vehicles';
@@ -95,14 +109,20 @@ export default function MapView({ properties = [], vehicles = [], selectedAssetT
   const defaultCenter = [37.5, -121.5];
   const defaultZoom = 7;
 
-  // Create a unique key for the map to force remount when asset type changes
-  // This prevents "Map container is already initialized" error in React Strict Mode
-  const mapKey = `map-${selectedAssetType}`;
+  // Don't render map until ready (prevents Strict Mode double initialization)
+  if (!mapReady) {
+    return (
+      <div className="map-view-container">
+        <div className="leaflet-map map-loading">
+          <p>Loading map...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="map-view-container">
       <MapContainer
-        key={mapKey}
         center={defaultCenter}
         zoom={defaultZoom}
         className="leaflet-map"
