@@ -28,7 +28,10 @@ export default function MapPage() {
   const [selectedFilters, setSelectedFilters] = useState({
     status: [],
     type: [],
-    location: []
+    location: [],
+    propertyType: [],
+    vehicleType: [],
+    city: []
   });
 
   // Prepare facets with counts based on selected asset type
@@ -122,9 +125,23 @@ export default function MapPage() {
     } else {
       // Combined facets (all assets)
       const statuses = {};
+      const propertyTypes = {};
+      const vehicleTypes = {};
+      const cities = {};
+      const departments = {};
 
-      [...mockProperties, ...mockVehicles].forEach(item => {
-        statuses[item.status] = (statuses[item.status] || 0) + 1;
+      // Collect all property data
+      mockProperties.forEach(p => {
+        statuses[p.status] = (statuses[p.status] || 0) + 1;
+        propertyTypes[p.propertyType] = (propertyTypes[p.propertyType] || 0) + 1;
+        cities[p.city] = (cities[p.city] || 0) + 1;
+      });
+
+      // Collect all vehicle data
+      mockVehicles.forEach(v => {
+        statuses[v.status] = (statuses[v.status] || 0) + 1;
+        vehicleTypes[v.vehicleType] = (vehicleTypes[v.vehicleType] || 0) + 1;
+        departments[v.department] = (departments[v.department] || 0) + 1;
       });
 
       return [
@@ -132,6 +149,42 @@ export default function MapPage() {
           key: 'status',
           label: 'Status',
           options: Object.entries(statuses).map(([value, count]) => ({
+            value,
+            label: value,
+            count
+          })).sort((a, b) => a.label.localeCompare(b.label))
+        },
+        {
+          key: 'propertyType',
+          label: 'Property Type',
+          options: Object.entries(propertyTypes).map(([value, count]) => ({
+            value,
+            label: value,
+            count
+          })).sort((a, b) => a.label.localeCompare(b.label))
+        },
+        {
+          key: 'vehicleType',
+          label: 'Vehicle Type',
+          options: Object.entries(vehicleTypes).map(([value, count]) => ({
+            value,
+            label: value,
+            count
+          })).sort((a, b) => a.label.localeCompare(b.label))
+        },
+        {
+          key: 'city',
+          label: 'City',
+          options: Object.entries(cities).map(([value, count]) => ({
+            value,
+            label: value,
+            count
+          })).sort((a, b) => a.label.localeCompare(b.label))
+        },
+        {
+          key: 'location',
+          label: 'Department',
+          options: Object.entries(departments).map(([value, count]) => ({
             value,
             label: value,
             count
@@ -144,28 +197,38 @@ export default function MapPage() {
   // Filter properties
   const filteredProperties = useMemo(() => {
     return mockProperties.filter(property => {
-      const statusMatch = selectedFilters.status.length === 0 || 
+      const statusMatch = selectedFilters.status.length === 0 ||
         selectedFilters.status.includes(property.status);
-      const typeMatch = selectedFilters.type.length === 0 || 
+      const typeMatch = selectedFilters.type.length === 0 ||
         selectedFilters.type.includes(property.propertyType);
-      const locationMatch = selectedFilters.location.length === 0 || 
+      const locationMatch = selectedFilters.location.length === 0 ||
         selectedFilters.location.includes(property.city);
 
-      return statusMatch && typeMatch && locationMatch;
+      // Additional filters for "all assets" mode
+      const propertyTypeMatch = selectedFilters.propertyType.length === 0 ||
+        selectedFilters.propertyType.includes(property.propertyType);
+      const cityMatch = selectedFilters.city.length === 0 ||
+        selectedFilters.city.includes(property.city);
+
+      return statusMatch && typeMatch && locationMatch && propertyTypeMatch && cityMatch;
     });
   }, [selectedFilters]);
 
   // Filter vehicles
   const filteredVehicles = useMemo(() => {
     return mockVehicles.filter(vehicle => {
-      const statusMatch = selectedFilters.status.length === 0 || 
+      const statusMatch = selectedFilters.status.length === 0 ||
         selectedFilters.status.includes(vehicle.status);
-      const typeMatch = selectedFilters.type.length === 0 || 
+      const typeMatch = selectedFilters.type.length === 0 ||
         selectedFilters.type.includes(vehicle.vehicleType);
-      const locationMatch = selectedFilters.location.length === 0 || 
+      const locationMatch = selectedFilters.location.length === 0 ||
         selectedFilters.location.includes(vehicle.department);
 
-      return statusMatch && typeMatch && locationMatch;
+      // Additional filters for "all assets" mode
+      const vehicleTypeMatch = selectedFilters.vehicleType.length === 0 ||
+        selectedFilters.vehicleType.includes(vehicle.vehicleType);
+
+      return statusMatch && typeMatch && locationMatch && vehicleTypeMatch;
     });
   }, [selectedFilters]);
 
@@ -203,7 +266,10 @@ export default function MapPage() {
     setSelectedFilters({
       status: [],
       type: [],
-      location: []
+      location: [],
+      propertyType: [],
+      vehicleType: [],
+      city: []
     });
   };
 
