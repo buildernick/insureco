@@ -65,7 +65,7 @@
   .filter-panel {
     position: absolute;
     top: calc(100% + 4px);
-    left: 0;
+    right: 0;
     display: flex;
     width: 579px;
     max-width: calc(100vw - 32px);
@@ -74,6 +74,11 @@
     background: var(--background-primary);
     box-shadow: var(--shadow-02);
     z-index: 1000;
+
+    // Ensure it stays within viewport
+    @media (min-width: 673px) {
+      max-width: min(579px, calc(100vw - 64px));
+    }
 
     // ============================================
     // Left Panel: Filter Categories
