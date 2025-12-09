@@ -508,3 +508,42 @@
 .leaflet-interactive {
   cursor: pointer;
 }
+
+// ============================================
+// Checkboxes
+// ============================================
+// IMPORTANT: Override Carbon checkbox styles for theme support
+// Carbon checkboxes don't always adapt to custom themes properly
+
+.cds--checkbox-label {
+  color: var(--text-primary) !important;
+
+  &::before {
+    border-color: var(--border-strong) !important;
+    background-color: var(--field-background) !important;
+  }
+}
+
+.cds--checkbox:checked + .cds--checkbox-label::before {
+  background-color: var(--interactive-primary) !important;
+  border-color: var(--interactive-primary) !important;
+}
+
+.cds--checkbox:checked + .cds--checkbox-label::after {
+  border-color: var(--text-on-color) !important;
+}
+
+.cds--checkbox:focus + .cds--checkbox-label::before {
+  outline-color: var(--interactive-primary) !important;
+  outline-offset: 2px;
+}
+
+.cds--checkbox:disabled + .cds--checkbox-label {
+  color: var(--text-tertiary) !important;
+  cursor: not-allowed;
+
+  &::before {
+    background-color: var(--background-secondary) !important;
+    border-color: var(--border-subtle) !important;
+  }
+}
