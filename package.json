@@ -10,8 +10,11 @@
   },
   "dependencies": {
     "@carbon/react": "^1.83.0-rc.0",
+    "leaflet": "^1.9.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-leaflet": "^4.2.1",
+    "react-leaflet-cluster": "^2.1.0",
     "react-router-dom": "^7.6.0"
   },
   "devDependencies": {
