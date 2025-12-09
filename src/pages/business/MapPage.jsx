@@ -6,86 +6,168 @@ import {
   Tile,
   Button,
   Heading,
-  Search,
-  Dropdown,
-  Tag,
   ContentSwitcher,
   Switch,
 } from '@carbon/react';
-import { Building, CarFront, Filter, Close } from '@carbon/icons-react';
+import { Building, CarFront, Close } from '@carbon/icons-react';
 import MapView from '../../components/business/MapView';
+import FacetedFilterButton from '../../components/business/FacetedFilterButton';
 import { mockProperties, mockVehicles } from '../../data/businessMockData';
-import { formatCurrency, getStatusTagType } from '../../utils/businessHelpers';
+import { formatCurrency } from '../../utils/businessHelpers';
 import './MapPage.scss';
 
 /**
  * MapPage - Interactive map showing properties and fleet vehicles
- * Features: filtering, asset type switching, summary stats, clickable markers
+ * Features: cascading filters, asset type switching, summary stats, clickable markers
  */
 export default function MapPage() {
   const navigate = useNavigate();
 
   // State
   const [selectedAssetType, setSelectedAssetType] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [typeFilter, setTypeFilter] = useState('all');
-  const [locationFilter, setLocationFilter] = useState('all');
+  const [selectedFilters, setSelectedFilters] = useState({
+    status: [],
+    type: [],
+    location: []
+  });
 
-  // Get unique filter values based on selected asset type
-  const filterOptions = useMemo(() => {
+  // Prepare facets with counts based on selected asset type
+  const facets = useMemo(() => {
+    const data = selectedAssetType === 'properties' ? mockProperties :
+                  selectedAssetType === 'vehicles' ? mockVehicles :
+                  [...mockProperties, ...mockVehicles];
+
     if (selectedAssetType === 'properties') {
-      const cities = [...new Set(mockProperties.map(p => p.city))].sort();
-      const types = [...new Set(mockProperties.map(p => p.propertyType))].sort();
-      const statuses = [...new Set(mockProperties.map(p => p.status))].sort();
-      return { locations: cities, types, statuses };
+      // Property facets
+      const statuses = {};
+      const types = {};
+      const cities = {};
+
+      mockProperties.forEach(p => {
+        statuses[p.status] = (statuses[p.status] || 0) + 1;
+        types[p.propertyType] = (types[p.propertyType] || 0) + 1;
+        cities[p.city] = (cities[p.city] || 0) + 1;
+      });
+
+      return [
+        {
+          key: 'status',
+          label: 'Status',
+          options: Object.entries(statuses).map(([value, count]) => ({
+            value,
+            label: value,
+            count
+          })).sort((a, b) => a.label.localeCompare(b.label))
+        },
+        {
+          key: 'type',
+          label: 'Property Type',
+          options: Object.entries(types).map(([value, count]) => ({
+            value,
+            label: value,
+            count
+          })).sort((a, b) => a.label.localeCompare(b.label))
+        },
+        {
+          key: 'location',
+          label: 'City',
+          options: Object.entries(cities).map(([value, count]) => ({
+            value,
+            label: value,
+            count
+          })).sort((a, b) => a.label.localeCompare(b.label))
+        }
+      ];
     } else if (selectedAssetType === 'vehicles') {
-      const departments = [...new Set(mockVehicles.map(v => v.department))].sort();
-      const types = [...new Set(mockVehicles.map(v => v.vehicleType))].sort();
-      const statuses = [...new Set(mockVehicles.map(v => v.status))].sort();
-      return { locations: departments, types, statuses };
+      // Vehicle facets
+      const statuses = {};
+      const types = {};
+      const departments = {};
+
+      mockVehicles.forEach(v => {
+        statuses[v.status] = (statuses[v.status] || 0) + 1;
+        types[v.vehicleType] = (types[v.vehicleType] || 0) + 1;
+        departments[v.department] = (departments[v.department] || 0) + 1;
+      });
+
+      return [
+        {
+          key: 'status',
+          label: 'Status',
+          options: Object.entries(statuses).map(([value, count]) => ({
+            value,
+            label: value,
+            count
+          })).sort((a, b) => a.label.localeCompare(b.label))
+        },
+        {
+          key: 'type',
+          label: 'Vehicle Type',
+          options: Object.entries(types).map(([value, count]) => ({
+            value,
+            label: value,
+            count
+          })).sort((a, b) => a.label.localeCompare(b.label))
+        },
+        {
+          key: 'location',
+          label: 'Department',
+          options: Object.entries(departments).map(([value, count]) => ({
+            value,
+            label: value,
+            count
+          })).sort((a, b) => a.label.localeCompare(b.label))
+        }
+      ];
     } else {
-      // Combined filters for "all"
-      const propStatuses = mockProperties.map(p => p.status);
-      const vehStatuses = mockVehicles.map(v => v.status);
-      const statuses = [...new Set([...propStatuses, ...vehStatuses])].sort();
-      return { locations: [], types: [], statuses };
+      // Combined facets (all assets)
+      const statuses = {};
+
+      [...mockProperties, ...mockVehicles].forEach(item => {
+        statuses[item.status] = (statuses[item.status] || 0) + 1;
+      });
+
+      return [
+        {
+          key: 'status',
+          label: 'Status',
+          options: Object.entries(statuses).map(([value, count]) => ({
+            value,
+            label: value,
+            count
+          })).sort((a, b) => a.label.localeCompare(b.label))
+        }
+      ];
     }
   }, [selectedAssetType]);
 
   // Filter properties
   const filteredProperties = useMemo(() => {
     return mockProperties.filter(property => {
-      const searchMatch = searchTerm === '' || 
-        property.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        property.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        property.city.toLowerCase().includes(searchTerm.toLowerCase());
+      const statusMatch = selectedFilters.status.length === 0 || 
+        selectedFilters.status.includes(property.status);
+      const typeMatch = selectedFilters.type.length === 0 || 
+        selectedFilters.type.includes(property.propertyType);
+      const locationMatch = selectedFilters.location.length === 0 || 
+        selectedFilters.location.includes(property.city);
 
-      const statusMatch = statusFilter === 'all' || property.status === statusFilter;
-      const typeMatch = typeFilter === 'all' || property.propertyType === typeFilter;
-      const locationMatch = locationFilter === 'all' || property.city === locationFilter;
-
-      return searchMatch && statusMatch && typeMatch && locationMatch;
+      return statusMatch && typeMatch && locationMatch;
     });
-  }, [searchTerm, statusFilter, typeFilter, locationFilter]);
+  }, [selectedFilters]);
 
   // Filter vehicles
   const filteredVehicles = useMemo(() => {
     return mockVehicles.filter(vehicle => {
-      const searchMatch = searchTerm === '' || 
-        vehicle.make.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        vehicle.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        vehicle.vin.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        vehicle.licensePlate.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        vehicle.assignedDriver.toLowerCase().includes(searchTerm.toLowerCase());
+      const statusMatch = selectedFilters.status.length === 0 || 
+        selectedFilters.status.includes(vehicle.status);
+      const typeMatch = selectedFilters.type.length === 0 || 
+        selectedFilters.type.includes(vehicle.vehicleType);
+      const locationMatch = selectedFilters.location.length === 0 || 
+        selectedFilters.location.includes(vehicle.department);
 
-      const statusMatch = statusFilter === 'all' || vehicle.status === statusFilter;
-      const typeMatch = typeFilter === 'all' || vehicle.vehicleType === typeFilter;
-      const locationMatch = locationFilter === 'all' || vehicle.department === locationFilter;
-
-      return searchMatch && statusMatch && typeMatch && locationMatch;
+      return statusMatch && typeMatch && locationMatch;
     });
-  }, [searchTerm, statusFilter, typeFilter, locationFilter]);
+  }, [selectedFilters]);
 
   // Calculate summary stats
   const stats = useMemo(() => {
@@ -118,29 +200,32 @@ export default function MapPage() {
 
   // Handle clear filters
   const handleClearFilters = () => {
-    setSearchTerm('');
-    setStatusFilter('all');
-    setTypeFilter('all');
-    setLocationFilter('all');
+    setSelectedFilters({
+      status: [],
+      type: [],
+      location: []
+    });
   };
 
-  const activeFiltersCount = [statusFilter, typeFilter, locationFilter].filter(f => f !== 'all').length + (searchTerm ? 1 : 0);
+  // Handle asset type change
+  const handleAssetTypeChange = (e) => {
+    const index = e.index;
+    setSelectedAssetType(index === 0 ? 'all' : index === 1 ? 'properties' : 'vehicles');
+    handleClearFilters();
+  };
 
-  // Prepare dropdown items
-  const statusItems = [
-    { id: 'all', text: 'All Statuses' },
-    ...filterOptions.statuses.map(status => ({ id: status, text: status }))
-  ];
+  // Count active filters
+  const activeFiltersCount = Object.values(selectedFilters).reduce(
+    (sum, values) => sum + values.length,
+    0
+  );
 
-  const typeItems = [
-    { id: 'all', text: selectedAssetType === 'properties' ? 'All Property Types' : 'All Vehicle Types' },
-    ...filterOptions.types.map(type => ({ id: type, text: type }))
-  ];
-
-  const locationItems = [
-    { id: 'all', text: selectedAssetType === 'properties' ? 'All Cities' : 'All Departments' },
-    ...filterOptions.locations.map(loc => ({ id: loc, text: loc }))
-  ];
+  // Get filter label based on asset type
+  const filterLabel = selectedAssetType === 'properties' 
+    ? 'Filter Properties' 
+    : selectedAssetType === 'vehicles' 
+    ? 'Filter Vehicles' 
+    : 'Filter Assets';
 
   return (
     <Grid fullWidth className="map-page">
@@ -172,11 +257,7 @@ export default function MapPage() {
         <Tile className="switcher-tile">
           <ContentSwitcher
             selectedIndex={selectedAssetType === 'all' ? 0 : selectedAssetType === 'properties' ? 1 : 2}
-            onChange={(e) => {
-              const index = e.index;
-              setSelectedAssetType(index === 0 ? 'all' : index === 1 ? 'properties' : 'vehicles');
-              handleClearFilters();
-            }}
+            onChange={handleAssetTypeChange}
             className="asset-switcher"
           >
             <Switch name="all" text="All Assets" />
@@ -208,7 +289,7 @@ export default function MapPage() {
           </div>
         </Tile>
 
-        {/* Filters */}
+        {/* Cascading Filter */}
         <Tile className="filters-tile">
           <div className="filters-header">
             <Heading className="tile-heading">Filters</Heading>
@@ -226,51 +307,12 @@ export default function MapPage() {
           </div>
 
           <div className="filters-content">
-            {/* Search */}
-            <Search
-              size="lg"
-              placeholder={selectedAssetType === 'properties' ? 'Search properties...' : 
-                          selectedAssetType === 'vehicles' ? 'Search vehicles...' : 
-                          'Search all assets...'}
-              labelText="Search"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onClear={() => setSearchTerm('')}
+            <FacetedFilterButton
+              label={filterLabel}
+              facets={facets}
+              selectedFilters={selectedFilters}
+              onFiltersChange={setSelectedFilters}
             />
-
-            {/* Status Filter */}
-            <Dropdown
-              id="status-filter"
-              titleText="Status"
-              label="Select status"
-              items={statusItems}
-              selectedItem={statusItems.find(item => item.id === statusFilter)}
-              onChange={(e) => setStatusFilter(e.selectedItem.id)}
-            />
-
-            {/* Type Filter (only if not "all") */}
-            {selectedAssetType !== 'all' && (
-              <Dropdown
-                id="type-filter"
-                titleText={selectedAssetType === 'properties' ? 'Property Type' : 'Vehicle Type'}
-                label={selectedAssetType === 'properties' ? 'Select property type' : 'Select vehicle type'}
-                items={typeItems}
-                selectedItem={typeItems.find(item => item.id === typeFilter)}
-                onChange={(e) => setTypeFilter(e.selectedItem.id)}
-              />
-            )}
-
-            {/* Location Filter (only if not "all") */}
-            {selectedAssetType !== 'all' && (
-              <Dropdown
-                id="location-filter"
-                titleText={selectedAssetType === 'properties' ? 'City' : 'Department'}
-                label={selectedAssetType === 'properties' ? 'Select city' : 'Select department'}
-                items={locationItems}
-                selectedItem={locationItems.find(item => item.id === locationFilter)}
-                onChange={(e) => setLocationFilter(e.selectedItem.id)}
-              />
-            )}
           </div>
         </Tile>
 
