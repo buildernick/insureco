@@ -18,14 +18,17 @@ Visit this page to see all three solutions side-by-side with interactive step na
 
 ## Three Solutions
 
+All three solutions show only the **previous step**, **current step**, and **next step** at any given time, making them extremely compact and focused.
+
 ### Solution 1: Vertical Progress Bar
 
-**Component**: `VerticalProgressBar.jsx`  
+**Component**: `VerticalProgressBar.jsx`
 **Approach**: Uses Carbon's ProgressIndicator with vertical orientation
 
 **Features**:
 - Carbon Design System component (maintains consistency)
 - Vertical layout eliminates horizontal scrolling
+- Shows only 3 steps at a time (prev, current, next)
 - Familiar stepper UI pattern
 - Accessible by default (Carbon's built-in accessibility)
 - Theme-aware styling
@@ -36,7 +39,7 @@ Visit this page to see all three solutions side-by-side with interactive step na
   steps={stepsArray}     // Array of { label, key } objects
   currentIndex={number}  // Current step index (0-based)
 />
-```
+
 
 **When to Use**:
 - Want to keep Carbon ProgressIndicator component
@@ -55,12 +58,13 @@ Visit this page to see all three solutions side-by-side with interactive step na
 
 ### Solution 2: Carbon List Progress (RECOMMENDED)
 
-**Component**: `CarbonListProgress.jsx`  
+**Component**: `CarbonListProgress.jsx`
 **Approach**: Built using only Carbon's OrderedList + ListItem
 
 **Features**:
 - 100% Carbon components (OrderedList, ListItem)
 - Semantic HTML structure (actual `<ol>` list)
+- Shows only 3 steps at a time (prev, current, next)
 - Compact vertical layout
 - Clean, modern design
 - Theme-aware styling
@@ -95,11 +99,12 @@ Best balance of Carbon Design System compliance, accessibility, semantic HTML, a
 
 ### Solution 3: Custom Minimal Progress
 
-**Component**: `CustomMinimalProgress.jsx`  
+**Component**: `CustomMinimalProgress.jsx`
 **Approach**: Completely custom, no Carbon components
 
 **Features**:
 - Minimal dots + lines design
+- Shows only 3 steps at a time (prev, current, next)
 - Extremely compact (smallest vertical footprint)
 - Modern, clean aesthetic
 - Theme-aware styling
