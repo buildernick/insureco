@@ -6,8 +6,8 @@ import {
   Tile,
   Button,
   Heading,
-  ContentSwitcher,
-  Switch,
+  RadioButtonGroup,
+  RadioButton,
 } from '@carbon/react';
 import { Building, CarFront, Close } from '@carbon/icons-react';
 import MapView from '../../components/business/MapView';
@@ -273,12 +273,6 @@ export default function MapPage() {
     });
   };
 
-  // Handle asset type change
-  const handleAssetTypeChange = (e) => {
-    const index = e.index;
-    setSelectedAssetType(index === 0 ? 'all' : index === 1 ? 'properties' : 'vehicles');
-    handleClearFilters();
-  };
 
   // Count active filters
   const activeFiltersCount = Object.values(selectedFilters).reduce(
@@ -319,18 +313,23 @@ export default function MapPage() {
       </Column>
 
       <Column lg={5} md={8} sm={4} className="sidebar-column">
-        {/* Asset Type Switcher */}
-        <Tile className="switcher-tile">
-          <ContentSwitcher
-            selectedIndex={selectedAssetType === 'all' ? 0 : selectedAssetType === 'properties' ? 1 : 2}
-            onChange={handleAssetTypeChange}
-            className="asset-switcher"
+        {/* Asset Type Selection */}
+        <div className="asset-type-selection">
+          <RadioButtonGroup
+            name="asset-type"
+            valueSelected={selectedAssetType}
+            onChange={(value) => {
+              setSelectedAssetType(value);
+              handleClearFilters();
+            }}
+            orientation="vertical"
+            legendText="Asset Type"
           >
-            <Switch name="all" text="All Assets" />
-            <Switch name="properties" text="Properties" />
-            <Switch name="vehicles" text="Vehicles" />
-          </ContentSwitcher>
-        </Tile>
+            <RadioButton id="asset-all" labelText="All Assets" value="all" />
+            <RadioButton id="asset-properties" labelText="Properties" value="properties" />
+            <RadioButton id="asset-vehicles" labelText="Vehicles" value="vehicles" />
+          </RadioButtonGroup>
+        </div>
 
         {/* Summary Stats */}
         <Tile className="stats-tile">
