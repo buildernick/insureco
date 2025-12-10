@@ -1,0 +1,105 @@
+@use '../styles/tokens' as *;
+
+.horizontal-progress-bar {
+  width: 100%;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.horizontal-progress-bar__container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-03);
+  width: 100%;
+  
+  @media (min-width: 672px) {
+    gap: var(--spacing-04);
+  }
+}
+
+.horizontal-progress-bar__ellipsis {
+  flex-shrink: 0;
+  color: var(--text-secondary);
+  font-size: 24px;
+  padding: var(--spacing-02);
+  line-height: 1;
+  
+  @media (min-width: 672px) {
+    font-size: 28px;
+  }
+}
+
+.horizontal-progress-bar__steps {
+  flex: 1;
+  min-width: 0;
+  overflow: visible;
+  
+  .cds--progress-indicator {
+    overflow: visible;
+    min-height: auto;
+  }
+  
+  .cds--progress-step {
+    flex: 1;
+    min-width: 80px;
+    
+    @media (min-width: 672px) {
+      min-width: 120px;
+    }
+  }
+  
+  .cds--progress-step-button {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: var(--spacing-02) !important;
+  }
+  
+  .cds--progress-label {
+    color: var(--text-primary) !important;
+    font-size: var(--body-xs-size);
+    
+    @media (min-width: 672px) {
+      font-size: var(--body-sm-size);
+    }
+  }
+  
+  .cds--progress-optional {
+    color: var(--text-secondary) !important;
+    font-size: 10px;
+    
+    @media (max-width: 671px) {
+      display: none;
+    }
+  }
+  
+  // Current step styling
+  .cds--progress-step--current {
+    .cds--progress-label {
+      color: var(--interactive-primary) !important;
+      font-weight: var(--font-weight-semibold);
+    }
+    
+    svg {
+      fill: var(--interactive-primary);
+    }
+  }
+  
+  // Complete step styling
+  .cds--progress-step--complete {
+    .cds--progress-label {
+      font-weight: var(--font-weight-semibold);
+    }
+    
+    svg {
+      fill: var(--interactive-primary);
+    }
+  }
+  
+  // Incomplete step styling
+  .cds--progress-step--incomplete {
+    .cds--progress-label {
+      color: var(--text-secondary) !important;
+    }
+  }
+}

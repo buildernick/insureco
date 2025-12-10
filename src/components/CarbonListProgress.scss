@@ -1,0 +1,185 @@
+@use '../styles/tokens' as *;
+
+.carbon-list-progress-wrapper {
+  width: 100%;
+}
+
+.carbon-list-progress__ellipsis {
+  padding: var(--spacing-03) var(--spacing-04);
+  color: var(--text-secondary);
+  font-size: var(--body-sm-size);
+  font-style: italic;
+  text-align: center;
+  background: var(--background-hover);
+  border-radius: var(--radius-sm);
+  margin: var(--spacing-02) 0;
+
+  @media (max-width: 671px) {
+    font-size: var(--body-xs-size);
+    padding: var(--spacing-02) var(--spacing-03);
+  }
+}
+
+.carbon-list-progress {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  
+  // Override Carbon's default list styles
+  &.cds--list--ordered {
+    padding-left: 0;
+  }
+}
+
+.carbon-list-progress__item {
+  position: relative;
+  padding: 0;
+  margin: 0 0 var(--spacing-03) 0;
+  list-style: none;
+  
+  // Remove Carbon's default marker
+  &::marker {
+    content: none;
+    display: none;
+  }
+  
+  &::before {
+    display: none;
+  }
+  
+  @media (max-width: 671px) {
+    margin-bottom: var(--spacing-02);
+  }
+}
+
+.carbon-list-progress__content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-04);
+  padding: var(--spacing-04);
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  transition: all 0.2s ease;
+  
+  @media (max-width: 671px) {
+    gap: var(--spacing-03);
+    padding: var(--spacing-03);
+  }
+}
+
+.carbon-list-progress__marker {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold);
+  transition: all 0.2s ease;
+  background-color: transparent;
+  border: 2px solid var(--border-strong);
+  color: var(--text-secondary);
+  
+  @media (max-width: 671px) {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+}
+
+.carbon-list-progress__check {
+  fill: currentColor;
+}
+
+.carbon-list-progress__number {
+  line-height: 1;
+}
+
+.carbon-list-progress__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-01);
+  flex: 1;
+  min-width: 0;
+}
+
+.carbon-list-progress__label {
+  font-size: var(--body-sm-size);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-secondary);
+  
+  @media (min-width: 672px) {
+    font-size: var(--body-md-size);
+  }
+}
+
+.carbon-list-progress__description {
+  font-size: var(--body-xs-size);
+  color: var(--text-tertiary);
+  
+  @media (min-width: 672px) {
+    font-size: var(--body-sm-size);
+  }
+}
+
+// Complete state
+.carbon-list-progress__item--complete {
+  .carbon-list-progress__content {
+    background-color: var(--background-hover);
+  }
+  
+  .carbon-list-progress__marker {
+    background-color: var(--interactive-primary);
+    border-color: var(--interactive-primary);
+    color: var(--text-on-color);
+  }
+  
+  .carbon-list-progress__label {
+    color: var(--text-primary);
+    font-weight: var(--font-weight-semibold);
+  }
+}
+
+// Current state
+.carbon-list-progress__item--current {
+  .carbon-list-progress__content {
+    background-color: var(--background-selected);
+    border-left: 4px solid var(--interactive-primary);
+    padding-left: calc(var(--spacing-04) - 4px);
+    
+    @media (max-width: 671px) {
+      border-left-width: 3px;
+      padding-left: calc(var(--spacing-03) - 3px);
+    }
+  }
+  
+  .carbon-list-progress__marker {
+    background-color: var(--interactive-primary);
+    border-color: var(--interactive-primary);
+    color: var(--text-on-color);
+    box-shadow: 0 0 0 3px var(--background-selected);
+  }
+  
+  .carbon-list-progress__label {
+    color: var(--interactive-primary);
+    font-weight: var(--font-weight-bold);
+  }
+  
+  .carbon-list-progress__description {
+    color: var(--text-secondary);
+  }
+}
+
+// Incomplete state (default styles already applied)
+.carbon-list-progress__item--incomplete {
+  .carbon-list-progress__marker {
+    opacity: 0.6;
+  }
+  
+  .carbon-list-progress__label {
+    opacity: 0.8;
+  }
+}
