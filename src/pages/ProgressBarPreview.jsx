@@ -12,6 +12,9 @@ import { ArrowLeft, ArrowRight } from '@carbon/icons-react';
 import VerticalProgressBar from '../components/VerticalProgressBar';
 import CarbonListProgress from '../components/CarbonListProgress';
 import CustomMinimalProgress from '../components/CustomMinimalProgress';
+import HorizontalProgressBar from '../components/HorizontalProgressBar';
+import HorizontalCarbonList from '../components/HorizontalCarbonList';
+import HorizontalMinimalProgress from '../components/HorizontalMinimalProgress';
 import './ProgressBarPreview.scss';
 
 export default function ProgressBarPreview() {
@@ -44,7 +47,7 @@ export default function ProgressBarPreview() {
             Progress Bar Design Comparison
           </Heading>
           <p className="progress-preview-subtitle">
-            Three different approaches to solve mobile/tablet horizontal scroll issues
+            Three different approaches in both vertical and horizontal layouts
           </p>
         </header>
         
@@ -77,7 +80,7 @@ export default function ProgressBarPreview() {
       
       <Column sm={4} md={8} lg={16}>
         <Grid className="progress-preview-grid">
-          {/* Solution 1: Vertical Progress Bar */}
+          {/* Solution 1: Progress Bar */}
           <Column sm={4} md={8} lg={5} className="progress-preview-column">
             <Tile className="progress-preview-tile">
               <Stack gap={5}>
@@ -86,26 +89,30 @@ export default function ProgressBarPreview() {
                     Solution 1
                   </Heading>
                   <span className="progress-preview-badge progress-preview-badge--vertical">
-                    Vertical Layout
+                    Carbon Progress
                   </span>
                 </div>
-                
+
                 <div className="progress-preview-description">
-                  <h4>Vertical Progress Indicator</h4>
+                  <h4>Carbon Progress Indicator</h4>
                   <p>
-                    Takes Carbon's existing ProgressIndicator component and makes it vertical.
-                    Familiar UI pattern, no horizontal scrolling.
+                    Uses Carbon's ProgressIndicator component in both vertical and horizontal layouts.
+                    Shows ellipsis for hidden steps.
                   </p>
                   <ul className="progress-preview-pros-cons">
                     <li className="progress-preview-pro">✓ Uses Carbon component</li>
                     <li className="progress-preview-pro">✓ Familiar design pattern</li>
                     <li className="progress-preview-pro">✓ Accessible by default</li>
-                    <li className="progress-preview-con">✗ Takes more vertical space</li>
+                    <li className="progress-preview-pro">✓ Both orientations</li>
                   </ul>
                 </div>
-                
+
                 <div className="progress-preview-demo">
+                  <h5 className="progress-preview-demo-title">Vertical</h5>
                   <VerticalProgressBar steps={steps} currentIndex={currentStep} />
+
+                  <h5 className="progress-preview-demo-title">Horizontal</h5>
+                  <HorizontalProgressBar steps={steps} currentIndex={currentStep} />
                 </div>
               </Stack>
             </Tile>
@@ -123,23 +130,27 @@ export default function ProgressBarPreview() {
                     Carbon Only
                   </span>
                 </div>
-                
+
                 <div className="progress-preview-description">
                   <h4>Carbon List-Based Progress</h4>
                   <p>
-                    Built using only Carbon's OrderedList and ListItem components.
-                    Clean, semantic, and mobile-friendly.
+                    Built using Carbon's list components with custom layout.
+                    Clean, semantic, and mobile-friendly in both orientations.
                   </p>
                   <ul className="progress-preview-pros-cons">
                     <li className="progress-preview-pro">✓ 100% Carbon components</li>
                     <li className="progress-preview-pro">✓ Semantic HTML (list)</li>
                     <li className="progress-preview-pro">✓ Compact design</li>
-                    <li className="progress-preview-con">✗ Custom styling needed</li>
+                    <li className="progress-preview-pro">✓ Both orientations</li>
                   </ul>
                 </div>
-                
+
                 <div className="progress-preview-demo">
+                  <h5 className="progress-preview-demo-title">Vertical</h5>
                   <CarbonListProgress steps={steps} currentIndex={currentStep} />
+
+                  <h5 className="progress-preview-demo-title">Horizontal</h5>
+                  <HorizontalCarbonList steps={steps} currentIndex={currentStep} />
                 </div>
               </Stack>
             </Tile>
@@ -157,23 +168,27 @@ export default function ProgressBarPreview() {
                     Custom
                   </span>
                 </div>
-                
+
                 <div className="progress-preview-description">
                   <h4>Minimal Custom Progress</h4>
                   <p>
                     Lightweight custom component with dots and connecting lines.
-                    Extremely compact and modern.
+                    Extremely compact and modern in both orientations.
                   </p>
                   <ul className="progress-preview-pros-cons">
                     <li className="progress-preview-pro">✓ Very compact</li>
                     <li className="progress-preview-pro">✓ Modern aesthetic</li>
                     <li className="progress-preview-pro">✓ Minimal code</li>
-                    <li className="progress-preview-con">✗ No Carbon components</li>
+                    <li className="progress-preview-pro">✓ Both orientations</li>
                   </ul>
                 </div>
-                
+
                 <div className="progress-preview-demo">
+                  <h5 className="progress-preview-demo-title">Vertical</h5>
                   <CustomMinimalProgress steps={steps} currentIndex={currentStep} />
+
+                  <h5 className="progress-preview-demo-title">Horizontal</h5>
+                  <HorizontalMinimalProgress steps={steps} currentIndex={currentStep} />
                 </div>
               </Stack>
             </Tile>
@@ -188,25 +203,27 @@ export default function ProgressBarPreview() {
           </Heading>
           <div className="progress-preview-recommendation-content">
             <p>
-              <strong>For mobile/tablet optimization:</strong> All three solutions eliminate horizontal scrolling.
+              <strong>All solutions now available in both vertical and horizontal layouts.</strong> Each shows only
+              the previous, current, and next steps with ellipsis indicators (⋯) for hidden steps.
             </p>
             <ul>
               <li>
-                <strong>Solution 1 (Vertical)</strong> - Best if you want to keep Carbon's ProgressIndicator
-                but need vertical layout. Most familiar to users who know stepper UIs.
+                <strong>Solution 1 (Carbon Progress)</strong> - Uses Carbon's ProgressIndicator component.
+                Most familiar to users, accessible by default. Choose vertical for sidebar or horizontal for top placement.
               </li>
               <li>
                 <strong>Solution 2 (Carbon List)</strong> - Best balance of Carbon compliance and
-                customization. Semantic HTML structure, accessible, and flexible styling.
+                customization. Semantic HTML structure. Vertical works great for sidebars, horizontal for compact top bars.
               </li>
               <li>
-                <strong>Solution 3 (Custom Minimal)</strong> - Best for minimal, modern aesthetic.
-                Smallest vertical footprint but requires custom maintenance.
+                <strong>Solution 3 (Custom Minimal)</strong> - Lightest weight, modern dot-based design.
+                Smallest footprint in both orientations. Perfect for minimal UIs.
               </li>
             </ul>
             <p className="progress-preview-final-note">
-              💡 <strong>Suggested choice:</strong> Solution 2 (Carbon List) for best combination
-              of Carbon design system compliance, accessibility, and mobile optimization.
+              💡 <strong>Suggested choice:</strong> Use <strong>horizontal layouts for mobile/tablet</strong> (most compact),
+              and <strong>vertical layouts for desktop sidebars</strong>. Solution 2 (Carbon List) recommended for best
+              balance of features and flexibility.
             </p>
           </div>
         </Tile>

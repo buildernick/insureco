@@ -215,9 +215,25 @@
   border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
   min-height: 400px;
-  
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-06);
+
   @media (min-width: 672px) {
-    min-height: 450px;
+    min-height: 500px;
+  }
+}
+
+.progress-preview-demo-title {
+  font-size: var(--body-md-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+  margin: 0;
+  padding-bottom: var(--spacing-03);
+  border-bottom: 1px solid var(--border-subtle);
+
+  @media (min-width: 672px) {
+    font-size: var(--body-lg-size);
   }
 }
 
