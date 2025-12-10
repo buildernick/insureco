@@ -1,0 +1,134 @@
+@use '../styles/tokens' as *;
+
+.vertical-progress-bar {
+  width: 100%;
+  max-width: 100%;
+  
+  .cds--progress-indicator {
+    // Override Carbon's default horizontal layout
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: auto;
+    
+    // Remove horizontal scrolling
+    overflow-x: visible;
+    overflow-y: visible;
+  }
+  
+  .cds--progress-step {
+    // Full width for each step
+    width: 100%;
+    flex: none;
+    min-width: auto;
+    padding: var(--spacing-04) 0;
+    
+    // Mobile: reduce padding
+    @media (max-width: 671px) {
+      padding: var(--spacing-03) 0;
+    }
+  }
+  
+  .cds--progress-step-button {
+    width: 100%;
+    flex-direction: row !important;
+    align-items: center !important;
+    text-align: left !important;
+    gap: var(--spacing-04) !important;
+    padding: var(--spacing-03) !important;
+    border-radius: var(--radius-sm);
+    transition: background-color 0.2s ease;
+    
+    &:hover {
+      background-color: var(--background-hover);
+    }
+    
+    @media (max-width: 671px) {
+      gap: var(--spacing-03) !important;
+    }
+  }
+  
+  .cds--progress-step-button-icon {
+    margin: 0 !important;
+    flex-shrink: 0;
+  }
+  
+  .cds--progress-label {
+    color: var(--text-primary) !important;
+    font-size: var(--body-sm-size);
+    font-weight: var(--font-weight-regular);
+    text-align: left;
+    
+    @media (min-width: 672px) {
+      font-size: var(--body-md-size);
+    }
+  }
+  
+  .cds--progress-optional {
+    color: var(--text-secondary) !important;
+    font-size: var(--body-xs-size);
+    margin-top: var(--spacing-01);
+    padding-left: 0 !important;
+    
+    @media (min-width: 672px) {
+      font-size: var(--body-sm-size);
+    }
+  }
+  
+  // Current step styling
+  .cds--progress-step--current {
+    .cds--progress-step-button {
+      background-color: var(--background-selected);
+      border-left: 3px solid var(--interactive-primary);
+    }
+    
+    .cds--progress-label {
+      color: var(--interactive-primary) !important;
+      font-weight: var(--font-weight-semibold);
+    }
+    
+    svg {
+      fill: var(--interactive-primary);
+    }
+  }
+  
+  // Complete step styling
+  .cds--progress-step--complete {
+    .cds--progress-label {
+      font-weight: var(--font-weight-semibold);
+    }
+    
+    svg {
+      fill: var(--interactive-primary);
+    }
+  }
+  
+  // Incomplete step styling
+  .cds--progress-step--incomplete {
+    .cds--progress-label {
+      color: var(--text-secondary) !important;
+    }
+    
+    svg {
+      fill: var(--text-secondary);
+    }
+  }
+  
+  // Vertical connector line
+  .cds--progress-line {
+    position: absolute;
+    left: 16px;
+    top: 48px;
+    width: 2px;
+    height: calc(100% - 24px);
+    background-color: var(--border-subtle);
+    
+    @media (max-width: 671px) {
+      left: 12px;
+      top: 40px;
+    }
+  }
+  
+  .cds--progress-step--complete .cds--progress-line {
+    background-color: var(--interactive-primary);
+  }
+}
