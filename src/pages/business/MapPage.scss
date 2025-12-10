@@ -56,16 +56,24 @@
     flex-direction: column;
     gap: var(--spacing-05);
 
-    // Asset Type Switcher
-    .switcher-tile {
+    // Asset Type Selection
+    .asset-type-selection {
       padding: var(--spacing-05);
+      background: var(--background-primary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
 
-      .asset-switcher {
-        width: 100%;
+      .cds--radio-button-group {
+        gap: var(--spacing-03);
+      }
 
-        button {
-          flex: 1;
-        }
+      .cds--radio-button__label {
+        font-size: var(--font-size-md);
+        padding-left: var(--spacing-06);
+      }
+
+      .cds--radio-button-wrapper:not(:last-child) {
+        margin-bottom: var(--spacing-03);
       }
     }
 
