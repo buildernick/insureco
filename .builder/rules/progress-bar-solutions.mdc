@@ -11,10 +11,17 @@ The original ProgressIndicator on the SignUp page had horizontal scrolling issue
 
 ## Preview Page
 
-**Route**: `/progress-preview`  
+**Route**: `/progress-preview`
 **Component**: `ProgressBarPreview.jsx`
 
-Visit this page to see all three solutions side-by-side with interactive step navigation to evaluate which works best.
+Visit this page to see all three solutions in both vertical and horizontal layouts with interactive step navigation to evaluate which works best.
+
+## Key Features
+
+- **Shows only 3 steps at a time**: Previous, current, and next steps
+- **Ellipsis indicators**: Shows "⋯ X previous steps" and "⋯ X more steps" when steps are hidden
+- **Dual orientation**: All solutions available in both vertical and horizontal layouts
+- **Mobile optimized**: Compact designs that work on any screen size
 
 ## Three Solutions
 
@@ -58,22 +65,31 @@ All three solutions show only the **previous step**, **current step**, and **nex
 
 ### Solution 2: Carbon List Progress (RECOMMENDED)
 
-**Component**: `CarbonListProgress.jsx`
-**Approach**: Built using only Carbon's OrderedList + ListItem
+**Components**:
+- `CarbonListProgress.jsx` - Vertical list layout
+- `HorizontalCarbonList.jsx` - Horizontal layout
+
+**Approach**: Built using Carbon's list components with custom styling
 
 **Features**:
-- 100% Carbon components (OrderedList, ListItem)
-- Semantic HTML structure (actual `<ol>` list)
+- 100% Carbon components (OrderedList, ListItem for vertical)
+- Semantic HTML structure
 - Shows only 3 steps at a time (prev, current, next)
-- Compact vertical layout
-- Clean, modern design
+- Ellipsis indicators for hidden steps
+- Compact design in both orientations
+- Clean, modern aesthetic
 - Theme-aware styling
 - Mobile-optimized spacing
 
 **Props**:
-```jsx
-<CarbonListProgress 
+
+<CarbonListProgress
   steps={stepsArray}     // Array of { label, key, description? } objects
+  currentIndex={number}  // Current step index (0-based)
+/>
+
+<HorizontalCarbonList
+  steps={stepsArray}     // Array of { label, key } objects
   currentIndex={number}  // Current step index (0-based)
 />
 ```
@@ -83,36 +99,48 @@ All three solutions show only the **previous step**, **current step**, and **nex
 - Need semantic HTML (better for SEO/accessibility)
 - Prefer clean, modern aesthetic
 - Want balance of familiarity and customization
+- Vertical: Sidebars, step-by-step guides
+- Horizontal: Mobile-first layouts, compact headers
 
 **Trade-offs**:
-- ✅ 100% Carbon components
+- ✅ 100% Carbon components (vertical)
 - ✅ Semantic HTML (list structure)
 - ✅ Compact design
 - ✅ Flexible styling
 - ✅ Mobile-friendly
+- ✅ Both orientations available
 - ❌ Requires custom SCSS styling
 
 **Why This Is Recommended**:
-Best balance of Carbon Design System compliance, accessibility, semantic HTML, and mobile optimization. Uses only Carbon components while providing a clean, compact UI perfect for mobile/tablet.
+Best balance of Carbon Design System compliance, accessibility, semantic HTML, and mobile optimization. Uses Carbon components while providing a clean, compact UI perfect for mobile/tablet in both orientations.
 
 ---
 
 ### Solution 3: Custom Minimal Progress
 
-**Component**: `CustomMinimalProgress.jsx`
+**Components**:
+- `CustomMinimalProgress.jsx` - Vertical dot layout
+- `HorizontalMinimalProgress.jsx` - Horizontal dot layout
+
 **Approach**: Completely custom, no Carbon components
 
 **Features**:
 - Minimal dots + lines design
 - Shows only 3 steps at a time (prev, current, next)
-- Extremely compact (smallest vertical footprint)
+- Ellipsis indicators for hidden steps
+- Extremely compact (smallest footprint in both orientations)
 - Modern, clean aesthetic
 - Theme-aware styling
 - Very lightweight code
 
 **Props**:
 ```jsx
-<CustomMinimalProgress 
+<CustomMinimalProgress
+  steps={stepsArray}     // Array of { label, key } objects
+  currentIndex={number}  // Current step index (0-based)
+/>
+
+<HorizontalMinimalProgress
   steps={stepsArray}     // Array of { label, key } objects
   currentIndex={number}  // Current step index (0-based)
 />
@@ -120,15 +148,18 @@ Best balance of Carbon Design System compliance, accessibility, semantic HTML, a
 
 **When to Use**:
 - Want absolute minimal design
-- Need smallest vertical space
+- Need smallest possible footprint
 - Prefer modern dot-based indicators
 - Don't require Carbon component compliance
+- Vertical: Minimal sidebars, timeline views
+- Horizontal: Ultra-compact mobile headers
 
 **Trade-offs**:
-- ✅ Very compact
+- ✅ Very compact (smallest of all solutions)
 - ✅ Modern aesthetic
 - ✅ Minimal code
 - ✅ Lightweight
+- ✅ Both orientations available
 - ❌ Not a Carbon component
 - ❌ Custom maintenance required
 - ❌ May feel less familiar to users
@@ -230,13 +261,15 @@ When evaluating these solutions:
 
 ## Files Created
 
-### Components:
-- `src/components/VerticalProgressBar.jsx`
-- `src/components/VerticalProgressBar.scss`
-- `src/components/CarbonListProgress.jsx`
-- `src/components/CarbonListProgress.scss`
-- `src/components/CustomMinimalProgress.jsx`
-- `src/components/CustomMinimalProgress.scss`
+### Vertical Components:
+- `src/components/VerticalProgressBar.jsx` + `.scss`
+- `src/components/CarbonListProgress.jsx` + `.scss`
+- `src/components/CustomMinimalProgress.jsx` + `.scss`
+
+### Horizontal Components:
+- `src/components/HorizontalProgressBar.jsx` + `.scss`
+- `src/components/HorizontalCarbonList.jsx` + `.scss`
+- `src/components/HorizontalMinimalProgress.jsx` + `.scss`
 
 ### Preview Page:
 - `src/pages/ProgressBarPreview.jsx`
@@ -245,15 +278,30 @@ When evaluating these solutions:
 ### Routes:
 - `/progress-preview` added to `App.jsx`
 
+### Documentation:
+- `.builder/rules/progress-bar-solutions.mdc`
+
 ## Recommendation
 
-**Use Solution 2 (CarbonListProgress)** for the best combination of:
-- Carbon Design System compliance
+### For Mobile/Tablet (Primary Use Case)
+**Use horizontal layouts** for the most compact experience:
+- **Solution 2 Horizontal** (`HorizontalCarbonList`) - Best balance of features
+- **Solution 3 Horizontal** (`HorizontalMinimalProgress`) - Most compact
+- **Solution 1 Horizontal** (`HorizontalProgressBar`) - Most familiar
+
+### For Desktop Sidebars
+**Use vertical layouts** for better readability:
+- **Solution 2 Vertical** (`CarbonListProgress`) - Recommended
+- **Solution 1 Vertical** (`VerticalProgressBar`) - Most familiar
+- **Solution 3 Vertical** (`CustomMinimalProgress`) - Most compact
+
+### Overall Recommendation
+**Solution 2 (Carbon List)** in whichever orientation fits your layout:
+- Best balance of Carbon compliance and customization
 - Semantic HTML structure
-- Accessibility
-- Mobile optimization
 - Clean, modern aesthetic
-- Flexible customization
+- Works great in both orientations
+- Ellipsis indicators show hidden steps clearly
 
 This solution provides the best balance and is most aligned with the project's use of Carbon components while solving the mobile horizontal scroll issue.
 
