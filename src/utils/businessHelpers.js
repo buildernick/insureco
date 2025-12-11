@@ -575,6 +575,7 @@ export default {
   // Dates
   formatDate,
   formatDateTime,
+  formatDateForInput,
   daysBetween,
   isDatePast,
 
