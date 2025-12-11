@@ -1,0 +1,377 @@
+---
+description: Date Picker implementation guidelines - how to format dates correctly without time
+globs: 
+alwaysApply: true
+---
+
+# Date Picker Implementation Guide
+
+## Overview
+
+This guide documents how to properly implement Carbon Design System's `DatePicker` and `DatePickerInput` components in this project to display dates in `mm/dd/yyyy` format **without time**.
+
+## The Problem
+
+Carbon's DatePicker component returns `Date` objects which, when converted to strings, include the time portion: `Mon Dec 01 2025 00:00:00`. This creates an ugly display in form fields like:
+
+
+Date of Birth: Mon Dec 01 2025 00:00:00
+```
+
+## The Solution
+
+Use the `formatDateForInput()` utility function from `src/utils/businessHelpers.js` to format the date immediately in the DatePicker's `onChange` callback.
+
+## Implementation Pattern
+
+### ✅ CORRECT IMPLEMENTATION
+
+```jsx
+import { DatePicker, DatePickerInput } from '@carbon/react';
+import { formatDateForInput } from '../utils/businessHelpers';
+
+export default function MyForm() {
+  const [dateOfBirth, setDateOfBirth] = useState('');
+
+  return (
+    <DatePicker
+      datePickerType="single"
+      onChange={(dates) => setDateOfBirth(formatDateForInput(dates?.[0] || ''))}
+    >
+      <DatePickerInput
+        id="date-of-birth"
+        labelText="Date of Birth"
+        placeholder="mm/dd/yyyy"
+        value={dateOfBirth}
+      />
+    </DatePicker>
+  );
+}
+```
+
+**Key Points:**
+1. Pass the selected date to `formatDateForInput()` in the `onChange` callback
+2. Store the formatted date string (e.g., `"12/01/2025"`)
+3. The DatePickerInput displays the formatted date without time
+
+### ❌ INCORRECT IMPLEMENTATIONS
+
+**Mistake 1: Storing raw Date objects**
+```jsx
+// ❌ WRONG - Stores Date object, displays with time
+onChange={(dates) => setDateOfBirth(dates?.[0] || '')}
+```
+
+**Mistake 2: Not using the utility function**
+```jsx
+// ❌ WRONG - Manual date.toString() still includes time
+onChange={(dates) => setDateOfBirth(dates?.[0]?.toString() || '')}
+```
+
+**Mistake 3: Formatting only in display, not in state**
+```jsx
+// ❌ WRONG - Input value shows raw date with time
+<DatePickerInput value={dateOfBirth} />
+// Later trying to format for display:
+<span>{formatDate(dateOfBirth)}</span>  // Too late, already displayed wrong
+```
+
+## The formatDateForInput() Function
+
+### Location
+`src/utils/businessHelpers.js`
+
+### Signature
+```javascript
+/**
+ * Format a date for Carbon DatePickerInput (mm/dd/yyyy format only, no time)
+ * @param {string|Date} dateInput - Date to format
+ * @returns {string} Formatted date string (mm/dd/yyyy)
+ */
+export function formatDateForInput(dateInput)
+```
+
+### What It Does
+- Takes a `Date` object or date string
+- Returns formatted date as `mm/dd/yyyy` (e.g., `"12/01/2025"`)
+- Returns empty string `""` for invalid/null dates
+- Handles both timezone-aware and naive dates correctly
+
+### Examples
+```javascript
+import { formatDateForInput } from '../utils/businessHelpers';
+
+// Date object
+formatDateForInput(new Date('2025-12-01'))  // Returns: "12/01/2025"
+
+// Date string
+formatDateForInput('2025-12-01')  // Returns: "12/01/2025"
+
+// Carbon DatePicker output
+const dates = [new Date('2025-12-01')];  // What DatePicker onChange provides
+formatDateForInput(dates[0])  // Returns: "12/01/2025"
+
+// Null/undefined
+formatDateForInput(null)  // Returns: ""
+formatDateForInput(undefined)  // Returns: ""
+
+// Invalid date
+formatDateForInput('invalid')  // Returns: ""
+```
+
+## Files Using This Pattern
+
+These files implement date pickers correctly:
+
+1. **src/pages/SignUpPage.jsx** (Line ~207)
+   - Personal Information step, Date of Birth field
+   ```jsx
+   <DatePicker
+     datePickerType="single"
+     onChange={(dates) => updateFormData('dateOfBirth', formatDateForInput(dates?.[0] || ''))}
+   >
+   ```
+
+2. **src/pages/business/AddPropertyPage.jsx** (Line ~380)
+   - Property addition, Initial Inspection Date field
+   ```jsx
+   <DatePicker
+     datePickerType="single"
+     onChange={(dates) => handleInputChange('inspectionDate', formatDateForInput(dates[0] || ''))}
+   >
+   ```
+
+3. **src/pages/business/FileClaimPage.jsx** (Line ~230)
+   - Claim filing, Incident Date field
+   ```jsx
+   <DatePicker
+     datePickerType="single"
+     onChange={(dates) => handleInputChange('incidentDate', formatDateForInput(dates[0] || ''))}
+   >
+   ```
+
+## Common Scenarios
+
+### Scenario 1: Simple Date Input (Recommended)
+```jsx
+const [dob, setDob] = useState('');
+
+<DatePicker datePickerType="single" onChange={(dates) => setDob(formatDateForInput(dates?.[0] || ''))}>
+  <DatePickerInput id="dob" labelText="Date of Birth" placeholder="mm/dd/yyyy" value={dob} />
+</DatePicker>
+```
+
+### Scenario 2: Date Range Picker
+```jsx
+const [dates, setDates] = useState(['', '']);
+
+<DatePicker datePickerType="range" onChange={(selectedDates) => {
+  setDates([
+    formatDateForInput(selectedDates?.[0] || ''),
+    formatDateForInput(selectedDates?.[1] || '')
+  ]);
+}}>
+  <DatePickerInput id="start" labelText="Start Date" placeholder="mm/dd/yyyy" value={dates[0]} />
+  <DatePickerInput id="end" labelText="End Date" placeholder="mm/dd/yyyy" value={dates[1]} />
+</DatePicker>
+```
+
+### Scenario 3: With Form Data Object (Like SignUpPage)
+```jsx
+const [formData, setFormData] = useState({
+  dateOfBirth: '',
+  // ... other fields
+});
+
+const updateFormData = (field, value) => {
+  setFormData(prev => ({ ...prev, [field]: value }));
+};
+
+<DatePicker
+  datePickerType="single"
+  onChange={(dates) => updateFormData('dateOfBirth', formatDateForInput(dates?.[0] || ''))}
+>
+  <DatePickerInput
+    id="dateOfBirth"
+    labelText="Date of Birth"
+    placeholder="mm/dd/yyyy"
+    value={formData.dateOfBirth}
+  />
+</DatePicker>
+```
+
+### Scenario 4: With Validation
+```jsx
+const [dob, setDob] = useState('');
+const [error, setError] = useState('');
+
+const handleDateChange = (dates) => {
+  const formatted = formatDateForInput(dates?.[0] || '');
+  
+  if (formatted) {
+    // Validate date (e.g., must be in past, age requirements)
+    const date = new Date(formatted);
+    const age = new Date().getFullYear() - date.getFullYear();
+    
+    if (age < 18) {
+      setError('You must be at least 18 years old');
+    } else {
+      setError('');
+    }
+  }
+  
+  setDob(formatted);
+};
+
+<DatePicker datePickerType="single" onChange={handleDateChange}>
+  <DatePickerInput
+    id="dob"
+    labelText="Date of Birth"
+    placeholder="mm/dd/yyyy"
+    value={dob}
+    invalid={!!error}
+    invalidText={error}
+  />
+</DatePicker>
+```
+
+## Display vs. Storage
+
+### Display (for tables, summaries, etc.)
+When you need to display a date from your stored `mm/dd/yyyy` format, use the `formatDate()` function:
+
+```javascript
+import { formatDate } from '../utils/businessHelpers';
+
+// For summary pages showing the selected date
+const displayValue = formatDate(formData.dateOfBirth, 'long');  // "December 1, 2025"
+const displayValue = formatDate(formData.dateOfBirth, 'medium');  // "12/01/2025"
+const displayValue = formatDate(formData.dateOfBirth, 'short');  // "12/1/25"
+```
+
+### Storage (what you store)
+Always store dates as `mm/dd/yyyy` strings after using `formatDateForInput()`:
+
+```javascript
+// In formData object
+formData.dateOfBirth = "12/01/2025"  // Not a Date object, not with time
+```
+
+## Theming
+
+Date pickers automatically adapt to the current theme (light/dark mode) through Carbon's theming system. **No special styling is needed** - the formatting utility only handles the date format, not colors or appearance.
+
+## Related Documentation
+
+- **Design Tokens**: `.builder/rules/design-tokens.mdc` - Color tokens if you need to style date picker containers
+- **Carbon Design System**: `.builder/rules/carbon-design-system.mdc` - General Carbon component guidance
+- **Form Field Theming**: `.builder/rules/form-field-theming.mdc` - For styling form inputs including date pickers
+- **Business Helpers**: `src/utils/businessHelpers.js` - Complete utility function documentation
+
+## Checklist for New Date Pickers
+
+When adding a new date picker to the app:
+
+- [ ] Import `formatDateForInput` from `src/utils/businessHelpers`
+- [ ] Use `formatDateForInput()` in the DatePicker's `onChange` callback
+- [ ] Store the formatted result (string, not Date object)
+- [ ] Verify the DatePickerInput displays `mm/dd/yyyy` format only
+- [ ] Test in both light and dark themes
+- [ ] If displaying in summaries/tables, use `formatDate()` for longer formats
+- [ ] Add any validation before or after formatting
+
+## Testing
+
+### Manual Testing
+1. Navigate to a form with a date picker
+2. Click on the DatePickerInput field
+3. Select a date from the calendar
+4. Verify the field displays as `mm/dd/yyyy` (e.g., `12/01/2025`)
+5. Verify **no time portion** appears (no `00:00:00`)
+6. Toggle theme to light/dark mode and verify formatting remains correct
+
+### Test Cases
+```javascript
+// Unit test example
+import { formatDateForInput } from '../utils/businessHelpers';
+
+describe('formatDateForInput', () => {
+  test('formats Date object correctly', () => {
+    const date = new Date('2025-12-01');
+    expect(formatDateForInput(date)).toBe('12/01/2025');
+  });
+
+  test('handles date strings', () => {
+    expect(formatDateForInput('2025-12-01')).toBe('12/01/2025');
+  });
+
+  test('returns empty string for null', () => {
+    expect(formatDateForInput(null)).toBe('');
+    expect(formatDateForInput(undefined)).toBe('');
+  });
+
+  test('handles invalid dates gracefully', () => {
+    expect(formatDateForInput('invalid')).toBe('');
+  });
+});
+```
+
+## Troubleshooting
+
+### Issue: Date shows as "12/1/2025" instead of "12/01/2025"
+**Solution**: Ensure you're using `formatDateForInput()` which pads with zeros. This is handled automatically.
+
+### Issue: Date shows with time: "Mon Dec 01 2025 00:00:00"
+**Solution**: You forgot to use `formatDateForInput()`. Add it to your DatePicker onChange:
+```javascript
+// ❌ Before (wrong)
+onChange={(dates) => setDate(dates?.[0] || '')}
+
+// ✅ After (correct)
+onChange={(dates) => setDate(formatDateForInput(dates?.[0] || ''))}
+```
+
+### Issue: DatePickerInput shows empty after selection
+**Possible causes**:
+1. You're passing a Date object instead of a formatted string
+2. formatDateForInput() is returning empty string due to invalid date
+3. The state isn't being updated (check onChange callback)
+
+**Solution**:
+```javascript
+const handleDateChange = (dates) => {
+  console.log('Raw dates:', dates);  // Check what DatePicker returns
+  const formatted = formatDateForInput(dates?.[0] || '');
+  console.log('Formatted:', formatted);  // Check what we're storing
+  setDate(formatted);
+};
+```
+
+### Issue: Can't parse the date later for backend
+**Solution**: The formatted string is just for display in the form. For backend submission:
+```javascript
+// To convert back to ISO format for API:
+const formatDateForAPI = (dateString) => {
+  if (!dateString) return null;
+  const [month, day, year] = dateString.split('/');
+  return `${year}-${month}-${day}`;  // ISO: "2025-12-01"
+};
+
+// When submitting:
+const apiPayload = {
+  dateOfBirth: formatDateForAPI(formData.dateOfBirth)
+};
+```
+
+## Summary
+
+**Key Takeaway**: Always use `formatDateForInput()` in your DatePicker's `onChange` callback to ensure dates display as `mm/dd/yyyy` without time.
+
+**One-liner Pattern**:
+```jsx
+<DatePicker onChange={(dates) => setState(formatDateForInput(dates?.[0] || ''))}>
+  <DatePickerInput value={state} placeholder="mm/dd/yyyy" />
+</DatePicker>
+```
+
+That's it! This ensures consistent date formatting across the entire application.
