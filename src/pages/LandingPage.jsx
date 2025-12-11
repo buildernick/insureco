@@ -9,7 +9,6 @@ import {
   TextArea,
   Heading,
   Stack,
-  InlineNotification,
 } from '@carbon/react';
 import {
   Security,
@@ -24,21 +23,6 @@ import './LandingPage.scss';
 export default function LandingPage() {
   const navigate = useNavigate();
   const [demoModalOpen, setDemoModalOpen] = useState(false);
-  const [visibleNotifications, setVisibleNotifications] = useState({
-    error: true,
-    warning: true,
-    warningAlt: true,
-    info: true,
-    infoSquare: true,
-    success: true,
-  });
-
-  const toggleNotification = (key) => {
-    setVisibleNotifications(prev => ({
-      ...prev,
-      [key]: !prev[key]
-    }));
-  };
 
   const features = [
     {
@@ -83,87 +67,6 @@ export default function LandingPage() {
 
   return (
     <div className="landing-page">
-      {/* Notification Banners - All Variants */}
-      <div className="notifications-container">
-        {visibleNotifications.error && (
-          <div className="notification-banner">
-            <InlineNotification
-              kind="error"
-              title="Error Notification"
-              subtitle="This is an error message variant"
-              onCloseButtonClick={() => toggleNotification('error')}
-              aria-label="Dismiss error notification"
-              statusIconDescription="error"
-            />
-          </div>
-        )}
-
-        {visibleNotifications.warning && (
-          <div className="notification-banner">
-            <InlineNotification
-              kind="warning"
-              title="Warning Notification"
-              subtitle="This is a warning message variant"
-              onCloseButtonClick={() => toggleNotification('warning')}
-              aria-label="Dismiss warning notification"
-              statusIconDescription="warning"
-            />
-          </div>
-        )}
-
-        {visibleNotifications.warningAlt && (
-          <div className="notification-banner">
-            <InlineNotification
-              kind="warning-alt"
-              title="Warning Alt Notification"
-              subtitle="This is an alternative warning message variant"
-              onCloseButtonClick={() => toggleNotification('warningAlt')}
-              aria-label="Dismiss warning-alt notification"
-              statusIconDescription="warning"
-            />
-          </div>
-        )}
-
-        {visibleNotifications.info && (
-          <div className="notification-banner">
-            <InlineNotification
-              kind="info"
-              title="Info Notification"
-              subtitle="This is an info message variant"
-              onCloseButtonClick={() => toggleNotification('info')}
-              aria-label="Dismiss info notification"
-              statusIconDescription="info"
-            />
-          </div>
-        )}
-
-        {visibleNotifications.infoSquare && (
-          <div className="notification-banner">
-            <InlineNotification
-              kind="info-square"
-              title="Info Square Notification"
-              subtitle="This is an alternative info message variant"
-              onCloseButtonClick={() => toggleNotification('infoSquare')}
-              aria-label="Dismiss info-square notification"
-              statusIconDescription="info"
-            />
-          </div>
-        )}
-
-        {visibleNotifications.success && (
-          <div className="notification-banner">
-            <InlineNotification
-              kind="success"
-              title="Success Notification"
-              subtitle="This is a success message variant"
-              onCloseButtonClick={() => toggleNotification('success')}
-              aria-label="Dismiss success notification"
-              statusIconDescription="success"
-            />
-          </div>
-        )}
-      </div>
-
       {/* Hero Section */}
       <section className="hero-section">
         <Grid>
