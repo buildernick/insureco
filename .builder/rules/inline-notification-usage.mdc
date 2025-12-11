@@ -49,7 +49,7 @@ All variants are **fully theme-aware** and automatically adjust colors for light
   aria-label="Dismiss error notification"
   statusIconDescription="error"
 />
-```
+
 
 ### 2. Warning (kind="warning")
 **Background**: Light yellow in light mode, dark yellow in dark mode  
@@ -455,9 +455,8 @@ Before adding an InlineNotification, verify:
 
 ## File References
 
-- **Implementation**: `src/pages/LandingPage.jsx` (example usage)
-- **Styling**: `src/pages/LandingPage.scss` (theme-aware styling)
-- **Tokens**: `src/styles/tokens/colors.scss` (color definitions)
+- **Tokens**: `src/styles/tokens/colors.scss` (color definitions for notification backgrounds and text)
+- **Global Styling**: `src/styles/components.scss` (global component overrides)
 - **Theme Context**: `src/contexts/ThemeContext.jsx` (theme state management)
 
 ## Summary
