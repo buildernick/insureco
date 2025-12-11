@@ -13,6 +13,8 @@
   // Ensure full width on all screen sizes
   .cds--inline-notification {
     max-width: 100%;
+    // Override background color to red for warning visibility
+    background-color: rgba(215, 5, 5, 1) !important;
   }
 
   // Add margin below banner to separate from hero section
