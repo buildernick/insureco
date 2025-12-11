@@ -3,7 +3,7 @@ description: InlineNotification component usage guidelines and patterns
 globs:
   - src/pages/**/*.jsx
   - src/components/**/*.jsx
-alwaysApply: true
+alwaysApply: false
 ---
 
 # InlineNotification Component Usage
