@@ -24,6 +24,7 @@ import './LandingPage.scss';
 export default function LandingPage() {
   const navigate = useNavigate();
   const [demoModalOpen, setDemoModalOpen] = useState(false);
+  const [warningVisible, setWarningVisible] = useState(true);
 
   const features = [
     {
