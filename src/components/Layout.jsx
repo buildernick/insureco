@@ -37,10 +37,20 @@ export default function Layout({ children }) {
   return (
     <HeaderContainer
       render={({ isSideNavExpanded, onClickSideNavExpand }) => {
-        // Helper function to handle navigation WITHOUT closing menu (intentional "bug" for demo)
+        // Helper function to handle navigation and close the side nav
         const handleNavigate = (path) => {
           navigate(path);
-          // Note: Not closing the side nav here - it will only close when clicking outside
+          // Close the side nav after navigation
+          if (isSideNavExpanded) {
+            onClickSideNavExpand();
+          }
+        };
+
+        // Helper function to close side nav when using Link components
+        const handleLinkClick = () => {
+          if (isSideNavExpanded) {
+            onClickSideNavExpand();
+          }
         };
 
         return (
@@ -131,36 +141,42 @@ export default function Layout({ children }) {
                       <SideNavMenuItem
                         element={Link}
                         to="/business/dashboard"
+                        onClick={handleLinkClick}
                       >
                         Overview
                       </SideNavMenuItem>
                       <SideNavMenuItem
                         element={Link}
                         to="/business/properties"
+                        onClick={handleLinkClick}
                       >
                         Properties
                       </SideNavMenuItem>
                       <SideNavMenuItem
                         element={Link}
                         to="/business/fleet"
+                        onClick={handleLinkClick}
                       >
                         Fleet
                       </SideNavMenuItem>
                       <SideNavMenuItem
                         element={Link}
                         to="/business/map"
+                        onClick={handleLinkClick}
                       >
                         Map View
                       </SideNavMenuItem>
                       <SideNavMenuItem
                         element={Link}
                         to="/business/claims"
+                        onClick={handleLinkClick}
                       >
                         Claims
                       </SideNavMenuItem>
                       <SideNavMenuItem
                         element={Link}
                         to="/business/payments"
+                        onClick={handleLinkClick}
                       >
                         Payments
                       </SideNavMenuItem>
