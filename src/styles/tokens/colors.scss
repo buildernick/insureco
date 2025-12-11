@@ -208,6 +208,15 @@ $dark-text-on-dark: $color-grey-10;  // Light text for dark backgrounds
   // Use these when you need guaranteed readability
   --text-on-light-bg: #{$light-text-on-light};  // Dark text (use on white/light backgrounds)
   --text-on-dark-bg: #{$light-text-on-dark};    // Light text (use on dark/colored backgrounds)
+
+  // Notification backgrounds
+  --notification-error-bg: #{$color-error-10};
+  --notification-warning-bg: #{$color-warning-10};
+  --notification-info-bg: #{$color-info-10};
+  --notification-success-bg: #{$color-success-10};
+
+  // Notification text colors
+  --notification-text: #{$light-text-primary};
 }
 
 // Dark theme
@@ -244,4 +253,13 @@ $dark-text-on-dark: $color-grey-10;  // Light text for dark backgrounds
   // Use these when you need guaranteed readability
   --text-on-light-bg: #{$dark-text-on-light};  // Dark text (use on white/light backgrounds)
   --text-on-dark-bg: #{$dark-text-on-dark};    // Light text (use on dark/colored backgrounds)
+
+  // Notification backgrounds
+  --notification-error-bg: #{$color-error-70};
+  --notification-warning-bg: #{$color-warning-70};
+  --notification-info-bg: #{$color-info-70};
+  --notification-success-bg: #{$color-success-70};
+
+  // Notification text colors
+  --notification-text: #{$dark-text-primary};
 }

@@ -1,0 +1,478 @@
+---
+description: InlineNotification component usage guidelines and patterns
+globs:
+  - src/pages/**/*.jsx
+  - src/components/**/*.jsx
+alwaysApply: false
+---
+
+# InlineNotification Component Usage
+
+This document provides guidelines for using Carbon's `InlineNotification` component in the InsureCo application.
+
+## Overview
+
+`InlineNotification` is a Carbon Design System component used to display contextual feedback messages inline within page content. These notifications are theme-aware and automatically adapt colors for both light and dark modes.
+
+**Location**: `@carbon/react`
+**Styling**: Handled automatically through global tokens in `src/styles/tokens/colors.scss`
+**Tokens used**: `--notification-error-bg`, `--notification-warning-bg`, `--notification-info-bg`, `--notification-success-bg`, `--notification-text`
+
+## When to Use
+
+✅ **Use InlineNotification for:**
+- Form validation feedback
+- Contextual alerts tied to specific page sections
+- Non-blocking status messages
+- Confirmations and warnings that users should acknowledge
+- Messages that should remain visible until explicitly dismissed
+
+❌ **Don't use for:**
+- Transient notifications that auto-dismiss (use `ToastNotification` instead)
+- Critical blocking alerts (use `Modal` instead)
+- Multiple unrelated messages (manage with a notification queue)
+
+## Variants and Their Purpose
+
+All variants are **fully theme-aware** and automatically adjust colors for light/dark modes.
+
+### 1. Error (kind="error")
+**Background**: Light pink/red in light mode, dark red in dark mode  
+**Use for**: Critical errors, validation failures, system failures  
+**Example**:
+
+<InlineNotification
+  kind="error"
+  title="Error Notification"
+  subtitle="This is an error message variant"
+  onCloseButtonClick={() => setErrorVisible(false)}
+  aria-label="Dismiss error notification"
+  statusIconDescription="error"
+/>
+
+
+### 2. Warning (kind="warning")
+**Background**: Light yellow in light mode, dark yellow in dark mode  
+**Use for**: Warnings about potential issues, important alerts  
+**Example**:
+
+<InlineNotification
+  kind="warning"
+  title="Warning Notification"
+  subtitle="This is a warning message variant"
+  onCloseButtonClick={() => setWarningVisible(false)}
+  aria-label="Dismiss warning notification"
+  statusIconDescription="warning"
+/>
+```
+
+### 3. Warning Alt (kind="warning-alt")
+**Background**: Light yellow in light mode, dark yellow in dark mode  
+**Use for**: Alternative warning styling (same colors, different icon)  
+**Example**:
+```jsx
+<InlineNotification
+  kind="warning-alt"
+  title="Warning Alt Notification"
+  subtitle="This is an alternative warning message variant"
+  onCloseButtonClick={() => setWarningAltVisible(false)}
+  aria-label="Dismiss warning-alt notification"
+  statusIconDescription="warning"
+/>
+```
+
+### 4. Info (kind="info")
+**Background**: Light blue in light mode, dark blue in dark mode  
+**Use for**: Informational messages, helpful tips  
+**Example**:
+```jsx
+<InlineNotification
+  kind="info"
+  title="Info Notification"
+  subtitle="This is an info message variant"
+  onCloseButtonClick={() => setInfoVisible(false)}
+  aria-label="Dismiss info notification"
+  statusIconDescription="info"
+/>
+```
+
+### 5. Info Square (kind="info-square")
+**Background**: Light blue in light mode, dark blue in dark mode  
+**Use for**: Alternative info styling (same colors, different icon)  
+**Example**:
+```jsx
+<InlineNotification
+  kind="info-square"
+  title="Info Square Notification"
+  subtitle="This is an alternative info message variant"
+  onCloseButtonClick={() => setInfoSquareVisible(false)}
+  aria-label="Dismiss info-square notification"
+  statusIconDescription="info"
+/>
+```
+
+### 6. Success (kind="success")
+**Background**: Light green in light mode, dark green in dark mode  
+**Use for**: Positive confirmations, successful operations  
+**Example**:
+```jsx
+<InlineNotification
+  kind="success"
+  title="Success Notification"
+  subtitle="This is a success message variant"
+  onCloseButtonClick={() => setSuccessVisible(false)}
+  aria-label="Dismiss success notification"
+  statusIconDescription="success"
+/>
+```
+
+## Implementation Pattern
+
+### Basic Implementation
+
+```jsx
+import { useState } from 'react';
+import { InlineNotification } from '@carbon/react';
+
+function MyComponent() {
+  const [isVisible, setIsVisible] = useState(true);
+
+  return (
+    <>
+      {isVisible && (
+        <InlineNotification
+          kind="error"
+          title="Something went wrong"
+          subtitle="Please try again or contact support"
+          onCloseButtonClick={() => setIsVisible(false)}
+          aria-label="Dismiss error notification"
+          statusIconDescription="error"
+        />
+      )}
+      {/* Rest of component */}
+    </>
+  );
+}
+```
+
+### Multiple Notifications
+
+```jsx
+import { useState } from 'react';
+import { InlineNotification } from '@carbon/react';
+
+function MyComponent() {
+  const [visibleNotifications, setVisibleNotifications] = useState({
+    error: true,
+    warning: true,
+    success: true,
+  });
+
+  const toggleNotification = (key) => {
+    setVisibleNotifications(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
+
+  return (
+    <div className="notifications-container">
+      {visibleNotifications.error && (
+        <InlineNotification
+          kind="error"
+          title="Error"
+          subtitle="An error occurred"
+          onCloseButtonClick={() => toggleNotification('error')}
+          aria-label="Dismiss error notification"
+          statusIconDescription="error"
+        />
+      )}
+      
+      {visibleNotifications.warning && (
+        <InlineNotification
+          kind="warning"
+          title="Warning"
+          subtitle="Please be careful"
+          onCloseButtonClick={() => toggleNotification('warning')}
+          aria-label="Dismiss warning notification"
+          statusIconDescription="warning"
+        />
+      )}
+      
+      {visibleNotifications.success && (
+        <InlineNotification
+          kind="success"
+          title="Success"
+          subtitle="Operation completed"
+          onCloseButtonClick={() => toggleNotification('success')}
+          aria-label="Dismiss success notification"
+          statusIconDescription="success"
+        />
+      )}
+    </div>
+  );
+}
+```
+
+## Styling and Theme Integration
+
+### ✅ DO: Use Theme-Aware Colors
+
+All notification styling is already handled automatically through global tokens. **Do not modify background colors or text colors.**
+
+The following tokens are defined in `src/styles/tokens/colors.scss`:
+- `--notification-error-bg` - Error notification background
+- `--notification-warning-bg` - Warning notification background
+- `--notification-info-bg` - Info notification background
+- `--notification-success-bg` - Success notification background
+- `--notification-text` - Text color (adapts to light/dark mode)
+
+### ❌ DON'T: Override Colors
+
+**Never** do the following:
+
+```jsx
+// ❌ WRONG - Hardcoded color
+<div style={{ backgroundColor: '#ff0000' }}>
+  <InlineNotification ... />
+</div>
+
+// ❌ WRONG - Custom CSS override
+<InlineNotification
+  kind="error"
+  style={{ backgroundColor: '#custom-color' }}
+  ...
+/>
+
+// ❌ WRONG - Adding custom wrapper with different background
+<div style={{ backgroundColor: '#fff5f5' }}>
+  <InlineNotification kind="error" ... />
+</div>
+```
+
+### Styling Container (Correct Approach)
+
+If you need to add a wrapper around notifications, use theme-aware colors:
+
+```jsx
+// ✅ CORRECT - Use theme token for wrapper
+<div className="notifications-container">
+  {/* Notifications go here */}
+</div>
+```
+
+```scss
+// In your component's SCSS file
+.notifications-container {
+  background: var(--background-primary);
+  padding: var(--spacing-05);
+
+  .notification-banner {
+    margin-bottom: var(--spacing-05);
+
+    .cds--inline-notification {
+      max-width: 100%;
+    }
+
+    &:last-child {
+      margin-bottom: var(--spacing-07);
+    }
+  }
+}
+```
+
+## Accessibility Requirements
+
+All notifications **must** include:
+
+1. **aria-label**: Clear description of the close button
+   ```jsx
+   aria-label="Dismiss error notification"
+   ```
+
+2. **statusIconDescription**: Screen reader description of the status icon
+   ```jsx
+   statusIconDescription="error"  // or "warning", "info", "success"
+   ```
+
+3. **title**: The main message text
+   ```jsx
+   title="Something went wrong"
+   ```
+
+4. **Close button handler**: Allow users to dismiss
+   ```jsx
+   onCloseButtonClick={() => setIsVisible(false)}
+   ```
+
+## Common Patterns
+
+### Pattern 1: Form Validation Feedback
+
+```jsx
+function Form() {
+  const [errors, setErrors] = useState([]);
+  const [showValidationNotification, setShowValidationNotification] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const validationErrors = validateForm();
+    
+    if (validationErrors.length > 0) {
+      setErrors(validationErrors);
+      setShowValidationNotification(true);
+    }
+  };
+
+  return (
+    <>
+      {showValidationNotification && (
+        <InlineNotification
+          kind="error"
+          title="Validation failed"
+          subtitle={`${errors.length} error(s) found`}
+          onCloseButtonClick={() => setShowValidationNotification(false)}
+          aria-label="Dismiss validation errors"
+          statusIconDescription="error"
+        >
+          <ul>
+            {errors.map((error, i) => <li key={i}>{error}</li>)}
+          </ul>
+        </InlineNotification>
+      )}
+      <form onSubmit={handleSubmit}>
+        {/* Form fields */}
+      </form>
+    </>
+  );
+}
+```
+
+### Pattern 2: API Response Messages
+
+```jsx
+function DataDisplay() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [notification, setNotification] = useState(null);
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/data');
+      const result = await response.json();
+      setData(result);
+      setNotification({
+        kind: 'success',
+        title: 'Success',
+        subtitle: 'Data loaded successfully'
+      });
+    } catch (error) {
+      setNotification({
+        kind: 'error',
+        title: 'Error',
+        subtitle: error.message
+      });
+    }
+    setLoading(false);
+  };
+
+  return (
+    <>
+      {notification && (
+        <InlineNotification
+          kind={notification.kind}
+          title={notification.title}
+          subtitle={notification.subtitle}
+          onCloseButtonClick={() => setNotification(null)}
+          aria-label={`Dismiss ${notification.kind} notification`}
+          statusIconDescription={notification.kind}
+        />
+      )}
+      <button onClick={fetchData} disabled={loading}>
+        {loading ? 'Loading...' : 'Fetch Data'}
+      </button>
+      {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
+    </>
+  );
+}
+```
+
+## Color Mapping Reference
+
+### Light Mode (white/g10 theme)
+
+| Variant | Background | Text Color | Use Case |
+|---------|-----------|-----------|----------|
+| Error | #fff1f1 (light pink) | #161616 (dark) | Errors & failures |
+| Warning | #fcf4d6 (light yellow) | #161616 (dark) | Cautions & alerts |
+| Info | #edf5ff (light blue) | #161616 (dark) | Information & tips |
+| Success | #defbe6 (light green) | #161616 (dark) | Confirmations |
+
+### Dark Mode (g90/g100 theme)
+
+| Variant | Background | Text Color | Use Case |
+|---------|-----------|-----------|----------|
+| Error | #a2191f (dark red) | #f4f4f4 (light) | Errors & failures |
+| Warning | #8e6a00 (dark yellow) | #f4f4f4 (light) | Cautions & alerts |
+| Info | #0043ce (dark blue) | #f4f4f4 (light) | Information & tips |
+| Success | #0e6027 (dark green) | #f4f4f4 (light) | Confirmations |
+
+**Note**: All colors automatically adjust based on the active theme. Never hardcode these values in component code.
+
+## What to Do If User Requests Custom Colors
+
+**If a user asks to use a custom background color or text color:**
+
+1. **Do not apply the custom color**
+2. **Select the closest matching variant** from the available kinds
+3. **Inform the user** which variant you used instead
+4. **Explain why** - maintain theme consistency and ensure proper contrast in both light and dark modes
+
+**Example response to user:**
+> "I've updated the notification to use the `kind="warning"` variant instead of the custom color you suggested. This ensures the notification has proper contrast in both light and dark modes and maintains consistency with the design system. The warning variant provides the closest visual appearance to what you requested."
+
+## Implementation Checklist
+
+Before adding an InlineNotification, verify:
+
+- [ ] Correct `kind` variant selected (error, warning, warning-alt, info, info-square, success)
+- [ ] `title` prop provided with clear, concise message
+- [ ] `onCloseButtonClick` handler implemented
+- [ ] `aria-label` on close button describes action clearly
+- [ ] `statusIconDescription` matches the notification type
+- [ ] No custom colors or styles applied to background/text
+- [ ] Tested in both light and dark modes
+- [ ] Text is readable in both themes (automatic with theme tokens)
+- [ ] Close button (X) is readable in both themes (automatic with theme tokens)
+
+## Related Documentation
+
+- **Theme Contrast Guidelines**: `.builder/rules/theme-contrast-guidelines.mdc` - Ensure sufficient contrast
+- **Global CSS Usage**: `.builder/rules/global-css-usage.mdc` - Use tokens, not hardcoded colors
+- **Component Structure**: `.builder/rules/component-structure.mdc` - Component organization
+- **Carbon Design System**: `.builder/rules/carbon-design-system.mdc` - Overriding Carbon styles
+
+## File References
+
+- **Tokens**: `src/styles/tokens/colors.scss` (color definitions for notification backgrounds and text)
+- **Global Styling**: `src/styles/components.scss` (global component overrides)
+- **Theme Context**: `src/contexts/ThemeContext.jsx` (theme state management)
+
+## Summary
+
+✅ **Always**:
+- Use the provided notification variants (error, warning, info, success)
+- Let the theme system handle colors automatically
+- Include accessibility attributes (aria-label, statusIconDescription)
+- Test in both light and dark modes
+- Keep notifications focused and concise
+
+❌ **Never**:
+- Hardcode background or text colors
+- Override notification styling with custom CSS
+- Request custom colors from the design system
+- Skip accessibility attributes
+- Modify the kind prop to anything other than the approved variants
+
+By following these guidelines, we maintain a consistent, accessible, and theme-aware notification system across the application.
