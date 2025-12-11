@@ -75,6 +75,28 @@ export function formatDate(dateInput, format = 'medium') {
 }
 
 /**
+ * Format a date for Carbon DatePickerInput (mm/dd/yyyy format only, no time)
+ * @param {string|Date} dateInput - Date to format
+ * @returns {string} Formatted date string (mm/dd/yyyy)
+ */
+export function formatDateForInput(dateInput) {
+  if (!dateInput) return '';
+
+  const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+
+  if (isNaN(date.getTime())) {
+    return '';
+  }
+
+  // Format as mm/dd/yyyy without time
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `${month}/${day}/${year}`;
+}
+
+/**
  * Format date and time
  * @param {string|Date} dateInput - Date to format
  * @returns {string} Formatted date and time string
