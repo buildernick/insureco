@@ -1,7 +1,7 @@
 ---
 description: Date Picker implementation guidelines - how to format dates correctly without time
 globs: 
-alwaysApply: true
+alwaysApply: false
 ---
 
 # Date Picker Implementation Guide
