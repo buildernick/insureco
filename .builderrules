@@ -8,7 +8,7 @@ Create a .mdc file within the .builder/rules/ directory or update an existing on
 ---
 description: Component structure
 globs:
-alwaysApply: true
+alwaysApply: false
 ---
 <add whatever documentation is needed>
 
