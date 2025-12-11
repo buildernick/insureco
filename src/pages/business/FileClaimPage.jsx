@@ -22,7 +22,7 @@ import {
 import { ArrowLeft, ArrowRight, Checkmark, DocumentAdd } from '@carbon/icons-react';
 import StepBreadcrumb from '../../components/StepBreadcrumb';
 import { mockProperties, mockVehicles } from '../../data/businessMockData';
-import { formatVehicleName } from '../../utils/businessHelpers';
+import { formatVehicleName, formatDateForInput } from '../../utils/businessHelpers';
 import './FileClaimPage.scss';
 
 /**
