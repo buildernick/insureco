@@ -204,7 +204,7 @@ export default function SignUpPage() {
             />
             <DatePicker
               datePickerType="single"
-              onChange={(dates) => updateFormData('dateOfBirth', dates?.[0] || '')}
+              onChange={(dates) => updateFormData('dateOfBirth', formatDateForInput(dates?.[0] || ''))}
             >
               <DatePickerInput
                 id="dateOfBirth"
