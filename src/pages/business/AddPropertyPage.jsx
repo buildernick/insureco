@@ -377,7 +377,7 @@ export default function AddPropertyPage() {
 
               <DatePicker
                 datePickerType="single"
-                onChange={(dates) => handleInputChange('inspectionDate', dates[0] || '')}
+                onChange={(dates) => handleInputChange('inspectionDate', formatDateForInput(dates[0] || ''))}
               >
                 <DatePickerInput
                   id="inspection-date"
