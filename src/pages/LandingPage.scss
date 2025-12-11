@@ -5,18 +5,25 @@
   background: var(--background-primary);
 }
 
-// Warning Banner
-.warning-banner {
-  padding: var(--spacing-05) var(--spacing-05) 0;
+// Notifications Container
+.notifications-container {
   background: var(--background-primary);
+  padding: var(--spacing-05) var(--spacing-05) 0;
 
-  // Ensure full width on all screen sizes
-  .cds--inline-notification {
-    max-width: 100%;
+  // Individual notification banner wrapper
+  .notification-banner {
+    margin-bottom: var(--spacing-05);
+
+    // Ensure full width on all screen sizes
+    .cds--inline-notification {
+      max-width: 100%;
+    }
+
+    // Last banner has extra margin to separate from hero section
+    &:last-child {
+      margin-bottom: var(--spacing-07);
+    }
   }
-
-  // Add margin below banner to separate from hero section
-  margin-bottom: var(--spacing-05);
 }
 
 // Hero Section
