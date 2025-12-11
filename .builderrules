@@ -19,4 +19,4 @@ The following options are available as keys within the metadata header:
 description: a brief description of the file's rules
 globs: specific file paths where these rules should apply
 alwaysApply: if set to true, the AI always applies these rules; otherwise, the AI contextually decides when to apply the rules
-Builder's AI will not make any changes to your rule files.
+** You should use alwaysApply:false unless it's a rule that should be sent to the LLM no matter what you are working on. Very few files should be always apply.
