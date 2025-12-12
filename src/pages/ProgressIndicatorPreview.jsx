@@ -19,6 +19,7 @@ import {
   SelectItem,
 } from '@carbon/react';
 import { ArrowRight, ArrowLeft } from '@carbon/icons-react';
+import CompactStepIndicator from '../components/CompactStepIndicator';
 import './ProgressIndicatorPreview.scss';
 
 // Sample form steps
@@ -388,27 +389,11 @@ function VariantSix() {
       
       <div className="variant-layout variant-six-layout">
         <div className="variant-progress">
-          <div className="compact-stepper">
-            <div className="compact-stepper__dots">
-              {STEPS.map((step, idx) => (
-                <button
-                  key={step.key}
-                  className={`compact-stepper__dot ${
-                    idx < currentStep ? 'compact-stepper__dot--complete' : ''
-                  } ${idx === currentStep ? 'compact-stepper__dot--current' : ''} ${
-                    idx > currentStep ? 'compact-stepper__dot--incomplete' : ''
-                  }`}
-                  onClick={() => handleDotClick(idx)}
-                  aria-label={`Step ${idx + 1}: ${step.label}`}
-                  type="button"
-                />
-              ))}
-            </div>
-            <div className="compact-stepper__label">{STEPS[currentStep].label}</div>
-            <div className="compact-stepper__counter">
-              Step {currentStep + 1} of {STEPS.length}
-            </div>
-          </div>
+          <CompactStepIndicator
+            steps={STEPS}
+            currentIndex={currentStep}
+            onStepChange={handleDotClick}
+          />
         </div>
 
         <div className="variant-content">
