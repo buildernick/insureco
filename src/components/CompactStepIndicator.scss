@@ -1,0 +1,102 @@
+@use '../styles/tokens' as *;
+
+.compact-step-indicator {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-04);
+  align-items: center;
+  padding: var(--spacing-04);
+}
+
+.compact-step-indicator__dots {
+  display: flex;
+  gap: var(--spacing-02);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.compact-step-indicator__dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--border-subtle);
+  background: var(--background-primary);
+  color: var(--text-secondary);
+  font-size: var(--body-sm-size);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+
+  &:hover {
+    border-color: var(--interactive-primary);
+    transform: scale(1.05);
+  }
+
+  &:focus {
+    outline: 2px solid var(--interactive-primary);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 479px) {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+}
+
+.compact-step-indicator__dot--current {
+  background: var(--interactive-primary);
+  color: var(--text-on-color);
+  border-color: var(--interactive-primary);
+  box-shadow: 0 0 0 2px var(--background-secondary);
+
+  &:hover {
+    background: var(--interactive-hover);
+    border-color: var(--interactive-hover);
+  }
+}
+
+.compact-step-indicator__dot--complete {
+  background: var(--interactive-primary);
+  color: var(--text-on-color);
+  border-color: var(--interactive-primary);
+
+  &:hover {
+    background: var(--interactive-hover);
+    border-color: var(--interactive-hover);
+  }
+
+  &::after {
+    content: '✓';
+    font-size: 14px;
+  }
+}
+
+.compact-step-indicator__dot--incomplete {
+  &:hover {
+    border-color: var(--text-secondary);
+  }
+}
+
+.compact-step-indicator__label {
+  font-size: var(--body-md-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  text-align: center;
+  min-width: 150px;
+
+  @media (max-width: 479px) {
+    font-size: var(--body-sm-size);
+    min-width: 120px;
+  }
+}
+
+.compact-step-indicator__counter {
+  font-size: var(--body-sm-size);
+  color: var(--text-secondary);
+  text-align: center;
+}
