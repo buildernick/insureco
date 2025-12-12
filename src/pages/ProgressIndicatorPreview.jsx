@@ -44,7 +44,7 @@ function VariantOne() {
 
   return (
     <Tile className="variant-container">
-      <Heading level={3}>Option 1: Vertical ProgressIndicator</Heading>
+      <Heading level={3}>Option 1: Vertical Steps</Heading>
       <p className="variant-description">Stack steps vertically instead of horizontally. Great for mobile, but takes vertical space.</p>
 
       <div className="variant-pros-cons">
@@ -127,7 +127,7 @@ function VariantTwo() {
 
   return (
     <Tile className="variant-container">
-      <Heading level={3}>Option 2: ProgressBar + Step Counter</Heading>
+      <Heading level={3}>Option 2: Progress Percentage</Heading>
       <p className="variant-description">Compact percentage indicator with step counter. Very mobile-friendly, but no labeled steps visible.</p>
 
       <div className="variant-pros-cons">
@@ -201,7 +201,7 @@ function VariantFour() {
 
   return (
     <Tile className="variant-container">
-      <Heading level={3}>Option 4: Tabs Component</Heading>
+      <Heading level={3}>Option 3: Tabbed Steps</Heading>
       <p className="variant-description">Use tabs for each step. Clean keyboard navigation, but loses "progress" visualization.</p>
 
       <div className="variant-pros-cons">
@@ -294,7 +294,7 @@ function VariantSix() {
 
   return (
     <Tile className="variant-container">
-      <Heading level={3}>Option 6: Custom Compact Step Indicator</Heading>
+      <Heading level={3}>Option 4: Compact Dot Indicator</Heading>
       <p className="variant-description">Dots with labels. Super compact and mobile-optimized. Shows step name below dots.</p>
 
       <div className="variant-pros-cons">
@@ -418,16 +418,16 @@ export default function ProgressIndicatorPreview() {
             <Heading level={3}>Notes</Heading>
             <Stack gap={4}>
               <div>
-                <strong>Option 1 (Vertical):</strong> Best for desktop, takes vertical space on mobile but steps always visible.
+                <strong>Option 1 (Vertical Steps):</strong> Best for desktop, takes vertical space on mobile but steps always visible.
               </div>
               <div>
-                <strong>Option 2 (ProgressBar):</strong> Most mobile-friendly, compact, but users don't see step labels until they load.
+                <strong>Option 2 (Progress Percentage):</strong> Most mobile-friendly, compact, but users don't see step labels until they load.
               </div>
               <div>
-                <strong>Option 4 (Tabs):</strong> Great keyboard nav, familiar UX, but looks like content tabs not a stepper.
+                <strong>Option 3 (Tabbed Steps):</strong> Great keyboard nav, familiar UX, but looks like content tabs not a stepper.
               </div>
               <div>
-                <strong>Option 6 (Dots):</strong> Custom built for mobile, very compact, shows step name dynamically.
+                <strong>Option 4 (Compact Dot Indicator):</strong> Custom built for mobile, very compact, shows step name dynamically.
               </div>
             </Stack>
           </div>
