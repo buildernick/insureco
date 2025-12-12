@@ -68,11 +68,62 @@
   }
 }
 
+.variant-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-04);
+  margin-bottom: var(--spacing-04);
+}
+
+.variant-header-content {
+  flex: 1;
+}
+
 .variant-description {
   font-size: var(--body-sm-size);
   color: var(--text-secondary);
   margin: 0;
   line-height: 1.5;
+}
+
+.variant-toggle {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: var(--background-primary);
+  color: var(--text-primary);
+  font-size: 24px;
+  font-weight: var(--font-weight-regular);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+
+  &:hover {
+    background: var(--background-selected);
+    border-color: var(--interactive-primary);
+    color: var(--interactive-primary);
+  }
+
+  &:focus {
+    outline: 2px solid var(--interactive-primary);
+    outline-offset: 2px;
+  }
+
+  &:active {
+    background: var(--background-hover);
+  }
+
+  @media (max-width: 479px) {
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
 }
 
 .variant-pros-cons {
