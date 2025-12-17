@@ -1,0 +1,315 @@
+@use '../styles/tokens' as *;
+
+.progress-preview {
+  min-height: 100vh;
+  padding: var(--spacing-05);
+  background: var(--background-primary);
+
+  @media (min-width: 672px) {
+    padding: var(--spacing-07);
+  }
+}
+
+.preview-header {
+  text-align: center;
+  margin-bottom: var(--spacing-07);
+  padding: var(--spacing-07) var(--spacing-05);
+  background: linear-gradient(135deg, #a2191f 70.71%, #da1e28 0%);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 12px 0 rgba(218, 30, 40, 0.15);
+
+  @media (min-width: 672px) {
+    padding: var(--spacing-09) var(--spacing-07);
+  }
+}
+
+.preview-title {
+  font-size: var(--heading-h3-size);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-on-color);
+  margin-bottom: var(--spacing-03);
+
+  @media (min-width: 672px) {
+    font-size: var(--heading-h2-size);
+  }
+}
+
+.preview-subtitle {
+  font-size: var(--body-md-size);
+  color: var(--text-on-color);
+  opacity: 0.95;
+  margin: 0;
+
+  @media (min-width: 672px) {
+    font-size: var(--body-lg-size);
+  }
+}
+
+.preview-controls {
+  margin-bottom: var(--spacing-07);
+  padding: var(--spacing-05);
+  background: var(--background-secondary);
+
+  .cds--stack {
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    @media (max-width: 671px) {
+      flex-direction: column;
+      gap: var(--spacing-04);
+    }
+  }
+
+  .step-indicator {
+    font-size: var(--body-lg-size);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    padding: 0 var(--spacing-05);
+  }
+}
+
+// ============================================
+// Option Sections
+// ============================================
+
+.option-section {
+  margin-bottom: var(--spacing-09);
+}
+
+.option-heading {
+  font-size: var(--heading-h4-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-03);
+
+  @media (min-width: 672px) {
+    font-size: var(--heading-h3-size);
+  }
+}
+
+.option-type {
+  font-size: var(--body-sm-size);
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-bottom: var(--spacing-05);
+}
+
+.option-preview {
+  margin-bottom: var(--spacing-05);
+  padding: var(--spacing-06);
+  background: var(--background-secondary);
+  border-left: 4px solid var(--interactive-primary);
+}
+
+// ============================================
+// Custom Mobile Dots Stepper Demo
+// ============================================
+
+.custom-stepper-wrapper {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+// ============================================
+// Pros/Cons Section
+// ============================================
+
+.pros-cons {
+  display: grid;
+  gap: var(--spacing-05);
+  padding: var(--spacing-06);
+  background: var(--background-primary);
+
+  @media (min-width: 672px) {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-07);
+  }
+
+  h4 {
+    font-size: var(--body-lg-size);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-04);
+    padding-bottom: var(--spacing-03);
+    border-bottom: 2px solid var(--border-subtle);
+  }
+
+  .pros h4 {
+    color: #198038;
+    border-bottom-color: #198038;
+  }
+
+  .cons h4 {
+    color: #da1e28;
+    border-bottom-color: #da1e28;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    font-size: var(--body-sm-size);
+    color: var(--text-primary);
+    padding: var(--spacing-03) 0;
+    padding-left: var(--spacing-06);
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+    }
+  }
+
+  .pros li::before {
+    background: #198038;
+    box-shadow: 0 0 0 3px rgba(25, 128, 56, 0.2);
+  }
+
+  .cons li::before {
+    background: #da1e28;
+    box-shadow: 0 0 0 3px rgba(218, 30, 40, 0.2);
+  }
+}
+
+// ============================================
+// Implementation Section
+// ============================================
+
+.implementation-section {
+  margin-bottom: var(--spacing-09);
+}
+
+.implementation-details {
+  padding: var(--spacing-07);
+  background: var(--background-secondary);
+  border-left: 4px solid var(--interactive-primary);
+}
+
+.implementation-heading {
+  font-size: var(--heading-h4-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-06);
+
+  @media (min-width: 672px) {
+    font-size: var(--heading-h3-size);
+  }
+}
+
+.implementation-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-06);
+}
+
+.implementation-item {
+  h4 {
+    font-size: var(--body-lg-size);
+    font-weight: var(--font-weight-semibold);
+    color: var(--interactive-primary);
+    margin-bottom: var(--spacing-03);
+  }
+
+  code {
+    background: var(--background-primary);
+    color: var(--text-primary);
+    padding: var(--spacing-02) var(--spacing-03);
+    border-radius: var(--radius-sm);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: var(--body-sm-size);
+  }
+
+  pre {
+    background: var(--background-primary);
+    padding: var(--spacing-05);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    margin: var(--spacing-03) 0 0 0;
+
+    code {
+      padding: 0;
+      background: transparent;
+      font-size: var(--body-sm-size);
+      line-height: 1.6;
+    }
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: var(--spacing-03) 0 0 0;
+
+    li {
+      font-size: var(--body-sm-size);
+      color: var(--text-primary);
+      padding: var(--spacing-02) 0;
+      padding-left: var(--spacing-05);
+      position: relative;
+
+      &::before {
+        content: '•';
+        position: absolute;
+        left: 0;
+        color: var(--interactive-primary);
+        font-weight: var(--font-weight-semibold);
+      }
+
+      code {
+        font-size: var(--body-xs-size);
+      }
+    }
+  }
+}
+
+// ============================================
+// Recommendation Section
+// ============================================
+
+.recommendation-section {
+  padding: var(--spacing-07);
+  background: linear-gradient(135deg, rgba(162, 25, 31, 0.05), rgba(218, 30, 40, 0.05));
+  border: 2px solid var(--interactive-primary);
+  border-radius: var(--radius-lg);
+}
+
+.recommendation-heading {
+  font-size: var(--heading-h4-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--interactive-primary);
+  margin-bottom: var(--spacing-05);
+  text-align: center;
+
+  @media (min-width: 672px) {
+    font-size: var(--heading-h3-size);
+  }
+}
+
+.recommendation-text {
+  font-size: var(--body-md-size);
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-05);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  strong {
+    color: var(--interactive-primary);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  @media (min-width: 672px) {
+    font-size: var(--body-lg-size);
+  }
+}
