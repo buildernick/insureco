@@ -1,4 +1,4 @@
-# Documentation
+# Documentationsd
 Whenever making updates in this app be in the mindset that a different LLM or developer may need to come and make updates to this app later. So always document your work in the appropriate files in the .builder/rules files. To create/update a rules file for Builder's AI:
 
 Create a .mdc file within the .builder/rules/ directory or update an existing one as appropriate. Provide a sensible name for your file and provide the metadata as shown below.
