@@ -1,0 +1,333 @@
+---
+description: Three mobile-friendly progress bar solutions to replace horizontal scrolling indicator
+alwaysApply: false
+---
+
+# Progress Bar Solutions - Mobile/Tablet Optimization
+
+## Problem
+
+The original ProgressIndicator on the SignUp page had horizontal scrolling issues on mobile and tablet devices, creating a poor user experience. The horizontal layout required users to scroll sideways to see all steps.
+
+## Preview Page
+
+**Route**: `/progress-preview`
+**Component**: `ProgressBarPreview.jsx`
+
+Visit this page to see all three solutions in both vertical and horizontal layouts with interactive step navigation to evaluate which works best.
+
+## Key Features
+
+- **Shows only 3 steps at a time**: Previous, current, and next steps
+- **Ellipsis indicators**: Shows "⋯ X previous steps" and "⋯ X more steps" when steps are hidden
+- **Dual orientation**: All solutions available in both vertical and horizontal layouts
+- **Mobile optimized**: Compact designs that work on any screen size
+
+## Three Solutions
+
+All three solutions show only the **previous step**, **current step**, and **next step** at any given time, making them extremely compact and focused.
+
+### Solution 1: Carbon Progress Indicator
+
+**Components**:
+- `VerticalProgressBar.jsx` - Vertical orientation
+- `HorizontalProgressBar.jsx` - Horizontal orientation
+
+**Approach**: Uses Carbon's ProgressIndicator component in both layouts
+
+**Features**:
+- Carbon Design System component (maintains consistency)
+- Shows only 3 steps at a time (prev, current, next)
+- Ellipsis indicators for hidden steps
+- Familiar stepper UI pattern
+- Accessible by default (Carbon's built-in accessibility)
+- Theme-aware styling
+- Both vertical and horizontal orientations
+
+**Props**:
+
+<VerticalProgressBar
+  steps={stepsArray}     // Array of { label, key } objects
+  currentIndex={number}  // Current step index (0-based)
+/>
+
+<HorizontalProgressBar
+  steps={stepsArray}     // Array of { label, key } objects
+  currentIndex={number}  // Current step index (0-based)
+/>
+```
+
+**When to Use**:
+- Want to keep Carbon ProgressIndicator component
+- Need familiar stepper UI pattern
+- Prefer accessible-by-default components
+- Vertical: Sidebars, left/right navigation
+- Horizontal: Top bars, compact mobile layouts
+
+**Trade-offs**:
+- ✅ Carbon component (consistent with design system)
+- ✅ Accessible by default
+- ✅ Familiar UI pattern
+- ✅ Easy to maintain
+- ✅ Both orientations available
+
+---
+
+### Solution 2: Carbon List Progress (RECOMMENDED)
+
+**Components**:
+- `CarbonListProgress.jsx` - Vertical list layout
+- `HorizontalCarbonList.jsx` - Horizontal layout
+
+**Approach**: Built using Carbon's list components with custom styling
+
+**Features**:
+- 100% Carbon components (OrderedList, ListItem for vertical)
+- Semantic HTML structure
+- Shows only 3 steps at a time (prev, current, next)
+- Ellipsis indicators for hidden steps
+- Compact design in both orientations
+- Clean, modern aesthetic
+- Theme-aware styling
+- Mobile-optimized spacing
+
+**Props**:
+
+<CarbonListProgress
+  steps={stepsArray}     // Array of { label, key, description? } objects
+  currentIndex={number}  // Current step index (0-based)
+/>
+
+<HorizontalCarbonList
+  steps={stepsArray}     // Array of { label, key } objects
+  currentIndex={number}  // Current step index (0-based)
+/>
+```
+
+**When to Use**:
+- Want Carbon component compliance
+- Need semantic HTML (better for SEO/accessibility)
+- Prefer clean, modern aesthetic
+- Want balance of familiarity and customization
+- Vertical: Sidebars, step-by-step guides
+- Horizontal: Mobile-first layouts, compact headers
+
+**Trade-offs**:
+- ✅ 100% Carbon components (vertical)
+- ✅ Semantic HTML (list structure)
+- ✅ Compact design
+- ✅ Flexible styling
+- ✅ Mobile-friendly
+- ✅ Both orientations available
+- ❌ Requires custom SCSS styling
+
+**Why This Is Recommended**:
+Best balance of Carbon Design System compliance, accessibility, semantic HTML, and mobile optimization. Uses Carbon components while providing a clean, compact UI perfect for mobile/tablet in both orientations.
+
+---
+
+### Solution 3: Custom Minimal Progress
+
+**Components**:
+- `CustomMinimalProgress.jsx` - Vertical dot layout
+- `HorizontalMinimalProgress.jsx` - Horizontal dot layout
+
+**Approach**: Completely custom, no Carbon components
+
+**Features**:
+- Minimal dots + lines design
+- Shows only 3 steps at a time (prev, current, next)
+- Ellipsis indicators for hidden steps
+- Extremely compact (smallest footprint in both orientations)
+- Modern, clean aesthetic
+- Theme-aware styling
+- Very lightweight code
+
+**Props**:
+```jsx
+<CustomMinimalProgress
+  steps={stepsArray}     // Array of { label, key } objects
+  currentIndex={number}  // Current step index (0-based)
+/>
+
+<HorizontalMinimalProgress
+  steps={stepsArray}     // Array of { label, key } objects
+  currentIndex={number}  // Current step index (0-based)
+/>
+```
+
+**When to Use**:
+- Want absolute minimal design
+- Need smallest possible footprint
+- Prefer modern dot-based indicators
+- Don't require Carbon component compliance
+- Vertical: Minimal sidebars, timeline views
+- Horizontal: Ultra-compact mobile headers
+
+**Trade-offs**:
+- ✅ Very compact (smallest of all solutions)
+- ✅ Modern aesthetic
+- ✅ Minimal code
+- ✅ Lightweight
+- ✅ Both orientations available
+- ❌ Not a Carbon component
+- ❌ Custom maintenance required
+- ❌ May feel less familiar to users
+
+---
+
+## Integration Example
+
+To replace the current horizontal ProgressIndicator in SignUpPage:
+
+### Current Code (Horizontal - Has Issues):
+```jsx
+<Tile className="signup-progress">
+  <ProgressIndicator currentIndex={currentStep} spaceEqually>
+    {steps.map((step, index) => (
+      <ProgressStep
+        key={step.key}
+        label={step.label}
+        description={...}
+        complete={index < currentStep}
+        current={index === currentStep}
+      />
+    ))}
+  </ProgressIndicator>
+</Tile>
+```
+
+### Solution 1 (Vertical):
+```jsx
+import VerticalProgressBar from '../components/VerticalProgressBar';
+
+<Tile className="signup-progress">
+  <VerticalProgressBar steps={steps} currentIndex={currentStep} />
+</Tile>
+```
+
+### Solution 2 (Carbon List - RECOMMENDED):
+```jsx
+import CarbonListProgress from '../components/CarbonListProgress';
+
+<Tile className="signup-progress">
+  <CarbonListProgress steps={steps} currentIndex={currentStep} />
+</Tile>
+```
+
+### Solution 3 (Custom Minimal):
+```jsx
+import CustomMinimalProgress from '../components/CustomMinimalProgress';
+
+<Tile className="signup-progress">
+  <CustomMinimalProgress steps={steps} currentIndex={currentStep} />
+</Tile>
+```
+
+## Mobile/Tablet Behavior
+
+All three solutions:
+- ✅ No horizontal scrolling
+- ✅ Vertical layout that fits in viewport
+- ✅ Touch-friendly spacing
+- ✅ Readable text at all screen sizes
+- ✅ Theme support (light/dark)
+- ✅ Responsive breakpoints
+
+### Breakpoints Used:
+- **Mobile**: < 672px - Smaller spacing, compact design
+- **Tablet/Desktop**: ≥ 672px - Larger spacing, more comfortable layout
+
+## Theming
+
+All three components use design tokens:
+- `--text-primary` - Main text
+- `--text-secondary` - Supporting text
+- `--text-on-color` - Text on colored backgrounds
+- `--interactive-primary` - Brand red for current/complete states
+- `--background-selected` - Highlighted backgrounds
+- `--border-subtle` - Divider lines
+
+This ensures:
+- Proper contrast in light mode
+- Proper contrast in dark mode
+- Automatic adaptation to theme changes
+- WCAG AA compliance
+
+## Testing Checklist
+
+When evaluating these solutions:
+
+- [ ] Visit `/progress-preview` page
+- [ ] Test on actual mobile device (iPhone, Android)
+- [ ] Test on tablet (iPad, Android tablet)
+- [ ] Test in light mode
+- [ ] Test in dark mode
+- [ ] Navigate through all steps (use Prev/Next buttons)
+- [ ] Verify text is readable at all screen sizes
+- [ ] Check touch target sizes (min 44px for mobile)
+- [ ] Test keyboard navigation
+- [ ] Verify no horizontal scrolling on narrow screens
+
+## Files Created
+
+### Vertical Components:
+- `src/components/VerticalProgressBar.jsx` + `.scss`
+- `src/components/CarbonListProgress.jsx` + `.scss`
+- `src/components/CustomMinimalProgress.jsx` + `.scss`
+
+### Horizontal Components:
+- `src/components/HorizontalProgressBar.jsx` + `.scss`
+- `src/components/HorizontalCarbonList.jsx` + `.scss`
+- `src/components/HorizontalMinimalProgress.jsx` + `.scss`
+
+### Preview Page:
+- `src/pages/ProgressBarPreview.jsx`
+- `src/pages/ProgressBarPreview.scss`
+
+### Routes:
+- `/progress-preview` added to `App.jsx`
+
+### Documentation:
+- `.builder/rules/progress-bar-solutions.mdc`
+
+## Recommendation
+
+### For Mobile/Tablet (Primary Use Case)
+**Use horizontal layouts** for the most compact experience:
+- **Solution 2 Horizontal** (`HorizontalCarbonList`) - Best balance of features
+- **Solution 3 Horizontal** (`HorizontalMinimalProgress`) - Most compact
+- **Solution 1 Horizontal** (`HorizontalProgressBar`) - Most familiar
+
+### For Desktop Sidebars
+**Use vertical layouts** for better readability:
+- **Solution 2 Vertical** (`CarbonListProgress`) - Recommended
+- **Solution 1 Vertical** (`VerticalProgressBar`) - Most familiar
+- **Solution 3 Vertical** (`CustomMinimalProgress`) - Most compact
+
+### Overall Recommendation
+**Solution 2 (Carbon List)** in whichever orientation fits your layout:
+- Best balance of Carbon compliance and customization
+- Semantic HTML structure
+- Clean, modern aesthetic
+- Works great in both orientations
+- Ellipsis indicators show hidden steps clearly
+
+This solution provides the best balance and is most aligned with the project's use of Carbon components while solving the mobile horizontal scroll issue.
+
+## Future Enhancements
+
+Potential improvements for any solution:
+- Add click-to-navigate functionality (jump to previous steps)
+- Add animation/transitions between steps
+- Add step validation indicators (error states)
+- Add estimated time per step
+- Add overall progress percentage
+- Add collapsible/expandable step descriptions
+
+## Related Documentation
+
+- `.builder/rules/progress-indicator-fix.mdc` - Original ProgressIndicator theming issues
+- `.builder/rules/signup-flow.mdc` - Sign-up flow implementation
+- `.builder/rules/component-structure.mdc` - Component organization guidelines
+- `.builder/rules/theme-contrast-guidelines.mdc` - Theming requirements
