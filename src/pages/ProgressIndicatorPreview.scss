@@ -1,0 +1,522 @@
+@use '../styles/tokens' as *;
+
+.progress-preview-page {
+  padding: var(--spacing-08) 0;
+  min-height: 100vh;
+}
+
+// ============================================
+// Header
+// ============================================
+
+.progress-preview-header {
+  margin-bottom: var(--spacing-08);
+  text-align: center;
+}
+
+.progress-preview-title {
+  font-size: var(--heading-h2-size);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-03);
+}
+
+.progress-preview-subtitle {
+  font-size: var(--body-lg-size);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+// ============================================
+// Controls
+// ============================================
+
+.preview-controls {
+  margin-bottom: var(--spacing-06);
+  background: var(--background-secondary);
+}
+
+.preview-controls-label {
+  font-size: var(--body-md-size);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.preview-controls-buttons {
+  display: flex;
+  gap: var(--spacing-03);
+  flex-wrap: wrap;
+}
+
+// ============================================
+// Preview Option Card
+// ============================================
+
+.preview-option {
+  margin-bottom: var(--spacing-06);
+  padding: var(--spacing-06);
+}
+
+.preview-option-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-04);
+  margin-bottom: var(--spacing-06);
+  flex-wrap: wrap;
+}
+
+.preview-option-title {
+  font-size: var(--heading-h3-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+// ============================================
+// Demo Area
+// ============================================
+
+.preview-demo {
+  background: var(--background-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-06);
+  margin-bottom: var(--spacing-06);
+  min-height: 200px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+
+  &--vertical {
+    justify-content: flex-start;
+  }
+}
+
+// ============================================
+// Pros and Cons Section
+// ============================================
+
+.preview-pros-cons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-05);
+  margin-top: var(--spacing-05);
+
+  @media (max-width: 671px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.preview-pros,
+.preview-cons {
+  padding: var(--spacing-04);
+  border-radius: var(--radius-sm);
+}
+
+.preview-pros {
+  background: rgba(36, 161, 72, 0.1);
+  border-left: 3px solid var(--color-success);
+}
+
+.preview-cons {
+  background: rgba(218, 30, 40, 0.1);
+  border-left: 3px solid var(--interactive-primary);
+}
+
+.preview-section-title {
+  font-size: var(--body-md-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-03) 0;
+}
+
+.preview-list {
+  margin: 0;
+  padding-left: var(--spacing-05);
+  font-size: var(--body-sm-size);
+  color: var(--text-secondary);
+  line-height: 1.6;
+
+  li {
+    margin-bottom: var(--spacing-02);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    strong {
+      color: var(--text-primary);
+      font-weight: var(--font-weight-semibold);
+    }
+  }
+}
+
+// ============================================
+// Option 2: Progress Bar with Steps
+// ============================================
+
+.progress-bar-wrapper {
+  width: 100%;
+  max-width: 600px;
+}
+
+.progress-bar-steps {
+  margin-top: var(--spacing-06);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-03);
+}
+
+.progress-bar-step {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-03);
+  padding: var(--spacing-03);
+  border-radius: var(--radius-sm);
+  transition: background-color 0.2s ease;
+
+  &--complete {
+    background: rgba(36, 161, 72, 0.1);
+
+    .progress-bar-step-marker {
+      background: var(--color-success);
+      color: var(--text-on-color);
+      border-color: var(--color-success);
+    }
+
+    .progress-bar-step-label {
+      color: var(--text-primary);
+      text-decoration: line-through;
+      opacity: 0.7;
+    }
+  }
+
+  &--current {
+    background: var(--background-selected);
+
+    .progress-bar-step-marker {
+      background: var(--interactive-primary);
+      color: var(--text-on-color);
+      border-color: var(--interactive-primary);
+      box-shadow: 0 0 0 3px var(--background-selected);
+    }
+
+    .progress-bar-step-label {
+      color: var(--interactive-primary);
+      font-weight: var(--font-weight-semibold);
+    }
+  }
+}
+
+.progress-bar-step-marker {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: var(--font-weight-semibold);
+  background: transparent;
+  border: 2px solid var(--border-strong);
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+
+  svg {
+    fill: currentColor;
+  }
+}
+
+.progress-bar-step-label {
+  font-size: var(--body-sm-size);
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+// ============================================
+// Option 3: Tabs as Stepper
+// ============================================
+
+.tabs-stepper {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.tabs-stepper-tab {
+  display: flex !important;
+  align-items: center;
+  gap: var(--spacing-02);
+  min-width: max-content;
+
+  &--complete {
+    .tabs-stepper-tab-marker {
+      background: var(--color-success) !important;
+      border-color: var(--color-success) !important;
+      color: var(--text-on-color) !important;
+    }
+  }
+}
+
+.tabs-stepper-tab-marker {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  background: var(--background-secondary);
+  border: 2px solid var(--border-strong);
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+
+  svg {
+    fill: currentColor;
+  }
+}
+
+.tabs-stepper-tab-label {
+  @media (max-width: 671px) {
+    font-size: 12px;
+  }
+}
+
+.tabs-content-placeholder {
+  padding: var(--spacing-05);
+  text-align: center;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+// ============================================
+// Option 4: Circular Mini-Stepper (Custom)
+// ============================================
+
+.circular-mini-stepper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-04);
+  width: 100%;
+  max-width: 400px;
+  padding: var(--spacing-05);
+}
+
+.circular-mini-stepper__progress-text {
+  font-size: var(--body-sm-size);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+}
+
+.circular-mini-stepper__circles {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-04);
+  justify-content: center;
+}
+
+.circular-mini-stepper__circle {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: var(--font-weight-bold);
+  transition: all 0.3s ease;
+  position: relative;
+
+  // Previous step (completed)
+  &--previous {
+    width: 40px;
+    height: 40px;
+    background: var(--color-success);
+    border: 2px solid var(--color-success);
+    color: var(--text-on-color);
+    opacity: 0.8;
+
+    svg {
+      fill: currentColor;
+    }
+  }
+
+  // Current step
+  &--current {
+    width: 64px;
+    height: 64px;
+    background: var(--interactive-primary);
+    border: 3px solid var(--interactive-primary);
+    color: var(--text-on-color);
+    box-shadow: 0 0 0 4px var(--background-selected), 
+                0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: pulse-circle 2s ease-in-out infinite;
+  }
+
+  // Next step (incomplete)
+  &--next {
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: 2px solid var(--border-strong);
+    color: var(--text-secondary);
+    opacity: 0.6;
+  }
+}
+
+@keyframes pulse-circle {
+  0%, 100% {
+    box-shadow: 0 0 0 4px var(--background-selected), 
+                0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 0 8px var(--background-selected), 
+                0 6px 16px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.circular-mini-stepper__number {
+  line-height: 1;
+}
+
+.circular-mini-stepper__connector {
+  width: 32px;
+  height: 3px;
+  background: var(--border-subtle);
+  border-radius: 2px;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0;
+    background: var(--interactive-primary);
+    border-radius: 2px;
+    animation: grow-connector 0.5s ease-out forwards;
+  }
+}
+
+@keyframes grow-connector {
+  to {
+    width: 100%;
+  }
+}
+
+.circular-mini-stepper__label {
+  font-size: var(--body-lg-size);
+  color: var(--text-primary);
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+  margin-top: var(--spacing-02);
+}
+
+// ============================================
+// Recommendation Section
+// ============================================
+
+.preview-recommendation {
+  background: var(--background-secondary);
+  padding: var(--spacing-06);
+  border-left: 4px solid var(--interactive-primary);
+}
+
+.preview-recommendation-title {
+  font-size: var(--heading-h3-size);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-05) 0;
+}
+
+.recommendation-primary,
+.recommendation-secondary {
+  padding: var(--spacing-05);
+  border-radius: var(--radius-md);
+  background: var(--background-primary);
+  border: 2px solid var(--border-subtle);
+
+  p {
+    margin: var(--spacing-03) 0 0 0;
+    font-size: var(--body-md-size);
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+}
+
+.recommendation-primary {
+  border-color: var(--interactive-primary);
+  background: rgba(218, 30, 40, 0.05);
+}
+
+.recommendation-secondary {
+  h4 {
+    color: var(--text-secondary);
+  }
+}
+
+.recommendation-choice {
+  font-size: var(--body-lg-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-03);
+}
+
+.recommendation-icon {
+  fill: var(--color-success);
+  flex-shrink: 0;
+}
+
+// ============================================
+// Responsive Adjustments
+// ============================================
+
+@media (max-width: 671px) {
+  .progress-preview-page {
+    padding: var(--spacing-06) 0;
+  }
+
+  .progress-preview-title {
+    font-size: var(--heading-h3-size);
+  }
+
+  .progress-preview-subtitle {
+    font-size: var(--body-md-size);
+  }
+
+  .preview-option {
+    padding: var(--spacing-05);
+  }
+
+  .preview-demo {
+    padding: var(--spacing-04);
+    min-height: 150px;
+  }
+
+  .circular-mini-stepper__circle {
+    &--current {
+      width: 56px;
+      height: 56px;
+    }
+
+    &--previous,
+    &--next {
+      width: 36px;
+      height: 36px;
+    }
+  }
+
+  .circular-mini-stepper__label {
+    font-size: var(--body-md-size);
+  }
+}
