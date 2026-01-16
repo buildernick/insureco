@@ -3,8 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
-import SignUpPage from "./pages/SignUpPage";
-import SignUpConfirmationPage from "./pages/SignUpConfirmationPage";
+import SignUpComingSoon from "./pages/SignUpComingSoon";
 import DashboardHome from "./pages/DashboardHome";
 import AboutPage from "./pages/AboutPage";
 import ThemePreviewPage from "./pages/ThemePreviewPage";
@@ -27,8 +26,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/signup/confirmation" element={<SignUpConfirmationPage />} />
+        <Route path="/signup" element={<SignUpComingSoon />} />
         <Route path="/dashboard" element={<DashboardHome />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/theme-preview" element={<ThemePreviewPage />} />
