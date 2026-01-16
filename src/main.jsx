@@ -16,7 +16,3 @@ root.render(
     </ThemeProvider>
   </BrowserRouter>,
 );
-
-// Note: React.StrictMode removed due to compatibility issues with React Leaflet
-// Strict Mode causes double-mounting in development which breaks Leaflet's map initialization
-// This is a known issue with React Leaflet + React 19 Strict Mode

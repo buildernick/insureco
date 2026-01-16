@@ -80,9 +80,6 @@ export default function Layout({ children }) {
                   <HeaderMenuItem element={Link} to="/business/fleet">
                     Fleet
                   </HeaderMenuItem>
-                  <HeaderMenuItem element={Link} to="/business/map">
-                    Map View
-                  </HeaderMenuItem>
                   <HeaderMenuItem element={Link} to="/business/claims">
                     Claims
                   </HeaderMenuItem>
@@ -160,13 +157,6 @@ export default function Layout({ children }) {
                         onClick={isSideNavExpanded ? onClickSideNavExpand : undefined}
                       >
                         Fleet
-                      </SideNavMenuItem>
-                      <SideNavMenuItem
-                        element={Link}
-                        to="/business/map"
-                        onClick={isSideNavExpanded ? onClickSideNavExpand : undefined}
-                      >
-                        Map View
                       </SideNavMenuItem>
                       <SideNavMenuItem
                         element={Link}

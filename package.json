@@ -17,14 +17,10 @@
     "@carbon/charts": "^1.27.3",
     "@carbon/charts-react": "^1.27.3",
     "@carbon/react": "^1.83.0-rc.0",
-    "leaflet": "^1.9.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-is": "^19.2.1",
-    "react-leaflet": "^5.0.0",
-    "react-leaflet-cluster": "^4.0.0",
-    "react-router-dom": "^7.6.0",
-    "recharts": "^3.7.0"
+    "react-router-dom": "^7.6.0"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^8.6.14",
