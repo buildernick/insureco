@@ -313,5 +313,22 @@
     .chart-container {
       height: 300px;
     }
+
+    .high-risk-section {
+      .high-risk-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .high-risk-card {
+        .risk-metrics {
+          flex-direction: column;
+          gap: var(--spacing-04);
+
+          .risk-divider {
+            display: none;
+          }
+        }
+      }
+    }
   }
 }
