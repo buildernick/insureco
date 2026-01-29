@@ -97,7 +97,7 @@ export default function FinancialDashboard2() {
           <div className="kpi-card-modern kpi-card-modern--primary">
             <div className="kpi-card-header">
               <span className="kpi-icon kpi-icon--success">
-                <TrendUp size={24} />
+                <ArrowUp size={24} />
               </span>
               <Tag type="green" size="sm">+8.2%</Tag>
             </div>
