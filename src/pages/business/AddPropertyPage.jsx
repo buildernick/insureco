@@ -20,6 +20,7 @@ import {
   DatePickerInput,
 } from '@carbon/react';
 import { ArrowLeft, ArrowRight, Checkmark, Building } from '@carbon/icons-react';
+import { formatDateForInput } from '../../utils/businessHelpers';
 import StepBreadcrumb from '../../components/StepBreadcrumb';
 import './AddPropertyPage.scss';
 
