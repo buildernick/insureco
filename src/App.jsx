@@ -23,6 +23,7 @@ import MapPage from "./pages/business/MapPage";
 import FinancialDashboard1 from "./pages/FinancialDashboard1";
 import FinancialDashboard2 from "./pages/FinancialDashboard2";
 import FinancialDashboard3 from "./pages/FinancialDashboard3";
+import FinancialDashboardOptions from "./pages/FinancialDashboardOptions";
 
 export default function App() {
   return (
