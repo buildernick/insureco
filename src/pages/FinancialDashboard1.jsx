@@ -236,6 +236,75 @@ export default function FinancialDashboard1() {
           </Tile>
         </Column>
 
+        {/* High Risk Assets Section */}
+        <Column lg={16} md={8} sm={4}>
+          <div className="high-risk-section">
+            <div className="section-header">
+              <div className="section-title-group">
+                <WarningAlt size={24} className="warning-icon" />
+                <h2>High Risk Assets</h2>
+              </div>
+              <p className="section-description">
+                Assets with the highest claims-to-premium ratios requiring immediate attention
+              </p>
+            </div>
+
+            <div className="high-risk-grid">
+              {highRiskAssets.map((asset) => (
+                <Tile
+                  key={asset.id}
+                  className="high-risk-card"
+                  onClick={() => {
+                    if (asset.category === 'Property') {
+                      navigate(`/business/properties/${asset.id}`, { state: { asset } });
+                    } else {
+                      navigate(`/business/fleet/${asset.id}`, { state: { asset } });
+                    }
+                  }}
+                >
+                  <div className="risk-card-header">
+                    <span className={`risk-category risk-category--${asset.category.toLowerCase()}`}>
+                      {asset.category}
+                    </span>
+                    <span className="risk-region">{asset.region}</span>
+                  </div>
+
+                  <h3 className="risk-asset-name">{asset.assetName}</h3>
+
+                  <div className="risk-metrics">
+                    <div className="risk-metric">
+                      <span className="metric-label">Loss Ratio</span>
+                      <span className="metric-value metric-value--danger">
+                        {asset.lossRatio.toFixed(1)}%
+                      </span>
+                    </div>
+                    <div className="risk-divider"></div>
+                    <div className="risk-metric">
+                      <span className="metric-label">Total Claims</span>
+                      <span className="metric-value">{formatCurrency(asset.totalClaims)}</span>
+                    </div>
+                    <div className="risk-divider"></div>
+                    <div className="risk-metric">
+                      <span className="metric-label">Premium Due</span>
+                      <span className="metric-value">{formatCurrency(asset.premiumDue)}</span>
+                    </div>
+                  </div>
+
+                  <div className="risk-card-footer">
+                    <div className="risk-indicator">
+                      <div
+                        className="risk-bar"
+                        style={{ width: `${Math.min(asset.lossRatio, 100)}%` }}
+                      ></div>
+                    </div>
+                    <span className="view-details-link">View Details →</span>
+                  </div>
+                </Tile>
+              ))}
+            </div>
+          </div>
+        </Column>
+
         {/* Asset Performance Table */}
         <Column lg={16} md={8} sm={4}>
           <DataTable rows={rows} headers={headers}>
