@@ -63,14 +63,14 @@ This project uses **Carbon Design System** (from `@carbon/react`) as the UI comp
 ## Color Tokens
 
 ### Brand Identity
-The primary brand color is **green**, reflecting the InsureCo insurance brand:
-- Brand green scale: `$color-brand-green-10` through `$color-brand-green-100`
-- Primary brand color: `$color-brand-green-60` (#198038)
+The primary brand color is **red**, reflecting the InsureCo insurance brand:
+- Brand red scale: `$color-brand-red-10` through `$color-brand-red-100`
+- Primary brand color: `$color-brand-red-60` (#da1e28)
 
-### Secondary Brand Colors
-Additional brand color palettes:
-- Red scale: `$color-brand-red-10` through `$color-brand-red-100`
-- Blue scale: `$color-brand-blue-10` through `$color-brand-blue-100`
+### Additional Brand Colors
+Extended brand color palettes for versatility:
+- **Green scale**: `$color-brand-green-10` through `$color-brand-green-100` - Available for accent and alternative CTAs
+- **Blue scale**: `$color-brand-blue-10` through `$color-brand-blue-100` - Available for informational elements
 
 ### Neutral Palette
 Grey scale from light to dark:
@@ -88,13 +88,13 @@ The color system supports both light and dark themes using CSS custom properties
 **Light Theme** (default, white, g10):
 - Background: white to light grey
 - Text: dark grey to black
-- Interactive: brand green 60
+- Interactive: brand red 60
 - Form fields: white background, dark text
 
 **Dark Theme** (g90, g100):
 - Background: dark grey to near-black
 - Text: light grey to white
-- Interactive: brand green 50
+- Interactive: brand red 50
 - Form fields: dark grey background (#262626), light text
 
 ### Form Field Colors
@@ -284,7 +284,7 @@ CSS custom properties automatically adapt to the active theme:
     box-shadow: var(--card-shadow-hover);
   }
 }
-```
+
 
 ## Motion Tokens
 

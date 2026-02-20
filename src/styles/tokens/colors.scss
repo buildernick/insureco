@@ -92,7 +92,7 @@ $light-background-secondary: $color-grey-10;
 $light-background-tertiary: $color-grey-20;
 $light-background-hover: rgba(141, 141, 141, 0.12);
 $light-background-active: rgba(141, 141, 141, 0.5);
-$light-background-selected: rgba(25, 128, 56, 0.1);
+$light-background-selected: rgba(218, 30, 40, 0.1);
 
 $light-text-primary: $color-grey-100;
 $light-text-secondary: $color-grey-70;
@@ -102,12 +102,12 @@ $light-text-error: $color-error-60;
 
 $light-border-subtle: $color-grey-20;
 $light-border-strong: $color-grey-50;
-$light-border-interactive: $color-brand-green-60;
+$light-border-interactive: $color-brand-red-60;
 
-$light-interactive-primary: $color-brand-green-60;
+$light-interactive-primary: $color-brand-red-60;
 $light-interactive-secondary: $color-grey-70;
-$light-interactive-hover: $color-brand-green-70;
-$light-interactive-active: $color-brand-green-80;
+$light-interactive-hover: $color-brand-red-70;
+$light-interactive-active: $color-brand-red-80;
 
 // Form field specific
 $light-field-background: #ffffff;
@@ -126,7 +126,7 @@ $dark-background-secondary: $color-grey-90;
 $dark-background-tertiary: $color-grey-80;
 $dark-background-hover: rgba(141, 141, 141, 0.16);
 $dark-background-active: rgba(141, 141, 141, 0.4);
-$dark-background-selected: rgba(36, 161, 72, 0.2);
+$dark-background-selected: rgba(250, 77, 86, 0.2);
 
 $dark-text-primary: $color-grey-10;
 $dark-text-secondary: $color-grey-30;
@@ -136,12 +136,12 @@ $dark-text-error: $color-error-50;
 
 $dark-border-subtle: $color-grey-80;
 $dark-border-strong: $color-grey-60;
-$dark-border-interactive: $color-brand-green-50;
+$dark-border-interactive: $color-brand-red-50;
 
-$dark-interactive-primary: $color-brand-green-50;
+$dark-interactive-primary: $color-brand-red-50;
 $dark-interactive-secondary: $color-grey-50;
-$dark-interactive-hover: $color-brand-green-40;
-$dark-interactive-active: $color-brand-green-30;
+$dark-interactive-hover: $color-brand-red-40;
+$dark-interactive-active: $color-brand-red-30;
 
 // Form field specific
 $dark-field-background: $color-grey-90;
