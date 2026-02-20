@@ -30,6 +30,20 @@ $color-brand-blue-90: #001d6c;
 $color-brand-blue-100: #001141;
 
 // ============================================
+// Brand Accent Colors (Greens)
+// ============================================
+$color-brand-green-10: #defbe6;
+$color-brand-green-20: #a7f0ba;
+$color-brand-green-30: #6fdc8c;
+$color-brand-green-40: #42be65;
+$color-brand-green-50: #24a148;
+$color-brand-green-60: #198038;
+$color-brand-green-70: #0e6027;
+$color-brand-green-80: #044317;
+$color-brand-green-90: #022d0d;
+$color-brand-green-100: #071908;
+
+// ============================================
 // Neutral Greys
 // ============================================
 $color-grey-10: #f4f4f4;
@@ -78,7 +92,7 @@ $light-background-secondary: $color-grey-10;
 $light-background-tertiary: $color-grey-20;
 $light-background-hover: rgba(141, 141, 141, 0.12);
 $light-background-active: rgba(141, 141, 141, 0.5);
-$light-background-selected: rgba(218, 30, 40, 0.1);
+$light-background-selected: rgba(25, 128, 56, 0.1);
 
 $light-text-primary: $color-grey-100;
 $light-text-secondary: $color-grey-70;
@@ -88,12 +102,12 @@ $light-text-error: $color-error-60;
 
 $light-border-subtle: $color-grey-20;
 $light-border-strong: $color-grey-50;
-$light-border-interactive: $color-brand-red-60;
+$light-border-interactive: $color-brand-green-60;
 
-$light-interactive-primary: $color-brand-red-60;
+$light-interactive-primary: $color-brand-green-60;
 $light-interactive-secondary: $color-grey-70;
-$light-interactive-hover: $color-brand-red-70;
-$light-interactive-active: $color-brand-red-80;
+$light-interactive-hover: $color-brand-green-70;
+$light-interactive-active: $color-brand-green-80;
 
 // Form field specific
 $light-field-background: #ffffff;
@@ -112,7 +126,7 @@ $dark-background-secondary: $color-grey-90;
 $dark-background-tertiary: $color-grey-80;
 $dark-background-hover: rgba(141, 141, 141, 0.16);
 $dark-background-active: rgba(141, 141, 141, 0.4);
-$dark-background-selected: rgba(250, 77, 86, 0.2);
+$dark-background-selected: rgba(36, 161, 72, 0.2);
 
 $dark-text-primary: $color-grey-10;
 $dark-text-secondary: $color-grey-30;
@@ -122,12 +136,12 @@ $dark-text-error: $color-error-50;
 
 $dark-border-subtle: $color-grey-80;
 $dark-border-strong: $color-grey-60;
-$dark-border-interactive: $color-brand-red-50;
+$dark-border-interactive: $color-brand-green-50;
 
-$dark-interactive-primary: $color-brand-red-50;
+$dark-interactive-primary: $color-brand-green-50;
 $dark-interactive-secondary: $color-grey-50;
-$dark-interactive-hover: $color-brand-red-40;
-$dark-interactive-active: $color-brand-red-30;
+$dark-interactive-hover: $color-brand-green-40;
+$dark-interactive-active: $color-brand-green-30;
 
 // Form field specific
 $dark-field-background: $color-grey-90;
@@ -165,6 +179,18 @@ $dark-text-on-dark: $color-grey-10;  // Light text for dark backgrounds
   --color-brand-blue-80: #{$color-brand-blue-80};
   --color-brand-blue-90: #{$color-brand-blue-90};
   --color-brand-blue-100: #{$color-brand-blue-100};
+
+  // Brand colors - Green (static)
+  --color-brand-green-10: #{$color-brand-green-10};
+  --color-brand-green-20: #{$color-brand-green-20};
+  --color-brand-green-30: #{$color-brand-green-30};
+  --color-brand-green-40: #{$color-brand-green-40};
+  --color-brand-green-50: #{$color-brand-green-50};
+  --color-brand-green-60: #{$color-brand-green-60};
+  --color-brand-green-70: #{$color-brand-green-70};
+  --color-brand-green-80: #{$color-brand-green-80};
+  --color-brand-green-90: #{$color-brand-green-90};
+  --color-brand-green-100: #{$color-brand-green-100};
 
   // Semantic colors (static)
   --color-success: #{$color-success-60};
