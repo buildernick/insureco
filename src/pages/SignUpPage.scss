@@ -1,0 +1,139 @@
+@use '../styles/tokens' as *;
+
+.signup-page {
+  min-height: 100vh;
+  padding: var(--spacing-09) var(--spacing-05);
+  background: var(--background-primary);
+
+  &__card {
+    background: var(--background-secondary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    margin-bottom: var(--spacing-09);
+  }
+
+  // Banner
+  &__banner {
+    padding: 32px 40px;
+    background: linear-gradient(135deg, #a2191f 70.71%, #da1e28 0%);
+    box-shadow: 0 4px 12px rgba(218, 30, 40, 0.15);
+    text-align: center;
+  }
+
+  &__banner-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: #fff;
+    margin: 0 0 8px;
+    line-height: 1.2;
+  }
+
+  &__banner-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.92);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  // Progress
+  &__progress {
+    padding: 16px 20px;
+    background: var(--background-secondary);
+    border-top: 3px solid var(--interactive-primary);
+    border-bottom: 1px solid var(--border-subtle);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  // Form body
+  &__form-body {
+    padding: 24px 28px 28px;
+    border-top: 4px solid var(--interactive-primary);
+    background: var(--background-secondary);
+  }
+
+  &__section-header {
+    margin-bottom: 16px;
+  }
+
+  &__section-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--text-primary);
+    margin: 0 0 10px;
+  }
+
+  &__divider {
+    border: none;
+    border-bottom: 1px solid var(--interactive-primary);
+    margin-bottom: 16px;
+  }
+
+  &__section-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0 0 28px;
+    line-height: 1.5;
+  }
+
+  &__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+
+  // Actions row
+  &__actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid var(--interactive-primary);
+  }
+
+  &__back-btn {
+    color: var(--text-secondary);
+  }
+
+  &__next-btn {
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 672px) {
+  .signup-page {
+    padding: var(--spacing-05) 0;
+
+    &__card {
+      border-radius: 0;
+      margin-bottom: 0;
+    }
+
+    &__banner {
+      padding: 24px 20px;
+    }
+
+    &__banner-title {
+      font-size: 22px;
+    }
+
+    &__form-body {
+      padding: 20px 16px 24px;
+    }
+
+    &__actions {
+      flex-direction: column-reverse;
+      gap: 12px;
+
+      .signup-page__next-btn,
+      .signup-page__back-btn {
+        width: 100%;
+      }
+    }
+  }
+}

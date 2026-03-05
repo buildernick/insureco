@@ -16,13 +16,16 @@ import {
   Home as HomeIcon,
   CheckmarkFilled,
   ArrowRight,
+  SidePanelOpen,
 } from '@carbon/icons-react';
 import { useNavigate } from 'react-router-dom';
+import SignUpDrawer from '../components/SignUpDrawer';
 import './LandingPage.scss';
 
 export default function LandingPage() {
   const navigate = useNavigate();
   const [demoModalOpen, setDemoModalOpen] = useState(false);
+  const [signUpDrawerOpen, setSignUpDrawerOpen] = useState(false);
 
   const features = [
     {
@@ -80,18 +83,32 @@ export default function LandingPage() {
                 Get covered in minutes with InsureCo.
               </p>
               <div className="hero-actions">
+                <div className="hero-signup-demo">
+                  <p className="hero-signup-demo__label">Try two sign-up experiences:</p>
+                  <div className="hero-signup-demo__buttons">
+                    <Button
+                      kind="primary"
+                      size="lg"
+                      onClick={() => setSignUpDrawerOpen(true)}
+                      renderIcon={SidePanelOpen}
+                    >
+                      Sign Up — Slide-In Form
+                    </Button>
+                    <Button
+                      kind="secondary"
+                      size="lg"
+                      onClick={() => navigate('/signup-page')}
+                      renderIcon={ArrowRight}
+                    >
+                      Sign Up — Full Page
+                    </Button>
+                  </div>
+                </div>
                 <Button
-                  kind="primary"
-                  size="lg"
-                  onClick={() => navigate('/signup')}
-                  renderIcon={ArrowRight}
-                >
-                  Sign Up Now
-                </Button>
-                <Button
-                  kind="secondary"
+                  kind="ghost"
                   size="lg"
                   onClick={() => setDemoModalOpen(true)}
+                  className="hero-demo-btn"
                 >
                   Get a Demo
                 </Button>
@@ -309,6 +326,9 @@ export default function LandingPage() {
           </Column>
         </Grid>
       </footer>
+
+      {/* Sign Up Drawer (slide-in from right) */}
+      <SignUpDrawer isOpen={signUpDrawerOpen} onClose={() => setSignUpDrawerOpen(false)} />
 
       {/* Demo Request Modal */}
       <Modal
