@@ -99,6 +99,25 @@ export function formatDateTime(dateInput) {
 }
 
 /**
+ * Format a date for DatePickerInput (mm/dd/yyyy format only, no time)
+ * @param {string|Date} dateInput - Date to format (can be Date object or string)
+ * @returns {string} Formatted date string (mm/dd/yyyy) or empty string if invalid
+ */
+export function formatDateForInput(dateInput) {
+  if (!dateInput) return '';
+
+  const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+
+  if (isNaN(date.getTime())) return '';
+
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `${month}/${day}/${year}`;
+}
+
+/**
  * Calculate days between two dates
  * @param {string|Date} startDate - Start date
  * @param {string|Date} endDate - End date (default: today)
@@ -549,6 +568,7 @@ export default {
 
   // Dates
   formatDate,
+  formatDateForInput,
   formatDateTime,
   daysBetween,
   isDatePast,
