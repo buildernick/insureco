@@ -113,10 +113,10 @@ export default function Layout({ children }) {
               >
                 <SideNavItems>
                   <HeaderSideNavItems hasDivider>
-                    <HeaderMenuItem onClick={() => navigate("/")}>
+                    <HeaderMenuItem onClick={() => { navigate("/"); onClickSideNavExpand(); }}>
                       Home
                     </HeaderMenuItem>
-                    <HeaderMenuItem onClick={() => navigate("/dashboard")}>
+                    <HeaderMenuItem onClick={() => { navigate("/dashboard"); onClickSideNavExpand(); }}>
                       Dashboard
                     </HeaderMenuItem>
 
@@ -125,48 +125,54 @@ export default function Layout({ children }) {
                       <SideNavMenuItem
                         element={Link}
                         to="/business/dashboard"
+                        onClick={onClickSideNavExpand}
                       >
                         Overview
                       </SideNavMenuItem>
                       <SideNavMenuItem
                         element={Link}
                         to="/business/properties"
+                        onClick={onClickSideNavExpand}
                       >
                         Properties
                       </SideNavMenuItem>
                       <SideNavMenuItem
                         element={Link}
                         to="/business/fleet"
+                        onClick={onClickSideNavExpand}
                       >
                         Fleet
                       </SideNavMenuItem>
                       <SideNavMenuItem
                         element={Link}
                         to="/business/map"
+                        onClick={onClickSideNavExpand}
                       >
                         Map View
                       </SideNavMenuItem>
                       <SideNavMenuItem
                         element={Link}
                         to="/business/claims"
+                        onClick={onClickSideNavExpand}
                       >
                         Claims
                       </SideNavMenuItem>
                       <SideNavMenuItem
                         element={Link}
                         to="/business/payments"
+                        onClick={onClickSideNavExpand}
                       >
                         Payments
                       </SideNavMenuItem>
                     </SideNavMenu>
 
-                    <HeaderMenuItem onClick={() => navigate("/login")}>
+                    <HeaderMenuItem onClick={() => { navigate("/login"); onClickSideNavExpand(); }}>
                       Login
                     </HeaderMenuItem>
-                    <HeaderMenuItem onClick={() => navigate("/signup")}>
+                    <HeaderMenuItem onClick={() => { navigate("/signup"); onClickSideNavExpand(); }}>
                       Sign Up
                     </HeaderMenuItem>
-                    <HeaderMenuItem onClick={() => navigate("/about")}>
+                    <HeaderMenuItem onClick={() => { navigate("/about"); onClickSideNavExpand(); }}>
                       About
                     </HeaderMenuItem>
                   </HeaderSideNavItems>
