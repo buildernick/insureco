@@ -6,6 +6,28 @@ alwaysApply: false
 
 # Unit Testing
 
+## 🚫 NEVER Write Tests Unless Explicitly Asked
+
+> **This is the most important rule in this document. It overrides any instinct to be helpful by adding tests.**
+
+**Do NOT write, add, modify, or suggest unit tests at any point unless the user's message explicitly and directly requests it.**
+
+This means:
+- ❌ Do not add tests when building new features or components
+- ❌ Do not add tests when fixing bugs
+- ❌ Do not update existing tests when changing code they cover
+- ❌ Do not mention tests as a next step, suggestion, or recommendation
+- ❌ Do not ask if the user wants tests added
+
+✅ **Only write tests when the request clearly calls for it**, such as:
+- "Write a test for..."
+- "Add test coverage for..."
+- "Can you test this component?"
+
+If there is any ambiguity about whether the user wants tests, **do not write them**.
+
+---
+
 ## Stack
 
 | Tool | Role |
@@ -22,7 +44,7 @@ alwaysApply: false
 npm run test:run      # Single run with coverage (use in CI or to check results)
 npm test              # Watch mode — re-runs on file save
 npm run test:coverage # Coverage only
-
+```
 
 ## File Structure
 
@@ -122,18 +144,6 @@ it('submits the form', async () => {
 
 Always `await` userEvent calls — they are async.
 
-## ⚠️ Important: Do Not Write Tests Unprompted
-
-**Never write, add, or modify unit tests unless the user explicitly asks for them.**
-
-This includes:
-- Do not add tests when implementing new features or components
-- Do not add tests when fixing bugs
-- Do not suggest adding tests as a follow-up step unless asked
-- Do not update existing tests unless explicitly requested
-
-Only write tests when the user's request clearly and directly asks for them (e.g. "write a test for...", "add test coverage for...").
-
 ## What to Test
 
 - **Utils**: Test all branches and edge cases of pure functions
@@ -142,4 +152,4 @@ Only write tests when the user's request clearly and directly asks for them (e.g
 
 ## Coverage
 
-Run `npm run test:run` to see coverage. The report shows per-file statement/branch/function/line coverage. Current overall coverage is low (~10%) because most pages and business components are not yet tested — focus new test efforts on untested pages in `src/pages/business/`.
+Run `npm run test:run` to see coverage. The report shows per-file statement/branch/function/line coverage. Current overall coverage is low (~10%) because most pages and business components are not yet tested.
