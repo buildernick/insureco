@@ -4,6 +4,17 @@
 // ============================================
 // Buttons
 // ============================================
+
+// Leading icon variant: places the icon to the LEFT of the button text.
+// Apply className="btn--icon-left" to any Carbon <Button> that uses renderIcon.
+.btn--icon-left {
+  .cds--btn__icon {
+    order: -1;
+    margin-right: 0.5rem;
+    margin-left: 0;
+  }
+}
+
 .cds--btn--primary {
   background-color: var(--interactive-primary);
   border-color: var(--interactive-primary);
