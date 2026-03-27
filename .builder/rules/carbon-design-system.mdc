@@ -104,7 +104,7 @@ function MyComponent() {
     </button>
   );
 }
-```
+
 
 ## Component Usage Examples
 
@@ -490,15 +490,85 @@ This file is specifically for Carbon component overrides and loads AFTER Carbon'
 }
 ```
 
-#### 4. Tables
-**Issue**: Row backgrounds and text colors
-**Override**: Table headers, cells, hover states
+#### 4. Tables (DataTable)
+**Issue**: Row/cell backgrounds and text colors use hardcoded Carbon defaults that don't adapt to dark mode.
+**Override**: Must target `.cds--data-table-container`, all `th`/`td` elements, sort buttons, and hover states with `!important` and sufficient specificity. These overrides are already applied globally in `src/styles/components.scss`.
+
+**Rule**: Always use Carbon's `DataTable`, `Table`, `TableHead`, `TableBody`, `TableRow`, `TableHeader`, `TableCell` from `@carbon/react`. The global overrides in `components.scss` will handle dark/light theming automatically — no extra code needed in the component.
 
 ```scss
+// IMPORTANT: High specificity required — Carbon sets backgrounds on individual th/td
+// elements directly, so the container override alone is not enough.
+.cds--data-table-container {
+  background-color: var(--background-primary) !important;
+}
+
 .cds--data-table {
-  th, td {
-    color: var(--text-primary);
+  background-color: var(--background-primary) !important;
+
+  thead,
+  thead tr,
+  th,
+  thead th {
+    background-color: var(--background-secondary) !important;
+    color: var(--text-primary) !important;
   }
+
+  .cds--table-header-label {
+    color: var(--text-primary) !important;
+  }
+
+  tbody tr {
+    background-color: var(--background-primary) !important;
+    &:hover { background-color: var(--background-hover) !important; }
+  }
+
+  td,
+  tbody td {
+    background-color: var(--background-primary) !important;
+    color: var(--text-primary) !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
+  }
+
+  .cds--table-sort {
+    background-color: var(--background-secondary) !important;
+    color: var(--text-primary) !important;
+    svg { fill: var(--text-primary) !important; }
+  }
+}
+```
+
+#### 5. Search Input
+**Issue**: Carbon's `Search` component uses `.cds--search-input` — a separate class from `.cds--text-input` — so regular form field overrides do NOT apply to it.
+**Override**: Must target `.cds--search`, `.cds--search-input`, and icon SVGs explicitly. These overrides are already applied globally in `src/styles/components.scss`.
+
+**Rule**: Always use Carbon's `<Search>` component from `@carbon/react`. The global overrides will handle theming automatically.
+
+```scss
+// IMPORTANT: .cds--search-input is NOT covered by .cds--text-input overrides
+.cds--search {
+  background-color: var(--field-background) !important;
+}
+
+.cds--search-input {
+  background-color: var(--field-background) !important;
+  color: var(--field-text) !important;
+  border-bottom-color: var(--border-strong) !important;
+
+  &::placeholder {
+    color: var(--field-placeholder) !important;
+    opacity: 1;
+  }
+
+  &:focus {
+    outline-color: var(--interactive-primary) !important;
+    background-color: var(--field-background) !important;
+  }
+}
+
+.cds--search-magnifier-icon svg,
+.cds--search-close svg {
+  fill: var(--text-secondary) !important;
 }
 ```
 
