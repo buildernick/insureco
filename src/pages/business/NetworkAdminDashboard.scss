@@ -1,0 +1,350 @@
+@use '../../styles/tokens' as *;
+
+.network-admin-dashboard {
+  padding: 0;
+  min-height: 100vh;
+  background: var(--background-primary);
+  color: var(--text-primary);
+
+  // =====================
+  // Page Header
+  // =====================
+  .page-header {
+    padding: 0 2rem 1rem 2rem;
+    background: var(--background-primary);
+  }
+
+  .header-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .page-title {
+    font-family: 'Open Sans', -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 2.5rem;
+    letter-spacing: -0.04rem;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .page-description {
+    font-family: 'Open Sans', -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .refresh-btn {
+    background: #033160 !important;
+    border-color: #033160 !important;
+    border-radius: 40px !important;
+    font-weight: 800 !important;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  // =====================
+  // Header Controls (Search + Pagination)
+  // =====================
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .search-wrapper {
+    flex: 1;
+    min-width: 200px;
+    max-width: 600px;
+
+    .cds--search {
+      border-radius: 8px;
+      border: 2px solid var(--grey-550, #5F6B7A);
+    }
+
+    .cds--search-input {
+      background: var(--background-primary) !important;
+      color: var(--text-primary) !important;
+      font-style: italic;
+    }
+  }
+
+  .pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.125rem;
+    flex-shrink: 0;
+  }
+
+  .page-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 34px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-family: 'Open Sans', -apple-system, sans-serif;
+    font-size: 0.875rem;
+    border-radius: 4px;
+    transition: background 0.15s ease;
+
+    &:hover:not(:disabled) {
+      background: var(--background-hover);
+      color: var(--text-primary);
+    }
+
+    &--active {
+      color: var(--text-primary);
+      font-weight: 800;
+    }
+
+    &--disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  .page-divider {
+    width: 2px;
+    height: 34px;
+    background: var(--grey-600, #414D5C);
+    margin: 0 0.25rem;
+  }
+
+  .page-settings-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 34px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    border-radius: 4px;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: var(--background-hover);
+      color: var(--text-primary);
+    }
+  }
+
+  // =====================
+  // Warning Banner
+  // =====================
+  .warning-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0.8125rem 2.125rem 0.8125rem 2.0625rem;
+    background: #FFF4B4;
+    border: 1px solid #000;
+    margin-bottom: 0.5rem;
+  }
+
+  .warning-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .warning-text {
+    font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.375rem;
+    color: #946C00;
+  }
+
+  .warning-dismiss {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #946C00;
+    line-height: 1.375rem;
+    padding: 0;
+    flex-shrink: 0;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  // =====================
+  // Charts Section
+  // =====================
+  .charts-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.6875rem;
+    padding: 2.5rem 2rem;
+    flex-wrap: wrap;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .chart-card {
+    border: 1px solid rgba(0, 0, 0, 0.69);
+    background: var(--background-primary);
+    border-radius: 0;
+    overflow: hidden;
+
+    // Override carbon charts to match design
+    .cds--chart-holder {
+      padding: 1rem;
+    }
+
+    // Title styling
+    p.bx--cc--title,
+    p.title {
+      font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary) !important;
+    }
+  }
+
+  // =====================
+  // Devices Section
+  // =====================
+  .devices-section {
+    padding: 0 2rem 3rem 2rem;
+  }
+
+  .devices-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .devices-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .devices-title {
+    font-family: 'Open Sans', -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 2.5rem;
+    letter-spacing: -0.04rem;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .devices-description {
+    font-family: 'Open Sans', -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  // Add Device button matches Refresh Data style
+  .devices-header .cds--btn--primary {
+    background: #033160 !important;
+    border-color: #033160 !important;
+    border-radius: 40px !important;
+    font-weight: 800 !important;
+  }
+
+  // =====================
+  // Device Status Badges
+  // =====================
+  .device-status {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+
+    &--online {
+      background: #d9f2d0;
+      color: #198038;
+    }
+
+    &--offline {
+      background: #ffd7d9;
+      color: #da1e28;
+    }
+  }
+
+  // =====================
+  // Carbon Breadcrumb overrides
+  // =====================
+  .cds--breadcrumb {
+    padding: 1.25rem 0 1.375rem 0;
+  }
+
+  .cds--breadcrumb-item .cds--link {
+    color: #539FE5 !important;
+    font-family: 'Open Sans', -apple-system, sans-serif;
+    font-size: 0.875rem;
+  }
+
+  .cds--breadcrumb-item--current .cds--link,
+  .cds--breadcrumb-item--current span {
+    color: var(--grey-500, #7D8998) !important;
+    font-family: 'Open Sans', -apple-system, sans-serif;
+    font-size: 0.875rem;
+  }
+
+  // =====================
+  // Responsive
+  // =====================
+  @media (max-width: 1024px) {
+    .page-header {
+      padding: 0 1rem 1rem 1rem;
+    }
+
+    .devices-section {
+      padding: 0 1rem 2rem 1rem;
+    }
+
+    .charts-section {
+      padding: 1.5rem 1rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .page-title,
+    .devices-title {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+
+    .header-controls {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .search-wrapper {
+      max-width: 100%;
+    }
+  }
+}
