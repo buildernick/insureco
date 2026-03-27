@@ -23,6 +23,9 @@
     "react-router-dom": "^7.6.0",
     "recharts": "^3.7.0"
   },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.60.0"
+  },
   "devDependencies": {
     "@storybook/addon-essentials": "^8.6.14",
     "@storybook/addon-interactions": "^8.6.14",
