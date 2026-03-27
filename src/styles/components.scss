@@ -283,26 +283,106 @@
 // ============================================
 // Tables
 // ============================================
+// IMPORTANT: High specificity required — Carbon's DataTable uses deeply nested
+// selectors with hardcoded colors that don't adapt to custom themes.
+// Without matching specificity, dark text appears on dark backgrounds in dark mode.
+
+.cds--data-table-container {
+  background-color: var(--background-primary) !important;
+}
+
 .cds--data-table {
-  background-color: var(--background-primary);
-  
-  thead {
-    background-color: var(--background-secondary);
+  background-color: var(--background-primary) !important;
+
+  // Header row
+  .cds--table-header-label {
+    color: var(--text-primary) !important;
   }
-  
-  th {
-    color: var(--text-primary);
-    border-bottom: 1px solid var(--border-strong);
+
+  thead,
+  thead tr,
+  thead .cds--table-header-label {
+    background-color: var(--background-secondary) !important;
+    color: var(--text-primary) !important;
   }
-  
-  td {
-    color: var(--text-primary);
-    border-bottom: 1px solid var(--border-subtle);
+
+  th,
+  thead th {
+    background-color: var(--background-secondary) !important;
+    color: var(--text-primary) !important;
+    border-bottom: 1px solid var(--border-strong) !important;
   }
-  
-  tbody tr:hover {
-    background-color: var(--background-hover);
+
+  // Body rows
+  tbody tr {
+    background-color: var(--background-primary) !important;
+
+    &:hover {
+      background-color: var(--background-hover) !important;
+    }
   }
+
+  td,
+  tbody td {
+    background-color: var(--background-primary) !important;
+    color: var(--text-primary) !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
+  }
+
+  // Sortable header buttons
+  .cds--table-sort {
+    background-color: var(--background-secondary) !important;
+    color: var(--text-primary) !important;
+
+    &:hover {
+      background-color: var(--background-hover) !important;
+    }
+
+    .cds--table-sort__icon,
+    svg {
+      fill: var(--text-primary) !important;
+    }
+  }
+}
+
+// Toolbar (if present — search bar inside tables)
+.cds--table-toolbar {
+  background-color: var(--background-secondary) !important;
+}
+
+// ============================================
+// Search Input
+// ============================================
+// IMPORTANT: Carbon's Search component uses .cds--search-input which is
+// separate from regular text inputs and needs its own theme overrides.
+
+.cds--search {
+  background-color: var(--field-background) !important;
+}
+
+.cds--search-input {
+  background-color: var(--field-background) !important;
+  color: var(--field-text) !important;
+  border-bottom-color: var(--border-strong) !important;
+
+  &::placeholder {
+    color: var(--field-placeholder) !important;
+    opacity: 1;
+  }
+
+  &:focus {
+    outline-color: var(--interactive-primary) !important;
+    background-color: var(--field-background) !important;
+  }
+}
+
+.cds--search-magnifier-icon,
+.cds--search-magnifier svg {
+  fill: var(--text-secondary) !important;
+}
+
+.cds--search-close svg {
+  fill: var(--text-secondary) !important;
 }
 
 // ============================================
