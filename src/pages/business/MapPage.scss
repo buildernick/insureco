@@ -38,6 +38,7 @@
       height: calc(100vh - 280px);
       min-height: 500px;
       overflow: hidden;
+      position: relative;
 
       .map-view-container {
         height: 100%;
@@ -45,6 +46,44 @@
         .leaflet-map {
           border-radius: 0;
           box-shadow: none;
+        }
+      }
+
+      // Filter overlay positioned on top of the map
+      .map-filter-overlay {
+        position: absolute;
+        top: var(--spacing-05);
+        right: var(--spacing-05);
+        z-index: 1000;
+        width: 280px;
+
+        .filters-header {
+          display: flex;
+          justify-content: flex-end;
+          margin-bottom: var(--spacing-02);
+          min-height: 28px;
+
+          .clear-filters-btn {
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            min-height: auto;
+            padding: var(--spacing-02) var(--spacing-03);
+          }
+        }
+
+        // The filter toggle button gets a frosted-glass look
+        .faceted-filter-button {
+          width: 100%;
+
+          .filter-toggle-button {
+            background: rgba(255, 255, 255, 0.18) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.35) !important;
+          }
         }
       }
     }
@@ -126,37 +165,6 @@
       }
     }
 
-    // Filters
-    .filters-tile {
-      padding: var(--spacing-05);
-
-      .filters-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: var(--spacing-04);
-
-        .tile-heading {
-          margin: 0;
-          font-size: var(--font-size-lg);
-          font-weight: var(--font-weight-semibold);
-          color: var(--text-primary);
-        }
-
-        .clear-filters-btn {
-          min-height: auto;
-          padding: var(--spacing-03);
-        }
-      }
-
-      .filters-content {
-        // Cascading filter button container
-        .faceted-filter-button {
-          width: 100%;
-        }
-      }
-    }
-
     // Legend
     .legend-tile {
       padding: var(--spacing-05);
@@ -210,6 +218,25 @@
 :root[data-carbon-theme="g90"],
 :root[data-carbon-theme="g100"] {
   .map-page {
+    .map-column {
+      .map-tile {
+        .map-filter-overlay {
+          .faceted-filter-button {
+            .filter-toggle-button {
+              background: rgba(0, 0, 0, 0.35) !important;
+              border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            }
+          }
+
+          .filters-header {
+            .clear-filters-btn {
+              background: rgba(0, 0, 0, 0.35);
+            }
+          }
+        }
+      }
+    }
+
     .sidebar-column {
       .legend-tile {
         .vehicle-legend {
@@ -284,14 +311,6 @@
 
         .stat-value {
           font-size: var(--heading-h4-size);
-        }
-      }
-
-      .filters-tile {
-        padding: var(--spacing-04);
-
-        .filters-content {
-          gap: var(--spacing-04);
         }
       }
 

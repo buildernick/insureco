@@ -309,6 +309,28 @@ export default function MapPage() {
             vehicles={selectedAssetType === 'properties' ? [] : filteredVehicles}
             selectedAssetType={selectedAssetType}
           />
+          {/* Filter overlay on top of the map */}
+          <div className="map-filter-overlay">
+            <div className="filters-header">
+              {activeFiltersCount > 0 && (
+                <Button
+                  kind="ghost"
+                  size="sm"
+                  renderIcon={Close}
+                  onClick={handleClearFilters}
+                  className="clear-filters-btn"
+                >
+                  Clear ({activeFiltersCount})
+                </Button>
+              )}
+            </div>
+            <FacetedFilterButton
+              label={filterLabel}
+              facets={facets}
+              selectedFilters={selectedFilters}
+              onFiltersChange={setSelectedFilters}
+            />
+          </div>
         </Tile>
       </Column>
 
@@ -351,33 +373,6 @@ export default function MapPage() {
               <span className="stat-label">Open Claims</span>
               <span className="stat-value stat-claims">{stats.openClaims}</span>
             </div>
-          </div>
-        </Tile>
-
-        {/* Cascading Filter */}
-        <Tile className="filters-tile">
-          <div className="filters-header">
-            <Heading className="tile-heading">Filters</Heading>
-            {activeFiltersCount > 0 && (
-              <Button
-                kind="ghost"
-                size="sm"
-                renderIcon={Close}
-                onClick={handleClearFilters}
-                className="clear-filters-btn"
-              >
-                Clear ({activeFiltersCount})
-              </Button>
-            )}
-          </div>
-
-          <div className="filters-content">
-            <FacetedFilterButton
-              label={filterLabel}
-              facets={facets}
-              selectedFilters={selectedFilters}
-              onFiltersChange={setSelectedFilters}
-            />
           </div>
         </Tile>
 
