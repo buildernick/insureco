@@ -376,6 +376,32 @@ export default function MapPage() {
           </div>
         </Tile>
 
+        {/* Filters – visible on mobile/tablet only (desktop uses map overlay) */}
+        <Tile className="filters-tile sidebar-filters">
+          <div className="filters-header">
+            <Heading className="tile-heading">Filters</Heading>
+            {activeFiltersCount > 0 && (
+              <Button
+                kind="ghost"
+                size="sm"
+                renderIcon={Close}
+                onClick={handleClearFilters}
+                className="clear-filters-btn"
+              >
+                Clear ({activeFiltersCount})
+              </Button>
+            )}
+          </div>
+          <div className="filters-content">
+            <FacetedFilterButton
+              label={filterLabel}
+              facets={facets}
+              selectedFilters={selectedFilters}
+              onFiltersChange={setSelectedFilters}
+            />
+          </div>
+        </Tile>
+
         {/* Legend */}
         <Tile className="legend-tile">
           <Heading className="tile-heading">Legend</Heading>

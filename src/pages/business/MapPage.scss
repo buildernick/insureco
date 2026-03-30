@@ -49,7 +49,7 @@
         }
       }
 
-      // Filter overlay positioned on top of the map
+      // Filter overlay positioned on top of the map – desktop only
       .map-filter-overlay {
         position: absolute;
         top: var(--spacing-05);
@@ -84,6 +84,11 @@
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.35) !important;
           }
+        }
+
+        // Hidden below 1056px – sidebar version takes over
+        @media (max-width: 1055px) {
+          display: none;
         }
       }
     }
@@ -162,6 +167,41 @@
 
       .stat-claims {
         color: var(--color-support-error);
+      }
+    }
+
+    // Filters (sidebar version – mobile/tablet only)
+    .sidebar-filters {
+      display: none; // Hidden on desktop; shown below 1056px
+      padding: var(--spacing-05);
+
+      .filters-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--spacing-04);
+
+        .tile-heading {
+          margin: 0;
+          font-size: var(--font-size-lg);
+          font-weight: var(--font-weight-semibold);
+          color: var(--text-primary);
+        }
+
+        .clear-filters-btn {
+          min-height: auto;
+          padding: var(--spacing-03);
+        }
+      }
+
+      .filters-content {
+        .faceted-filter-button {
+          width: 100%;
+        }
+      }
+
+      @media (max-width: 1055px) {
+        display: block;
       }
     }
 
