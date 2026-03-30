@@ -378,7 +378,7 @@ export default function SignUpPage() {
             <TextInput
               id="carMileage"
               labelText="Current Mileage"
-              placeholder="e.g. 45000"
+              placeholder="e.g. 60,000 miles"
               helperText="Only estimates are needed right now"
               value={formData.carMileage}
               onChange={(e) => updateFormData('carMileage', e.target.value)}
@@ -386,7 +386,7 @@ export default function SignUpPage() {
             <TextInput
               id="carMilesPerYear"
               labelText="Miles Driven Per Year"
-              placeholder="e.g. 12000"
+              placeholder="e.g. 12,000 miles"
               helperText="Only estimates are needed right now"
               value={formData.carMilesPerYear}
               onChange={(e) => updateFormData('carMilesPerYear', e.target.value)}
