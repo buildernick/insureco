@@ -7,35 +7,57 @@
 
 // Hero Section
 .hero-section {
-  padding: var(--spacing-13) var(--spacing-05);
-  background-image: url('https://images.pexels.com/photos/4145355/pexels-photo-4145355.jpeg?auto=compress&cs=tinysrgb&w=1920');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  position: relative;
   color: var(--text-on-color);
   text-align: center;
   min-height: 600px;
   display: flex;
   align-items: center;
-  position: relative;
+  overflow: hidden;
 
-  // Add subtle dark overlay for text readability
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 0;
-  }
-
-  .hero-content {
-    max-width: 800px;
-    margin: 0 auto;
+  // Carbon grid sits above video + overlay
+  .cds--css-grid,
+  .cds--grid {
     position: relative;
-    z-index: 1;
+    z-index: 2;
+    padding: var(--spacing-13) var(--spacing-05);
+  }
+}
+
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.65) 0%,
+    rgba(218, 30, 40, 0.25) 60%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+  z-index: 1;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+
+  .hero-eyebrow {
+    font-size: var(--body-sm-size);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-brand-red-40, #ff8389);
+    margin-bottom: var(--spacing-04);
+    opacity: 0.9;
   }
 
   .hero-heading {
@@ -44,14 +66,14 @@
     line-height: var(--heading-h1-line-height);
     margin-bottom: var(--spacing-05);
     color: var(--text-on-color);
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
   }
 
   .hero-tagline {
     font-size: var(--body-lg-size);
     line-height: var(--line-height-normal);
     margin-bottom: var(--spacing-07);
-    opacity: 0.95;
+    opacity: 0.92;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   }
 
