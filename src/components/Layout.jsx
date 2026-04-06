@@ -100,6 +100,9 @@ export default function Layout({ children }) {
                 <HeaderMenuItem onClick={() => navigate("/about")}>
                   About
                 </HeaderMenuItem>
+                <HeaderMenuItem onClick={() => navigate("/progress-preview")}>
+                  Progress Preview
+                </HeaderMenuItem>
               </HeaderNavigation>
               <HeaderGlobalBar>
                 <HeaderGlobalAction aria-label="Search">
