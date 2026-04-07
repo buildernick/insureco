@@ -1,0 +1,631 @@
+@use '../styles/tokens' as *;
+
+// ============================================
+// Sign Up Page - Multi-step Form Flow
+// Matches Figma design with:
+// - Red gradient header banner
+// - Progress indicator with red top border
+// - Form card with 5px red top border
+// - Navigation buttons at bottom
+// ============================================
+
+.signup-page {
+  min-height: calc(100vh - 3rem);
+  background: linear-gradient(135deg, var(--background-secondary) 70.71%, var(--background-primary) 0%);
+  padding: var(--spacing-05) var(--spacing-05);
+
+  &__wrapper {
+    max-width: 703px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-06);
+  }
+
+  // ============================================
+  // Header Banner
+  // ============================================
+  &__header {
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--color-brand-red-70) 70.71%, var(--color-brand-red-60) 0%);
+    box-shadow: 0 4px 12px 0 rgba(218, 30, 40, 0.15);
+    padding: var(--spacing-07) var(--spacing-07);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-03);
+    text-align: center;
+  }
+
+  &__title {
+    color: #fff;
+    font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  &__subtitle {
+    color: #fff;
+    font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 0;
+    opacity: 0.95;
+  }
+
+  // ============================================
+  // Progress Indicator
+  // ============================================
+  &__progress {
+    border-top: 1px solid var(--interactive-primary);
+    border-radius: 4px;
+    background: var(--background-secondary);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    padding: var(--spacing-05) var(--spacing-05);
+  }
+
+  // ============================================
+  // Warning Banner (Car Details step)
+  // ============================================
+  &__warning-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 13px 34px 13px 33px;
+    border: 1px solid #000;
+    background: #fff4b4;
+    gap: var(--spacing-05);
+  }
+
+  &__warning-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    svg {
+      flex-shrink: 0;
+    }
+  }
+
+  &__warning-text {
+    color: #946c00;
+    font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+  }
+
+  &__warning-dismiss {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #946c00;
+    font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 22px;
+    padding: 0;
+    white-space: nowrap;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  // ============================================
+  // Form Card
+  // ============================================
+  &__form-card {
+    border-top: 5px solid var(--interactive-primary);
+    background: var(--background-secondary);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    padding: var(--spacing-06) var(--spacing-06) var(--spacing-07);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-07);
+  }
+
+  // ============================================
+  // Step Content
+  // ============================================
+  &__step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-06);
+  }
+
+  &__step-header {
+    border-bottom: 1px solid var(--interactive-primary);
+    padding-bottom: 11px;
+  }
+
+  &__step-title {
+    color: var(--text-primary);
+    font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  &__step-desc {
+    color: var(--text-primary);
+    font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  // ============================================
+  // Form Fields
+  // ============================================
+  &__fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-06);
+  }
+
+  // ============================================
+  // Insurance Type Tiles
+  // ============================================
+  &__insurance-tiles {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-04);
+
+    &--error {
+      .signup-page__insurance-tile {
+        border-color: var(--color-error);
+      }
+    }
+  }
+
+  &__insurance-error {
+    margin: 0;
+    padding-top: var(--spacing-02);
+    color: var(--color-error);
+    font-size: 0.75rem;
+    line-height: 1.33;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-02);
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23da1e28' d='M8 1C4.1 1 1 4.1 1 8s3.1 7 7 7 7-3.1 7-7-3.1-7-7-7zm-.5 3h1v5h-1V4zm.5 8.2c-.4 0-.8-.4-.8-.8s.4-.8.8-.8.8.4.8.8-.4.8-.8.8z'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      flex-shrink: 0;
+    }
+  }
+
+  &__insurance-tile {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+    padding: 16px;
+    background: var(--background-primary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    transition: all 0.15s ease;
+
+    &:hover {
+      border-color: var(--interactive-primary);
+      background: var(--background-selected);
+    }
+
+    &--selected {
+      border-color: var(--interactive-primary);
+      border-width: 2px;
+      background: var(--background-selected);
+
+      .signup-page__tile-icons {
+        color: var(--interactive-primary);
+      }
+    }
+
+    &:focus {
+      outline: 2px solid var(--interactive-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  &__tile-icons {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-primary);
+    flex-shrink: 0;
+  }
+
+  &__tile-text {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+  }
+
+  &__tile-title {
+    color: var(--text-primary);
+    font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  &__tile-desc {
+    color: var(--text-primary);
+    font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.43;
+  }
+
+  // ============================================
+  // Navigation Buttons
+  // ============================================
+  &__nav {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    border-top: 1px solid var(--interactive-primary);
+    padding-top: var(--spacing-06);
+    flex-wrap: wrap;
+  }
+
+  &__btn-cancel,
+  &__btn-back,
+  &__btn-next {
+    min-width: 0;
+  }
+}
+
+// ============================================
+// Carbon component overrides within signup page
+// ============================================
+.signup-page {
+  // Ensure form fields use proper theme-aware colors
+  .cds--text-input,
+  .cds--select-input,
+  .cds--number__input {
+    background-color: var(--field-background) !important;
+    color: var(--field-text) !important;
+  }
+
+  .cds--label {
+    color: var(--text-primary) !important;
+  }
+
+  .cds--text-input__label-wrapper {
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .cds--form__helper-text {
+    color: var(--text-secondary) !important;
+  }
+}
+
+// ============================================
+// Quote Step
+// ============================================
+
+// Price hero
+.quote-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-03);
+  padding: var(--spacing-07) var(--spacing-06);
+  background: linear-gradient(135deg, var(--color-brand-red-70) 70.71%, var(--color-brand-red-60) 0%);
+  border-radius: 8px;
+  text-align: center;
+
+  &__label {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  &__price-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    color: #fff;
+    line-height: 1;
+  }
+
+  &__dollar {
+    font-size: 28px;
+    font-weight: 600;
+    padding-top: 8px;
+  }
+
+  &__amount {
+    font-size: 72px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  &__period {
+    font-size: 22px;
+    font-weight: 400;
+    padding-top: 14px;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  &__disclaimer {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    font-style: italic;
+  }
+}
+
+// Bundle savings badge
+.quote-bundle-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-03);
+  padding: var(--spacing-04) var(--spacing-05);
+  background: var(--color-success-bg, #defbe6);
+  border: 1px solid var(--color-success, #198038);
+  border-radius: 4px;
+  color: var(--color-success, #198038);
+  font-size: 14px;
+  line-height: 1.43;
+
+  // Dark theme override
+  :root[data-carbon-theme="g90"] &,
+  :root[data-carbon-theme="g100"] & {
+    background: rgba(25, 128, 56, 0.15);
+    border-color: #42be65;
+    color: #42be65;
+  }
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+// Price breakdown table
+.quote-breakdown {
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  overflow: hidden;
+
+  &__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    padding: var(--spacing-04) var(--spacing-05);
+    background: var(--background-tertiary, var(--background-secondary));
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-04) var(--spacing-05);
+    font-size: 14px;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-subtle);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &--discount {
+      color: var(--color-success, #198038);
+
+      :root[data-carbon-theme="g90"] &,
+      :root[data-carbon-theme="g100"] & {
+        color: #42be65;
+      }
+    }
+
+    &--total {
+      font-weight: 700;
+      font-size: 16px;
+      background: var(--background-selected);
+    }
+  }
+}
+
+// Coverage checklist
+.quote-coverage {
+  &__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 var(--spacing-04);
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-03);
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-03);
+    font-size: 14px;
+    color: var(--text-primary);
+  }
+
+  &__check {
+    color: var(--interactive-primary);
+    flex-shrink: 0;
+  }
+}
+
+// Details summary
+.quote-summary {
+  &__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 var(--spacing-04);
+  }
+
+  &__list {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  &__row {
+    display: flex;
+    gap: var(--spacing-05);
+    padding: var(--spacing-04) var(--spacing-05);
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 14px;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    dt {
+      min-width: 90px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+
+    dd {
+      margin: 0;
+      color: var(--text-primary);
+    }
+  }
+}
+
+// Trust signals row
+.quote-trust {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-07);
+  flex-wrap: wrap;
+  padding: var(--spacing-04) 0;
+  border-top: 1px solid var(--border-subtle);
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-02);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-align: center;
+
+    svg {
+      color: var(--interactive-primary);
+    }
+  }
+}
+
+// ============================================
+// Responsive - Mobile
+// ============================================
+@media (max-width: 672px) {
+  .signup-page {
+    padding: var(--spacing-04) var(--spacing-04);
+
+    &__wrapper {
+      gap: var(--spacing-05);
+    }
+
+    &__header {
+      padding: var(--spacing-06) var(--spacing-05);
+    }
+
+    &__title {
+      font-size: 22px;
+    }
+
+    &__subtitle {
+      font-size: 14px;
+    }
+
+    &__form-card {
+      padding: var(--spacing-05) var(--spacing-05) var(--spacing-06);
+    }
+
+    &__step-title {
+      font-size: 20px;
+    }
+
+    &__tile-title {
+      font-size: 16px;
+    }
+
+    &__nav {
+      flex-direction: column-reverse;
+      align-items: stretch;
+
+      .cds--btn {
+        width: 100%;
+        justify-content: center;
+        max-width: 100%;
+      }
+    }
+
+    &__warning-banner {
+      padding: 12px 16px;
+      flex-direction: column;
+      gap: var(--spacing-03);
+    }
+  }
+
+  .quote-hero {
+    &__amount {
+      font-size: 52px;
+    }
+  }
+
+  .quote-trust {
+    gap: var(--spacing-05);
+  }
+}
+
+// ============================================
+// Responsive - Tablet and up
+// ============================================
+@media (min-width: 673px) {
+  .signup-page {
+    padding: var(--spacing-06) var(--spacing-06);
+
+    &__wrapper {
+      gap: var(--spacing-06);
+    }
+  }
+}
+
+@media (min-width: 1056px) {
+  .signup-page {
+    padding: var(--spacing-07) var(--spacing-07);
+  }
+}
