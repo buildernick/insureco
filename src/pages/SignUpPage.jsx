@@ -77,6 +77,11 @@ export default function SignUpPage() {
     phone: '', altPhone: '', dateOfBirth: '',
   });
 
+  const [personalErrors, setPersonalErrors] = useState({
+    firstName: '', lastName: '', email: '',
+    phone: '', altPhone: '', dateOfBirth: '',
+  });
+
   const [address, setAddress] = useState({
     street: '', city: '', state: '', zip: '',
   });
@@ -94,7 +99,25 @@ export default function SignUpPage() {
   const isFirstStep = stepIndex === 0;
   const isLastStep = stepIndex === steps.length - 1;
 
+  const validatePersonalInfo = () => {
+    const errors = {
+      firstName: personalInfo.firstName.trim() ? '' : 'First name is required.',
+      lastName: personalInfo.lastName.trim() ? '' : 'Last name is required.',
+      email: !personalInfo.email.trim()
+        ? 'Email address is required.'
+        : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(personalInfo.email)
+        ? 'Please enter a valid email address.'
+        : '',
+      phone: personalInfo.phone.trim() ? '' : 'Phone number is required.',
+      altPhone: personalInfo.altPhone.trim() ? '' : 'Alternate phone number is required.',
+      dateOfBirth: personalInfo.dateOfBirth.trim() ? '' : 'Date of birth is required.',
+    };
+    setPersonalErrors(errors);
+    return Object.values(errors).every(e => e === '');
+  };
+
   const handleNext = () => {
+    if (currentStepKey === 'personal' && !validatePersonalInfo()) return;
     if (isLastStep) {
       navigate('/dashboard');
     } else {
@@ -159,6 +182,9 @@ export default function SignUpPage() {
     </div>
   );
 
+  const clearPersonalError = (field) =>
+    setPersonalErrors(e => ({ ...e, [field]: '' }));
+
   const renderPersonalInfo = () => (
     <div className="signup-form__section">
       <div className="signup-form__title-row">
@@ -173,7 +199,12 @@ export default function SignUpPage() {
           placeholder="Enter your first name"
           size="lg"
           value={personalInfo.firstName}
-          onChange={e => setPersonalInfo(p => ({ ...p, firstName: e.target.value }))}
+          invalid={!!personalErrors.firstName}
+          invalidText={personalErrors.firstName}
+          onChange={e => {
+            setPersonalInfo(p => ({ ...p, firstName: e.target.value }));
+            clearPersonalError('firstName');
+          }}
         />
         <TextInput
           id="lastName"
@@ -181,7 +212,12 @@ export default function SignUpPage() {
           placeholder="Enter your last name"
           size="lg"
           value={personalInfo.lastName}
-          onChange={e => setPersonalInfo(p => ({ ...p, lastName: e.target.value }))}
+          invalid={!!personalErrors.lastName}
+          invalidText={personalErrors.lastName}
+          onChange={e => {
+            setPersonalInfo(p => ({ ...p, lastName: e.target.value }));
+            clearPersonalError('lastName');
+          }}
         />
         <TextInput
           id="email"
@@ -190,7 +226,12 @@ export default function SignUpPage() {
           type="email"
           size="lg"
           value={personalInfo.email}
-          onChange={e => setPersonalInfo(p => ({ ...p, email: e.target.value }))}
+          invalid={!!personalErrors.email}
+          invalidText={personalErrors.email}
+          onChange={e => {
+            setPersonalInfo(p => ({ ...p, email: e.target.value }));
+            clearPersonalError('email');
+          }}
         />
         <TextInput
           id="phone"
@@ -199,23 +240,43 @@ export default function SignUpPage() {
           type="tel"
           size="lg"
           value={personalInfo.phone}
-          onChange={e => setPersonalInfo(p => ({ ...p, phone: e.target.value }))}
+          invalid={!!personalErrors.phone}
+          invalidText={personalErrors.phone}
+          onChange={e => {
+            setPersonalInfo(p => ({ ...p, phone: e.target.value }));
+            clearPersonalError('phone');
+          }}
         />
         <TextInput
           id="altPhone"
-          labelText="Phone Number"
+          labelText="Alternate Phone Number"
           placeholder="(555) 123-4567"
           type="tel"
           size="lg"
           value={personalInfo.altPhone}
-          onChange={e => setPersonalInfo(p => ({ ...p, altPhone: e.target.value }))}
+          invalid={!!personalErrors.altPhone}
+          invalidText={personalErrors.altPhone}
+          onChange={e => {
+            setPersonalInfo(p => ({ ...p, altPhone: e.target.value }));
+            clearPersonalError('altPhone');
+          }}
         />
-        <DatePicker datePickerType="single" id="dob">
+        <DatePicker
+          datePickerType="single"
+          id="dob"
+          onChange={(dates) => {
+            const val = dates[0] ? dates[0].toLocaleDateString('en-US') : '';
+            setPersonalInfo(p => ({ ...p, dateOfBirth: val }));
+            if (val) clearPersonalError('dateOfBirth');
+          }}
+        >
           <DatePickerInput
             id="dateOfBirth"
             labelText="Date of Birth"
             placeholder="mm/dd/yyyy"
             size="lg"
+            invalid={!!personalErrors.dateOfBirth}
+            invalidText={personalErrors.dateOfBirth}
           />
         </DatePicker>
       </div>
