@@ -247,6 +247,84 @@
   }
 }
 
+// ─── Live quote estimate panel ────────────────────────────────────────────────
+
+.signup-quote-panel {
+  border-left: 4px solid var(--interactive-primary);
+  background: var(--background-primary);
+  border-radius: 0 4px 4px 0;
+  padding: var(--spacing-05) var(--spacing-06);
+  margin-bottom: var(--spacing-06);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-02);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.signup-quote-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--spacing-03);
+}
+
+.signup-quote-panel__label {
+  color: var(--text-secondary);
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.signup-quote-panel__bundle-badge {
+  background: #defbe6;
+  color: #0e6027;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 12px;
+
+  :root[data-carbon-theme='g90'] &,
+  :root[data-carbon-theme='g100'] & {
+    background: #0e6027;
+    color: #defbe6;
+  }
+}
+
+.signup-quote-panel__amount {
+  color: var(--text-primary);
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1;
+  transition: all 0.3s ease;
+}
+
+.signup-quote-panel__unit {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-left: 2px;
+}
+
+.signup-quote-panel__sub {
+  color: var(--text-secondary);
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 13px;
+  margin: 0;
+}
+
+.signup-quote-panel__disclaimer {
+  color: var(--text-tertiary);
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 11px;
+  font-style: italic;
+  margin: 0;
+}
+
 // ─── Navigation buttons ───────────────────────────────────────────────────────
 
 .signup-page__nav {

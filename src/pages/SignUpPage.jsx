@@ -41,6 +41,97 @@ const BothIcon = () => (
   </svg>
 );
 
+// ─── Quote estimation logic ───────────────────────────────────────────────────
+
+const HIGH_RISK_STATES = ['California', 'Florida', 'New York', 'Michigan', 'Louisiana'];
+
+function computeEstimate({ insuranceType, carDetails, homeDetails }) {
+  let carBase = 0;
+  let homeBase = 0;
+  const hasCarDetails = carDetails.make || carDetails.year || carDetails.milesPerYear !== 1000;
+  const hasHomeDetails = homeDetails.homeType || homeDetails.yearBuilt || homeDetails.homeValue !== 1000;
+
+  if (insuranceType === 'car' || insuranceType === 'both') {
+    carBase = 120;
+    const year = parseInt(carDetails.year, 10);
+    if (year >= 2020) carBase += 20;
+    else if (year >= 2015) carBase += 0;
+    else if (year >= 2010) carBase -= 10;
+    else if (year > 0) carBase -= 20;
+
+    const miles = carDetails.milesPerYear || 0;
+    if (miles > 15000) carBase += 15;
+    else if (miles < 10000 && miles > 0) carBase -= 15;
+  }
+
+  if (insuranceType === 'home' || insuranceType === 'both') {
+    const val = homeDetails.homeValue || 0;
+    homeBase = val > 1000 ? Math.round((val / 250000) * 100) : 100;
+    homeBase = Math.max(60, Math.min(homeBase, 300));
+
+    if (homeDetails.homeType === 'Condo') homeBase -= 20;
+    else if (homeDetails.homeType === 'Multi-Family') homeBase += 15;
+    else if (homeDetails.homeType === 'Mobile Home') homeBase -= 10;
+    else if (homeDetails.homeType === 'Townhouse') homeBase -= 5;
+
+    const builtYear = parseInt(homeDetails.yearBuilt, 10);
+    if (builtYear > 0 && builtYear < 1950) homeBase += 20;
+    else if (builtYear >= 1950 && builtYear < 1980) homeBase += 10;
+  }
+
+  let total = carBase + homeBase;
+  let bundleSavings = 0;
+
+  if (insuranceType === 'both') {
+    bundleSavings = Math.round(total * 0.10);
+    total = total - bundleSavings;
+  }
+
+  const isEarlyEstimate = !hasCarDetails && !hasHomeDetails;
+
+  return { total, bundleSavings, carBase, homeBase, isEarlyEstimate };
+}
+
+// ─── Quote panel component ────────────────────────────────────────────────────
+
+function QuotePanel({ insuranceType, carDetails, homeDetails, stepIndex }) {
+  if (!insuranceType || stepIndex === 0) return null;
+
+  const { total, bundleSavings, isEarlyEstimate } = computeEstimate({
+    insuranceType, carDetails, homeDetails,
+  });
+
+  const rangeMin = Math.max(60, total - 30);
+  const rangeMax = total + 30;
+
+  return (
+    <div className="signup-quote-panel">
+      <div className="signup-quote-panel__header">
+        <span className="signup-quote-panel__label">Estimated monthly premium</span>
+        {bundleSavings > 0 && (
+          <span className="signup-quote-panel__bundle-badge">
+            Bundle savings: ${bundleSavings}/mo
+          </span>
+        )}
+      </div>
+      <div className="signup-quote-panel__amount">
+        {isEarlyEstimate
+          ? <span>~${rangeMin}–${rangeMax}<span className="signup-quote-panel__unit">/mo</span></span>
+          : <span>${total}<span className="signup-quote-panel__unit">/mo</span></span>
+        }
+      </div>
+      <p className="signup-quote-panel__sub">
+        {isEarlyEstimate
+          ? 'Estimate refines as you add more details'
+          : 'Based on your selections so far'}
+      </p>
+      <p className="signup-quote-panel__disclaimer">
+        Final quote confirmed at submission
+      </p>
+    </div>
+  );
+}
+
 // ─── Static data ──────────────────────────────────────────────────────────────
 
 const US_STATES = [
@@ -617,6 +708,14 @@ export default function SignUpPage() {
         <div className="signup-page__card">
           {/* Render active step */}
           {renderStep()}
+
+          {/* Live quote estimate panel — visible from step 2 onward */}
+          <QuotePanel
+            insuranceType={insuranceType}
+            carDetails={carDetails}
+            homeDetails={homeDetails}
+            stepIndex={stepIndex}
+          />
 
           {/* Navigation buttons */}
           <div className="signup-page__nav">
