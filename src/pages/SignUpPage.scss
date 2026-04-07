@@ -312,6 +312,237 @@
 }
 
 // ============================================
+// Quote Step
+// ============================================
+
+// Price hero
+.quote-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-03);
+  padding: var(--spacing-07) var(--spacing-06);
+  background: linear-gradient(135deg, var(--color-brand-red-70) 70.71%, var(--color-brand-red-60) 0%);
+  border-radius: 8px;
+  text-align: center;
+
+  &__label {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  &__price-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    color: #fff;
+    line-height: 1;
+  }
+
+  &__dollar {
+    font-size: 28px;
+    font-weight: 600;
+    padding-top: 8px;
+  }
+
+  &__amount {
+    font-size: 72px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  &__period {
+    font-size: 22px;
+    font-weight: 400;
+    padding-top: 14px;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  &__disclaimer {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    font-style: italic;
+  }
+}
+
+// Bundle savings badge
+.quote-bundle-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-03);
+  padding: var(--spacing-04) var(--spacing-05);
+  background: var(--color-success-bg, #defbe6);
+  border: 1px solid var(--color-success, #198038);
+  border-radius: 4px;
+  color: var(--color-success, #198038);
+  font-size: 14px;
+  line-height: 1.43;
+
+  // Dark theme override
+  :root[data-carbon-theme="g90"] &,
+  :root[data-carbon-theme="g100"] & {
+    background: rgba(25, 128, 56, 0.15);
+    border-color: #42be65;
+    color: #42be65;
+  }
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+// Price breakdown table
+.quote-breakdown {
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  overflow: hidden;
+
+  &__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    padding: var(--spacing-04) var(--spacing-05);
+    background: var(--background-tertiary, var(--background-secondary));
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-04) var(--spacing-05);
+    font-size: 14px;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-subtle);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &--discount {
+      color: var(--color-success, #198038);
+
+      :root[data-carbon-theme="g90"] &,
+      :root[data-carbon-theme="g100"] & {
+        color: #42be65;
+      }
+    }
+
+    &--total {
+      font-weight: 700;
+      font-size: 16px;
+      background: var(--background-selected);
+    }
+  }
+}
+
+// Coverage checklist
+.quote-coverage {
+  &__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 var(--spacing-04);
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-03);
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-03);
+    font-size: 14px;
+    color: var(--text-primary);
+  }
+
+  &__check {
+    color: var(--interactive-primary);
+    flex-shrink: 0;
+  }
+}
+
+// Details summary
+.quote-summary {
+  &__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 var(--spacing-04);
+  }
+
+  &__list {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  &__row {
+    display: flex;
+    gap: var(--spacing-05);
+    padding: var(--spacing-04) var(--spacing-05);
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 14px;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    dt {
+      min-width: 90px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+
+    dd {
+      margin: 0;
+      color: var(--text-primary);
+    }
+  }
+}
+
+// Trust signals row
+.quote-trust {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-07);
+  flex-wrap: wrap;
+  padding: var(--spacing-04) 0;
+  border-top: 1px solid var(--border-subtle);
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-02);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-align: center;
+
+    svg {
+      color: var(--interactive-primary);
+    }
+  }
+}
+
+// ============================================
 // Responsive - Mobile
 // ============================================
 @media (max-width: 672px) {
@@ -362,6 +593,16 @@
       flex-direction: column;
       gap: var(--spacing-03);
     }
+  }
+
+  .quote-hero {
+    &__amount {
+      font-size: 52px;
+    }
+  }
+
+  .quote-trust {
+    gap: var(--spacing-05);
   }
 }
 

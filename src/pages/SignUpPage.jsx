@@ -7,7 +7,7 @@ import {
   NumberInput,
   Button,
 } from '@carbon/react';
-import { ArrowRight, ArrowLeft } from '@carbon/icons-react';
+import { ArrowRight, ArrowLeft, Checkmark, Purchase, Security, Time } from '@carbon/icons-react';
 import StepBreadcrumb from '../components/StepBreadcrumb';
 import './SignUpPage.scss';
 
@@ -39,6 +39,7 @@ const STEP_INSURANCE = 'insurance';
 const STEP_ADDRESS = 'address';
 const STEP_CAR = 'car';
 const STEP_PROPERTY = 'property';
+const STEP_QUOTE = 'quote';
 
 const STEP_CONFIG = {
   [STEP_PERSONAL]:  { label: 'Personal Info',     description: 'Your details' },
@@ -46,6 +47,7 @@ const STEP_CONFIG = {
   [STEP_ADDRESS]:   { label: 'Your Address',       description: 'Where you live' },
   [STEP_CAR]:       { label: 'Car Details',        description: 'Vehicle info' },
   [STEP_PROPERTY]:  { label: 'Property Details',   description: 'Home info' },
+  [STEP_QUOTE]:     { label: 'Your Quote',         description: 'Review & confirm' },
 };
 
 function getActiveStepKeys(insuranceType) {
@@ -53,7 +55,48 @@ function getActiveStepKeys(insuranceType) {
   if (insuranceType === 'car'  || insuranceType === 'both') base.push(STEP_CAR);
   if (insuranceType === 'home' || insuranceType === 'both') base.push(STEP_PROPERTY);
   if (!insuranceType) base.push(STEP_CAR); // placeholder shown before selection
+  base.push(STEP_QUOTE);
   return base;
+}
+
+// ============================================
+// Quote calculation
+// ============================================
+function calculateQuote(formData) {
+  const type = formData.insuranceType;
+
+  // Base monthly rates
+  let carBase = 0;
+  let homeBase = 0;
+
+  if (type === 'car' || type === 'both') {
+    carBase = 89;
+    // Older cars get a slight discount
+    const carAge = new Date().getFullYear() - Number(formData.carYear || new Date().getFullYear());
+    if (carAge > 10) carBase -= 12;
+    else if (carAge > 5) carBase -= 6;
+    // High mileage slightly increases rate
+    if (formData.carMilesPerYear > 15000) carBase += 8;
+    else if (formData.carMilesPerYear > 10000) carBase += 4;
+  }
+
+  if (type === 'home' || type === 'both') {
+    homeBase = 74;
+    // Higher home value = higher rate
+    const value = formData.estimatedValue || 0;
+    if (value > 500000) homeBase += 22;
+    else if (value > 300000) homeBase += 12;
+    else if (value > 150000) homeBase += 5;
+  }
+
+  const subtotal = carBase + homeBase;
+
+  // Bundle discount applied when insuring both
+  const bundleDiscount = type === 'both' ? 24 : 0;
+
+  const total = subtotal - bundleDiscount;
+
+  return { carBase, homeBase, subtotal, bundleDiscount, total };
 }
 
 // ============================================
@@ -590,7 +633,7 @@ export default function SignUpPage() {
           )}
 
           {/* ── Step 5: Property Details ── */}
-          {currentStepKey === STEP_PROPERTY && (
+          {currentStepKey === STEP_PROPERTY && ( // eslint-disable-line no-unused-expressions
             <div className="signup-page__step">
               <div className="signup-page__step-header">
                 <h2 className="signup-page__step-title">Property Details</h2>
@@ -651,6 +694,144 @@ export default function SignUpPage() {
             </div>
           )}
 
+          {/* ── Step 6: Your Quote ── */}
+          {currentStepKey === STEP_QUOTE && (() => {
+            const quote = calculateQuote(formData);
+            const type = formData.insuranceType;
+            const isBoth = type === 'both';
+
+            const coverageItems = [];
+            if (type === 'car' || isBoth) {
+              coverageItems.push(
+                'Liability coverage',
+                'Collision coverage',
+                'Comprehensive coverage',
+                'Uninsured motorist protection',
+              );
+            }
+            if (type === 'home' || isBoth) {
+              coverageItems.push(
+                'Dwelling coverage',
+                'Personal property protection',
+                'Liability protection',
+                'Additional living expenses',
+              );
+            }
+
+            return (
+              <div className="signup-page__step">
+                <div className="signup-page__step-header">
+                  <h2 className="signup-page__step-title">Your Quote</h2>
+                </div>
+                <p className="signup-page__step-desc">
+                  Here&rsquo;s your personalized estimate based on what you&rsquo;ve told us.
+                </p>
+
+                {/* Price Hero */}
+                <div className="quote-hero">
+                  <span className="quote-hero__label">Estimated monthly cost</span>
+                  <div className="quote-hero__price-row">
+                    <span className="quote-hero__dollar">$</span>
+                    <span className="quote-hero__amount">{quote.total}</span>
+                    <span className="quote-hero__period">/mo</span>
+                  </div>
+                  <span className="quote-hero__disclaimer">Estimate only — final price confirmed after verification</span>
+                </div>
+
+                {/* Bundle Savings Badge */}
+                {isBoth && (
+                  <div className="quote-bundle-badge">
+                    <Checkmark size={16} />
+                    <span>Bundle discount applied &mdash; you&rsquo;re saving <strong>${quote.bundleDiscount}/mo</strong> by insuring both</span>
+                  </div>
+                )}
+
+                {/* Price Breakdown */}
+                <div className="quote-breakdown">
+                  <h3 className="quote-breakdown__title">Price breakdown</h3>
+                  {(type === 'car' || isBoth) && (
+                    <div className="quote-breakdown__row">
+                      <span>Car insurance</span>
+                      <span>${quote.carBase}/mo</span>
+                    </div>
+                  )}
+                  {(type === 'home' || isBoth) && (
+                    <div className="quote-breakdown__row">
+                      <span>Home insurance</span>
+                      <span>${quote.homeBase}/mo</span>
+                    </div>
+                  )}
+                  {isBoth && (
+                    <div className="quote-breakdown__row quote-breakdown__row--discount">
+                      <span>Bundle discount</span>
+                      <span>&minus;${quote.bundleDiscount}/mo</span>
+                    </div>
+                  )}
+                  <div className="quote-breakdown__row quote-breakdown__row--total">
+                    <span>Total</span>
+                    <span>${quote.total}/mo</span>
+                  </div>
+                </div>
+
+                {/* What&rsquo;s Included */}
+                <div className="quote-coverage">
+                  <h3 className="quote-coverage__title">What&rsquo;s included</h3>
+                  <ul className="quote-coverage__list">
+                    {coverageItems.map((item) => (
+                      <li key={item} className="quote-coverage__item">
+                        <Checkmark size={16} className="quote-coverage__check" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Details Summary */}
+                <div className="quote-summary">
+                  <h3 className="quote-summary__title">Your details</h3>
+                  <dl className="quote-summary__list">
+                    <div className="quote-summary__row">
+                      <dt>Name</dt>
+                      <dd>{formData.firstName} {formData.lastName}</dd>
+                    </div>
+                    <div className="quote-summary__row">
+                      <dt>Address</dt>
+                      <dd>{formData.streetAddress}, {formData.city}, {formData.state} {formData.zipCode}</dd>
+                    </div>
+                    {(type === 'car' || isBoth) && (
+                      <div className="quote-summary__row">
+                        <dt>Vehicle</dt>
+                        <dd>{formData.carYear} {formData.carMake} {formData.carModel}</dd>
+                      </div>
+                    )}
+                    {(type === 'home' || isBoth) && (
+                      <div className="quote-summary__row">
+                        <dt>Home type</dt>
+                        <dd>{formData.homeType}</dd>
+                      </div>
+                    )}
+                  </dl>
+                </div>
+
+                {/* Trust Signals */}
+                <div className="quote-trust">
+                  <div className="quote-trust__item">
+                    <Time size={20} />
+                    <span>Cancel anytime</span>
+                  </div>
+                  <div className="quote-trust__item">
+                    <Security size={20} />
+                    <span>Instant coverage</span>
+                  </div>
+                  <div className="quote-trust__item">
+                    <Purchase size={20} />
+                    <span>No hidden fees</span>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+
           {/* Navigation Buttons */}
           <div className="signup-page__nav">
             {currentStepKey === STEP_CAR && (
@@ -685,7 +866,9 @@ export default function SignUpPage() {
               size="lg"
               className="signup-page__btn-next"
             >
-              {isLastStep ? 'Complete Sign Up' : 'Next'}
+              {isLastStep
+                ? `Complete Sign Up — $${calculateQuote(formData).total}/mo`
+                : 'Next'}
             </Button>
           </div>
 
