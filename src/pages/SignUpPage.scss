@@ -306,6 +306,11 @@
     color: var(--text-primary) !important;
   }
 
+  .cds--text-input__label-wrapper {
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
   .cds--form__helper-text {
     color: var(--text-secondary) !important;
   }
