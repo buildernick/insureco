@@ -86,12 +86,24 @@ export default function SignUpPage() {
     street: '', city: '', state: '', zip: '',
   });
 
+  const [addressErrors, setAddressErrors] = useState({
+    street: '', city: '', state: '', zip: '',
+  });
+
   const [carDetails, setCarDetails] = useState({
     make: '', model: '', year: '', mileage: 1000, milesPerYear: 1000, vin: '',
   });
 
+  const [carErrors, setCarErrors] = useState({
+    make: '', model: '', year: '', vin: '',
+  });
+
   const [homeDetails, setHomeDetails] = useState({
     homeType: '', yearBuilt: '', squareFeet: 1000, homeValue: 1000,
+  });
+
+  const [homeErrors, setHomeErrors] = useState({
+    homeType: '', yearBuilt: '',
   });
 
   const steps = buildSteps(insuranceType);
@@ -116,8 +128,50 @@ export default function SignUpPage() {
     return Object.values(errors).every(e => e === '');
   };
 
+  const validateAddress = () => {
+    const zipPattern = /^\d{5}(-\d{4})?$/;
+    const errors = {
+      street: address.street.trim() ? '' : 'Street address is required.',
+      city:   address.city.trim()   ? '' : 'City is required.',
+      state:  address.state         ? '' : 'Please select a state.',
+      zip:    !address.zip.trim()
+        ? 'ZIP code is required.'
+        : !zipPattern.test(address.zip.trim())
+        ? 'Please enter a valid 5-digit ZIP code.'
+        : '',
+    };
+    setAddressErrors(errors);
+    return Object.values(errors).every(e => e === '');
+  };
+
+  const validateCarDetails = () => {
+    const vinVal = carDetails.vin.trim();
+    const errors = {
+      make:  carDetails.make.trim()  ? '' : 'Make is required.',
+      model: carDetails.model.trim() ? '' : 'Model is required.',
+      year:  carDetails.year         ? '' : 'Year is required.',
+      vin:   vinVal && vinVal.length !== 17
+        ? 'VIN must be exactly 17 characters.'
+        : '',
+    };
+    setCarErrors(errors);
+    return Object.values(errors).every(e => e === '');
+  };
+
+  const validateHomeDetails = () => {
+    const errors = {
+      homeType:  homeDetails.homeType  ? '' : 'Home type is required.',
+      yearBuilt: homeDetails.yearBuilt ? '' : 'Year built is required.',
+    };
+    setHomeErrors(errors);
+    return Object.values(errors).every(e => e === '');
+  };
+
   const handleNext = () => {
     if (currentStepKey === 'personal' && !validatePersonalInfo()) return;
+    if (currentStepKey === 'address'  && !validateAddress())      return;
+    if (currentStepKey === 'car'      && !validateCarDetails())   return;
+    if (currentStepKey === 'home'     && !validateHomeDetails())  return;
     if (isLastStep) {
       navigate('/dashboard');
     } else {
@@ -283,6 +337,9 @@ export default function SignUpPage() {
     </div>
   );
 
+  const clearAddressError = (field) =>
+    setAddressErrors(e => ({ ...e, [field]: '' }));
+
   const renderAddress = () => (
     <div className="signup-form__section">
       <div className="signup-form__title-row">
@@ -297,7 +354,12 @@ export default function SignUpPage() {
           placeholder="123 Main Street"
           size="lg"
           value={address.street}
-          onChange={e => setAddress(a => ({ ...a, street: e.target.value }))}
+          invalid={!!addressErrors.street}
+          invalidText={addressErrors.street}
+          onChange={e => {
+            setAddress(a => ({ ...a, street: e.target.value }));
+            clearAddressError('street');
+          }}
         />
         <TextInput
           id="city"
@@ -305,14 +367,24 @@ export default function SignUpPage() {
           placeholder="Your city"
           size="lg"
           value={address.city}
-          onChange={e => setAddress(a => ({ ...a, city: e.target.value }))}
+          invalid={!!addressErrors.city}
+          invalidText={addressErrors.city}
+          onChange={e => {
+            setAddress(a => ({ ...a, city: e.target.value }));
+            clearAddressError('city');
+          }}
         />
         <Select
           id="state"
           labelText="State"
           size="lg"
           value={address.state}
-          onChange={e => setAddress(a => ({ ...a, state: e.target.value }))}
+          invalid={!!addressErrors.state}
+          invalidText={addressErrors.state}
+          onChange={e => {
+            setAddress(a => ({ ...a, state: e.target.value }));
+            clearAddressError('state');
+          }}
         >
           <SelectItem value="" text="" />
           {US_STATES.map(s => (
@@ -321,15 +393,23 @@ export default function SignUpPage() {
         </Select>
         <TextInput
           id="zip"
-          labelText="Zip"
+          labelText="Zip Code"
           placeholder="12345"
           size="lg"
           value={address.zip}
-          onChange={e => setAddress(a => ({ ...a, zip: e.target.value }))}
+          invalid={!!addressErrors.zip}
+          invalidText={addressErrors.zip}
+          onChange={e => {
+            setAddress(a => ({ ...a, zip: e.target.value }));
+            clearAddressError('zip');
+          }}
         />
       </div>
     </div>
   );
+
+  const clearCarError = (field) =>
+    setCarErrors(e => ({ ...e, [field]: '' }));
 
   const renderCarDetails = () => (
     <div className="signup-form__section">
@@ -345,7 +425,12 @@ export default function SignUpPage() {
           placeholder="e.g. Toyota, Ford"
           size="lg"
           value={carDetails.make}
-          onChange={e => setCarDetails(c => ({ ...c, make: e.target.value }))}
+          invalid={!!carErrors.make}
+          invalidText={carErrors.make}
+          onChange={e => {
+            setCarDetails(c => ({ ...c, make: e.target.value }));
+            clearCarError('make');
+          }}
         />
         <TextInput
           id="model"
@@ -353,14 +438,24 @@ export default function SignUpPage() {
           placeholder="e.g. Corolla, Bronco"
           size="lg"
           value={carDetails.model}
-          onChange={e => setCarDetails(c => ({ ...c, model: e.target.value }))}
+          invalid={!!carErrors.model}
+          invalidText={carErrors.model}
+          onChange={e => {
+            setCarDetails(c => ({ ...c, model: e.target.value }));
+            clearCarError('model');
+          }}
         />
         <Select
           id="year"
           labelText="Year"
           size="lg"
           value={carDetails.year}
-          onChange={e => setCarDetails(c => ({ ...c, year: e.target.value }))}
+          invalid={!!carErrors.year}
+          invalidText={carErrors.year}
+          onChange={e => {
+            setCarDetails(c => ({ ...c, year: e.target.value }));
+            clearCarError('year');
+          }}
         >
           <SelectItem value="" text="" />
           {CAR_YEARS.map(y => (
@@ -387,14 +482,22 @@ export default function SignUpPage() {
           id="vin"
           labelText="VIN (optional)"
           placeholder=""
-          helperText="17 digits"
+          helperText={carErrors.vin ? undefined : '17 digits'}
           size="lg"
           value={carDetails.vin}
-          onChange={e => setCarDetails(c => ({ ...c, vin: e.target.value }))}
+          invalid={!!carErrors.vin}
+          invalidText={carErrors.vin}
+          onChange={e => {
+            setCarDetails(c => ({ ...c, vin: e.target.value }));
+            clearCarError('vin');
+          }}
         />
       </div>
     </div>
   );
+
+  const clearHomeError = (field) =>
+    setHomeErrors(e => ({ ...e, [field]: '' }));
 
   const renderHomeDetails = () => (
     <div className="signup-form__section">
@@ -409,7 +512,12 @@ export default function SignUpPage() {
           labelText="Home Type"
           size="lg"
           value={homeDetails.homeType}
-          onChange={e => setHomeDetails(h => ({ ...h, homeType: e.target.value }))}
+          invalid={!!homeErrors.homeType}
+          invalidText={homeErrors.homeType}
+          onChange={e => {
+            setHomeDetails(h => ({ ...h, homeType: e.target.value }));
+            clearHomeError('homeType');
+          }}
         >
           <SelectItem value="" text="" />
           {HOME_TYPES.map(t => (
@@ -421,7 +529,12 @@ export default function SignUpPage() {
           labelText="Year Built"
           size="lg"
           value={homeDetails.yearBuilt}
-          onChange={e => setHomeDetails(h => ({ ...h, yearBuilt: e.target.value }))}
+          invalid={!!homeErrors.yearBuilt}
+          invalidText={homeErrors.yearBuilt}
+          onChange={e => {
+            setHomeDetails(h => ({ ...h, yearBuilt: e.target.value }));
+            clearHomeError('yearBuilt');
+          }}
         >
           <SelectItem value="" text="" />
           {BUILT_YEARS.map(y => (
