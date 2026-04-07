@@ -176,6 +176,34 @@
     display: flex;
     flex-direction: column;
     gap: var(--spacing-04);
+
+    &--error {
+      .signup-page__insurance-tile {
+        border-color: var(--color-error);
+      }
+    }
+  }
+
+  &__insurance-error {
+    margin: 0;
+    padding-top: var(--spacing-02);
+    color: var(--color-error);
+    font-size: 0.75rem;
+    line-height: 1.33;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-02);
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23da1e28' d='M8 1C4.1 1 1 4.1 1 8s3.1 7 7 7 7-3.1 7-7-3.1-7-7-7zm-.5 3h1v5h-1V4zm.5 8.2c-.4 0-.8-.4-.8-.8s.4-.8.8-.8.8.4.8.8-.4.8-.8.8z'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      flex-shrink: 0;
+    }
   }
 
   &__insurance-tile {

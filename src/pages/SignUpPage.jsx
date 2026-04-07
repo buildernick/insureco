@@ -11,7 +11,9 @@ import { ArrowRight, ArrowLeft } from '@carbon/icons-react';
 import StepBreadcrumb from '../components/StepBreadcrumb';
 import './SignUpPage.scss';
 
-// US States for the address form
+// ============================================
+// Static data
+// ============================================
 const US_STATES = [
   'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado',
   'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho',
@@ -24,17 +26,14 @@ const US_STATES = [
   'West Virginia', 'Wisconsin', 'Wyoming',
 ];
 
-// Car year options (current year down to 1980)
 const currentYear = new Date().getFullYear();
 const CAR_YEARS = Array.from({ length: currentYear - 1979 }, (_, i) => currentYear - i);
-
-// Home year built options (current year down to 1800)
 const HOME_YEARS = Array.from({ length: currentYear - 1799 }, (_, i) => currentYear - i);
-
-// Home type options
 const HOME_TYPES = ['Single Family', 'Condo', 'Townhouse', 'Multi-Family', 'Mobile Home', 'Other'];
 
-// Step keys
+// ============================================
+// Step keys & config
+// ============================================
 const STEP_PERSONAL = 'personal';
 const STEP_INSURANCE = 'insurance';
 const STEP_ADDRESS = 'address';
@@ -42,22 +41,134 @@ const STEP_CAR = 'car';
 const STEP_PROPERTY = 'property';
 
 const STEP_CONFIG = {
-  [STEP_PERSONAL]: { label: 'Personal Info', description: 'Your details' },
-  [STEP_INSURANCE]: { label: 'Insurance Type', description: 'What to cover' },
-  [STEP_ADDRESS]: { label: 'Your Address', description: 'Where you live' },
-  [STEP_CAR]: { label: 'Car Details', description: 'Vehicle info' },
-  [STEP_PROPERTY]: { label: 'Property Details', description: 'Home info' },
+  [STEP_PERSONAL]:  { label: 'Personal Info',     description: 'Your details' },
+  [STEP_INSURANCE]: { label: 'Insurance Type',     description: 'What to cover' },
+  [STEP_ADDRESS]:   { label: 'Your Address',       description: 'Where you live' },
+  [STEP_CAR]:       { label: 'Car Details',        description: 'Vehicle info' },
+  [STEP_PROPERTY]:  { label: 'Property Details',   description: 'Home info' },
 };
 
 function getActiveStepKeys(insuranceType) {
   const base = [STEP_PERSONAL, STEP_INSURANCE, STEP_ADDRESS];
-  if (insuranceType === 'car' || insuranceType === 'both') base.push(STEP_CAR);
+  if (insuranceType === 'car'  || insuranceType === 'both') base.push(STEP_CAR);
   if (insuranceType === 'home' || insuranceType === 'both') base.push(STEP_PROPERTY);
-  if (!insuranceType) base.push(STEP_CAR); // placeholder until selected
+  if (!insuranceType) base.push(STEP_CAR); // placeholder shown before selection
   return base;
 }
 
-// SVG icons for insurance type tiles (from Figma design)
+// ============================================
+// Validation helpers
+// ============================================
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+}
+
+function isValidPhone(phone) {
+  const digits = phone.replace(/\D/g, '');
+  return digits.length >= 10;
+}
+
+function isValidZip(zip) {
+  return /^\d{5}(-\d{4})?$/.test(zip.trim());
+}
+
+function isValidVin(vin) {
+  return vin.trim().length === 0 || vin.trim().length === 17;
+}
+
+function isAtLeast18(dateString) {
+  if (!dateString) return false;
+  const dob = new Date(dateString);
+  const cutoff = new Date();
+  cutoff.setFullYear(cutoff.getFullYear() - 18);
+  return dob <= cutoff;
+}
+
+/**
+ * Returns an object of { fieldName: errorMessage } for a given step.
+ * Empty object means the step is valid.
+ */
+function validateStep(stepKey, data) {
+  const e = {};
+
+  if (stepKey === STEP_PERSONAL) {
+    if (!data.firstName.trim())
+      e.firstName = 'First name is required';
+
+    if (!data.lastName.trim())
+      e.lastName = 'Last name is required';
+
+    if (!data.email.trim())
+      e.email = 'Email address is required';
+    else if (!isValidEmail(data.email))
+      e.email = 'Enter a valid email address';
+
+    if (!data.phone.trim())
+      e.phone = 'Phone number is required';
+    else if (!isValidPhone(data.phone))
+      e.phone = 'Enter a valid 10-digit phone number';
+
+    if (!data.dateOfBirth)
+      e.dateOfBirth = 'Date of birth is required';
+    else if (!isAtLeast18(data.dateOfBirth))
+      e.dateOfBirth = 'You must be at least 18 years old to sign up';
+  }
+
+  if (stepKey === STEP_INSURANCE) {
+    if (!data.insuranceType)
+      e.insuranceType = 'Please select an insurance type to continue';
+  }
+
+  if (stepKey === STEP_ADDRESS) {
+    if (!data.streetAddress.trim())
+      e.streetAddress = 'Street address is required';
+
+    if (!data.city.trim())
+      e.city = 'City is required';
+
+    if (!data.state)
+      e.state = 'State is required';
+
+    if (!data.zipCode.trim())
+      e.zipCode = 'ZIP code is required';
+    else if (!isValidZip(data.zipCode))
+      e.zipCode = 'Enter a valid 5-digit ZIP code';
+  }
+
+  if (stepKey === STEP_CAR) {
+    if (!data.carMake.trim())
+      e.carMake = 'Make is required';
+
+    if (!data.carModel.trim())
+      e.carModel = 'Model is required';
+
+    if (!data.carYear)
+      e.carYear = 'Year is required';
+
+    if (!isValidVin(data.carVin))
+      e.carVin = 'VIN must be exactly 17 characters';
+  }
+
+  if (stepKey === STEP_PROPERTY) {
+    if (!data.homeType)
+      e.homeType = 'Home type is required';
+
+    if (!data.yearBuilt)
+      e.yearBuilt = 'Year built is required';
+
+    if (!data.squareFeet || data.squareFeet <= 0)
+      e.squareFeet = 'Square footage must be greater than 0';
+
+    if (!data.estimatedValue || data.estimatedValue <= 0)
+      e.estimatedValue = 'Estimated home value must be greater than 0';
+  }
+
+  return e;
+}
+
+// ============================================
+// SVG icons for insurance tiles
+// ============================================
 function CarSvg() {
   return (
     <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -74,84 +185,111 @@ function HomeSvg() {
   );
 }
 
+// ============================================
+// Main component
+// ============================================
 export default function SignUpPage() {
   const navigate = useNavigate();
 
-  const [wizardStep, setWizardStep] = useState(0); // index into activeStepKeys
+  const [wizardStep, setWizardStep]       = useState(0);
+  const [errors, setErrors]               = useState({});
+  // Tracks which steps the user has tried to advance from (triggers error display)
+  const [attemptedSteps, setAttemptedSteps] = useState(new Set());
+  const [showWarning, setShowWarning]     = useState(true);
+
   const [formData, setFormData] = useState({
-    // Personal Info
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
     dateOfBirth: '',
-    // Insurance Type
     insuranceType: '',
-    // Address
     streetAddress: '',
     city: '',
     state: '',
     zipCode: '',
-    // Car Details
     carMake: '',
     carModel: '',
     carYear: '',
     carMileage: 1000,
     carMilesPerYear: 1000,
     carVin: '',
-    // Property Details
     homeType: '',
     yearBuilt: '',
     squareFeet: 1000,
     estimatedValue: 1000,
   });
 
-  const [showWarning, setShowWarning] = useState(true);
+  const activeStepKeys  = getActiveStepKeys(formData.insuranceType);
+  const currentStepKey  = activeStepKeys[wizardStep];
+  const isFirstStep     = wizardStep === 0;
+  const isLastStep      = wizardStep === activeStepKeys.length - 1;
+  const stepWasAttempted = attemptedSteps.has(currentStepKey);
 
-  const activeStepKeys = getActiveStepKeys(formData.insuranceType);
-  const currentStepKey = activeStepKeys[wizardStep];
-
-  const breadcrumbSteps = activeStepKeys.map((key) => ({
-    key,
-    label: STEP_CONFIG[key]?.label || 'Step',
-    description: STEP_CONFIG[key]?.description || '',
-  }));
-
-  // Replace placeholder with actual label when no insurance type selected yet
-  const displayBreadcrumbSteps = breadcrumbSteps.map((s) =>
-    s.key === STEP_CAR && !formData.insuranceType
-      ? { ...s, label: 'Details', description: 'Coverage info' }
-      : s
-  );
-
-  const isFirstStep = wizardStep === 0;
-  const isLastStep = wizardStep === activeStepKeys.length - 1;
+  // Breadcrumb steps
+  const displayBreadcrumbSteps = activeStepKeys.map((key) => {
+    const config = STEP_CONFIG[key] ?? { label: 'Step', description: '' };
+    // Placeholder label before insurance type is chosen
+    if (key === STEP_CAR && !formData.insuranceType) {
+      return { key, label: 'Details', description: 'Coverage info' };
+    }
+    return { key, label: config.label, description: config.description };
+  });
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [wizardStep]);
 
+  // ============================================
+  // Field change handler — re-validates in real
+  // time once a step has been attempted
+  // ============================================
   function handleField(field, value) {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    const updated = { ...formData, [field]: value };
+    setFormData(updated);
+
+    if (attemptedSteps.has(currentStepKey)) {
+      setErrors(validateStep(currentStepKey, updated));
+    }
   }
 
+  // ============================================
+  // Navigation handlers
+  // ============================================
   function handleNext() {
+    const stepErrors = validateStep(currentStepKey, formData);
+
+    if (Object.keys(stepErrors).length > 0) {
+      setErrors(stepErrors);
+      setAttemptedSteps((prev) => new Set([...prev, currentStepKey]));
+      // Scroll to first error
+      setTimeout(() => {
+        const firstError = document.querySelector('.cds--text-input--invalid, .cds--select--invalid, .cds--number--invalid, .signup-page__insurance-error');
+        firstError?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 50);
+      return;
+    }
+
+    setErrors({});
+
     if (!isLastStep) {
       setWizardStep((s) => s + 1);
     } else {
-      // Final submission
       console.log('Sign-up submitted:', formData);
       navigate('/dashboard');
     }
   }
 
   function handleBack() {
-    if (wizardStep > 0) setWizardStep((s) => s - 1);
+    if (wizardStep > 0) {
+      setErrors({});
+      setWizardStep((s) => s - 1);
+    }
   }
 
   function handleCancel() {
-    // Cancel from Car Details goes back to Insurance Type step
     const insuranceIdx = activeStepKeys.indexOf(STEP_INSURANCE);
+    setErrors({});
     setWizardStep(insuranceIdx >= 0 ? insuranceIdx : 0);
   }
 
@@ -159,12 +297,11 @@ export default function SignUpPage() {
     handleField('insuranceType', type);
   }
 
-  // Re-adjust wizardStep when insurance type changes and step keys shift
+  // Re-adjust step index when insurance type changes and step list shifts
   const prevInsuranceType = React.useRef(formData.insuranceType);
   useEffect(() => {
     if (prevInsuranceType.current !== formData.insuranceType) {
       prevInsuranceType.current = formData.insuranceType;
-      // If current step key no longer exists in new active steps, go to step 3 (first detail step)
       const newStepKeys = getActiveStepKeys(formData.insuranceType);
       if (!newStepKeys.includes(currentStepKey)) {
         setWizardStep(Math.min(wizardStep, newStepKeys.length - 1));
@@ -172,9 +309,13 @@ export default function SignUpPage() {
     }
   }, [formData.insuranceType, currentStepKey, wizardStep]);
 
+  // ============================================
+  // Render
+  // ============================================
   return (
     <div className="signup-page">
       <div className="signup-page__wrapper">
+
         {/* Header Banner */}
         <div className="signup-page__header">
           <h1 className="signup-page__title">Sign Up for InsureCo</h1>
@@ -192,7 +333,7 @@ export default function SignUpPage() {
           />
         </div>
 
-        {/* Warning Banner (only on Car Details step) */}
+        {/* Warning Banner — Car Details step only */}
         {currentStepKey === STEP_CAR && showWarning && (
           <div className="signup-page__warning-banner">
             <div className="signup-page__warning-content">
@@ -208,10 +349,7 @@ export default function SignUpPage() {
               </svg>
               <span className="signup-page__warning-text">This is a warning message</span>
             </div>
-            <button
-              className="signup-page__warning-dismiss"
-              onClick={() => setShowWarning(false)}
-            >
+            <button className="signup-page__warning-dismiss" onClick={() => setShowWarning(false)}>
               Dismiss
             </button>
           </div>
@@ -219,7 +357,8 @@ export default function SignUpPage() {
 
         {/* Form Card */}
         <div className="signup-page__form-card">
-          {/* Step: Personal Information */}
+
+          {/* ── Step 1: Personal Information ── */}
           {currentStepKey === STEP_PERSONAL && (
             <div className="signup-page__step">
               <div className="signup-page__step-header">
@@ -235,6 +374,8 @@ export default function SignUpPage() {
                   placeholder="Enter your first name"
                   value={formData.firstName}
                   onChange={(e) => handleField('firstName', e.target.value)}
+                  invalid={stepWasAttempted && !!errors.firstName}
+                  invalidText={errors.firstName}
                   size="lg"
                 />
                 <TextInput
@@ -243,6 +384,8 @@ export default function SignUpPage() {
                   placeholder="Enter your last name"
                   value={formData.lastName}
                   onChange={(e) => handleField('lastName', e.target.value)}
+                  invalid={stepWasAttempted && !!errors.lastName}
+                  invalidText={errors.lastName}
                   size="lg"
                 />
                 <TextInput
@@ -252,6 +395,8 @@ export default function SignUpPage() {
                   type="email"
                   value={formData.email}
                   onChange={(e) => handleField('email', e.target.value)}
+                  invalid={stepWasAttempted && !!errors.email}
+                  invalidText={errors.email}
                   size="lg"
                 />
                 <TextInput
@@ -261,6 +406,8 @@ export default function SignUpPage() {
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => handleField('phone', e.target.value)}
+                  invalid={stepWasAttempted && !!errors.phone}
+                  invalidText={errors.phone}
                   size="lg"
                 />
                 <TextInput
@@ -270,13 +417,15 @@ export default function SignUpPage() {
                   type="date"
                   value={formData.dateOfBirth}
                   onChange={(e) => handleField('dateOfBirth', e.target.value)}
+                  invalid={stepWasAttempted && !!errors.dateOfBirth}
+                  invalidText={errors.dateOfBirth}
                   size="lg"
                 />
               </div>
             </div>
           )}
 
-          {/* Step: Insurance Type */}
+          {/* ── Step 2: Insurance Type ── */}
           {currentStepKey === STEP_INSURANCE && (
             <div className="signup-page__step">
               <div className="signup-page__step-header">
@@ -285,57 +434,33 @@ export default function SignUpPage() {
               <p className="signup-page__step-desc">
                 Which insurance coverage are you looking for
               </p>
-              <div className="signup-page__insurance-tiles">
-                <button
-                  className={`signup-page__insurance-tile ${formData.insuranceType === 'car' ? 'signup-page__insurance-tile--selected' : ''}`}
-                  onClick={() => handleInsuranceSelect('car')}
-                >
-                  <div className="signup-page__tile-icons">
-                    <CarSvg />
-                  </div>
-                  <div className="signup-page__tile-text">
-                    <span className="signup-page__tile-title">Car Insurance</span>
-                    <span className="signup-page__tile-desc">
-                      Get comprehensive coverage for your vehicle
-                    </span>
-                  </div>
-                </button>
-
-                <button
-                  className={`signup-page__insurance-tile ${formData.insuranceType === 'home' ? 'signup-page__insurance-tile--selected' : ''}`}
-                  onClick={() => handleInsuranceSelect('home')}
-                >
-                  <div className="signup-page__tile-icons">
-                    <HomeSvg />
-                  </div>
-                  <div className="signup-page__tile-text">
-                    <span className="signup-page__tile-title">Home Insurance</span>
-                    <span className="signup-page__tile-desc">
-                      Protect your most important asset for your family
-                    </span>
-                  </div>
-                </button>
-
-                <button
-                  className={`signup-page__insurance-tile ${formData.insuranceType === 'both' ? 'signup-page__insurance-tile--selected' : ''}`}
-                  onClick={() => handleInsuranceSelect('both')}
-                >
-                  <div className="signup-page__tile-icons">
-                    <CarSvg />
-                    <HomeSvg />
-                  </div>
-                  <div className="signup-page__tile-text">
-                    <span className="signup-page__tile-title">Both Home and Car</span>
-                    <span className="signup-page__tile-desc">
-                      Insure both and get bundle savings
-                    </span>
-                  </div>
-                </button>
+              <div className={`signup-page__insurance-tiles ${stepWasAttempted && errors.insuranceType ? 'signup-page__insurance-tiles--error' : ''}`}>
+                {[
+                  { value: 'car',  label: 'Car Insurance',     desc: 'Get comprehensive coverage for your vehicle',      icons: <CarSvg /> },
+                  { value: 'home', label: 'Home Insurance',    desc: 'Protect your most important asset for your family', icons: <HomeSvg /> },
+                  { value: 'both', label: 'Both Home and Car', desc: 'Insure both and get bundle savings',                icons: <><CarSvg /><HomeSvg /></> },
+                ].map(({ value, label, desc, icons }) => (
+                  <button
+                    key={value}
+                    className={`signup-page__insurance-tile ${formData.insuranceType === value ? 'signup-page__insurance-tile--selected' : ''}`}
+                    onClick={() => handleInsuranceSelect(value)}
+                    type="button"
+                  >
+                    <div className="signup-page__tile-icons">{icons}</div>
+                    <div className="signup-page__tile-text">
+                      <span className="signup-page__tile-title">{label}</span>
+                      <span className="signup-page__tile-desc">{desc}</span>
+                    </div>
+                  </button>
+                ))}
               </div>
+              {stepWasAttempted && errors.insuranceType && (
+                <p className="signup-page__insurance-error">{errors.insuranceType}</p>
+              )}
             </div>
           )}
 
-          {/* Step: Your Address */}
+          {/* ── Step 3: Your Address ── */}
           {currentStepKey === STEP_ADDRESS && (
             <div className="signup-page__step">
               <div className="signup-page__step-header">
@@ -349,6 +474,8 @@ export default function SignUpPage() {
                   placeholder="123 Main Street"
                   value={formData.streetAddress}
                   onChange={(e) => handleField('streetAddress', e.target.value)}
+                  invalid={stepWasAttempted && !!errors.streetAddress}
+                  invalidText={errors.streetAddress}
                   size="lg"
                 />
                 <TextInput
@@ -357,6 +484,8 @@ export default function SignUpPage() {
                   placeholder="Your city"
                   value={formData.city}
                   onChange={(e) => handleField('city', e.target.value)}
+                  invalid={stepWasAttempted && !!errors.city}
+                  invalidText={errors.city}
                   size="lg"
                 />
                 <Select
@@ -364,6 +493,8 @@ export default function SignUpPage() {
                   labelText="State"
                   value={formData.state}
                   onChange={(e) => handleField('state', e.target.value)}
+                  invalid={stepWasAttempted && !!errors.state}
+                  invalidText={errors.state}
                   size="lg"
                 >
                   <SelectItem value="" text="" />
@@ -373,17 +504,19 @@ export default function SignUpPage() {
                 </Select>
                 <TextInput
                   id="zipCode"
-                  labelText="Zip"
-                  placeholder="(555) 123-4567"
+                  labelText="Zip Code"
+                  placeholder="12345"
                   value={formData.zipCode}
                   onChange={(e) => handleField('zipCode', e.target.value)}
+                  invalid={stepWasAttempted && !!errors.zipCode}
+                  invalidText={errors.zipCode}
                   size="lg"
                 />
               </div>
             </div>
           )}
 
-          {/* Step: Car Details */}
+          {/* ── Step 4: Car Details ── */}
           {currentStepKey === STEP_CAR && (
             <div className="signup-page__step">
               <div className="signup-page__step-header">
@@ -397,6 +530,8 @@ export default function SignUpPage() {
                   placeholder="e.g. Toyota, Ford"
                   value={formData.carMake}
                   onChange={(e) => handleField('carMake', e.target.value)}
+                  invalid={stepWasAttempted && !!errors.carMake}
+                  invalidText={errors.carMake}
                   size="lg"
                 />
                 <TextInput
@@ -405,6 +540,8 @@ export default function SignUpPage() {
                   placeholder="e.g. Corolla, Bronco"
                   value={formData.carModel}
                   onChange={(e) => handleField('carModel', e.target.value)}
+                  invalid={stepWasAttempted && !!errors.carModel}
+                  invalidText={errors.carModel}
                   size="lg"
                 />
                 <Select
@@ -412,6 +549,8 @@ export default function SignUpPage() {
                   labelText="Year"
                   value={formData.carYear}
                   onChange={(e) => handleField('carYear', e.target.value)}
+                  invalid={stepWasAttempted && !!errors.carYear}
+                  invalidText={errors.carYear}
                   size="lg"
                 >
                   <SelectItem value="" text="" />
@@ -442,13 +581,15 @@ export default function SignUpPage() {
                   helperText="17 digits"
                   value={formData.carVin}
                   onChange={(e) => handleField('carVin', e.target.value)}
+                  invalid={stepWasAttempted && !!errors.carVin}
+                  invalidText={errors.carVin}
                   size="lg"
                 />
               </div>
             </div>
           )}
 
-          {/* Step: Property Details */}
+          {/* ── Step 5: Property Details ── */}
           {currentStepKey === STEP_PROPERTY && (
             <div className="signup-page__step">
               <div className="signup-page__step-header">
@@ -461,6 +602,8 @@ export default function SignUpPage() {
                   labelText="Home Type"
                   value={formData.homeType}
                   onChange={(e) => handleField('homeType', e.target.value)}
+                  invalid={stepWasAttempted && !!errors.homeType}
+                  invalidText={errors.homeType}
                   size="lg"
                 >
                   <SelectItem value="" text="" />
@@ -473,6 +616,8 @@ export default function SignUpPage() {
                   labelText="Year Built"
                   value={formData.yearBuilt}
                   onChange={(e) => handleField('yearBuilt', e.target.value)}
+                  invalid={stepWasAttempted && !!errors.yearBuilt}
+                  invalidText={errors.yearBuilt}
                   size="lg"
                 >
                   <SelectItem value="" text="" />
@@ -485,7 +630,9 @@ export default function SignUpPage() {
                   label="Square Feet"
                   helperText="We'll confirm this more accurately later"
                   value={formData.squareFeet}
-                  min={0}
+                  min={1}
+                  invalid={stepWasAttempted && !!errors.squareFeet}
+                  invalidText={errors.squareFeet}
                   onChange={(e, { value }) => handleField('squareFeet', value)}
                   size="lg"
                 />
@@ -494,7 +641,9 @@ export default function SignUpPage() {
                   label="Estimated Home Value"
                   helperText="We'll confirm this more accurately later"
                   value={formData.estimatedValue}
-                  min={0}
+                  min={1}
+                  invalid={stepWasAttempted && !!errors.estimatedValue}
+                  invalidText={errors.estimatedValue}
                   onChange={(e, { value }) => handleField('estimatedValue', value)}
                   size="lg"
                 />
@@ -539,6 +688,7 @@ export default function SignUpPage() {
               {isLastStep ? 'Complete Sign Up' : 'Next'}
             </Button>
           </div>
+
         </div>
       </div>
     </div>
