@@ -10,6 +10,7 @@ import {
   Heading,
   Stack,
   Link,
+  Modal,
 } from '@carbon/react';
 import { Login, ArrowRight } from '@carbon/icons-react';
 import './LoginPage.scss';
@@ -18,6 +19,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showMagicLinkModal, setShowMagicLinkModal] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -26,6 +28,7 @@ export default function LoginPage() {
   };
 
   return (
+    <>
     <Grid className="login-page">
       <Column sm={4} md={8} lg={{ span: 8, offset: 4 }} xlg={{ span: 6, offset: 5 }}>
         <div className="login-container">
@@ -69,7 +72,14 @@ export default function LoginPage() {
                   />
 
                   <div className="login-options">
-                    <Link href="#" className="forgot-password-link">
+                    <Link
+                      href="#"
+                      className="forgot-password-link"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowMagicLinkModal(true);
+                      }}
+                    >
                       Forgot password?
                     </Link>
                   </div>
@@ -108,5 +118,13 @@ export default function LoginPage() {
         </div>
       </Column>
     </Grid>
+
+    <Modal
+      open={showMagicLinkModal}
+      onRequestClose={() => setShowMagicLinkModal(false)}
+      passiveModal
+      modalHeading="Check your email for the magic link"
+    />
+    </>
   );
 }
