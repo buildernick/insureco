@@ -10,14 +10,16 @@ import {
   Heading,
   Stack,
   Link,
+  Modal,
 } from '@carbon/react';
-import { Login, ArrowRight } from '@carbon/icons-react';
+import { Login, ArrowRight, Email } from '@carbon/icons-react';
 import './LoginPage.scss';
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [magicLinkModalOpen, setMagicLinkModalOpen] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -69,7 +71,14 @@ export default function LoginPage() {
                   />
 
                   <div className="login-options">
-                    <Link href="#" className="forgot-password-link">
+                    <Link
+                      href="#"
+                      className="forgot-password-link"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setMagicLinkModalOpen(true);
+                      }}
+                    >
                       Forgot password?
                     </Link>
                   </div>
@@ -107,6 +116,24 @@ export default function LoginPage() {
           </Tile>
         </div>
       </Column>
+
+      <Modal
+        open={magicLinkModalOpen}
+        onRequestClose={() => setMagicLinkModalOpen(false)}
+        modalHeading="Password Reset"
+        primaryButtonText="Done"
+        onRequestSubmit={() => setMagicLinkModalOpen(false)}
+        size="sm"
+        className="magic-link-modal"
+        passiveModal={false}
+      >
+        <div className="magic-link-modal-body">
+          <div className="magic-link-icon">
+            <Email size={40} />
+          </div>
+          <p className="magic-link-message">Check your mail for a magic link</p>
+        </div>
+      </Modal>
     </Grid>
   );
 }
