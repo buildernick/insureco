@@ -104,7 +104,7 @@ Use InsureCo design tokens for:
 ### SCSS Import Pattern
 
 import './MyComponent.scss';
-```
+
 
 In SCSS:
 ```scss
@@ -139,3 +139,20 @@ React Router v7 is used for navigation:
 5. **Token Usage**: Use CSS custom properties for theme-aware styling
 6. **Accessibility**: Carbon components are accessible by default - maintain this
 7. **Code Splitting**: Keep components focused and single-responsibility
+
+## Temporary Dashboard Demo State
+
+### `src/pages/DashboardHome.jsx`
+
+The main dashboard page is currently in a temporary stripped-down demo state for screen sharing and staged rebuilds.
+
+**Current expectations:**
+- Keep the app-level layout intact (`Layout.jsx`, header, navigation, and route structure stay in place)
+- Keep the dashboard content intentionally simple and lightly structured
+- Do not wire real or mock policy, claim, payment, or insurance card data back in unless explicitly requested
+- Do not restore the page-specific `DashboardHome.scss` styling unless explicitly requested
+- Use the existing `Grid` and `Column` structure as the base when rebuilding the dashboard one layer at a time
+
+**Purpose:**
+- Provide a clean baseline for rebuilding the dashboard live during demos
+- Let future updates add structure, styling, and data back incrementally instead of all at once
