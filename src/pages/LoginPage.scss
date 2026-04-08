@@ -159,3 +159,33 @@
     font-weight: var(--font-weight-semibold);
   }
 }
+
+.forgot-password-modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-05);
+  padding: var(--spacing-06) 0;
+  text-align: center;
+}
+
+.forgot-password-email-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: var(--background-tertiary);
+  border-radius: 50%;
+
+  svg {
+    fill: var(--interactive-primary);
+  }
+}
+
+.forgot-password-message {
+  font-size: var(--body-lg-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
