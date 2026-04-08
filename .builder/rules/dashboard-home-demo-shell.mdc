@@ -1,21 +1,21 @@
 ---
-description: Temporary stripped dashboard shell
+description: Dashboard home admin surface
 globs: src/pages/DashboardHome.jsx
 alwaysApply: false
 ---
 
-## Dashboard demo shell
+## Dashboard home admin surface
 
-`src/pages/DashboardHome.jsx` is temporarily running in a data-on, styles-off state for screen-sharing demos.
+`src/pages/DashboardHome.jsx` has been restored from the temporary unstyled demo shell into a styled Carbon-based admin surface.
 
 ### Current expectations
 - Keep the app-level layout intact.
-- Leave page-specific dashboard styles off unless explicitly requested.
-- Keep policy, claim, summary, and digital card data visible with simple semantic markup.
-- Keep dashboard interactions and polished UI treatments disconnected unless explicitly requested.
+- Keep the restored dashboard data visible: quick actions, summary stats, connected data, policies, claims, and digital cards.
+- Match the styling language used across other admin pages by using Carbon tiles, tables, tags, and existing design tokens.
+- Keep quick actions in a preview-only state unless interactive wiring is explicitly requested.
+- Preserve the current demo note: styling is back on, but action flows remain intentionally disabled for demos.
 
-### Restore path
-When rebuilding the dashboard, add pieces back in small layers:
-1. Data structure
-2. Styling
-3. Interactions
+### Implementation notes
+- Page-level styling lives in `src/pages/DashboardHome.scss`.
+- Reuse existing theme-aware tokens such as `--background-primary`, `--background-secondary`, `--text-primary`, and `--interactive-primary`.
+- Prefer the established admin-surface patterns already used in business pages: page header, metric tiles, section tiles, and Carbon data tables.
