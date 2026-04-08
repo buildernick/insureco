@@ -204,10 +204,6 @@ export default function DashboardHome() {
           </div>
           <Tag type="warm-gray">Demo state</Tag>
         </div>
-        <p className="dashboard-surface-note">
-          Action wiring is still disabled for screen-sharing demos, but the page now uses the same
-          admin surface styling as the rest of the application.
-        </p>
       </Column>
 
       <Column lg={16} md={8} sm={4}>
@@ -288,7 +284,7 @@ export default function DashboardHome() {
             </div>
             <div className="stat-details">
               <p className="stat-label">Next Payment</p>
-              <h3 className="stat-value">{nextPaymentDue}</h3>
+              <h3 className="stat-value stat-value--date">{nextPaymentDue}</h3>
               <p className="stat-change">AutoPay schedule on file</p>
             </div>
           </div>
@@ -311,11 +307,11 @@ export default function DashboardHome() {
           <ul className="dashboard-data-overview">
             {dataSections.map((section) => (
               <li key={section.id} className="dashboard-data-point">
-                <div>
+                <div className="dashboard-data-header">
                   <p className="dashboard-data-label">{section.label}</p>
-                  <p className="dashboard-data-detail">{section.detail}</p>
+                  <span className="dashboard-data-value">{section.value}</span>
                 </div>
-                <span className="dashboard-data-value">{section.value}</span>
+                <p className="dashboard-data-detail">{section.detail}</p>
               </li>
             ))}
           </ul>
