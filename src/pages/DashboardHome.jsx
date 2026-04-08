@@ -125,7 +125,7 @@ export default function DashboardHome() {
   return (
     <Grid fullWidth className="dashboard-home">
       <Column lg={16} md={8} sm={4} className="dashboard-header">
-        <Heading className="dashboard-title">My Dashboard</Heading>
+        <Heading className="dashboard-title">Welcome</Heading>
         <p className="dashboard-subtitle">
           Welcome back! Here's an overview of your insurance policies and recent activity.
         </p>
