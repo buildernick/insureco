@@ -107,7 +107,7 @@ import './MyComponent.scss';
 
 
 In SCSS:
-```scss
+
 @use '../../styles/tokens' as *;
 
 .my-component {
@@ -144,15 +144,15 @@ React Router v7 is used for navigation:
 
 ### `src/pages/DashboardHome.jsx`
 
-The main dashboard page is currently in a temporary stripped-down demo state for screen sharing and staged rebuilds.
+The main dashboard page currently keeps its full demo content, but its page-specific SCSS styling is intentionally removed.
 
 **Current expectations:**
 - Keep the app-level layout intact (`Layout.jsx`, header, navigation, and route structure stay in place)
-- Keep the dashboard content intentionally simple and lightly structured
-- Do not wire real or mock policy, claim, payment, or insurance card data back in unless explicitly requested
-- Do not restore the page-specific `DashboardHome.scss` styling unless explicitly requested
-- Use the existing `Grid` and `Column` structure as the base when rebuilding the dashboard one layer at a time
+- Keep the dashboard content blocks, tables, cards, and summary sections available for demo use
+- Leave `DashboardHome.scss` disconnected unless explicitly asked to restore custom dashboard styling
+- Prefer Carbon layout and component defaults when making temporary dashboard updates without custom styling
+- If more styling is added back later, do it intentionally and in layers rather than restoring all page-specific styling at once
 
 **Purpose:**
-- Provide a clean baseline for rebuilding the dashboard live during demos
-- Let future updates add structure, styling, and data back incrementally instead of all at once
+- Preserve a usable dashboard for demos and screen sharing
+- Keep the visual presentation stripped back while content and structure remain available
