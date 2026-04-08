@@ -81,19 +81,19 @@ export default function LandingPage() {
               </p>
               <div className="hero-actions">
                 <Button
+                  kind="secondary"
+                  size="lg"
+                  onClick={() => setDemoModalOpen(true)}
+                >
+                  Get a Demo
+                </Button>
+                <Button
                   kind="primary"
                   size="lg"
                   onClick={() => navigate('/signup')}
                   renderIcon={ArrowRight}
                 >
                   Sign Up Now
-                </Button>
-                <Button
-                  kind="secondary"
-                  size="lg"
-                  onClick={() => setDemoModalOpen(true)}
-                >
-                  Get a Demo
                 </Button>
               </div>
             </div>
