@@ -1,0 +1,22 @@
+---
+description: Temporary stripped dashboard shell
+globs: src/pages/DashboardHome.jsx
+alwaysApply: false
+---
+
+## Dashboard demo shell
+
+`src/pages/DashboardHome.jsx` is temporarily reduced to an unstyled shell for screen-sharing demos.
+
+### Current expectations
+- Keep the app-level layout intact.
+- Do not reintroduce page-specific dashboard styles unless explicitly requested.
+- Do not reconnect policy, claim, payment, or card data unless explicitly requested.
+- Use simple placeholder copy and structure so sections can be rebuilt incrementally.
+
+### Restore path
+When rebuilding the dashboard, add pieces back in small layers:
+1. Structure
+2. Styling
+3. Data wiring
+4. Interactions
