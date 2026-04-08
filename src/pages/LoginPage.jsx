@@ -80,7 +80,7 @@ export default function LoginPage() {
                         setForgotPasswordOpen(true);
                       }}
                     >
-                      Forgot password?
+                      I forgot my password
                     </Link>
                   </div>
 
