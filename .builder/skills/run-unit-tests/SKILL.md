@@ -5,6 +5,22 @@ description: Run the unit test suite for this project. Use this skill when the u
 
 # Run Unit Tests
 
+## ⚠️ CRITICAL: Report Only — Do NOT Fix Anything
+
+**When this skill is invoked, your job is to run the tests and report the results. Nothing else.**
+
+- ❌ Do NOT modify any source files
+- ❌ Do NOT fix failing tests
+- ❌ Do NOT fix code that causes test failures
+- ❌ Do NOT suggest fixes inline or attempt any remediation
+- ❌ Do NOT update snapshots or test configuration
+
+✅ Run the tests, then output the report exactly as specified below. Stop there.
+
+If the user wants failures fixed, they must explicitly ask in a follow-up message.
+
+---
+
 ## Commands
 
 **Single run (CI-style, shows results and coverage):**
