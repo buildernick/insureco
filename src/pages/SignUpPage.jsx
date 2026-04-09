@@ -17,8 +17,6 @@ import {
   NumberInput,
   TileGroup,
   RadioTile,
-  ProgressIndicator,
-  ProgressStep,
   DatePicker,
   DatePickerInput,
   InlineNotification,
@@ -751,19 +749,34 @@ export default function SignUpPage() {
           </p>
         </header>
 
-        <Tile className="signup-progress">
-          <ProgressIndicator currentIndex={currentStep} spaceEqually>
-            {steps.map((step, index) => (
-              <ProgressStep
-                key={step.key}
-                label={step.label}
-                description={index < currentStep ? 'Complete' : index === currentStep ? 'Current' : ''}
-                complete={index < currentStep}
-                current={index === currentStep}
-              />
-            ))}
-          </ProgressIndicator>
-        </Tile>
+        {/* Percent-complete progress bar */}
+        {(() => {
+          const pct = Math.round((currentStep / (steps.length - 1)) * 100);
+          return (
+            <div className="signup-progress-bar-wrap">
+              <div className="signup-progress-bar-header">
+                <span className="signup-progress-bar-label">
+                  Step {currentStep + 1} of {steps.length} — {currentStepData?.label}
+                </span>
+                <span className="signup-progress-bar-pct">{pct}%</span>
+              </div>
+              <div className="signup-progress-bar-track" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} aria-label="Sign-up progress">
+                <div className="signup-progress-bar-fill" style={{ width: `${pct}%` }} />
+              </div>
+              <div className="signup-progress-bar-steps">
+                {steps.map((step, index) => (
+                  <div
+                    key={step.key}
+                    className={`signup-progress-bar-step ${index < currentStep ? 'is-complete' : ''} ${index === currentStep ? 'is-current' : ''}`}
+                  >
+                    <div className="signup-progress-bar-step-dot" />
+                    <span className="signup-progress-bar-step-name">{step.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
 
         <Form className="signup-form" onSubmit={handleSubmit}>
           <Stack gap={7} className="signup-step-content">
