@@ -253,13 +253,13 @@ export default function NetworkDashboard() {
       {/* ─── Warning Banner ──────────────────────────────────────────────── */}
       {!warningDismissed && (
         <InlineNotification
-          kind="error"
+          kind="warning"
           lowContrast
           title="Budget Alert:"
           subtitle="Q4 claims spending is 12% over forecast. Review reserve allocations before period close."
           onCloseButtonClick={() => setWarningDismissed(true)}
           aria-label="Dismiss budget alert notification"
-          statusIconDescription="error"
+          statusIconDescription="warning"
         />
       )}
 
