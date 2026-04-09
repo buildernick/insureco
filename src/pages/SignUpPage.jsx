@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Grid,
@@ -24,6 +24,8 @@ import {
 import { ArrowRight, ArrowLeft, Checkmark, Car, Home as HomeIcon } from '@carbon/icons-react';
 import './SignUpPage.scss';
 import { formatDateForInput } from '../utils/businessHelpers';
+import { quoteEstimator } from '../utils/quoteEstimator';
+import EstimatedQuote from '../components/EstimatedQuote';
 
 // ─── Validators ────────────────────────────────────────────────────────────────
 const validators = {
@@ -190,6 +192,12 @@ export default function SignUpPage() {
 
   const steps           = getSteps();
   const currentStepData = steps[currentStep];
+
+  // Live estimated quote — recomputed whenever formData changes
+  const estimate = useMemo(() => quoteEstimator(formData), [formData]);
+
+  // Show the quote card from the Insurance Type step onward
+  const showEstimate = estimate !== null && !['personal', 'address'].includes(currentStepData?.key);
 
   const validateCurrentStep = () => {
     const key    = currentStepData?.key;
@@ -738,6 +746,29 @@ export default function SignUpPage() {
                   <div><strong>Additional:</strong> {formData.additionalCoverage.join(', ')}</div>
                 )}
               </div>
+
+              {/* Price breakdown in Review step */}
+              {estimate?.breakdown?.length > 0 && (
+                <div className="signup-review-quote">
+                  <div className="signup-review-quote-header">
+                    <span className="signup-review-quote-label">Estimated Monthly Premium</span>
+                    <span className="signup-review-quote-price">${estimate.monthly}<span className="signup-review-quote-period">/mo</span></span>
+                  </div>
+                  <ul className="signup-review-quote-breakdown">
+                    {estimate.breakdown.map((item, i) => (
+                      <li key={i} className="signup-review-quote-line">
+                        <span>{item.label}</span>
+                        <span>{item.amount >= 0 ? '+' : ''}${Math.abs(item.amount)}/mo</span>
+                      </li>
+                    ))}
+                    <li className="signup-review-quote-line signup-review-quote-line--total">
+                      <span>Estimated total</span>
+                      <span>${estimate.monthly}/mo</span>
+                    </li>
+                  </ul>
+                  <p className="signup-review-quote-disclaimer">Final price confirmed after underwriting review. No obligation.</p>
+                </div>
+              )}
             </Tile>
           </Stack>
         );
@@ -758,6 +789,9 @@ export default function SignUpPage() {
             Get started with your insurance coverage in just a few steps
           </p>
         </header>
+
+        {/* Estimated quote card — shown once insurance type is known */}
+        {showEstimate && <EstimatedQuote estimate={estimate} />}
 
         {/* Percent-complete progress bar */}
         {(() => {

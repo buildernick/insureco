@@ -1,0 +1,162 @@
+@use '../styles/tokens' as *;
+
+// ─── Estimated Quote Card ─────────────────────────────────────────────────────
+
+.estimated-quote {
+  background: var(--background-secondary);
+  border-left: 4px solid var(--interactive-primary);
+  border-radius: var(--radius-md, 4px);
+  padding: var(--spacing-05) var(--spacing-05) var(--spacing-04);
+  margin-bottom: var(--spacing-05);
+
+  // Smooth repaints when price updates
+  transition: background 0.2s ease;
+}
+
+.estimated-quote__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-03);
+  margin-bottom: var(--spacing-02);
+}
+
+.estimated-quote__label {
+  font-size: var(--body-compact-01-font-size, 0.75rem);
+  font-weight: var(--font-weight-semibold, 600);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+// The big price number (precise)
+.estimated-quote__price {
+  font-size: var(--heading-h2-size, 2rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin: 0 0 var(--spacing-02);
+  animation: eq-price-in 0.25s ease;
+}
+
+// Range display (before coverage chosen)
+.estimated-quote__range {
+  font-size: var(--heading-h3-size, 1.5rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin: 0 0 var(--spacing-02);
+  animation: eq-price-in 0.25s ease;
+}
+
+.estimated-quote__currency {
+  font-size: 0.6em;
+  vertical-align: super;
+  margin-right: 1px;
+  color: var(--text-secondary);
+}
+
+.estimated-quote__period {
+  font-size: 0.45em;
+  font-weight: var(--font-weight-regular, 400);
+  color: var(--text-secondary);
+  margin-left: 2px;
+  vertical-align: middle;
+}
+
+.estimated-quote__hint {
+  font-size: var(--body-compact-01-font-size, 0.75rem);
+  color: var(--text-tertiary);
+  margin: 0 0 var(--spacing-02);
+}
+
+// "See breakdown" toggle button
+.estimated-quote__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-02);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--body-compact-01-font-size, 0.75rem);
+  color: var(--interactive-primary);
+  padding: 0;
+  white-space: nowrap;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--interactive-primary);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+// Breakdown list
+.estimated-quote__breakdown {
+  list-style: none;
+  margin: var(--spacing-03) 0 var(--spacing-03);
+  padding: 0;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.estimated-quote__breakdown-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--spacing-05);
+  padding: var(--spacing-02) 0;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: var(--body-compact-01-font-size, 0.75rem);
+
+  &--base {
+    color: var(--text-primary);
+    font-weight: var(--font-weight-semibold, 600);
+  }
+
+  &--adjustment,
+  &--multiplier,
+  &--deductible,
+  &--addon {
+    color: var(--text-secondary);
+  }
+
+  &--total {
+    color: var(--text-primary);
+    font-weight: var(--font-weight-semibold, 600);
+    border-bottom: none;
+    font-size: var(--body-01-font-size, 0.875rem);
+    padding-top: var(--spacing-03);
+  }
+}
+
+.estimated-quote__breakdown-label {
+  flex: 1;
+}
+
+.estimated-quote__breakdown-amount {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+
+// Disclaimer
+.estimated-quote__disclaimer {
+  font-size: var(--label-01-font-size, 0.6875rem);
+  color: var(--text-tertiary);
+  margin: 0;
+}
+
+// Keyframe for price animation
+@keyframes eq-price-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

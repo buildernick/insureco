@@ -886,3 +886,76 @@
     }
   }
 }
+
+// ============================================
+// Review Step — Price Breakdown Block
+// ============================================
+
+.signup-review-quote {
+  margin-top: var(--spacing-05);
+  padding-top: var(--spacing-05);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.signup-review-quote-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-05);
+  margin-bottom: var(--spacing-04);
+}
+
+.signup-review-quote-label {
+  font-size: var(--body-sm-size);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.signup-review-quote-price {
+  font-size: var(--heading-h3-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--interactive-primary);
+  white-space: nowrap;
+}
+
+.signup-review-quote-period {
+  font-size: 0.5em;
+  font-weight: var(--font-weight-regular);
+  color: var(--text-secondary);
+  margin-left: 2px;
+}
+
+.signup-review-quote-breakdown {
+  list-style: none;
+  margin: 0 0 var(--spacing-04);
+  padding: 0;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.signup-review-quote-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--spacing-05);
+  padding: var(--spacing-02) 0;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: var(--body-sm-size);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+
+  &--total {
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    border-bottom: none;
+    font-size: var(--body-md-size);
+    padding-top: var(--spacing-03);
+  }
+}
+
+.signup-review-quote-disclaimer {
+  font-size: var(--label-01-font-size, 0.6875rem);
+  color: var(--text-tertiary);
+  margin: 0;
+}
