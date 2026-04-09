@@ -77,6 +77,7 @@ export default function VehicleDetailPage() {
             renderIcon={ArrowLeft}
             iconDescription="Back"
             onClick={() => navigate('/business/fleet')}
+            className="btn--icon-left"
           >
             Back
           </Button>
