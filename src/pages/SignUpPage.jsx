@@ -12,7 +12,9 @@ import { ArrowLeft, ArrowRight, ChevronDown } from '@carbon/icons-react';
 import StepBreadcrumb from '../components/StepBreadcrumb';
 import './SignUpPage.scss';
 
-// US States
+// Full list of US states for the address step dropdown.
+// Stored as { code, name } pairs so we can display the full name in the UI
+// while submitting the two-letter abbreviation to the backend.
 const US_STATES = [
   { code: 'AL', name: 'Alabama' }, { code: 'AK', name: 'Alaska' },
   { code: 'AZ', name: 'Arizona' }, { code: 'AR', name: 'Arkansas' },
@@ -42,7 +44,9 @@ const US_STATES = [
 ];
 
 const currentYear = new Date().getFullYear();
+// Last 30 model years (e.g. 2025 → 1996) — covers the vast majority of vehicles in use.
 const CAR_YEARS = Array.from({ length: 30 }, (_, i) => currentYear - i);
+// 1800 → present; wide enough to accommodate historic properties without dead ends.
 const HOME_YEARS = Array.from({ length: 226 }, (_, i) => 2025 - i);
 const HOME_TYPES = ['Single Family', 'Condo', 'Townhouse', 'Multi-Family', 'Mobile Home'];
 
@@ -54,12 +58,19 @@ const STEP_KEYS = {
   ADDRESS: 'address',
 };
 
-// ─── Validation helpers ─────────────────────────────────────────────────────────
+// ─── Field-level validators ──────────────────────────────────────────────────────
+// Lightweight regex helpers consumed by the per-step validate* functions below.
+// Phone and email are intentionally permissive to avoid rejecting valid international formats.
 const isValidEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
 const isValidPhone = (v) => /^\+?[\d\s\-().]{7,}$/.test(v.trim());
 const isValidZip = (v) => /^\d{5}(-\d{4})?$/.test(v.trim());
+// VIN is optional; when provided it must be exactly 17 alphanumeric characters.
 const isValidVin = (v) => v.length === 0 || v.length === 17;
 
+/**
+ * Calculates age in complete years from a "m/d/yyyy" string (Carbon DatePicker output).
+ * Correctly accounts for whether the birthday has occurred yet this calendar year.
+ */
 function getAge(dobString) {
   if (!dobString) return 0;
   const [m, d, y] = dobString.split('/').map(Number);
@@ -71,6 +82,11 @@ function getAge(dobString) {
   return age;
 }
 
+/**
+ * Validates the Personal Info step.
+ * Returns a { fieldName: errorMessage } map for every failing field,
+ * or an empty object when the step is valid and the user may advance.
+ */
 function validatePersonal(data) {
   const errors = {};
   if (!data.firstName.trim()) errors.firstName = 'First name is required';
@@ -96,25 +112,36 @@ function validatePersonal(data) {
   return errors;
 }
 
+/**
+ * Validates the Coverage step. The user must select at least one
+ * coverage type (car, home, or both) before they can advance.
+ */
 function validateCoverage(insuranceType) {
   if (!insuranceType) return { insuranceType: 'Please select a coverage type to continue' };
   return {};
 }
 
+/**
+ * Validates the Car Details step.
+ * Make, model, and year are required. VIN is optional but, when provided,
+ * must be exactly 17 characters (the standard for all modern VINs).
+ */
 function validateCar(data) {
   const errors = {};
   if (!data.make.trim()) errors.make = 'Vehicle make is required';
   if (!data.model.trim()) errors.model = 'Vehicle model is required';
   if (!data.year) errors.year = 'Vehicle year is required';
-  if (!data.vin.trim() || isValidVin(data.vin)) {
-    // vin is optional — only flag if filled and wrong length
-    if (data.vin.trim() && !isValidVin(data.vin)) {
-      errors.vin = 'VIN must be exactly 17 characters';
-    }
+  if (data.vin.trim() && !isValidVin(data.vin)) {
+    errors.vin = 'VIN must be exactly 17 characters';
   }
   return errors;
 }
 
+/**
+ * Validates the Home Details step.
+ * Home type and year built are required. Square footage and estimated value
+ * use NumberInput with a non-zero default so they need no additional validation.
+ */
 function validateHome(data) {
   const errors = {};
   if (!data.homeType) errors.homeType = 'Home type is required';
@@ -122,6 +149,9 @@ function validateHome(data) {
   return errors;
 }
 
+/**
+ * Validates the Address step. Accepts standard 5-digit and ZIP+4 (12345-6789) formats.
+ */
 function validateAddress(data) {
   const errors = {};
   if (!data.streetAddress.trim()) errors.streetAddress = 'Street address is required';
@@ -135,11 +165,26 @@ function validateAddress(data) {
   return errors;
 }
 
-// ─── Premium estimate calculator ────────────────────────────────────────────────
-// Returns a realistic-looking range derived from form data already collected.
-// This is a mock front-end calculation — no real backend required.
+// ─── Live premium estimator ──────────────────────────────────────────────────────
+/**
+ * Derives a realistic monthly premium range purely from front-end form data.
+ * No backend call is made — this is an illustrative estimate that grows more
+ * precise as the user completes each step.
+ *
+ * Pricing formula ($/month):
+ *   Car base  $85  + $0.003/mile above 10k annual miles
+ *                  − $1/year newer than 2010 (capped at −$15)
+ *   Home base $110 + $0.015/sq ft above 1,000
+ *                  + $0.50 per $1,000 of home value above $200,000
+ *   Bundle       −15% off total when both coverages are selected
+ *
+ * The result is expressed as a ±10% range so users understand it is
+ * an estimate, not a binding price.
+ *
+ * @returns {{ ready, min, max, breakdown, confidence, detailsCompleted, totalDetails }}
+ */
 function estimatePrice(insuranceType, formData, currentStepKey, steps) {
-  // Too early to show a number before coverage type is selected
+  // Don't show a number until the user has chosen a coverage type
   if (!insuranceType || currentStepKey === STEP_KEYS.PERSONAL) {
     return {
       ready: false,
@@ -156,31 +201,31 @@ function estimatePrice(insuranceType, formData, currentStepKey, steps) {
   const hasHome = insuranceType === 'home' || insuranceType === 'both';
   const isBundle = insuranceType === 'both';
 
-  // Base rates
+  // Starting base rates before any risk adjustments are applied
   let carBase = 85;
   let homeBase = 110;
 
-  // Car adjustments
+  // Car risk adjustments: high-mileage drivers pay more; newer cars get a discount
   if (hasCar) {
     const annualMiles = Number(formData.milesDrivenPerYear) || 0;
     if (annualMiles > 10000) {
-      carBase += (annualMiles - 10000) * 0.003;
+      carBase += (annualMiles - 10000) * 0.003; // +$0.003 per mile above 10k
     }
     const carYear = Number(formData.year) || 0;
     if (carYear > 2010) {
-      carBase -= Math.min(carYear - 2010, 15);
+      carBase -= Math.min(carYear - 2010, 15); // −$1/year newer than 2010, capped at −$15
     }
   }
 
-  // Home adjustments
+  // Home risk adjustments: larger and higher-value homes cost more to insure
   if (hasHome) {
     const sqFt = Number(formData.squareFeet) || 0;
     if (sqFt > 1000) {
-      homeBase += (sqFt - 1000) * 0.015;
+      homeBase += (sqFt - 1000) * 0.015; // +$0.015 per sq ft above 1,000
     }
     const homeValue = Number(formData.estimatedHomeValue) || 0;
     if (homeValue > 200000) {
-      homeBase += ((homeValue - 200000) / 1000) * 0.5;
+      homeBase += ((homeValue - 200000) / 1000) * 0.5; // +$0.50 per $1,000 above $200k
     }
   }
 
@@ -190,7 +235,7 @@ function estimatePrice(insuranceType, formData, currentStepKey, steps) {
   const bundleDiscount = isBundle ? subtotal * 0.15 : 0;
   const total = subtotal - bundleDiscount;
 
-  // Show as a ±10% range so users understand it's an estimate
+  // Present as a ±10% band so users know this is not a binding quote
   const min = Math.round(total * 0.9);
   const max = Math.round(total * 1.1);
 
@@ -199,7 +244,8 @@ function estimatePrice(insuranceType, formData, currentStepKey, steps) {
   if (hasHome) breakdown.push({ label: 'Home Insurance', amount: Math.round(homeTotal) });
   if (isBundle) breakdown.push({ label: 'Bundle Discount (15%)', amount: Math.round(bundleDiscount), isDiscount: true });
 
-  // Confidence: how many steps of the flow are complete
+  // Confidence reflects how far through the flow the user is.
+  // Shown as a progress bar to encourage them to keep filling in details.
   const stepIndex = steps.findIndex((s) => s.key === currentStepKey);
   const detailsCompleted = stepIndex + 1;
   const totalDetails = steps.length;
@@ -208,7 +254,9 @@ function estimatePrice(insuranceType, formData, currentStepKey, steps) {
   return { ready: true, min, max, breakdown, confidence, detailsCompleted, totalDetails };
 }
 
-// ─── SVG Icons ─────────────────────────────────────────────────────────────────
+// ─── Inline SVG icons ────────────────────────────────────────────────────────────
+// Inlined so they inherit `currentColor` and respond to theme switches without
+// needing an extra icon file or a separate @carbon/icons-react import.
 function CarIcon() {
   return (
     <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -240,7 +288,10 @@ function WarningIcon() {
   );
 }
 
-// ─── Estimate Panel (desktop sidebar) ──────────────────────────────────────────
+// ─── EstimatePanel ───────────────────────────────────────────────────────────────
+// Sticky right-column sidebar shown on screens ≥ 960px.
+// Displays the live price range, a per-coverage breakdown, and a confidence
+// progress bar that fills as the user completes more steps.
 function EstimatePanel({ insuranceType, formData, currentStepKey, steps }) {
   const estimate = estimatePrice(insuranceType, formData, currentStepKey, steps);
 
@@ -309,8 +360,12 @@ function EstimatePanel({ insuranceType, formData, currentStepKey, steps }) {
   );
 }
 
-// ─── Mobile Estimate Bar (collapsed bar inside form card) ───────────────────────
+// ─── MobileEstimateBar ───────────────────────────────────────────────────────────
+// Compact, collapsible bar placed between the form body and the action buttons
+// on screens < 960px (where the sidebar panel is hidden via CSS).
+// Tapping the toggle row expands an inline breakdown of the estimate.
 function MobileEstimateBar({ estimate, isExpanded, onToggle }) {
+  // Nothing to render until a coverage type has been selected
   if (!estimate.ready) return null;
 
   return (
@@ -360,7 +415,11 @@ function MobileEstimateBar({ estimate, isExpanded, onToggle }) {
   );
 }
 
-// ─── Main component ─────────────────────────────────────────────────────────────
+// ─── SignUpPage ───────────────────────────────────────────────────────────────────
+// Orchestrates the full multi-step insurance sign-up flow.
+// Step order is dynamic: the coverage selection determines which detail steps
+// (Car / Home / both) appear. All form state lives here and is passed down to
+// the individual step sub-components at the bottom of this file.
 export default function SignUpPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [insuranceType, setInsuranceType] = useState(null);
@@ -390,6 +449,12 @@ export default function SignUpPage() {
     zip: '',
   });
 
+  /**
+   * Builds the ordered step list based on which coverage type the user selected.
+   * Both Car and Home Details are included when no type is chosen yet so the
+   * breadcrumb renders a full placeholder trail immediately. Once a type is
+   * confirmed only the relevant detail step(s) remain.
+   */
   const buildSteps = (type) => {
     const steps = [
       { key: STEP_KEYS.PERSONAL, label: 'Personal Info' },
@@ -409,6 +474,11 @@ export default function SignUpPage() {
   const totalSteps = steps.length;
   const currentStepKey = steps[currentStep]?.key;
 
+  /**
+   * Updates a single form field and immediately clears its validation error.
+   * Clearing on change gives instant positive feedback once the user corrects a field,
+   * rather than making them click Next again to see the error disappear.
+   */
   const updateField = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
@@ -441,6 +511,8 @@ export default function SignUpPage() {
     const stepErrors = runValidation();
     if (Object.keys(stepErrors).length > 0) {
       setErrors(stepErrors);
+      // Defer one tick so React re-renders the error states before we query the DOM,
+      // then scroll the first invalid field into view so users can't miss it.
       setTimeout(() => {
         const firstInvalid = document.querySelector(
           '.cds--text-input--invalid, .cds--select--invalid, .cds--number--invalid, .signup-coverage-error, .signup-date-error'
@@ -471,6 +543,7 @@ export default function SignUpPage() {
   };
 
   const handleSelectInsurance = (type) => {
+    // Tapping the already-selected tile toggles it off (deselect behaviour)
     const newType = insuranceType === type ? null : type;
     setInsuranceType(newType);
     if (errors.insuranceType) {
@@ -480,6 +553,8 @@ export default function SignUpPage() {
         return next;
       });
     }
+    // Rebuilding steps may remove Car or Home Details; clamp currentStep so it
+    // never points past the end of the new step array.
     const newSteps = buildSteps(newType);
     if (currentStep >= newSteps.length) {
       setCurrentStep(newSteps.length - 1);
@@ -490,7 +565,7 @@ export default function SignUpPage() {
   const showWarning = currentStepKey === STEP_KEYS.CAR && !warningDismissed;
   const showCancelButton = currentStepKey === STEP_KEYS.CAR;
 
-  // Compute estimate once per render, shared between panel and mobile bar
+  // Compute once per render so both the desktop sidebar and mobile bar display identical numbers.
   const computedEstimate = estimatePrice(insuranceType, formData, currentStepKey, steps);
 
   const renderStepContent = () => {
@@ -570,14 +645,14 @@ export default function SignUpPage() {
           </div>
         )}
 
-        {/* Two-column layout: form card + estimate panel (sidebar on desktop) */}
+        {/* Two-column layout on desktop: form card fills remaining width, estimate panel is a sticky sidebar */}
         <div className="signup-content-area">
           <div className="signup-form-card">
             <div className="signup-form-card__body">
               {renderStepContent()}
             </div>
 
-            {/* Mobile estimate bar — hidden on desktop, shown above action buttons */}
+            {/* Mobile-only estimate bar — CSS hides this on screens ≥ 960px where the sidebar takes over */}
             <MobileEstimateBar
               estimate={computedEstimate}
               isExpanded={mobileEstimateExpanded}
@@ -621,7 +696,7 @@ export default function SignUpPage() {
             </div>
           </div>
 
-          {/* Desktop estimate panel — hidden on mobile */}
+          {/* Desktop sidebar — hidden on mobile via CSS (MobileEstimateBar is shown instead) */}
           <EstimatePanel
             insuranceType={insuranceType}
             formData={formData}
