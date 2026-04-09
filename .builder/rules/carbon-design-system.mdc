@@ -95,7 +95,7 @@ import { InlineNotification } from '@carbon/react';
     statusIconDescription="warning"
   />
 )}
-```
+
 
 Full guidance: `.builder/rules/inline-notification-usage.mdc`
 
@@ -170,52 +170,144 @@ import { TextInput } from '@carbon/react';
 />
 ```
 
-### Data Table
+### DataTable with Pagination — Correct Pattern
+
+This is the definitive pattern. Read all the rules below before implementing any table.
+
+#### ⛔ Three rules that must always be followed
+
+**Rule 1 — Never put `title` or `description` on `TableContainer`.**
+Those props make Carbon render an internal header div with its own `$layer-01` background. On a page whose wrapper uses `var(--background-primary)`, those two surfaces resolve to different values in dark mode (`#262626` vs `#161616`), producing a floating band of wrong colour at the top of the table. Put your title and description in your own markup above the `DataTable` instead.
+
+**Rule 2 — Never wrap `DataTable` in `<Layer>`.**
+`Layer` remaps `$layer` tokens but leaves `$background` alone. This causes different internal sections of `TableContainer` and `Pagination` to resolve different token levels, producing a striped / mismatched footer. Do not use `Layer` as a workaround.
+
+**Rule 3 — Always add the Pagination SCSS override (see below).**
+Carbon's `Pagination` component uses `$background` for its left panel and `$layer` for other sections. In dark mode these are different values, creating a split-colour footer. The SCSS override below fixes this in a theme-safe way using Carbon's own `--cds-` custom properties.
+
+#### ✅ Correct JSX
+
 ```jsx
 import {
   DataTable,
+  TableContainer,
   Table,
   TableHead,
   TableRow,
   TableHeader,
   TableBody,
   TableCell,
+  Pagination,
+  Tag,
 } from '@carbon/react';
 
-const rows = [
-  { id: '1', name: 'John', status: 'Active' },
-  { id: '2', name: 'Jane', status: 'Inactive' },
-];
+// ─── Your own header — title and description go HERE, not in TableContainer ───
+<div className="my-table-header">
+  <div>
+    <h2>My Items</h2>
+    <p>Showing all active records</p>
+  </div>
+  <Button kind="primary" renderIcon={Add}>Add Item</Button>
+</div>
 
-const headers = [
-  { key: 'name', header: 'Name' },
-  { key: 'status', header: 'Status' },
-];
-
-<DataTable rows={rows} headers={headers}>
-  {({ rows, headers, getTableProps, getHeaderProps, getRowProps }) => (
-    <Table {...getTableProps()}>
-      <TableHead>
-        <TableRow>
-          {headers.map(header => (
-            <TableHeader {...getHeaderProps({ header })}>
-              {header.header}
-            </TableHeader>
-          ))}
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {rows.map(row => (
-          <TableRow {...getRowProps({ row })}>
-            {row.cells.map(cell => (
-              <TableCell key={cell.id}>{cell.value}</TableCell>
+// ─── DataTable — no title/description on TableContainer ───────────────────────
+<DataTable rows={rows} headers={headers} isSortable>
+  {({ rows, headers, getHeaderProps, getRowProps, getTableProps, getTableContainerProps }) => (
+    <TableContainer {...getTableContainerProps()}>
+      <Table {...getTableProps()} size="md">
+        <TableHead>
+          <TableRow>
+            {headers.map((header) => (
+              <TableHeader key={header.key} {...getHeaderProps({ header })}>
+                {header.header}
+              </TableHeader>
             ))}
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHead>
+        <TableBody>
+          {rows.map((row) => (
+            <TableRow key={row.id} {...getRowProps({ row })}>
+              {row.cells.map((cell) => (
+                <TableCell key={cell.id}>
+                  {cell.info.header === 'status' ? (
+                    // ✅ Use <Tag> for status — never custom badge spans with hardcoded colours
+                    <Tag type={cell.value === 'Active' ? 'green' : 'red'} size="sm">
+                      {cell.value}
+                    </Tag>
+                  ) : (
+                    cell.value
+                  )}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <Pagination
+        totalItems={totalItems}
+        pageSize={pageSize}
+        pageSizes={[5, 10, 25, 100]}
+        page={page}
+        onChange={({ page: p, pageSize: ps }) => { setPage(p); setPageSize(ps); }}
+      />
+    </TableContainer>
   )}
 </DataTable>
+```
+
+#### ✅ Required SCSS — add this for EVERY page that renders a Pagination
+
+Carbon's `Pagination` uses different internal tokens for different sections (`$background` for the left panel, `$layer` for the rest). This override normalises the entire component to `--cds-layer-01` using Carbon's own CSS custom properties, so it stays correct in both light and dark themes without hardcoding any colour.
+
+Scope it under your page class so it does not affect other pages:
+
+```scss
+// ─── Pagination contrast fix ─────────────────────────────────────────────────
+// Carbon's Pagination uses $background for its left panel and $layer for other
+// sections. In dark mode these resolve to different values, producing a
+// split-colour footer. --cds-layer-01 is Carbon's own theme-aware custom
+// property, so this works in both light and dark without hardcoded colours.
+
+.my-page-wrapper .cds--pagination {
+  background-color: var(--cds-layer-01);
+  border-top-color: var(--cds-border-subtle-01);
+
+  .cds--pagination__left,
+  .cds--pagination__right {
+    background-color: var(--cds-layer-01);
+  }
+
+  .cds--select-input {
+    background-color: var(--cds-layer-01);
+    &:hover { background-color: var(--cds-layer-hover-01); }
+  }
+
+  .cds--pagination__button {
+    background-color: var(--cds-layer-01);
+    &:hover:not(:disabled) { background-color: var(--cds-layer-hover-01); }
+  }
+}
+```
+
+#### ❌ Common mistakes
+
+```jsx
+// ❌ WRONG — title/description cause a layer-mismatch header in dark mode
+<TableContainer
+  title="My Table"
+  description="5 items found"
+  {...getTableContainerProps()}
+>
+
+// ❌ WRONG — Layer remaps $layer but not $background, causing striped footer
+<Layer>
+  <DataTable ...>
+
+// ❌ WRONG — hardcoded badge colours break in dark mode
+<span style={{ background: '#defbe6', color: '#198038' }}>Active</span>
+
+// ✅ CORRECT — Carbon Tag uses theme tokens automatically
+<Tag type="green" size="sm">Active</Tag>
 ```
 
 ### Modal
