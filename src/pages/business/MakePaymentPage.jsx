@@ -540,10 +540,10 @@ export default function MakePaymentPage() {
         <div className="navigation-buttons">
           <Button
             kind="secondary"
-            renderIcon={ArrowLeft}
             onClick={handleBack}
             disabled={currentStep === 0}
           >
+            <ArrowLeft style={{ marginRight: '0.5rem' }} />
             Back
           </Button>
 
