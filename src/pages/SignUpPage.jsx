@@ -46,7 +46,6 @@ const CAR_YEARS = Array.from({ length: 30 }, (_, i) => currentYear - i);
 const HOME_YEARS = Array.from({ length: 226 }, (_, i) => 2025 - i);
 const HOME_TYPES = ['Single Family', 'Condo', 'Townhouse', 'Multi-Family', 'Mobile Home'];
 
-// Step keys
 const STEP_KEYS = {
   PERSONAL: 'personal',
   COVERAGE: 'coverage',
@@ -55,7 +54,88 @@ const STEP_KEYS = {
   ADDRESS: 'address',
 };
 
-// SVG Icons from Figma
+// ─── Validation helpers ─────────────────────────────────────────────────────────
+const isValidEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+const isValidPhone = (v) => /^\+?[\d\s\-().]{7,}$/.test(v.trim());
+const isValidZip = (v) => /^\d{5}(-\d{4})?$/.test(v.trim());
+const isValidVin = (v) => v.length === 0 || v.length === 17;
+
+function getAge(dobString) {
+  if (!dobString) return 0;
+  const [m, d, y] = dobString.split('/').map(Number);
+  const dob = new Date(y, m - 1, d);
+  const today = new Date();
+  let age = today.getFullYear() - dob.getFullYear();
+  const mDiff = today.getMonth() - dob.getMonth();
+  if (mDiff < 0 || (mDiff === 0 && today.getDate() < dob.getDate())) age--;
+  return age;
+}
+
+function validatePersonal(data) {
+  const errors = {};
+  if (!data.firstName.trim()) errors.firstName = 'First name is required';
+  if (!data.lastName.trim()) errors.lastName = 'Last name is required';
+  if (!data.email.trim()) {
+    errors.email = 'Email address is required';
+  } else if (!isValidEmail(data.email)) {
+    errors.email = 'Enter a valid email address';
+  }
+  if (!data.phone.trim()) {
+    errors.phone = 'Phone number is required';
+  } else if (!isValidPhone(data.phone)) {
+    errors.phone = 'Enter a valid phone number';
+  }
+  if (data.altPhone.trim() && !isValidPhone(data.altPhone)) {
+    errors.altPhone = 'Enter a valid phone number';
+  }
+  if (!data.dateOfBirth) {
+    errors.dateOfBirth = 'Date of birth is required';
+  } else if (getAge(data.dateOfBirth) < 18) {
+    errors.dateOfBirth = 'You must be at least 18 years old';
+  }
+  return errors;
+}
+
+function validateCoverage(insuranceType) {
+  if (!insuranceType) return { insuranceType: 'Please select a coverage type to continue' };
+  return {};
+}
+
+function validateCar(data) {
+  const errors = {};
+  if (!data.make.trim()) errors.make = 'Vehicle make is required';
+  if (!data.model.trim()) errors.model = 'Vehicle model is required';
+  if (!data.year) errors.year = 'Vehicle year is required';
+  if (!data.vin.trim() || isValidVin(data.vin)) {
+    // vin is optional — only flag if filled and wrong length
+    if (data.vin.trim() && !isValidVin(data.vin)) {
+      errors.vin = 'VIN must be exactly 17 characters';
+    }
+  }
+  return errors;
+}
+
+function validateHome(data) {
+  const errors = {};
+  if (!data.homeType) errors.homeType = 'Home type is required';
+  if (!data.yearBuilt) errors.yearBuilt = 'Year built is required';
+  return errors;
+}
+
+function validateAddress(data) {
+  const errors = {};
+  if (!data.streetAddress.trim()) errors.streetAddress = 'Street address is required';
+  if (!data.city.trim()) errors.city = 'City is required';
+  if (!data.state) errors.state = 'State is required';
+  if (!data.zip.trim()) {
+    errors.zip = 'ZIP code is required';
+  } else if (!isValidZip(data.zip)) {
+    errors.zip = 'Enter a valid ZIP code (e.g. 12345)';
+  }
+  return errors;
+}
+
+// ─── SVG Icons ─────────────────────────────────────────────────────────────────
 function CarIcon() {
   return (
     <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -72,7 +152,6 @@ function HomeIcon() {
   );
 }
 
-// Warning icon
 function WarningIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -88,10 +167,12 @@ function WarningIcon() {
   );
 }
 
+// ─── Main component ─────────────────────────────────────────────────────────────
 export default function SignUpPage() {
   const [currentStep, setCurrentStep] = useState(0);
-  const [insuranceType, setInsuranceType] = useState(null); // 'car' | 'home' | 'both'
+  const [insuranceType, setInsuranceType] = useState(null);
   const [warningDismissed, setWarningDismissed] = useState(false);
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -115,7 +196,6 @@ export default function SignUpPage() {
     zip: '',
   });
 
-  // Build step list based on insurance type selection
   const buildSteps = (type) => {
     const steps = [
       { key: STEP_KEYS.PERSONAL, label: 'Personal Info' },
@@ -137,9 +217,47 @@ export default function SignUpPage() {
 
   const updateField = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    // Clear error for this field as soon as user edits it
+    if (errors[field]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      });
+    }
+  };
+
+  const runValidation = () => {
+    switch (currentStepKey) {
+      case STEP_KEYS.PERSONAL:
+        return validatePersonal(formData);
+      case STEP_KEYS.COVERAGE:
+        return validateCoverage(insuranceType);
+      case STEP_KEYS.CAR:
+        return validateCar(formData);
+      case STEP_KEYS.HOME:
+        return validateHome(formData);
+      case STEP_KEYS.ADDRESS:
+        return validateAddress(formData);
+      default:
+        return {};
+    }
   };
 
   const handleNext = () => {
+    const stepErrors = runValidation();
+    if (Object.keys(stepErrors).length > 0) {
+      setErrors(stepErrors);
+      // Scroll to first error
+      setTimeout(() => {
+        const firstInvalid = document.querySelector(
+          '.cds--text-input--invalid, .cds--select--invalid, .cds--number--invalid, .signup-coverage-error, .signup-date-error'
+        );
+        firstInvalid?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 50);
+      return;
+    }
+    setErrors({});
     if (currentStep < totalSteps - 1) {
       setCurrentStep((prev) => prev + 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -147,14 +265,15 @@ export default function SignUpPage() {
   };
 
   const handleBack = () => {
+    setErrors({});
     if (currentStep > 0) {
       setCurrentStep((prev) => prev - 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
-  // Cancel from Car Details goes back to Coverage selection
   const handleCancelToInsurance = () => {
+    setErrors({});
     const coverageIndex = steps.findIndex((s) => s.key === STEP_KEYS.COVERAGE);
     if (coverageIndex >= 0) setCurrentStep(coverageIndex);
   };
@@ -162,7 +281,14 @@ export default function SignUpPage() {
   const handleSelectInsurance = (type) => {
     const newType = insuranceType === type ? null : type;
     setInsuranceType(newType);
-    // If changing type, rebuild steps and clamp currentStep
+    // Clear coverage error on selection
+    if (errors.insuranceType) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.insuranceType;
+        return next;
+      });
+    }
     const newSteps = buildSteps(newType);
     if (currentStep >= newSteps.length) {
       setCurrentStep(newSteps.length - 1);
@@ -170,37 +296,59 @@ export default function SignUpPage() {
   };
 
   const isLastStep = currentStep === totalSteps - 1;
+  const showWarning = currentStepKey === STEP_KEYS.CAR && !warningDismissed;
+  const showCancelButton = currentStepKey === STEP_KEYS.CAR;
 
-  // Render step content
   const renderStepContent = () => {
     switch (currentStepKey) {
       case STEP_KEYS.PERSONAL:
-        return <PersonalInfoStep formData={formData} updateField={updateField} />;
+        return (
+          <PersonalInfoStep
+            formData={formData}
+            updateField={updateField}
+            errors={errors}
+          />
+        );
       case STEP_KEYS.COVERAGE:
         return (
           <InsuranceTypeStep
             insuranceType={insuranceType}
             onSelect={handleSelectInsurance}
+            error={errors.insuranceType}
           />
         );
       case STEP_KEYS.CAR:
-        return <CarDetailsStep formData={formData} updateField={updateField} />;
+        return (
+          <CarDetailsStep
+            formData={formData}
+            updateField={updateField}
+            errors={errors}
+          />
+        );
       case STEP_KEYS.HOME:
-        return <PropertyDetailsStep formData={formData} updateField={updateField} />;
+        return (
+          <PropertyDetailsStep
+            formData={formData}
+            updateField={updateField}
+            errors={errors}
+          />
+        );
       case STEP_KEYS.ADDRESS:
-        return <AddressStep formData={formData} updateField={updateField} />;
+        return (
+          <AddressStep
+            formData={formData}
+            updateField={updateField}
+            errors={errors}
+          />
+        );
       default:
         return null;
     }
   };
 
-  const showWarning = currentStepKey === STEP_KEYS.CAR && !warningDismissed;
-  const showCancelButton = currentStepKey === STEP_KEYS.CAR;
-
   return (
     <div className="signup-page">
       <div className="signup-outer">
-        {/* Hero banner */}
         <div className="signup-hero">
           <h1 className="signup-hero__title">Sign Up for InsureCo</h1>
           <p className="signup-hero__subtitle">
@@ -208,12 +356,10 @@ export default function SignUpPage() {
           </p>
         </div>
 
-        {/* Progress indicator */}
         <div className="signup-progress">
           <StepBreadcrumb steps={steps} currentIndex={currentStep} />
         </div>
 
-        {/* Warning banner (Car Details step only) */}
         {showWarning && (
           <div className="signup-warning" role="alert">
             <div className="signup-warning__content">
@@ -230,13 +376,11 @@ export default function SignUpPage() {
           </div>
         )}
 
-        {/* Form card */}
         <div className="signup-form-card">
           <div className="signup-form-card__body">
             {renderStepContent()}
           </div>
 
-          {/* Action buttons */}
           <div className="signup-form-card__actions">
             {showCancelButton && (
               <Button
@@ -279,7 +423,7 @@ export default function SignUpPage() {
 }
 
 // ─── Step: Personal Information ────────────────────────────────────────────────
-function PersonalInfoStep({ formData, updateField }) {
+function PersonalInfoStep({ formData, updateField, errors }) {
   return (
     <div className="signup-step">
       <div className="signup-step__header">
@@ -297,6 +441,8 @@ function PersonalInfoStep({ formData, updateField }) {
           value={formData.firstName}
           onChange={(e) => updateField('firstName', e.target.value)}
           size="lg"
+          invalid={!!errors.firstName}
+          invalidText={errors.firstName}
         />
         <TextInput
           id="lastName"
@@ -305,6 +451,8 @@ function PersonalInfoStep({ formData, updateField }) {
           value={formData.lastName}
           onChange={(e) => updateField('lastName', e.target.value)}
           size="lg"
+          invalid={!!errors.lastName}
+          invalidText={errors.lastName}
         />
         <TextInput
           id="email"
@@ -314,6 +462,8 @@ function PersonalInfoStep({ formData, updateField }) {
           value={formData.email}
           onChange={(e) => updateField('email', e.target.value)}
           size="lg"
+          invalid={!!errors.email}
+          invalidText={errors.email}
         />
         <TextInput
           id="phone"
@@ -323,6 +473,8 @@ function PersonalInfoStep({ formData, updateField }) {
           value={formData.phone}
           onChange={(e) => updateField('phone', e.target.value)}
           size="lg"
+          invalid={!!errors.phone}
+          invalidText={errors.phone}
         />
         <TextInput
           id="altPhone"
@@ -332,34 +484,44 @@ function PersonalInfoStep({ formData, updateField }) {
           value={formData.altPhone}
           onChange={(e) => updateField('altPhone', e.target.value)}
           size="lg"
+          invalid={!!errors.altPhone}
+          invalidText={errors.altPhone}
         />
-        <DatePicker
-          datePickerType="single"
-          dateFormat="m/d/Y"
-          onChange={(dates) => {
-            if (dates[0]) {
-              const d = dates[0];
-              updateField(
-                'dateOfBirth',
-                `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`
-              );
-            }
-          }}
-        >
-          <DatePickerInput
-            id="dateOfBirth"
-            labelText="Date of Birth"
-            placeholder="mm/dd/yyyy"
-            size="lg"
-          />
-        </DatePicker>
+
+        {/* Date of Birth with error handling */}
+        <div className={`signup-date-wrapper ${errors.dateOfBirth ? 'signup-date-wrapper--invalid' : ''}`}>
+          <DatePicker
+            datePickerType="single"
+            dateFormat="m/d/Y"
+            onChange={(dates) => {
+              if (dates[0]) {
+                const d = dates[0];
+                updateField(
+                  'dateOfBirth',
+                  `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`
+                );
+              } else {
+                updateField('dateOfBirth', '');
+              }
+            }}
+          >
+            <DatePickerInput
+              id="dateOfBirth"
+              labelText="Date of Birth"
+              placeholder="mm/dd/yyyy"
+              size="lg"
+              invalid={!!errors.dateOfBirth}
+              invalidText={errors.dateOfBirth}
+            />
+          </DatePicker>
+        </div>
       </div>
     </div>
   );
 }
 
 // ─── Step: Insurance Type ───────────────────────────────────────────────────────
-function InsuranceTypeStep({ insuranceType, onSelect }) {
+function InsuranceTypeStep({ insuranceType, onSelect, error }) {
   const options = [
     {
       key: 'car',
@@ -390,13 +552,18 @@ function InsuranceTypeStep({ insuranceType, onSelect }) {
         Which insurance coverage are you looking for
       </p>
 
-      <div className="signup-insurance-tiles">
+      <div
+        className={`signup-insurance-tiles ${error ? 'signup-insurance-tiles--invalid' : ''}`}
+        role="group"
+        aria-label="Select insurance coverage type"
+      >
         {options.map((opt) => (
           <button
             key={opt.key}
             className={`signup-insurance-tile ${insuranceType === opt.key ? 'signup-insurance-tile--selected' : ''}`}
             onClick={() => onSelect(opt.key)}
             aria-pressed={insuranceType === opt.key}
+            type="button"
           >
             <div className="signup-insurance-tile__icons">
               {opt.icons}
@@ -408,12 +575,21 @@ function InsuranceTypeStep({ insuranceType, onSelect }) {
           </button>
         ))}
       </div>
+
+      {error && (
+        <p className="signup-coverage-error" role="alert">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="signup-coverage-error__icon">
+            <path d="M8 1C4.1 1 1 4.1 1 8s3.1 7 7 7 7-3.1 7-7-3.1-7-7-7zm-.5 3h1v5h-1V4zm.5 8c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z" fill="currentColor" />
+          </svg>
+          {error}
+        </p>
+      )}
     </div>
   );
 }
 
 // ─── Step: Car Details ──────────────────────────────────────────────────────────
-function CarDetailsStep({ formData, updateField }) {
+function CarDetailsStep({ formData, updateField, errors }) {
   return (
     <div className="signup-step">
       <div className="signup-step__header">
@@ -429,6 +605,8 @@ function CarDetailsStep({ formData, updateField }) {
           value={formData.make}
           onChange={(e) => updateField('make', e.target.value)}
           size="lg"
+          invalid={!!errors.make}
+          invalidText={errors.make}
         />
         <TextInput
           id="carModel"
@@ -437,6 +615,8 @@ function CarDetailsStep({ formData, updateField }) {
           value={formData.model}
           onChange={(e) => updateField('model', e.target.value)}
           size="lg"
+          invalid={!!errors.model}
+          invalidText={errors.model}
         />
         <Select
           id="carYear"
@@ -444,6 +624,8 @@ function CarDetailsStep({ formData, updateField }) {
           value={formData.year}
           onChange={(e) => updateField('year', e.target.value)}
           size="lg"
+          invalid={!!errors.year}
+          invalidText={errors.year}
         >
           <SelectItem value="" text="" />
           {CAR_YEARS.map((yr) => (
@@ -477,6 +659,8 @@ function CarDetailsStep({ formData, updateField }) {
           onChange={(e) => updateField('vin', e.target.value)}
           size="lg"
           maxLength={17}
+          invalid={!!errors.vin}
+          invalidText={errors.vin}
         />
       </div>
     </div>
@@ -484,7 +668,7 @@ function CarDetailsStep({ formData, updateField }) {
 }
 
 // ─── Step: Property Details ─────────────────────────────────────────────────────
-function PropertyDetailsStep({ formData, updateField }) {
+function PropertyDetailsStep({ formData, updateField, errors }) {
   return (
     <div className="signup-step">
       <div className="signup-step__header">
@@ -499,6 +683,8 @@ function PropertyDetailsStep({ formData, updateField }) {
           value={formData.homeType}
           onChange={(e) => updateField('homeType', e.target.value)}
           size="lg"
+          invalid={!!errors.homeType}
+          invalidText={errors.homeType}
         >
           <SelectItem value="" text="" />
           {HOME_TYPES.map((type) => (
@@ -511,6 +697,8 @@ function PropertyDetailsStep({ formData, updateField }) {
           value={formData.yearBuilt}
           onChange={(e) => updateField('yearBuilt', e.target.value)}
           size="lg"
+          invalid={!!errors.yearBuilt}
+          invalidText={errors.yearBuilt}
         >
           <SelectItem value="" text="" />
           {HOME_YEARS.map((yr) => (
@@ -543,7 +731,7 @@ function PropertyDetailsStep({ formData, updateField }) {
 }
 
 // ─── Step: Address ──────────────────────────────────────────────────────────────
-function AddressStep({ formData, updateField }) {
+function AddressStep({ formData, updateField, errors }) {
   return (
     <div className="signup-step">
       <div className="signup-step__header">
@@ -559,6 +747,8 @@ function AddressStep({ formData, updateField }) {
           value={formData.streetAddress}
           onChange={(e) => updateField('streetAddress', e.target.value)}
           size="lg"
+          invalid={!!errors.streetAddress}
+          invalidText={errors.streetAddress}
         />
         <TextInput
           id="city"
@@ -567,6 +757,8 @@ function AddressStep({ formData, updateField }) {
           value={formData.city}
           onChange={(e) => updateField('city', e.target.value)}
           size="lg"
+          invalid={!!errors.city}
+          invalidText={errors.city}
         />
         <Select
           id="state"
@@ -574,6 +766,8 @@ function AddressStep({ formData, updateField }) {
           value={formData.state}
           onChange={(e) => updateField('state', e.target.value)}
           size="lg"
+          invalid={!!errors.state}
+          invalidText={errors.state}
         >
           <SelectItem value="" text="" />
           {US_STATES.map((s) => (
@@ -588,6 +782,8 @@ function AddressStep({ formData, updateField }) {
           onChange={(e) => updateField('zip', e.target.value)}
           size="lg"
           maxLength={10}
+          invalid={!!errors.zip}
+          invalidText={errors.zip}
         />
       </div>
     </div>

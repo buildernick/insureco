@@ -317,6 +317,35 @@
 }
 
 // ──────────────────────────────────────────────────────────────
+// Coverage selection error state
+// ──────────────────────────────────────────────────────────────
+.signup-insurance-tiles--invalid {
+  .signup-insurance-tile {
+    border-color: var(--color-error, #da1e28);
+  }
+}
+
+.signup-coverage-error {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-02);
+  color: var(--text-error, #da1e28);
+  font-size: 0.75rem;
+  line-height: 1.333;
+  margin-top: var(--spacing-02);
+}
+
+.signup-coverage-error__icon {
+  flex-shrink: 0;
+  fill: var(--text-error, #da1e28);
+}
+
+// Date picker error state wrapper
+.signup-date-wrapper {
+  // Pass-through; error is handled by DatePickerInput's invalid prop
+}
+
+// ──────────────────────────────────────────────────────────────
 // Responsive adjustments
 // ──────────────────────────────────────────────────────────────
 @media (max-width: 480px) {
