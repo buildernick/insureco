@@ -327,29 +327,35 @@ export default function NetworkDashboard() {
               <Table {...getTableProps()} size="md">
                 <TableHead>
                   <TableRow>
-                    {headers.map((header) => (
-                      <TableHeader key={header.key} {...getHeaderProps({ header })}>
-                        {header.header}
-                      </TableHeader>
-                    ))}
+                    {headers.map((header) => {
+                      const { key, ...headerProps } = getHeaderProps({ header });
+                      return (
+                        <TableHeader key={key} {...headerProps}>
+                          {header.header}
+                        </TableHeader>
+                      );
+                    })}
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row) => (
-                    <TableRow key={row.id} {...getRowProps({ row })}>
-                      {row.cells.map((cell) => (
-                        <TableCell key={cell.id}>
-                          {cell.info.header === 'status' ? (
-                            <Tag type={cell.value === 'Active' ? 'green' : 'red'} size="sm">
-                              {cell.value}
-                            </Tag>
-                          ) : (
-                            cell.value
-                          )}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
+                  {rows.map((row) => {
+                    const { key, ...rowProps } = getRowProps({ row });
+                    return (
+                      <TableRow key={key} {...rowProps}>
+                        {row.cells.map((cell) => (
+                          <TableCell key={cell.id}>
+                            {cell.info.header === 'status' ? (
+                              <Tag type={cell.value === 'Active' ? 'green' : 'red'} size="sm">
+                                {cell.value}
+                              </Tag>
+                            ) : (
+                              cell.value
+                            )}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
               <Pagination
@@ -361,7 +367,6 @@ export default function NetworkDashboard() {
                   setPage(p);
                   setPageSize(ps);
                 }}
-                itemsCountInPage={displayedRows.length}
               />
             </TableContainer>
           )}
