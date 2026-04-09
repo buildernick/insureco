@@ -21,6 +21,7 @@ import {
   ProgressStep,
   DatePicker,
   DatePickerInput,
+  InlineNotification,
 } from '@carbon/react';
 import { ArrowRight, ArrowLeft, Checkmark, Car, Home as HomeIcon } from '@carbon/icons-react';
 import './SignUpPage.scss';
@@ -34,6 +35,7 @@ export default function SignUpPage() {
     lastName: '',
     email: '',
     phone: '',
+    phoneAlt: '',
     dateOfBirth: '',
     
     // Step 2: Address
@@ -49,6 +51,8 @@ export default function SignUpPage() {
     carMake: '',
     carModel: '',
     carYear: '',
+    carMileage: 1000,
+    carMilesPerYear: 1000,
     carVin: '',
     
     // Step 5: Home Details
@@ -165,7 +169,7 @@ export default function SignUpPage() {
           <Stack gap={6}>
             <Heading className="signup-step-heading">Personal Information</Heading>
             <p className="signup-step-description">
-              Your basic info
+              Let's start with some basic information about you.
             </p>
             <TextInput
               id="firstName"
@@ -200,6 +204,14 @@ export default function SignUpPage() {
               value={formData.phone}
               onChange={(e) => updateFormData('phone', e.target.value)}
               required
+            />
+            <TextInput
+              id="phoneAlt"
+              labelText="Phone Number"
+              type="tel"
+              placeholder="(555) 123-4567"
+              value={formData.phoneAlt}
+              onChange={(e) => updateFormData('phoneAlt', e.target.value)}
             />
             <DatePicker
               datePickerType="single"
@@ -333,6 +345,14 @@ export default function SignUpPage() {
       case 'car':
         return (
           <Stack gap={6}>
+            <InlineNotification
+              kind="warning"
+              lowContrast
+              title=""
+              subtitle="This is a warning message"
+              onClose={() => {}}
+              hideCloseButton={false}
+            />
             <Heading className="signup-step-heading">Car Details</Heading>
             <p className="signup-step-description">
               Tell us about your car
@@ -365,6 +385,24 @@ export default function SignUpPage() {
                 <SelectItem key={year} value={year.toString()} text={year.toString()} />
               ))}
             </Select>
+            <NumberInput
+              id="carMileage"
+              label="Mileage"
+              min={0}
+              max={999999}
+              step={1000}
+              value={formData.carMileage}
+              onChange={(e, { value }) => updateFormData('carMileage', value ?? 0)}
+            />
+            <NumberInput
+              id="carMilesPerYear"
+              label="Miles driven per year"
+              min={0}
+              max={999999}
+              step={1000}
+              value={formData.carMilesPerYear}
+              onChange={(e, { value }) => updateFormData('carMilesPerYear', value ?? 0)}
+            />
             <TextInput
               id="carVin"
               labelText="VIN (optional)"
@@ -379,7 +417,7 @@ export default function SignUpPage() {
       case 'home':
         return (
           <Stack gap={6}>
-            <Heading className="signup-step-heading">Home Details</Heading>
+            <Heading className="signup-step-heading">Property Details</Heading>
             <p className="signup-step-description">
               Tell us about your home
             </p>
@@ -634,6 +672,17 @@ export default function SignUpPage() {
           </Stack>
 
           <Stack gap={5} orientation="horizontal" className="signup-actions">
+            {currentStepData?.key === 'car' && (
+              <Button
+                kind="tertiary"
+                onClick={() => navigate('/')}
+                renderIcon={ArrowLeft}
+                iconDescription="Cancel"
+              >
+                Cancel
+              </Button>
+            )}
+
             {currentStep > 0 && (
               <Button
                 kind="secondary"
