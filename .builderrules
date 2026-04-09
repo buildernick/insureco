@@ -4,7 +4,9 @@
 
 - When importing from Figma especially try to find an equivalent component for the figma designs. If there isn't a suitable component notify the user in the summary after you've built that you made something custom.
 
-- When changing colors ALWAYS check for suitable variants of components.
+- When changing colors ALWAYS check for suitable variants of components. Carbon components often have built-in `kind` or variant props (e.g. `kind="warning"`, `kind="error"`, `kind="success"`) that already apply the correct color — use those instead of overriding styles.
+
+- NEVER override a Carbon component's color via inline styles or CSS if a built-in `kind`/variant already produces the desired color. For example, `<InlineNotification kind="warning" lowContrast />` already renders with a yellow background — no CSS override needed.
 
 
 ## Unit Tests ##
