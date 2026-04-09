@@ -5,6 +5,7 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   InlineNotification,
+  Tag,
   DataTable,
   TableContainer,
   Table,
@@ -322,11 +323,7 @@ export default function NetworkDashboard() {
 
         <DataTable rows={displayedRows} headers={tableHeaders} isSortable>
           {({ rows, headers, getHeaderProps, getRowProps, getTableProps, getTableContainerProps }) => (
-            <TableContainer
-              title="Policy Overview"
-              description={`${totalItems} policies found`}
-              {...getTableContainerProps()}
-            >
+            <TableContainer {...getTableContainerProps()}>
               <Table {...getTableProps()} size="md">
                 <TableHead>
                   <TableRow>
@@ -343,9 +340,9 @@ export default function NetworkDashboard() {
                       {row.cells.map((cell) => (
                         <TableCell key={cell.id}>
                           {cell.info.header === 'status' ? (
-                            <span className={`network-dashboard__status-badge network-dashboard__status-badge--${cell.value.toLowerCase()}`}>
+                            <Tag type={cell.value === 'Active' ? 'green' : 'red'} size="sm">
                               {cell.value}
-                            </span>
+                            </Tag>
                           ) : (
                             cell.value
                           )}

@@ -259,25 +259,6 @@
   line-height: 1.375rem;
 }
 
-// ─── Status badge ────────────────────────────────────────────────────────────
-
-.network-dashboard__status-badge {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 600;
-
-  &--active {
-    background: #defbe6;
-    color: #198038;
-  }
-
-  &--overdue {
-    background: #fff1f1;
-    color: #a2191f;
-  }
-}
 
 // ─── Responsive tweaks ───────────────────────────────────────────────────────
 
