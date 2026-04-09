@@ -7,13 +7,15 @@ import {
   DatePicker,
   DatePickerInput,
   Button,
+  InlineLoading,
 } from '@carbon/react';
 import {
   ArrowLeft,
   ArrowRight,
-  Car,
-  Home,
   WarningAlt,
+  CheckmarkFilled,
+  Home,
+  Car,
 } from '@carbon/icons-react';
 import StepBreadcrumb from '../components/StepBreadcrumb';
 import './SignUpPage.scss';
@@ -61,9 +63,22 @@ function getBreadcrumbIndex(step, insuranceType) {
   return 0;
 }
 
+// Simulated API submission — replace with real endpoint
+async function submitSignUp(payload) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      // Simulate ~95% success rate so error path can be tested by refreshing
+      Math.random() < 0.95 ? resolve({ ok: true }) : reject(new Error('Server error'));
+    }, 1800);
+  });
+}
+
 export default function SignUpPage() {
   const [currentStep, setCurrentStep] = useState(STEP_COVERAGE);
   const [warningVisible, setWarningVisible] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
 
   // Coverage
   const [insuranceType, setInsuranceType] = useState(null);
@@ -114,11 +129,28 @@ export default function SignUpPage() {
       if (insuranceType === 'both') {
         setCurrentStep(STEP_HOME);
       } else {
-        // Completed
-        alert('Sign up complete! (Demo)');
+        handleSubmit();
       }
     } else if (currentStep === STEP_HOME) {
-      alert('Sign up complete! (Demo)');
+      handleSubmit();
+    }
+  }
+
+  async function handleSubmit() {
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      await submitSignUp({
+        insuranceType, firstName, lastName, email, phone,
+        streetAddress, city, state, zip,
+        carMake, carModel, carYear, carMileage, carVin,
+        homeType, homeYearBuilt, homeSquareFeet, homeValue,
+      });
+      setConfirmed(true);
+    } catch (err) {
+      setSubmitError('Something went wrong. Please try again.');
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -136,6 +168,69 @@ export default function SignUpPage() {
         setCurrentStep(STEP_ADDRESS);
       }
     }
+  }
+
+  // ── Confirmation Page ──────────────────────────────────────────────
+  if (confirmed) {
+    const coverageLabel = {
+      car: 'Car Insurance',
+      home: 'Home Insurance',
+      both: 'Home & Car Bundle',
+    }[insuranceType] || 'Insurance';
+
+    return (
+      <div className="signup-page">
+        <div className="signup-page__wrapper">
+          <div className="signup-page__header-area">
+            <div className="signup-page__hero">
+              <h1 className="signup-page__hero-title">Sign Up for InsureCo</h1>
+              <p className="signup-page__hero-subtitle">
+                Get started with your insurance coverage in just a few steps
+              </p>
+            </div>
+          </div>
+
+          <div className="signup-page__confirmation">
+            <div className="signup-page__confirmation-icon">
+              <CheckmarkFilled size={64} />
+            </div>
+            <h2 className="signup-page__confirmation-title">You're all set, {firstName}!</h2>
+            <p className="signup-page__confirmation-message">
+              Your <strong>{coverageLabel}</strong> application has been submitted successfully.
+              Our team will review your details and reach out to <strong>{email}</strong> within
+              1–2 business days.
+            </p>
+
+            <div className="signup-page__confirmation-summary">
+              <div className="signup-page__summary-item">
+                <span className="signup-page__summary-label">Coverage</span>
+                <span className="signup-page__summary-value">{coverageLabel}</span>
+              </div>
+              <div className="signup-page__summary-item">
+                <span className="signup-page__summary-label">Name</span>
+                <span className="signup-page__summary-value">{firstName} {lastName}</span>
+              </div>
+              <div className="signup-page__summary-item">
+                <span className="signup-page__summary-label">Email</span>
+                <span className="signup-page__summary-value">{email}</span>
+              </div>
+              {streetAddress && (
+                <div className="signup-page__summary-item">
+                  <span className="signup-page__summary-label">Address</span>
+                  <span className="signup-page__summary-value">{streetAddress}, {city}{state ? `, ${state}` : ''} {zip}</span>
+                </div>
+              )}
+            </div>
+
+            <div className="signup-page__confirmation-actions">
+              <Button kind="primary" onClick={() => window.location.href = '/'}>
+                Go to Dashboard
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -484,12 +579,19 @@ export default function SignUpPage() {
                 />
               </div>
 
+              {submitError && (
+                <div className="signup-page__submit-error">
+                  <WarningAlt size={16} />
+                  <span>{submitError}</span>
+                </div>
+              )}
               <div className="signup-page__form-footer">
                 <div className="signup-page__footer-actions">
                   <Button
                     kind="tertiary"
                     renderIcon={ArrowLeft}
                     onClick={() => setCurrentStep(STEP_COVERAGE)}
+                    disabled={submitting}
                   >
                     Cancel
                   </Button>
@@ -497,16 +599,21 @@ export default function SignUpPage() {
                     kind="secondary"
                     renderIcon={ArrowLeft}
                     onClick={handleBack}
+                    disabled={submitting}
                   >
                     Back
                   </Button>
-                  <Button
-                    kind="primary"
-                    renderIcon={ArrowRight}
-                    onClick={handleNext}
-                  >
-                    Next
-                  </Button>
+                  {submitting ? (
+                    <InlineLoading description="Submitting..." status="active" />
+                  ) : (
+                    <Button
+                      kind="primary"
+                      renderIcon={ArrowRight}
+                      onClick={handleNext}
+                    >
+                      {insuranceType === 'both' ? 'Next' : 'Submit'}
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
@@ -569,22 +676,33 @@ export default function SignUpPage() {
                 />
               </div>
 
+              {submitError && (
+                <div className="signup-page__submit-error">
+                  <WarningAlt size={16} />
+                  <span>{submitError}</span>
+                </div>
+              )}
               <div className="signup-page__form-footer">
                 <div className="signup-page__footer-actions">
                   <Button
                     kind="secondary"
                     renderIcon={ArrowLeft}
                     onClick={handleBack}
+                    disabled={submitting}
                   >
                     Back
                   </Button>
-                  <Button
-                    kind="primary"
-                    renderIcon={ArrowRight}
-                    onClick={handleNext}
-                  >
-                    Next
-                  </Button>
+                  {submitting ? (
+                    <InlineLoading description="Submitting..." status="active" />
+                  ) : (
+                    <Button
+                      kind="primary"
+                      renderIcon={ArrowRight}
+                      onClick={handleNext}
+                    >
+                      Submit
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>

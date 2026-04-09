@@ -280,6 +280,122 @@
 }
 
 // ============================================================
+// Submit Error
+// ============================================================
+.signup-page__submit-error {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-03);
+  padding: var(--spacing-04) var(--spacing-05);
+  background: rgba(218, 30, 40, 0.08);
+  border: 1px solid rgba(218, 30, 40, 0.3);
+  border-radius: 4px;
+  color: var(--text-error);
+  font-size: 14px;
+
+  svg {
+    flex-shrink: 0;
+    fill: var(--text-error);
+  }
+}
+
+// ============================================================
+// Confirmation Page
+// ============================================================
+.signup-page__confirmation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--spacing-09) var(--spacing-07);
+  background: var(--background-secondary);
+  border-top: 5px solid #24a148;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.signup-page__confirmation-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: rgba(36, 161, 72, 0.12);
+  margin-bottom: var(--spacing-06);
+
+  svg {
+    fill: #24a148;
+  }
+}
+
+.signup-page__confirmation-title {
+  color: var(--text-primary);
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0 0 var(--spacing-05);
+}
+
+.signup-page__confirmation-message {
+  color: var(--text-secondary);
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 520px;
+  margin: 0 0 var(--spacing-08);
+
+  strong {
+    color: var(--text-primary);
+  }
+}
+
+.signup-page__confirmation-summary {
+  width: 100%;
+  max-width: 480px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: var(--spacing-08);
+}
+
+.signup-page__summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-04) var(--spacing-05);
+  gap: var(--spacing-05);
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  &:nth-child(even) {
+    background: var(--background-primary);
+  }
+}
+
+.signup-page__summary-label {
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.signup-page__summary-value {
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 400;
+  text-align: right;
+}
+
+.signup-page__confirmation-actions {
+  display: flex;
+  gap: var(--spacing-04);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+// ============================================================
 // Form Footer (Navigation Buttons)
 // ============================================================
 .signup-page__form-footer {
