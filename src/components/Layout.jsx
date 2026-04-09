@@ -31,8 +31,8 @@ export default function Layout({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Remove padding for landing page
-  const isLandingPage = location.pathname === '/';
+  // Remove padding for landing pages
+  const isLandingPage = location.pathname === '/' || location.pathname === '/pet-insurance';
 
   return (
     <HeaderContainer
@@ -88,6 +88,9 @@ export default function Layout({ children }) {
                   </HeaderMenuItem>
                 </HeaderMenu>
 
+                <HeaderMenuItem onClick={() => navigate("/pet-insurance")}>
+                  Pet Insurance
+                </HeaderMenuItem>
                 <HeaderMenuItem onClick={() => navigate("/login")}>
                   Login
                 </HeaderMenuItem>
@@ -174,6 +177,9 @@ export default function Layout({ children }) {
                       </SideNavMenuItem>
                     </SideNavMenu>
 
+                    <HeaderMenuItem onClick={() => handleNavigateAndClose("/pet-insurance")}>
+                      Pet Insurance
+                    </HeaderMenuItem>
                     <HeaderMenuItem onClick={() => handleNavigateAndClose("/login")}>
                       Login
                     </HeaderMenuItem>
