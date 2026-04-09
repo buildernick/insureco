@@ -1,0 +1,316 @@
+@use '../styles/tokens' as *;
+
+.signup-page {
+  min-height: 100%;
+  padding: var(--spacing-05);
+  background: var(--background-primary);
+
+  @media (min-width: 672px) {
+    padding: var(--spacing-07);
+  }
+}
+
+.signup-page__wrapper {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-05);
+}
+
+// ============================================================
+// Header area (hero + progress)
+// ============================================================
+.signup-page__header-area {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-05);
+  padding: var(--spacing-05);
+  border-radius: 4px;
+  background: linear-gradient(135deg, #f4f4f4 70.71%, #fff 0%);
+}
+
+.signup-page__hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-03);
+  padding: var(--spacing-07) var(--spacing-05);
+  border-radius: 8px;
+  background: linear-gradient(135deg, #a2191f 70.71%, #da1e28 0%);
+  box-shadow: 0 4px 12px 0 rgba(218, 30, 40, 0.15);
+  text-align: center;
+}
+
+.signup-page__hero-title {
+  color: #fff;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.signup-page__hero-subtitle {
+  color: rgba(255, 255, 255, 0.95);
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 0;
+}
+
+// ============================================================
+// Progress bar wrapper
+// ============================================================
+.signup-page__progress {
+  padding: var(--spacing-05);
+  border-radius: 4px;
+  border-top: 1px solid #da1e28;
+  background: var(--background-secondary);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+// ============================================================
+// Warning Banner
+// ============================================================
+.signup-page__warning-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-05);
+  padding: 13px var(--spacing-07);
+  border: 1px solid #8d6800;
+  background: #fff4b4;
+  border-radius: 2px;
+}
+
+.signup-page__warning-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-03);
+}
+
+.signup-page__warning-icon {
+  flex-shrink: 0;
+  color: #946c00;
+}
+
+.signup-page__warning-text {
+  color: #946c00;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.57;
+}
+
+.signup-page__warning-dismiss {
+  color: #946c00;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.57;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  white-space: nowrap;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// ============================================================
+// Form Card
+// ============================================================
+.signup-page__form-card {
+  border-top: 5px solid #fb0c0c;
+  background: var(--background-secondary);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.signup-page__step {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-06);
+  gap: var(--spacing-06);
+
+  @media (min-width: 672px) {
+    padding: var(--spacing-07);
+  }
+}
+
+// ============================================================
+// Section Header
+// ============================================================
+.signup-page__section-header {
+  padding-bottom: var(--spacing-04);
+  border-bottom: 1px solid #fc0404;
+}
+
+.signup-page__section-title {
+  color: var(--text-primary);
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.signup-page__section-description {
+  color: var(--text-primary);
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 0;
+}
+
+// ============================================================
+// Form Fields
+// ============================================================
+.signup-page__fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-06);
+
+  // Carbon text input overrides for this context
+  .cds--text-input-wrapper,
+  .cds--select,
+  .cds--number,
+  .cds--date-picker {
+    width: 100%;
+  }
+
+  .cds--text-input,
+  .cds--select-input,
+  .cds--number__input-wrapper input {
+    background-color: var(--field-background) !important;
+    color: var(--field-text) !important;
+  }
+
+  .cds--label {
+    color: var(--text-primary) !important;
+  }
+}
+
+// ============================================================
+// Coverage Tiles (Insurance Type Selection)
+// ============================================================
+.signup-page__coverage-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-04);
+}
+
+.signup-page__coverage-tile {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-05);
+  padding: var(--spacing-05);
+  background: var(--background-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 2px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    border-color: var(--border-strong);
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  &--selected {
+    border-color: var(--interactive-primary);
+    border-width: 2px;
+    box-shadow: 0 0 0 1px var(--interactive-primary);
+
+    .signup-page__coverage-icons svg {
+      color: var(--interactive-primary);
+    }
+
+    .signup-page__coverage-name {
+      color: var(--interactive-primary);
+    }
+  }
+}
+
+.signup-page__coverage-icons {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: var(--text-primary);
+
+  svg {
+    color: inherit;
+    transition: color 0.15s ease;
+  }
+
+  &--dual {
+    gap: var(--spacing-02);
+  }
+}
+
+.signup-page__coverage-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-02);
+  flex: 1;
+}
+
+.signup-page__coverage-name {
+  color: var(--text-primary);
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.2;
+  transition: color 0.15s ease;
+}
+
+.signup-page__coverage-desc {
+  color: var(--text-secondary);
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.43;
+}
+
+// ============================================================
+// Form Footer (Navigation Buttons)
+// ============================================================
+.signup-page__form-footer {
+  padding-top: var(--spacing-06);
+  border-top: 1px solid #da1e28;
+}
+
+.signup-page__footer-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-04);
+  flex-wrap: wrap;
+
+  &--right {
+    justify-content: flex-end;
+  }
+
+  // Push the last button (Next) to the right on wider screens
+  @media (min-width: 480px) {
+    &:not(.signup-page__footer-actions--right) {
+      justify-content: flex-end;
+    }
+  }
+
+  @media (max-width: 479px) {
+    flex-direction: column;
+    align-items: stretch;
+
+    .cds--btn {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+}
