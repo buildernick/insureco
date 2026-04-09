@@ -4,6 +4,7 @@ import {
   Search,
   Breadcrumb,
   BreadcrumbItem,
+  InlineNotification,
   DataTable,
   TableContainer,
   Table,
@@ -245,23 +246,15 @@ export default function NetworkDashboard() {
 
       {/* ─── Warning Banner ──────────────────────────────────────────────── */}
       {!warningDismissed && (
-        <div className="network-dashboard__alert-banner">
-          <div className="network-dashboard__alert-inner">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="network-dashboard__alert-icon">
-              <g clipPath="url(#clip0)">
-                <path d="M8.125 5.647V8.784M8.125 10.667H8.131M14.4 8c0 3.465-2.81 6.275-6.275 6.275C4.66 14.275 1.85 11.465 1.85 8S4.66 1.725 8.125 1.725 14.4 4.535 14.4 8Z" stroke="#946C00" strokeWidth="1.882" strokeLinecap="round" strokeLinejoin="round"/>
-              </g>
-              <defs><clipPath id="clip0"><rect width="16" height="16" fill="white"/></clipPath></defs>
-            </svg>
-            <span className="network-dashboard__alert-text">This is a warning message</span>
-          </div>
-          <button
-            className="network-dashboard__alert-dismiss"
-            onClick={() => setWarningDismissed(true)}
-          >
-            Dismiss
-          </button>
-        </div>
+        <InlineNotification
+          kind="warning"
+          lowContrast
+          title="Warning:"
+          subtitle="This is a warning message"
+          onCloseButtonClick={() => setWarningDismissed(true)}
+          aria-label="Dismiss warning notification"
+          statusIconDescription="warning"
+        />
       )}
 
       {/* ─── Charts Row ──────────────────────────────────────────────────── */}
