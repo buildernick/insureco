@@ -50,6 +50,8 @@ export default function SignUpPage() {
     carModel: '',
     carYear: '',
     carVin: '',
+    carMileage: '',
+    carMilesPerYear: '',
     
     // Step 5: Home Details
     homeType: '',
@@ -373,6 +375,22 @@ export default function SignUpPage() {
               value={formData.carVin}
               onChange={(e) => updateFormData('carVin', e.target.value)}
             />
+            <TextInput
+              id="carMileage"
+              labelText="Current Mileage"
+              placeholder="e.g. 60,000 miles"
+              helperText="Only estimates are needed right now"
+              value={formData.carMileage}
+              onChange={(e) => updateFormData('carMileage', e.target.value)}
+            />
+            <TextInput
+              id="carMilesPerYear"
+              labelText="Miles Driven Per Year"
+              placeholder="e.g. 12,000 miles"
+              helperText="Only estimates are needed right now"
+              value={formData.carMilesPerYear}
+              onChange={(e) => updateFormData('carMilesPerYear', e.target.value)}
+            />
           </Stack>
         );
 
@@ -553,6 +571,16 @@ export default function SignUpPage() {
                   <div>
                     <strong>Vehicle:</strong> {formData.carYear} {formData.carMake} {formData.carModel}
                   </div>
+                  {formData.carMileage && (
+                    <div>
+                      <strong>Current Mileage:</strong> {formData.carMileage}
+                    </div>
+                  )}
+                  {formData.carMilesPerYear && (
+                    <div>
+                      <strong>Miles Per Year:</strong> {formData.carMilesPerYear}
+                    </div>
+                  )}
                 </div>
               </Tile>
             )}
