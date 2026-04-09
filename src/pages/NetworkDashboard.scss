@@ -1,0 +1,339 @@
+@use '../styles/tokens' as *;
+
+// ─── Dashboard shell ─────────────────────────────────────────────────────────
+
+.network-dashboard {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  @media (min-width: 1024px) {
+    padding: 0 2rem 3rem;
+  }
+}
+
+// ─── Breadcrumb ──────────────────────────────────────────────────────────────
+
+.network-dashboard__breadcrumb-wrapper {
+  padding-top: 1.25rem;
+}
+
+// ─── Page header ─────────────────────────────────────────────────────────────
+
+.network-dashboard__page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.network-dashboard__page-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.network-dashboard__page-title {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 2.5rem;
+  letter-spacing: -0.04px;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.network-dashboard__page-description {
+  font-size: 0.875rem;
+  line-height: 1.375rem;
+  color: var(--text-tertiary);
+  margin: 0;
+}
+
+.network-dashboard__refresh-btn.cds--btn {
+  border-radius: 40px;
+  white-space: nowrap;
+}
+
+// ─── Filter bar ──────────────────────────────────────────────────────────────
+
+.network-dashboard__filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.network-dashboard__search-wrapper {
+  flex: 1;
+  min-width: 200px;
+
+  .cds--search {
+    border: 2px solid var(--border-strong);
+    border-radius: 0.5rem;
+  }
+}
+
+.network-dashboard__pagination-compact {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.network-dashboard__page-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.15s;
+
+  &:hover {
+    background: var(--background-hover);
+  }
+
+  &--active {
+    color: var(--text-primary);
+    font-weight: 700;
+  }
+
+  &--arrow {
+    font-size: 1.1rem;
+  }
+}
+
+// ─── Warning alert banner ────────────────────────────────────────────────────
+
+.network-dashboard__alert-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8125rem 2.125rem 0.8125rem 2.0625rem;
+  border: 1px solid #c09900;
+  background: #fff4b4;
+  border-radius: 2px;
+  gap: 1rem;
+}
+
+.network-dashboard__alert-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.network-dashboard__alert-icon {
+  flex-shrink: 0;
+}
+
+.network-dashboard__alert-text {
+  font-size: 0.875rem;
+  line-height: 1.375rem;
+  color: #946c00;
+}
+
+.network-dashboard__alert-dismiss {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.375rem;
+  color: #946c00;
+  white-space: nowrap;
+  padding: 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// ─── Charts row ──────────────────────────────────────────────────────────────
+
+.network-dashboard__charts-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.network-dashboard__chart-card {
+  border: 1px solid var(--border-subtle);
+  background: var(--background-primary);
+  border-radius: 4px;
+  overflow: hidden;
+
+  // Override chart internal backgrounds for theme compatibility
+  .cds--chart-holder,
+  .bx--chart-holder {
+    background: transparent !important;
+  }
+
+  svg rect.chart-grid-backdrop,
+  svg .chart-grid-backdrop {
+    fill: transparent !important;
+  }
+}
+
+// ─── Meter / credit usage chart ──────────────────────────────────────────────
+
+.network-dashboard__meter-card {
+  border: 1px solid var(--border-subtle);
+  background: var(--background-primary);
+  border-radius: 4px;
+  padding: 1rem 1.25rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.network-dashboard__meter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.network-dashboard__meter-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.network-dashboard__meter-total {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.network-dashboard__meter-label {
+  font-size: 0.75rem;
+  color: var(--text-primary);
+  letter-spacing: 0.02px;
+  margin: 0;
+}
+
+.network-dashboard__meter-bar {
+  display: flex;
+  height: 16px;
+  border-right: 1px solid var(--border-strong);
+  background: var(--background-secondary);
+  overflow: hidden;
+  border-radius: 2px 0 0 2px;
+}
+
+.network-dashboard__meter-segment {
+  height: 100%;
+  min-width: 4px;
+}
+
+.network-dashboard__meter-remaining {
+  flex: 1;
+}
+
+.network-dashboard__meter-legend {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
+.network-dashboard__legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.network-dashboard__legend-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.network-dashboard__legend-label {
+  font-size: 0.75rem;
+  color: var(--text-primary);
+}
+
+// ─── My Devices section ──────────────────────────────────────────────────────
+
+.network-dashboard__devices-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.network-dashboard__devices-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.network-dashboard__devices-title {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 2.5rem;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.network-dashboard__devices-description {
+  font-size: 0.875rem;
+  color: var(--text-tertiary);
+  margin: 0;
+  line-height: 1.375rem;
+}
+
+// ─── Status badge ────────────────────────────────────────────────────────────
+
+.network-dashboard__status-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  &--online {
+    background: #defbe6;
+    color: #198038;
+  }
+
+  &--offline {
+    background: #fff1f1;
+    color: #a2191f;
+  }
+}
+
+// ─── Responsive tweaks ───────────────────────────────────────────────────────
+
+@media (max-width: 480px) {
+  .network-dashboard__page-title {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  .network-dashboard__devices-title {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  .network-dashboard__page-header,
+  .network-dashboard__devices-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

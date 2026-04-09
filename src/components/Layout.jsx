@@ -91,6 +91,9 @@ export default function Layout({ children }) {
                   </HeaderMenuItem>
                 </HeaderMenu>
 
+                <HeaderMenuItem element={Link} to="/network-dashboard">
+                  Network Dashboard
+                </HeaderMenuItem>
                 <HeaderMenuItem onClick={() => navigate("/login")}>
                   Login
                 </HeaderMenuItem>
@@ -184,6 +187,9 @@ export default function Layout({ children }) {
                       </SideNavMenuItem>
                     </SideNavMenu>
 
+                    <HeaderMenuItem onClick={() => handleNavigateAndClose("/network-dashboard")}>
+                      Network Dashboard
+                    </HeaderMenuItem>
                     <HeaderMenuItem onClick={() => handleNavigateAndClose("/login")}>
                       Login
                     </HeaderMenuItem>
