@@ -9,6 +9,7 @@ import DashboardHome from "./pages/DashboardHome";
 import AboutPage from "./pages/AboutPage";
 import ThemePreviewPage from "./pages/ThemePreviewPage";
 import ProgressIndicatorPreview from "./pages/ProgressIndicatorPreview";
+import PetInsurancePage from "./pages/PetInsurancePage";
 import BusinessComingSoon from "./pages/business/BusinessComingSoon";
 import BusinessDashboard from "./pages/business/BusinessDashboard";
 import PropertiesPage from "./pages/business/PropertiesPage";
@@ -31,6 +32,7 @@ export default function App() {
         <Route path="/signup/confirmation" element={<SignUpConfirmationPage />} />
         <Route path="/dashboard" element={<DashboardHome />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/pet-insurance" element={<PetInsurancePage />} />
         <Route path="/theme-preview" element={<ThemePreviewPage />} />
         <Route path="/progress-preview" element={<ProgressIndicatorPreview />} />
 
