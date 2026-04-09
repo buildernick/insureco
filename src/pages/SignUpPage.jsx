@@ -23,6 +23,7 @@ import {
 } from '@carbon/react';
 import { ArrowRight, ArrowLeft, Checkmark, Car, Home as HomeIcon } from '@carbon/icons-react';
 import './SignUpPage.scss';
+import { formatDateForInput } from '../utils/businessHelpers';
 
 // ─── Validators ────────────────────────────────────────────────────────────────
 const validators = {
@@ -39,12 +40,15 @@ const validators = {
     return '';
   },
   dateOfBirth: (v) => {
-    if (!v) return 'Date of birth is required';
-    const dob = new Date(v);
+    if (!v?.trim()) return 'Date of birth is required';
+    // Parse mm/dd/yyyy string stored by formatDateForInput
+    const [mm, dd, yyyy] = v.split('/');
+    const dob = new Date(Number(yyyy), Number(mm) - 1, Number(dd));
     if (isNaN(dob.getTime())) return 'Please enter a valid date';
-    const ageDiff = Date.now() - dob.getTime();
-    const ageDate = new Date(ageDiff);
-    const age = Math.abs(ageDate.getUTCFullYear() - 1970);
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const monthDiff = today.getMonth() - dob.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) age--;
     if (age < 18) return 'You must be at least 18 years old to apply';
     return '';
   },
@@ -304,10 +308,10 @@ export default function SignUpPage() {
             <DatePicker
               datePickerType="single"
               onChange={(dates) => {
-                const val = dates?.[0] || '';
-                updateFormData('dateOfBirth', val);
+                const formatted = formatDateForInput(dates?.[0] || '');
+                updateFormData('dateOfBirth', formatted);
                 if (touched.dateOfBirth) {
-                  setErrors(prev => ({ ...prev, dateOfBirth: validateField('dateOfBirth', val) }));
+                  setErrors(prev => ({ ...prev, dateOfBirth: validateField('dateOfBirth', formatted) }));
                 }
               }}
             >
@@ -316,7 +320,6 @@ export default function SignUpPage() {
                 labelText="Date of Birth"
                 placeholder="mm/dd/yyyy"
                 value={formData.dateOfBirth}
-                onBlur={() => handleBlur('dateOfBirth')}
                 invalid={fieldInvalid('dateOfBirth')}
                 invalidText={fieldError('dateOfBirth')}
               />
