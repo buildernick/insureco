@@ -8,7 +8,7 @@ export default function AboutPage() {
         <Tile>
           <h2>About This App</h2>
           <img
-            src="https://static.wikia.nocookie.net/meme/images/7/71/BusinessCat2.jpg/revision/latest/scale-to-width-down/800?cb=20110826211824"
+            src="https://cdn.builder.io/api/v1/image/assets%2F4c828a6b97e546bc967a796675ca457e%2F987d6d106c264e85abe2338243829f32?format=webp&width=800&height=1200"
             alt="Business Cat"
             style={{ display: 'block', maxWidth: '100%', marginTop: '1rem', borderRadius: '4px' }}
           />
