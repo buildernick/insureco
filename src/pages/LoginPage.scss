@@ -159,3 +159,70 @@
     font-weight: var(--font-weight-semibold);
   }
 }
+
+// Forgot password modal
+.forgot-password-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-05);
+}
+
+.forgot-password-description {
+  font-size: var(--body-md-size);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.resend-notice {
+  margin-bottom: var(--spacing-02);
+}
+
+// Email sent confirmation
+.email-sent-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-05);
+  text-align: center;
+  padding: var(--spacing-05) 0;
+}
+
+.email-sent-icon {
+  display: flex;
+  justify-content: center;
+}
+
+.email-sent-icon-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: var(--interactive-primary);
+  border-radius: 50%;
+
+  svg {
+    fill: var(--text-on-color);
+  }
+}
+
+.email-sent-description {
+  font-size: var(--body-md-size);
+  color: var(--text-primary);
+  margin: 0;
+
+  strong {
+    font-weight: var(--font-weight-semibold);
+  }
+}
+
+.email-sent-note {
+  font-size: var(--body-sm-size);
+  color: var(--text-secondary);
+  margin: 0;
+
+  a {
+    color: var(--interactive-primary);
+    font-weight: var(--font-weight-semibold);
+  }
+}

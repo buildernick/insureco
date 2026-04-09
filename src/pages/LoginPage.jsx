@@ -11,8 +11,9 @@ import {
   Stack,
   Link,
   Modal,
+  InlineNotification,
 } from '@carbon/react';
-import { Login, ArrowRight } from '@carbon/icons-react';
+import { Login, ArrowRight, Email, Checkmark } from '@carbon/icons-react';
 import './LoginPage.scss';
 
 export default function LoginPage() {
@@ -20,12 +21,55 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
+  const [forgotStep, setForgotStep] = useState('enter-email'); // 'enter-email' | 'email-sent'
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [forgotEmailError, setForgotEmailError] = useState('');
+  const [resentNotice, setResentNotice] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
-    // Mock authentication - no validation, just navigate to dashboard
     navigate('/dashboard');
   };
+
+  const openForgotPassword = (e) => {
+    e.preventDefault();
+    setForgotStep('enter-email');
+    setForgotEmail('');
+    setForgotEmailError('');
+    setResentNotice(false);
+    setForgotPasswordOpen(true);
+  };
+
+  const closeForgotPassword = () => {
+    setForgotPasswordOpen(false);
+    setForgotStep('enter-email');
+    setForgotEmail('');
+    setForgotEmailError('');
+    setResentNotice(false);
+  };
+
+  const handleSendResetLink = () => {
+    if (!forgotEmail.trim()) {
+      setForgotEmailError('Please enter your email address.');
+      return;
+    }
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(forgotEmail)) {
+      setForgotEmailError('Please enter a valid email address.');
+      return;
+    }
+    setForgotEmailError('');
+    setResentNotice(false);
+    setForgotStep('email-sent');
+  };
+
+  const handleResend = () => {
+    setForgotStep('enter-email');
+    setForgotEmailError('');
+    setResentNotice(true);
+  };
+
+  const isEnterEmailStep = forgotStep === 'enter-email';
 
   return (
     <Grid className="login-page">
@@ -74,7 +118,7 @@ export default function LoginPage() {
                     <Link
                       href="#"
                       className="forgot-password-link"
-                      onClick={(e) => { e.preventDefault(); setForgotPasswordOpen(true); }}
+                      onClick={openForgotPassword}
                     >
                       Forgot password?
                     </Link>
@@ -116,11 +160,63 @@ export default function LoginPage() {
 
       <Modal
         open={forgotPasswordOpen}
-        onRequestClose={() => setForgotPasswordOpen(false)}
-        modalHeading="Check your email"
-        passiveModal
+        onRequestClose={closeForgotPassword}
+        modalHeading={isEnterEmailStep ? 'Reset your password' : 'Check your email'}
+        primaryButtonText={isEnterEmailStep ? 'Send Reset Link' : undefined}
+        secondaryButtonText={isEnterEmailStep ? 'Cancel' : undefined}
+        onRequestSubmit={isEnterEmailStep ? handleSendResetLink : undefined}
+        onSecondarySubmit={isEnterEmailStep ? closeForgotPassword : undefined}
+        passiveModal={!isEnterEmailStep}
+        size="sm"
       >
-        <p>We've sent a magic link to your email address. Click the link in the email to sign in — no password needed.</p>
+        {isEnterEmailStep ? (
+          <div className="forgot-password-body">
+            {resentNotice && (
+              <InlineNotification
+                kind="info"
+                title="Confirm your email"
+                subtitle="Please confirm the address below before we resend the link."
+                lowContrast
+                hideCloseButton
+                className="resend-notice"
+              />
+            )}
+            <p className="forgot-password-description">
+              Enter the email address associated with your account and we'll send you a reset link.
+            </p>
+            <TextInput
+              id="forgot-email"
+              labelText="Email Address"
+              placeholder="you@example.com"
+              value={forgotEmail}
+              onChange={(e) => {
+                setForgotEmail(e.target.value);
+                if (forgotEmailError) setForgotEmailError('');
+              }}
+              type="email"
+              invalid={!!forgotEmailError}
+              invalidText={forgotEmailError}
+              autoFocus
+            />
+          </div>
+        ) : (
+          <div className="email-sent-body">
+            <div className="email-sent-icon">
+              <div className="email-sent-icon-circle">
+                <Email size={24} />
+              </div>
+            </div>
+            <p className="email-sent-description">
+              We've sent a reset link to <strong>{forgotEmail}</strong>. Check your inbox and click the link to reset your password.
+            </p>
+            <p className="email-sent-note">
+              Didn't receive it?{' '}
+              <Link href="#" onClick={(e) => { e.preventDefault(); handleResend(); }}>
+                Resend the link
+              </Link>
+            </p>
+          </div>
+        )}
       </Modal>
     </Grid>
   );
