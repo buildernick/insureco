@@ -346,6 +346,291 @@
 }
 
 // ──────────────────────────────────────────────────────────────
+// Two-column content area (form + estimate panel)
+// ──────────────────────────────────────────────────────────────
+.signup-content-area {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-05);
+
+  @media (min-width: 960px) {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--spacing-06);
+  }
+
+  // Form card takes all remaining width in two-column layout
+  .signup-form-card {
+    @media (min-width: 960px) {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+}
+
+// Expand outer container to accommodate the estimate panel sidebar
+.signup-outer {
+  @media (min-width: 960px) {
+    max-width: 1040px;
+  }
+}
+
+// ──────────────────────────────────────────────────────────────
+// Estimate Panel (desktop sidebar)
+// ──────────────────────────────────────────────────────────────
+.estimate-panel {
+  display: none; // Hidden on mobile — mobile bar is used instead
+
+  @media (min-width: 960px) {
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 1rem;
+    border-top: 5px solid var(--interactive-primary);
+    background: var(--background-primary);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.estimate-panel__header {
+  padding: var(--spacing-05) var(--spacing-05) var(--spacing-04);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.estimate-panel__title {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-primary);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.estimate-panel__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-05);
+  padding: var(--spacing-05);
+}
+
+.estimate-panel__placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-02);
+  padding: var(--spacing-05) 0;
+}
+
+.estimate-panel__placeholder-text {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.estimate-panel__placeholder-hint {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.estimate-panel__price-block {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-02);
+  flex-wrap: wrap;
+}
+
+.estimate-panel__price-range {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--interactive-primary);
+}
+
+.estimate-panel__price-period {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+// ── Shared breakdown rows (used by panel and mobile bar) ──────
+.estimate-panel__breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-03);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--spacing-04);
+}
+
+.estimate-panel__breakdown-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-03);
+
+  &--discount {
+    .estimate-panel__breakdown-label {
+      color: var(--color-success, #198038);
+    }
+
+    .estimate-panel__breakdown-amount {
+      color: var(--color-success, #198038);
+      font-weight: 600;
+    }
+  }
+}
+
+.estimate-panel__breakdown-label {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.estimate-panel__breakdown-amount {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+// ── Confidence indicator ──────────────────────────────────────
+.estimate-panel__confidence {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-02);
+}
+
+.estimate-panel__confidence-label {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.estimate-panel__confidence-track {
+  height: 4px;
+  background: var(--border-subtle);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.estimate-panel__confidence-fill {
+  height: 100%;
+  background: var(--interactive-primary);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+// ── Disclaimer ────────────────────────────────────────────────
+.estimate-panel__disclaimer {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 0.6875rem;
+  color: var(--text-tertiary, var(--text-secondary));
+  line-height: 1.45;
+  margin: 0;
+  font-style: italic;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--spacing-04);
+}
+
+// ──────────────────────────────────────────────────────────────
+// Mobile Estimate Bar (inside form card, hidden on desktop)
+// ──────────────────────────────────────────────────────────────
+.estimate-mobile-bar {
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--background-primary);
+
+  @media (min-width: 960px) {
+    display: none; // Hidden on desktop — sidebar panel is used instead
+  }
+}
+
+.estimate-mobile-bar__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-04);
+  width: 100%;
+  padding: var(--spacing-04) var(--spacing-06);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+
+  &:focus-visible {
+    outline: 2px solid var(--interactive-primary);
+    outline-offset: -2px;
+  }
+}
+
+.estimate-mobile-bar__summary {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.estimate-mobile-bar__label {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.estimate-mobile-bar__price {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--interactive-primary);
+}
+
+.estimate-mobile-bar__period {
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-left: 2px;
+}
+
+.estimate-mobile-bar__chevron {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+
+  &--flipped {
+    transform: rotate(180deg);
+  }
+}
+
+.estimate-mobile-bar__expanded {
+  padding: var(--spacing-04) var(--spacing-06) var(--spacing-05);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-04);
+
+  .estimate-panel__breakdown {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .estimate-panel__disclaimer {
+    border-top: none;
+    padding-top: 0;
+  }
+}
+
+// ──────────────────────────────────────────────────────────────
 // Responsive adjustments
 // ──────────────────────────────────────────────────────────────
 @media (max-width: 480px) {
