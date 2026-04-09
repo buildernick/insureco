@@ -59,6 +59,46 @@ Carbon provides a comprehensive set of components. Refer to `design-system-docs/
 - `ProgressBar` ✅ (OK to use)
 - ❌ `ProgressIndicator` **BANNED** - Use `StepBreadcrumb` instead (see `.builder/rules/banned-components.mdc`)
 
+## ⛔ Never Replace Carbon Components With Custom HTML
+
+When a design shows any of the UI patterns below, **always use the Carbon component**. Never build a custom `<div>`/`<button>` equivalent — doing so breaks theme support and accessibility.
+
+| Design shows… | Use Carbon component |
+|---|---|
+| Yellow/red/blue/green alert or banner | `<InlineNotification lowContrast kind="warning|error|info|success">` |
+| Auto-dismiss toast message | `<ToastNotification>` |
+| Dismiss-able notification | `<InlineNotification onCloseButtonClick={…}>` |
+| Loading spinner | `<Loading>` or `<InlineLoading>` |
+| Status tag / chip / badge | `<Tag>` |
+| Accordion / expandable row | `<Accordion>` |
+| Confirm / alert dialog | `<Modal>` |
+| Tooltip on hover | `<Tooltip>` |
+| Pagination bar | `<Pagination>` |
+| Progress bar (linear) | `<ProgressBar>` |
+
+### InlineNotification — the most commonly misused pattern
+
+Whenever a design shows a coloured alert banner with an icon and optional dismiss button, reach for `InlineNotification`. **Always add `lowContrast` on light-mode pages** or it will render with a dark background.
+
+
+// ✅ Correct
+import { InlineNotification } from '@carbon/react';
+
+{visible && (
+  <InlineNotification
+    kind="warning"       // error | warning | info | success
+    lowContrast          // REQUIRED on white/light pages
+    title="Warning:"
+    subtitle="Something needs your attention."
+    onCloseButtonClick={() => setVisible(false)}
+    aria-label="Dismiss warning notification"
+    statusIconDescription="warning"
+  />
+)}
+```
+
+Full guidance: `.builder/rules/inline-notification-usage.mdc`
+
 **Navigation & Controls:**
 - `Tabs`, `Tab`, `TabList`, `TabPanel`
 - `Accordion`, `AccordionItem`

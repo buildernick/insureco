@@ -78,6 +78,60 @@ All styling should use the global design tokens and CSS variables defined in `sr
 
 **See `src/pages/ThemePreviewPage.jsx`** for visual examples of all components and tokens in action. Test all new components against ThemePreviewPage to ensure consistency.
 
+### ⛔ NEVER Build Custom HTML for UI Patterns Carbon Already Covers
+
+**Before writing any custom `<div>`, `<button>`, or HTML structure, check whether Carbon has a component for it.**
+
+This is a hard rule. Building custom HTML for Carbon-covered patterns causes:
+- Broken dark/light theme support (Carbon handles this automatically)
+- Accessibility regressions (Carbon provides ARIA out of the box)
+- Visual inconsistency across pages
+- Wasted time maintaining bespoke CSS
+
+#### Common patterns where custom HTML is FORBIDDEN:
+
+| Design element | Use this Carbon component |
+|---|---|
+| Warning / error / info / success banners | `<InlineNotification lowContrast>` |
+| Toast/auto-dismiss alerts | `<ToastNotification>` |
+| Loading spinners | `<Loading>` / `<InlineLoading>` |
+| Alert banners with dismiss | `<InlineNotification onCloseButtonClick={…}>` |
+| Badges / status chips | `<Tag>` |
+| Expandable sections | `<Accordion>` / `<ExpandableTile>` |
+| Confirmation dialogs | `<Modal>` / `<ComposedModal>` |
+| Tooltips | `<Tooltip>` / `<DefinitionTooltip>` |
+| Breadcrumbs | `<Breadcrumb>` + `<BreadcrumbItem>` |
+| Pagination | `<Pagination>` |
+| Progress bars | `<ProgressBar>` |
+| Tabs | `<Tabs>` + `<Tab>` |
+| Search inputs | `<Search>` |
+
+#### Real example of the mistake and the fix:
+
+
+// ❌ WRONG — custom HTML alert banner
+<div className="my-alert-banner">
+  <svg>…</svg>
+  <span>This is a warning message</span>
+  <button onClick={dismiss}>Dismiss</button>
+</div>
+
+// ✅ CORRECT — Carbon InlineNotification
+<InlineNotification
+  kind="warning"
+  lowContrast
+  title="Warning:"
+  subtitle="This is a warning message"
+  onCloseButtonClick={() => setVisible(false)}
+  aria-label="Dismiss warning notification"
+  statusIconDescription="warning"
+/>
+```
+
+The Carbon component is theme-aware, accessible, and requires zero custom CSS.
+
+**See `.builder/rules/inline-notification-usage.mdc` for full InlineNotification guidance.**
+
 ### Use Carbon Components First
 Always prefer Carbon Design System components over building custom UI:
 - Buttons → `<Button>` from `@carbon/react`
