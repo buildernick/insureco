@@ -1,33 +1,65 @@
 @use '../styles/tokens' as *;
 
+// ============================================================
+// StepBreadcrumb — responsive multi-step indicator
+//
+// Breakpoints:
+//   < 480px   → circles + lines only; step counter below row
+//   480–671px → circles + lines; label only on current step
+//   ≥ 672px   → full: circles + all labels
+// ============================================================
+
+.step-breadcrumb-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-03);
+  width: 100%;
+}
+
+// ── Main row ─────────────────────────────────────────────────
 .step-breadcrumb {
   display: flex;
   align-items: center;
   width: 100%;
-  gap: var(--spacing-03);
+  gap: 0; // connector lines fill space between items
+}
 
-  &--equal {
-    .step-breadcrumb__item {
-      flex: 1;
-    }
+.step-breadcrumb--equal {
+  .step-breadcrumb__item {
+    flex: 1;
+    min-width: 0;
   }
 }
 
+// ── Step item ─────────────────────────────────────────────────
 .step-breadcrumb__item {
   display: flex;
   align-items: center;
-  gap: var(--spacing-03);
-  min-width: 0; // Allow text truncation
+  gap: var(--spacing-02);
+  min-width: 0;
 
-  // Mobile: stack vertically
-  @media (max-width: 671px) {
+  // xs: column so marker stays centred above any visible label
+  @media (max-width: 479px) {
     flex-direction: column;
     align-items: center;
-    text-align: center;
+    justify-content: center;
+  }
+
+  // sm–md: row, marker only (label hidden except current)
+  @media (min-width: 480px) and (max-width: 671px) {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-01);
+  }
+
+  // lg+: row with marker + label side-by-side
+  @media (min-width: 672px) {
+    flex-direction: row;
     gap: var(--spacing-02);
   }
 }
 
+// ── Marker circle ─────────────────────────────────────────────
 .step-breadcrumb__marker {
   flex-shrink: 0;
   width: 24px;
@@ -36,23 +68,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: var(--font-weight-semibold);
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 
-  // Default (incomplete) state
+  // Incomplete (default)
   background-color: transparent;
   border: 2px solid var(--border-strong);
   color: var(--text-secondary);
 
-  // Complete state
+  // Complete
   .step-breadcrumb__item--complete & {
     background-color: var(--interactive-primary);
     border-color: var(--interactive-primary);
     color: var(--text-on-color);
   }
 
-  // Current state
+  // Current
   .step-breadcrumb__item--current & {
     background-color: var(--interactive-primary);
     border-color: var(--interactive-primary);
@@ -69,35 +101,54 @@
   line-height: 1;
 }
 
+// ── Label content ─────────────────────────────────────────────
 .step-breadcrumb__content {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-01);
-  min-width: 0; // Allow text truncation
+  gap: 1px;
+  min-width: 0;
 
-  @media (max-width: 671px) {
-    align-items: center;
+  // xs: hide all labels (mobile summary takes over)
+  @media (max-width: 479px) {
+    display: none;
+  }
+
+  // sm: only show for the current step
+  @media (min-width: 480px) and (max-width: 671px) {
+    display: none;
+
+    .step-breadcrumb__item--current & {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  // lg+: always visible
+  @media (min-width: 672px) {
+    display: flex;
   }
 }
 
 .step-breadcrumb__label {
-  font-size: var(--body-sm-size);
+  font-size: 0.6875rem; // 11px
   font-weight: var(--font-weight-semibold);
   color: var(--text-secondary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 7rem;
 
   @media (min-width: 672px) {
-    font-size: var(--body-md-size);
+    font-size: var(--body-sm-size);
+    max-width: none;
   }
 
-  // Complete state
+  // Complete
   .step-breadcrumb__item--complete & {
     color: var(--text-primary);
   }
 
-  // Current state
+  // Current
   .step-breadcrumb__item--current & {
     color: var(--interactive-primary);
     font-weight: var(--font-weight-bold);
@@ -111,28 +162,53 @@
   overflow: hidden;
   text-overflow: ellipsis;
 
-  @media (min-width: 672px) {
-    font-size: var(--body-sm-size);
-  }
-
-  // Current state
   .step-breadcrumb__item--current & {
     color: var(--text-secondary);
   }
 }
 
+// ── Connector line ────────────────────────────────────────────
 .step-breadcrumb__line {
   flex: 1;
   height: 2px;
+  min-width: 8px;
   background-color: var(--border-subtle);
-  min-width: 20px;
   transition: background-color 0.2s ease;
+  align-self: flex-start; // align with top of marker column
+  margin-top: 11px; // vertically center with 24px circle
 
   &--complete {
     background-color: var(--interactive-primary);
   }
+}
 
-  @media (max-width: 671px) {
-    display: none; // Hide connector lines on mobile for cleaner look
+// ── Mobile summary (xs only) ──────────────────────────────────
+.step-breadcrumb__mobile-summary {
+  display: none;
+
+  @media (max-width: 479px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-02);
+  }
+}
+
+.step-breadcrumb__mobile-count {
+  font-size: var(--body-sm-size);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-regular);
+}
+
+.step-breadcrumb__mobile-label {
+  font-size: var(--body-sm-size);
+  font-weight: var(--font-weight-bold);
+  color: var(--interactive-primary);
+
+  &::before {
+    content: '·';
+    margin-right: var(--spacing-02);
+    color: var(--text-secondary);
+    font-weight: normal;
   }
 }
