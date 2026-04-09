@@ -228,15 +228,37 @@
 .cds--header__menu-item,
 .cds--header__menu-item a,
 .cds--header__menu-item button {
-  color: var(--text-primary);
+  color: var(--text-primary) !important;
 
   &:hover {
-    background-color: var(--background-hover);
-    color: var(--interactive-primary);
+    background-color: var(--background-hover) !important;
+    color: var(--interactive-primary) !important;
   }
 
   &:focus {
-    border-color: var(--interactive-primary);
+    border-color: var(--interactive-primary) !important;
+  }
+}
+
+// IMPORTANT: Override Carbon's HeaderMenu dropdown panel background.
+// Without this, the dropdown renders with a hardcoded white background in dark mode,
+// making the menu items invisible (dark text on white in dark mode).
+.cds--header__menu {
+  background-color: var(--background-primary) !important;
+  box-shadow: var(--dropdown-shadow) !important;
+
+  li > .cds--header__menu-item {
+    background-color: var(--background-primary) !important;
+    color: var(--text-primary) !important;
+
+    &:hover {
+      background-color: var(--background-hover) !important;
+      color: var(--interactive-primary) !important;
+    }
+
+    &:focus {
+      border-color: var(--interactive-primary) !important;
+    }
   }
 }
 
