@@ -470,6 +470,19 @@
       color: var(--text-primary);
       border-bottom-color: var(--interactive-primary);
     }
+
+    // Remove blue browser/Carbon ring when focused via mouse click
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+
+    // Restore an accessible, brand-themed ring for keyboard navigation only
+    &:focus-visible {
+      outline: 2px solid var(--interactive-primary);
+      outline-offset: -2px;
+      box-shadow: none;
+    }
   }
 }
 
