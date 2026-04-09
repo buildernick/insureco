@@ -1,0 +1,312 @@
+@use '../styles/tokens' as *;
+
+// ─── Quote Preview Card ───────────────────────────────────────────────────────
+
+.quote-preview {
+  border-radius: 8px;
+  background: var(--background-secondary);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+// ─── Mobile Toggle Bar ────────────────────────────────────────────────────────
+
+.quote-preview__mobile-toggle {
+  display: none; // Hidden on desktop; shown on mobile via media query below
+  width: 100%;
+  background: var(--interactive-primary);
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-04) var(--spacing-05);
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-04);
+  text-align: left;
+  color: var(--text-on-color);
+  font-family: inherit;
+
+  @media (max-width: 1055px) {
+    display: flex;
+  }
+}
+
+.quote-preview__mobile-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.quote-preview__mobile-label {
+  font-size: 11px;
+  font-weight: 400;
+  opacity: 0.85;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.quote-preview__mobile-range {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.quote-preview__mobile-period {
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.quote-preview__mobile-chevron {
+  font-size: 12px;
+  opacity: 0.8;
+  flex-shrink: 0;
+}
+
+// ─── Card Body ────────────────────────────────────────────────────────────────
+
+.quote-preview__body {
+  padding: var(--spacing-06);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-05);
+
+  // On mobile: hidden by default, shown when toggled
+  @media (max-width: 1055px) {
+    display: none;
+
+    &--open {
+      display: flex;
+    }
+  }
+}
+
+// ─── Header (coverage badge + bundle badge) ───────────────────────────────────
+
+.quote-preview__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-03);
+}
+
+.quote-preview__coverage-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-02);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.quote-preview__coverage-icons {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--interactive-primary);
+
+  svg {
+    fill: currentColor;
+  }
+}
+
+.quote-preview__coverage-label {
+  color: var(--text-primary);
+}
+
+.quote-preview__bundle-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px var(--spacing-03);
+  background: rgba(36, 161, 72, 0.12);
+  border: 1px solid rgba(36, 161, 72, 0.35);
+  border-radius: 100px;
+  color: #24a148;
+  font-size: 12px;
+  font-weight: 600;
+  width: fit-content;
+
+  :root[data-carbon-theme='g90'] &,
+  :root[data-carbon-theme='g100'] & {
+    color: #42be65;
+    background: rgba(66, 190, 101, 0.15);
+    border-color: rgba(66, 190, 101, 0.35);
+  }
+}
+
+// ─── Price section ────────────────────────────────────────────────────────────
+
+.quote-preview__price-section {
+  padding: var(--spacing-05);
+  background: var(--background-primary);
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle);
+  text-align: center;
+}
+
+.quote-preview__price-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-03);
+}
+
+.quote-preview__price-range {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+  color: var(--text-primary);
+}
+
+.quote-preview__price-dollar,
+.quote-preview__price-separator {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.quote-preview__price-low,
+.quote-preview__price-high {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--interactive-primary);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.quote-preview__price-period {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-left: 2px;
+  align-self: flex-end;
+  margin-bottom: 4px;
+}
+
+// ─── Confidence indicator ─────────────────────────────────────────────────────
+
+.quote-preview__confidence {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-02);
+}
+
+.quote-preview__confidence-track {
+  display: flex;
+  gap: var(--spacing-02);
+}
+
+.quote-preview__confidence-pip {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border-subtle);
+  transition: background 0.3s ease;
+
+  &--active {
+    background: var(--interactive-primary);
+  }
+}
+
+.quote-preview__confidence-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+}
+
+// ─── Pricing factors list ─────────────────────────────────────────────────────
+
+.quote-preview__factors {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-03);
+}
+
+.quote-preview__factors-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+}
+
+.quote-preview__factors-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-02);
+}
+
+.quote-preview__factor {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-02);
+  font-size: 13px;
+
+  &--done {
+    color: var(--text-primary);
+
+    .quote-preview__factor-icon {
+      color: #24a148;
+
+      :root[data-carbon-theme='g90'] &,
+      :root[data-carbon-theme='g100'] & {
+        color: #42be65;
+      }
+
+      svg {
+        fill: currentColor;
+      }
+    }
+  }
+
+  &--pending {
+    color: var(--text-tertiary);
+
+    .quote-preview__factor-icon svg {
+      fill: var(--text-tertiary);
+    }
+  }
+}
+
+.quote-preview__factor-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.quote-preview__factor-name {
+  flex: 1;
+}
+
+.quote-preview__factor-effect {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+
+  .quote-preview__factor--pending & {
+    color: var(--text-tertiary);
+    font-style: italic;
+    font-weight: 400;
+  }
+}
+
+// ─── Disclaimer ───────────────────────────────────────────────────────────────
+
+.quote-preview__disclaimer {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  line-height: 1.5;
+  margin: 0;
+  padding-top: var(--spacing-03);
+  border-top: 1px solid var(--border-subtle);
+}

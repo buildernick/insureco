@@ -11,11 +11,56 @@
 }
 
 .signup-page__wrapper {
-  max-width: 760px;
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-05);
+}
+
+// ============================================================
+// Mobile quote bar (visible only on smaller screens)
+// ============================================================
+.signup-page__mobile-quote-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  @media (min-width: 1056px) {
+    display: none;
+  }
+}
+
+// ============================================================
+// Two-column content area
+// ============================================================
+.signup-page__content-area {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-06);
+}
+
+.signup-page__form-column {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-05);
+}
+
+.signup-page__quote-column {
+  flex: 0 0 340px;
+  width: 340px;
+  display: none;
+
+  @media (min-width: 1056px) {
+    display: block;
+  }
+}
+
+.signup-page__quote-sticky {
+  position: sticky;
+  top: var(--spacing-05);
 }
 
 // ============================================================

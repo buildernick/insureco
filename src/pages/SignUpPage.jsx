@@ -18,6 +18,7 @@ import {
   Car,
 } from '@carbon/icons-react';
 import StepBreadcrumb from '../components/StepBreadcrumb';
+import QuotePreview from '../components/QuotePreview';
 import './SignUpPage.scss';
 
 const STEP_COVERAGE = 0;
@@ -79,6 +80,7 @@ export default function SignUpPage() {
   const [submitting, setSubmitting] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+  const [mobileQuoteExpanded, setMobileQuoteExpanded] = useState(false);
 
   // Coverage
   const [insuranceType, setInsuranceType] = useState(null);
@@ -233,8 +235,29 @@ export default function SignUpPage() {
     );
   }
 
+  // Props to pass to QuotePreview
+  const quoteProps = {
+    insuranceType,
+    carYear,
+    carMilesPerYear,
+    homeValue,
+    homeSquareFeet,
+    state,
+  };
+
   return (
     <div className="signup-page">
+      {/* Mobile quote bar — sits above everything on small screens */}
+      {insuranceType && (
+        <div className="signup-page__mobile-quote-bar">
+          <QuotePreview
+            {...quoteProps}
+            mobileExpanded={mobileQuoteExpanded}
+            onMobileToggle={() => setMobileQuoteExpanded((v) => !v)}
+          />
+        </div>
+      )}
+
       <div className="signup-page__wrapper">
 
         {/* Header */}
@@ -254,6 +277,12 @@ export default function SignUpPage() {
             />
           </div>
         </div>
+
+        {/* Two-column content area */}
+        <div className="signup-page__content-area">
+
+        {/* Left column: warning + form */}
+        <div className="signup-page__form-column">
 
         {/* Warning Banner (Car Details step only) */}
         {currentStep === STEP_CAR && warningVisible && (
@@ -707,6 +736,22 @@ export default function SignUpPage() {
               </div>
             </div>
           )}
+
+        </div>
+        </div>
+
+        {/* Right column: desktop live quote panel */}
+        {insuranceType && (
+          <div className="signup-page__quote-column">
+            <div className="signup-page__quote-sticky">
+              <QuotePreview
+                {...quoteProps}
+                mobileExpanded={false}
+                onMobileToggle={() => {}}
+              />
+            </div>
+          </div>
+        )}
 
         </div>
       </div>
