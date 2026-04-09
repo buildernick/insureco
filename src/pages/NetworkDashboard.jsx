@@ -15,7 +15,7 @@ import {
   TableCell,
   Pagination,
 } from '@carbon/react';
-import { Launch, Add } from '@carbon/icons-react';
+import { Launch } from '@carbon/icons-react';
 import { AreaChart, StackedBarChart } from '@carbon/charts-react';
 import '@carbon/charts/styles.css';
 import { useTheme } from '../contexts/ThemeContext';
@@ -24,164 +24,169 @@ import './NetworkDashboard.scss';
 // ─── Chart Data (module-level constants – no theme dependency) ───────────────
 
 const areaChartData = [
-  { group: 'Network Traffic', key: 'Jan', value: 18000 },
-  { group: 'Network Traffic', key: 'Feb', value: 55000 },
-  { group: 'Network Traffic', key: 'Mar', value: 72000 },
-  { group: 'Network Traffic', key: 'Apr', value: 30000 },
-  { group: 'Network Traffic', key: 'May', value: 80000 },
-  { group: 'Network Traffic', key: 'Jun', value: 78000 },
-  { group: 'Network Traffic', key: 'Jul', value: 12000 },
-  { group: 'Network Traffic', key: 'Aug', value: 14000 },
-  { group: 'Network Traffic', key: 'Sep', value: 55000 },
-  { group: 'Network Traffic', key: 'Oct', value: 40000 },
+  { group: 'Total Revenue', key: 'Jan', value: 1_820_000 },
+  { group: 'Total Revenue', key: 'Feb', value: 2_150_000 },
+  { group: 'Total Revenue', key: 'Mar', value: 2_480_000 },
+  { group: 'Total Revenue', key: 'Apr', value: 2_310_000 },
+  { group: 'Total Revenue', key: 'May', value: 2_740_000 },
+  { group: 'Total Revenue', key: 'Jun', value: 2_690_000 },
+  { group: 'Total Revenue', key: 'Jul', value: 2_120_000 },
+  { group: 'Total Revenue', key: 'Aug', value: 2_390_000 },
+  { group: 'Total Revenue', key: 'Sep', value: 2_650_000 },
+  { group: 'Total Revenue', key: 'Oct', value: 2_890_000 },
 ];
 
 const stackedBarData = [
-  { group: 'Downloads', key: 'Jan', value: 30 },
-  { group: 'Downloads', key: 'Feb', value: 25 },
-  { group: 'Downloads', key: 'Mar', value: 28 },
-  { group: 'Downloads', key: 'Apr', value: 32 },
-  { group: 'Downloads', key: 'May', value: 26 },
-  { group: 'Downloads', key: 'Jun', value: 30 },
-  { group: 'Downloads', key: 'Jul', value: 24 },
-  { group: 'Downloads', key: 'Aug', value: 29 },
-  { group: 'Downloads', key: 'Sep', value: 31 },
-  { group: 'Downloads', key: 'Oct', value: 27 },
-  { group: 'Uploads', key: 'Jan', value: 20 },
-  { group: 'Uploads', key: 'Feb', value: 18 },
-  { group: 'Uploads', key: 'Mar', value: 22 },
-  { group: 'Uploads', key: 'Apr', value: 19 },
-  { group: 'Uploads', key: 'May', value: 21 },
-  { group: 'Uploads', key: 'Jun', value: 23 },
-  { group: 'Uploads', key: 'Jul', value: 17 },
-  { group: 'Uploads', key: 'Aug', value: 20 },
-  { group: 'Uploads', key: 'Sep', value: 22 },
-  { group: 'Uploads', key: 'Oct', value: 18 },
-  { group: 'Streaming', key: 'Jan', value: 15 },
-  { group: 'Streaming', key: 'Feb', value: 20 },
-  { group: 'Streaming', key: 'Mar', value: 18 },
-  { group: 'Streaming', key: 'Apr', value: 22 },
-  { group: 'Streaming', key: 'May', value: 16 },
-  { group: 'Streaming', key: 'Jun', value: 19 },
-  { group: 'Streaming', key: 'Jul', value: 21 },
-  { group: 'Streaming', key: 'Aug', value: 14 },
-  { group: 'Streaming', key: 'Sep', value: 18 },
-  { group: 'Streaming', key: 'Oct', value: 20 },
-  { group: 'Gaming', key: 'Jan', value: 10 },
-  { group: 'Gaming', key: 'Feb', value: 14 },
-  { group: 'Gaming', key: 'Mar', value: 12 },
-  { group: 'Gaming', key: 'Apr', value: 9 },
-  { group: 'Gaming', key: 'May', value: 13 },
-  { group: 'Gaming', key: 'Jun', value: 11 },
-  { group: 'Gaming', key: 'Jul', value: 15 },
-  { group: 'Gaming', key: 'Aug', value: 12 },
-  { group: 'Gaming', key: 'Sep', value: 10 },
-  { group: 'Gaming', key: 'Oct', value: 14 },
-  { group: 'Other', key: 'Jan', value: 8 },
-  { group: 'Other', key: 'Feb', value: 6 },
-  { group: 'Other', key: 'Mar', value: 9 },
-  { group: 'Other', key: 'Apr', value: 7 },
-  { group: 'Other', key: 'May', value: 10 },
-  { group: 'Other', key: 'Jun', value: 8 },
-  { group: 'Other', key: 'Jul', value: 6 },
-  { group: 'Other', key: 'Aug', value: 11 },
-  { group: 'Other', key: 'Sep', value: 7 },
-  { group: 'Other', key: 'Oct', value: 9 },
+  { group: 'Premium Income',    key: 'Jan', value: 980 },
+  { group: 'Premium Income',    key: 'Feb', value: 1100 },
+  { group: 'Premium Income',    key: 'Mar', value: 1250 },
+  { group: 'Premium Income',    key: 'Apr', value: 1180 },
+  { group: 'Premium Income',    key: 'May', value: 1340 },
+  { group: 'Premium Income',    key: 'Jun', value: 1290 },
+  { group: 'Premium Income',    key: 'Jul', value: 1050 },
+  { group: 'Premium Income',    key: 'Aug', value: 1210 },
+  { group: 'Premium Income',    key: 'Sep', value: 1360 },
+  { group: 'Premium Income',    key: 'Oct', value: 1480 },
+  { group: 'Claims Paid',       key: 'Jan', value: 540 },
+  { group: 'Claims Paid',       key: 'Feb', value: 490 },
+  { group: 'Claims Paid',       key: 'Mar', value: 620 },
+  { group: 'Claims Paid',       key: 'Apr', value: 570 },
+  { group: 'Claims Paid',       key: 'May', value: 710 },
+  { group: 'Claims Paid',       key: 'Jun', value: 680 },
+  { group: 'Claims Paid',       key: 'Jul', value: 510 },
+  { group: 'Claims Paid',       key: 'Aug', value: 590 },
+  { group: 'Claims Paid',       key: 'Sep', value: 640 },
+  { group: 'Claims Paid',       key: 'Oct', value: 720 },
+  { group: 'Operating Expenses',key: 'Jan', value: 210 },
+  { group: 'Operating Expenses',key: 'Feb', value: 230 },
+  { group: 'Operating Expenses',key: 'Mar', value: 215 },
+  { group: 'Operating Expenses',key: 'Apr', value: 240 },
+  { group: 'Operating Expenses',key: 'May', value: 225 },
+  { group: 'Operating Expenses',key: 'Jun', value: 250 },
+  { group: 'Operating Expenses',key: 'Jul', value: 220 },
+  { group: 'Operating Expenses',key: 'Aug', value: 235 },
+  { group: 'Operating Expenses',key: 'Sep', value: 245 },
+  { group: 'Operating Expenses',key: 'Oct', value: 260 },
+  { group: 'Investment Income', key: 'Jan', value: 68 },
+  { group: 'Investment Income', key: 'Feb', value: 74 },
+  { group: 'Investment Income', key: 'Mar', value: 81 },
+  { group: 'Investment Income', key: 'Apr', value: 77 },
+  { group: 'Investment Income', key: 'May', value: 90 },
+  { group: 'Investment Income', key: 'Jun', value: 85 },
+  { group: 'Investment Income', key: 'Jul', value: 72 },
+  { group: 'Investment Income', key: 'Aug', value: 79 },
+  { group: 'Investment Income', key: 'Sep', value: 88 },
+  { group: 'Investment Income', key: 'Oct', value: 95 },
+  { group: 'Other Revenue',     key: 'Jan', value: 22 },
+  { group: 'Other Revenue',     key: 'Feb', value: 19 },
+  { group: 'Other Revenue',     key: 'Mar', value: 25 },
+  { group: 'Other Revenue',     key: 'Apr', value: 21 },
+  { group: 'Other Revenue',     key: 'May', value: 28 },
+  { group: 'Other Revenue',     key: 'Jun', value: 24 },
+  { group: 'Other Revenue',     key: 'Jul', value: 18 },
+  { group: 'Other Revenue',     key: 'Aug', value: 23 },
+  { group: 'Other Revenue',     key: 'Sep', value: 26 },
+  { group: 'Other Revenue',     key: 'Oct', value: 30 },
 ];
 
 const meterSegments = [
-  { group: 'Downloads', value: 300 },
-  { group: 'Uploads', value: 200 },
-  { group: 'Streaming', value: 250 },
-  { group: 'Gaming', value: 150 },
-  { group: 'Other', value: 100 },
+  { group: 'Claims Reserves',   value: 1_200_000 },
+  { group: 'Operating Budget',  value:   800_000 },
+  { group: 'Marketing',         value:   350_000 },
+  { group: 'Investments',       value:   950_000 },
+  { group: 'Contingency',       value:   300_000 },
 ];
 
-// ─── Device Table Data ────────────────────────────────────────────────────────
+// ─── Accounts Table Data ──────────────────────────────────────────────────────
 
 const tableHeaders = [
-  { key: 'name',         header: 'Device Name' },
-  { key: 'ip',           header: 'IP Address' },
-  { key: 'mac',          header: 'MAC Address' },
-  { key: 'type',         header: 'Type' },
-  { key: 'manufacturer', header: 'Manufacturer' },
-  { key: 'status',       header: 'Status' },
-  { key: 'lastSeen',     header: 'Last Seen' },
-  { key: 'traffic',      header: 'Traffic (MB)' },
+  { key: 'policyId',   header: 'Policy ID' },
+  { key: 'account',    header: 'Account' },
+  { key: 'type',       header: 'Policy Type' },
+  { key: 'premium',    header: 'Annual Premium' },
+  { key: 'coverage',   header: 'Coverage Limit' },
+  { key: 'status',     header: 'Status' },
+  { key: 'dueDate',    header: 'Next Due Date' },
+  { key: 'balance',    header: 'Outstanding ($)' },
 ];
 
-const generateDevices = () =>
-  Array.from({ length: 10 }, (_, i) => ({
-    id: `device-${i + 1}`,
-    name: `Device-${String(i + 1).padStart(3, '0')}`,
-    ip: `192.168.1.${10 + i}`,
-    mac: `AA:BB:CC:DD:EE:${String(i + 10).padStart(2, '0')}`,
-    type: ['Laptop', 'Phone', 'Tablet', 'Smart TV', 'Router', 'IoT', 'Desktop', 'Printer'][i % 8],
-    manufacturer: ['Apple', 'Samsung', 'Dell', 'HP', 'Sony', 'Cisco', 'Lenovo', 'LG'][i % 8],
-    status: i % 3 === 2 ? 'Offline' : 'Online',
-    lastSeen: i % 3 === 2 ? '2 hours ago' : 'Just now',
-    traffic: String((Math.floor(Math.random() * 900) + 100)),
-  }));
+const policyTypes   = ['Auto', 'Home', 'Life', 'Health', 'Commercial', 'Umbrella', 'Renters', 'Flood'];
+const accountNames  = ['Acme Corp', 'Rivera Family', 'TechStart LLC', 'Chen Holdings', 'Nguyen Trust', 'Patel Group', 'Morrison Inc', 'Silva Partners', 'Kim Enterprises', 'Walsh & Sons'];
+const dueDates      = ['2025-02-01', '2025-02-15', '2025-03-01', '2025-03-15', '2025-04-01', '2025-04-15', '2025-05-01', '2025-05-15', '2025-06-01', '2025-06-15'];
 
-const allDevices = generateDevices();
+const allAccounts = Array.from({ length: 10 }, (_, i) => ({
+  id:        `pol-${i + 1}`,
+  policyId:  `POL-${String(100 + i + 1)}`,
+  account:   accountNames[i],
+  type:      policyTypes[i % policyTypes.length],
+  premium:   `$${(1200 + i * 340).toLocaleString()}`,
+  coverage:  `$${(100_000 + i * 50_000).toLocaleString()}`,
+  status:    i % 4 === 3 ? 'Overdue' : 'Active',
+  dueDate:   dueDates[i],
+  balance:   i % 4 === 3 ? `${(250 + i * 30).toLocaleString()}` : '0',
+}));
 
 // ─── Meter color palette matching design ─────────────────────────────────────
 
 const METER_COLORS = ['#6929C4', '#1192E8', '#005D5D', '#9F1853', '#570408'];
+
+const TOTAL_BUDGET  = 3_600_000;
+const TOTAL_SPENT   = meterSegments.reduce((s, seg) => s + seg.value, 0);
+const BUDGET_AVAIL  = TOTAL_BUDGET - TOTAL_SPENT;
 
 export default function NetworkDashboard() {
   const { theme } = useTheme();
   const chartTheme = theme === 'g90' || theme === 'g100' ? 'g100' : 'white';
 
   const [warningDismissed, setWarningDismissed] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const [searchValue, setSearchValue]           = useState('');
+  const [page, setPage]                         = useState(1);
+  const [pageSize, setPageSize]                 = useState(5);
 
   // ─── Chart options (inside component to access chartTheme hook value) ───────
 
   const areaChartOptions = {
-    title: 'Network Traffic',
+    title: 'Total Revenue (YTD)',
     theme: chartTheme,
     height: '340px',
     curve: 'curveMonotoneX',
     axes: {
-      bottom: { title: 'Month', mapsTo: 'key', scaleType: 'labels' },
-      left:   { title: 'Bytes (KB)', mapsTo: 'value', scaleType: 'linear' },
+      bottom: { title: 'Month',        mapsTo: 'key',   scaleType: 'labels' },
+      left:   { title: 'Revenue ($)',   mapsTo: 'value', scaleType: 'linear' },
     },
-    color: { scale: { 'Network Traffic': '#6929C4' } },
+    color: { scale: { 'Total Revenue': '#6929C4' } },
   };
 
   const stackedBarOptions = {
-    title: 'Traffic Breakdown',
+    title: 'Financial Breakdown by Category',
     theme: chartTheme,
     height: '340px',
     axes: {
-      bottom: { title: 'Month', mapsTo: 'key', scaleType: 'labels' },
-      left:   { title: 'Usage (%)',  mapsTo: 'value', scaleType: 'linear' },
+      bottom: { title: 'Month',         mapsTo: 'key',   scaleType: 'labels' },
+      left:   { title: 'Amount ($K)',    mapsTo: 'value', scaleType: 'linear' },
     },
     color: {
       scale: {
-        Downloads: '#6929C4',
-        Uploads:   '#1192E8',
-        Streaming: '#005D5D',
-        Gaming:    '#9F1853',
-        Other:     '#570408',
+        'Premium Income':     '#6929C4',
+        'Claims Paid':        '#1192E8',
+        'Operating Expenses': '#005D5D',
+        'Investment Income':  '#9F1853',
+        'Other Revenue':      '#570408',
       },
     },
   };
 
   // ─── Filtered + paginated rows ────────────────────────────────────────────
 
-  const filteredDevices = allDevices.filter(
-    (d) =>
+  const filteredAccounts = allAccounts.filter(
+    (row) =>
       searchValue === '' ||
-      Object.values(d).some((v) =>
+      Object.values(row).some((v) =>
         String(v).toLowerCase().includes(searchValue.toLowerCase())
       )
   );
-  const totalItems   = filteredDevices.length;
-  const displayedRows = filteredDevices.slice(
+  const totalItems    = filteredAccounts.length;
+  const displayedRows = filteredAccounts.slice(
     (page - 1) * pageSize,
     page * pageSize
   );
@@ -192,8 +197,8 @@ export default function NetworkDashboard() {
       {/* ─── Breadcrumb ─────────────────────────────────────────────────── */}
       <div className="network-dashboard__breadcrumb-wrapper">
         <Breadcrumb>
-          <BreadcrumbItem href="#">Service</BreadcrumbItem>
-          <BreadcrumbItem isCurrentPage>Administrative Dashboard</BreadcrumbItem>
+          <BreadcrumbItem href="#">Finance</BreadcrumbItem>
+          <BreadcrumbItem isCurrentPage>Financial Report</BreadcrumbItem>
         </Breadcrumb>
       </div>
 
@@ -201,10 +206,10 @@ export default function NetworkDashboard() {
       <div className="network-dashboard__page-header">
         <div className="network-dashboard__page-title-group">
           <h1 className="network-dashboard__page-title">
-            Network Administration Dashboard
+            Financial Report Dashboard
           </h1>
           <p className="network-dashboard__page-description">
-            Network Traffic, Credit Usage, and Your Devices
+            Revenue, Claims, Budget Utilization, and Active Policies
           </p>
         </div>
         <Button
@@ -212,7 +217,7 @@ export default function NetworkDashboard() {
           renderIcon={Launch}
           className="network-dashboard__refresh-btn"
         >
-          Refresh Data
+          Export Report
         </Button>
       </div>
 
@@ -221,7 +226,7 @@ export default function NetworkDashboard() {
         <div className="network-dashboard__search-wrapper">
           <Search
             labelText="Search"
-            placeholder="Placeholder"
+            placeholder="Search policies, accounts…"
             value={searchValue}
             onChange={(e) => {
               setSearchValue(e.target.value);
@@ -249,10 +254,10 @@ export default function NetworkDashboard() {
         <InlineNotification
           kind="warning"
           lowContrast
-          title="Warning:"
-          subtitle="This is a warning message"
+          title="Budget Alert:"
+          subtitle="Q4 claims spending is 12% over forecast. Review reserve allocations before period close."
           onCloseButtonClick={() => setWarningDismissed(true)}
-          aria-label="Dismiss warning notification"
+          aria-label="Dismiss budget alert notification"
           statusIconDescription="warning"
         />
       )}
@@ -267,13 +272,15 @@ export default function NetworkDashboard() {
         </div>
       </div>
 
-      {/* ─── Meter / Credit Usage Chart ──────────────────────────────────── */}
+      {/* ─── Budget Utilization Meter ─────────────────────────────────────── */}
       <div className="network-dashboard__meter-card">
         <div className="network-dashboard__meter-header">
-          <span className="network-dashboard__meter-title">Credit Usage</span>
-          <span className="network-dashboard__meter-total">1300 GB total</span>
+          <span className="network-dashboard__meter-title">Budget Utilization</span>
+          <span className="network-dashboard__meter-total">${TOTAL_BUDGET.toLocaleString()} total</span>
         </div>
-        <p className="network-dashboard__meter-label">1000 GB used (300 GB available)</p>
+        <p className="network-dashboard__meter-label">
+          ${TOTAL_SPENT.toLocaleString()} allocated (${BUDGET_AVAIL.toLocaleString()} remaining)
+        </p>
         <div className="network-dashboard__meter-bar">
           {meterSegments.map((seg, i) => (
             <div
@@ -301,23 +308,23 @@ export default function NetworkDashboard() {
         </div>
       </div>
 
-      {/* ─── My Devices Section ──────────────────────────────────────────── */}
+      {/* ─── Policy Accounts Section ─────────────────────────────────────── */}
       <div className="network-dashboard__devices-section">
         <div className="network-dashboard__devices-header">
           <div>
-            <h2 className="network-dashboard__devices-title">My Devices</h2>
-            <p className="network-dashboard__devices-description">Devices on your local network</p>
+            <h2 className="network-dashboard__devices-title">Policy Accounts</h2>
+            <p className="network-dashboard__devices-description">Active policies and account balances</p>
           </div>
           <Button kind="primary" renderIcon={Launch}>
-            Add Device
+            New Policy
           </Button>
         </div>
 
         <DataTable rows={displayedRows} headers={tableHeaders} isSortable>
           {({ rows, headers, getHeaderProps, getRowProps, getTableProps, getTableContainerProps }) => (
             <TableContainer
-              title="Network Devices"
-              description={`${totalItems} devices found`}
+              title="Policy Overview"
+              description={`${totalItems} policies found`}
               {...getTableContainerProps()}
             >
               <Table {...getTableProps()} size="md">

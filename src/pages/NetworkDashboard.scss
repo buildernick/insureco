@@ -268,12 +268,12 @@
   font-size: 0.75rem;
   font-weight: 600;
 
-  &--online {
+  &--active {
     background: #defbe6;
     color: #198038;
   }
 
-  &--offline {
+  &--overdue {
     background: #fff1f1;
     color: #a2191f;
   }
