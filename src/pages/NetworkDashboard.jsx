@@ -260,6 +260,7 @@ export default function NetworkDashboard() {
           onCloseButtonClick={() => setWarningDismissed(true)}
           aria-label="Dismiss budget alert notification"
           statusIconDescription="warning"
+          style={{ backgroundColor: 'rgba(208, 2, 27, 1)' }}
         />
       )}
 
