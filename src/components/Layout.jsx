@@ -89,11 +89,10 @@ export default function Layout({ children }) {
                   <HeaderMenuItem element={Link} to="/business/payments">
                     Payments
                   </HeaderMenuItem>
+                  <HeaderMenuItem element={Link} to="/network-dashboard">
+                    Finance Tracking
+                  </HeaderMenuItem>
                 </HeaderMenu>
-
-                <HeaderMenuItem element={Link} to="/network-dashboard">
-                  Network Dashboard
-                </HeaderMenuItem>
                 <HeaderMenuItem onClick={() => navigate("/login")}>
                   Login
                 </HeaderMenuItem>
@@ -185,11 +184,14 @@ export default function Layout({ children }) {
                       >
                         Payments
                       </SideNavMenuItem>
+                      <SideNavMenuItem
+                        element={Link}
+                        to="/network-dashboard"
+                        onClick={isSideNavExpanded ? onClickSideNavExpand : undefined}
+                      >
+                        Finance Tracking
+                      </SideNavMenuItem>
                     </SideNavMenu>
-
-                    <HeaderMenuItem onClick={() => handleNavigateAndClose("/network-dashboard")}>
-                      Network Dashboard
-                    </HeaderMenuItem>
                     <HeaderMenuItem onClick={() => handleNavigateAndClose("/login")}>
                       Login
                     </HeaderMenuItem>
