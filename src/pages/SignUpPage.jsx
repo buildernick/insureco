@@ -307,6 +307,7 @@ export default function SignUpPage() {
             />
             <DatePicker
               datePickerType="single"
+              value={formData.dateOfBirth}
               onChange={(dates) => {
                 const formatted = formatDateForInput(dates?.[0] || '');
                 updateFormData('dateOfBirth', formatted);
@@ -319,7 +320,13 @@ export default function SignUpPage() {
                 id="dateOfBirth"
                 labelText="Date of Birth"
                 placeholder="mm/dd/yyyy"
-                value={formData.dateOfBirth}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  updateFormData('dateOfBirth', val);
+                  if (touched.dateOfBirth) {
+                    setErrors(prev => ({ ...prev, dateOfBirth: validateField('dateOfBirth', val) }));
+                  }
+                }}
                 invalid={fieldInvalid('dateOfBirth')}
                 invalidText={fieldError('dateOfBirth')}
               />
