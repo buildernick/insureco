@@ -66,6 +66,21 @@ export function formatDateForInput(dateInput) {
 }
 
 /**
+ * Format a date for DatePickerInput in dd/mm/yy format (no time)
+ * @param {string|Date} dateInput - Date to format (Date object or string)
+ * @returns {string} Formatted date string (dd/mm/yy) or empty string if invalid
+ */
+export function formatDateDDMMYY(dateInput) {
+  if (!dateInput) return '';
+  const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+  if (isNaN(date.getTime())) return '';
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = String(date.getFullYear()).slice(-2);
+  return `${day}/${month}/${year}`;
+}
+
+/**
  * Format a date string or Date object
  * @param {string|Date} dateInput - Date to format
  * @param {string} format - Format type: 'short', 'long', 'medium' (default: 'medium')
