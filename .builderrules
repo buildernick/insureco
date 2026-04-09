@@ -1,3 +1,12 @@
+## Components Usage
+
+- ALWAYS try to use Carbon components whenever building in this app. 
+
+- When importing from Figma especially try to find an equivalent component for the figma designs. If there isn't a suitable component notify the user in the summary after you've built that you made something custom.
+
+- When changing colors ALWAYS check for suitable variants of components.
+
+
 ## Unit Tests ##
 
 ## ⚠️ Important: Do Not Write Tests Unprompted
