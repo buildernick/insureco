@@ -6,7 +6,6 @@ import {
   BreadcrumbItem,
   InlineNotification,
   Tag,
-  Layer,
   DataTable,
   TableContainer,
   Table,
@@ -322,7 +321,6 @@ export default function NetworkDashboard() {
           </Button>
         </div>
 
-        <Layer>
         <DataTable rows={displayedRows} headers={tableHeaders} isSortable>
           {({ rows, headers, getHeaderProps, getRowProps, getTableProps, getTableContainerProps }) => (
             <TableContainer {...getTableContainerProps()}>
@@ -368,7 +366,6 @@ export default function NetworkDashboard() {
             </TableContainer>
           )}
         </DataTable>
-        </Layer>
       </div>
     </div>
   );

@@ -260,6 +260,42 @@
 }
 
 
+// ─── Pagination contrast fix ─────────────────────────────────────────────────
+//
+// Carbon's Pagination uses $background for its left panel and $layer for other
+// sections. In dark mode these resolve to different values (#161616 vs #262626),
+// producing a striped look. We normalise every section to --cds-layer-01, which
+// is Carbon's own theme-aware custom property — so this stays correct in both
+// light and dark without hardcoding any colour values.
+
+.network-dashboard .cds--pagination {
+  background-color: var(--cds-layer-01);
+  border-top-color: var(--cds-border-subtle-01);
+
+  .cds--pagination__left,
+  .cds--pagination__right {
+    background-color: var(--cds-layer-01);
+  }
+
+  // Select inputs inside pagination
+  .cds--select-input {
+    background-color: var(--cds-layer-01);
+
+    &:hover {
+      background-color: var(--cds-layer-hover-01);
+    }
+  }
+
+  // Navigation arrow buttons
+  .cds--pagination__button {
+    background-color: var(--cds-layer-01);
+
+    &:hover:not(:disabled) {
+      background-color: var(--cds-layer-hover-01);
+    }
+  }
+}
+
 // ─── Responsive tweaks ───────────────────────────────────────────────────────
 
 @media (max-width: 480px) {
