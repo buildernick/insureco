@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
-import SignUpComingSoon from "./pages/SignUpComingSoon";
+import SignUpPage from "./pages/SignUpPage";
 import DashboardHome from "./pages/DashboardHome";
 import AboutPage from "./pages/AboutPage";
 import ThemePreviewPage from "./pages/ThemePreviewPage";
@@ -30,7 +30,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUpComingSoon />} />
+        <Route path="/signup" element={<SignUpPage />} />
         <Route path="/dashboard" element={<DashboardHome />} />
         <Route path="/financial-dashboards" element={<FinancialDashboardOptions />} />
         <Route path="/financial-dashboard-1" element={<FinancialDashboard1 />} />
