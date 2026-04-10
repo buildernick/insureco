@@ -4,6 +4,20 @@
 // ============================================
 // Buttons
 // ============================================
+// Suppress the blue ring on mouse click; restore a brand-themed ring for keyboard nav
+.cds--btn {
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--interactive-primary);
+    outline-offset: -2px;
+    box-shadow: none;
+  }
+}
+
 .cds--btn--primary {
   background-color: var(--interactive-primary);
   border-color: var(--interactive-primary);
