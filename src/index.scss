@@ -21,6 +21,16 @@ html {
   scroll-behavior: smooth;
 }
 
+// Suppress browser/Carbon focus ring on mouse & touch clicks for ALL elements.
+// :focus-visible is NOT active on mouse click for non-input elements,
+// so this rule only fires for click-initiated focus — not keyboard focus.
+// Text inputs are unaffected: browsers automatically apply :focus-visible
+// to them even on click, so their focus indicators remain intact.
+*:focus:not(:focus-visible) {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 /* Global Typography Settings */
 body {
   font-family: var(--font-family-sans);
