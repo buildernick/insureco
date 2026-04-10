@@ -529,14 +529,14 @@ export default function MakePaymentPage() {
       </Column>
 
       {/* Step Content */}
-      <Column lg={12} lgOffset={2} md={8} sm={4}>
+      <Column lg={{ span: 12, offset: 2 }} md={8} sm={4}>
         <Tile className="form-tile">
           {renderStepContent()}
         </Tile>
       </Column>
 
       {/* Navigation Buttons */}
-      <Column lg={12} lgOffset={2} md={8} sm={4}>
+      <Column lg={{ span: 12, offset: 2 }} md={8} sm={4}>
         <div className="navigation-buttons">
           <Button
             kind="secondary"
