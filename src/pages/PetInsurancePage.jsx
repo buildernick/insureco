@@ -1,34 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Grid,
   Column,
   Button,
-  Tile,
   Modal,
   TextInput,
   TextArea,
   Heading,
   Stack,
-  Tag,
 } from '@carbon/react';
 import {
   FavoriteFilled,
   CheckmarkFilled,
   ArrowRight,
+  Warning,
   Stethoscope,
   Medication,
   Receipt,
-  Warning,
 } from '@carbon/icons-react';
 import { useNavigate } from 'react-router-dom';
 import './PetInsurancePage.scss';
+
+const stats = [
+  { value: '50,000+', label: 'Pets Protected' },
+  { value: '$19/mo', label: 'Starting Price' },
+  { value: '48hrs', label: 'Avg. Reimbursement' },
+  { value: '100%', label: 'Vet of Your Choice' },
+];
+
+const benefits = [
+  {
+    icon: <Warning size={36} />,
+    title: 'Accident Coverage',
+    description: 'From broken bones to unexpected injuries, we cover the costs so you can focus on your pet\'s recovery.',
+  },
+  {
+    icon: <Stethoscope size={36} />,
+    title: 'Illness Coverage',
+    description: 'Chronic conditions, infections, and serious diagnoses — covered with no lifetime limits on eligible plans.',
+  },
+  {
+    icon: <Medication size={36} />,
+    title: 'Prescription Meds',
+    description: 'Ongoing prescriptions add up fast. We cover eligible medications so your pet stays healthy year-round.',
+  },
+  {
+    icon: <Receipt size={36} />,
+    title: 'Fast Reimbursement',
+    description: 'Submit a claim online in minutes and receive reimbursement in as little as 2 business days.',
+  },
+];
 
 const plans = [
   {
     name: 'Basic',
     price: '$19',
     tagline: 'Essential protection',
-    tag: null,
+    featured: false,
     features: [
       'Accident coverage',
       'Emergency vet visits',
@@ -41,7 +69,7 @@ const plans = [
     name: 'Plus',
     price: '$39',
     tagline: 'Most popular choice',
-    tag: 'Most Popular',
+    featured: true,
     features: [
       'Everything in Basic',
       'Illness coverage',
@@ -55,7 +83,7 @@ const plans = [
     name: 'Premium',
     price: '$69',
     tagline: 'Complete peace of mind',
-    tag: null,
+    featured: false,
     features: [
       'Everything in Plus',
       'Routine wellness visits',
@@ -64,29 +92,6 @@ const plans = [
       'Unlimited annual coverage',
     ],
     cta: 'Get Premium',
-  },
-];
-
-const benefits = [
-  {
-    icon: <Warning size={40} />,
-    title: 'Accident Coverage',
-    description: 'From broken bones to unexpected injuries, we cover the costs so you can focus on your pet\'s recovery.',
-  },
-  {
-    icon: <Stethoscope size={40} />,
-    title: 'Illness Coverage',
-    description: 'Chronic conditions, infections, and serious diagnoses — covered with no lifetime limits on eligible plans.',
-  },
-  {
-    icon: <Medication size={40} />,
-    title: 'Prescription Meds',
-    description: 'Ongoing prescriptions add up fast. We cover eligible medications so your pet stays healthy year-round.',
-  },
-  {
-    icon: <Receipt size={40} />,
-    title: 'Fast Reimbursement',
-    description: 'Submit a claim online in minutes and receive reimbursement in as little as 2 business days.',
   },
 ];
 
@@ -114,152 +119,225 @@ export default function PetInsurancePage() {
   const [quoteModalOpen, setQuoteModalOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState(null);
 
-  return (
-    <div className="pet-landing-page">
+  const heroImgRef = useRef(null);
+  const heroTextRef = useRef(null);
 
-      {/* Hero Section */}
-      <section className="pet-hero-section">
-        <Grid>
-          <Column lg={8} md={5} sm={4}>
-            <div className="pet-hero-content">
-              <div className="pet-hero-eyebrow">
-                <FavoriteFilled size={20} />
-                <span>New from InsureCo</span>
-              </div>
-              <Heading className="pet-hero-heading">
-                Every Paw Deserves Protection
-              </Heading>
-              <p className="pet-hero-tagline">
-                Comprehensive pet insurance for dogs and cats. Cover accidents, 
-                illnesses, and routine care — starting at just $19/month.
-              </p>
-              <div className="pet-hero-actions">
-                <Button
-                  kind="primary"
-                  size="lg"
-                  onClick={() => setQuoteModalOpen(true)}
-                  renderIcon={ArrowRight}
-                >
-                  Get a Free Quote
-                </Button>
-                <Button
-                  kind="secondary"
-                  size="lg"
-                  onClick={() => navigate('/signup')}
-                >
-                  View Plans
-                </Button>
-              </div>
-              <div className="pet-hero-trust">
-                <CheckmarkFilled size={16} />
-                <span>No breed restrictions</span>
-                <CheckmarkFilled size={16} />
-                <span>Cancel anytime</span>
-                <CheckmarkFilled size={16} />
-                <span>Any licensed vet</span>
-              </div>
-            </div>
-          </Column>
-          <Column lg={8} md={3} sm={4}>
-            <div className="pet-hero-image">
-              <img
-                src="https://images.pexels.com/photos/32742546/pexels-photo-32742546.jpeg?auto=compress&cs=tinysrgb&w=900"
-                alt="Happy golden retriever outdoors on a sunny day"
-              />
-            </div>
-          </Column>
-        </Grid>
+  // Hero parallax — image moves slower than scroll, text moves slightly up
+  useEffect(() => {
+    let rafId;
+    const onScroll = () => {
+      rafId = requestAnimationFrame(() => {
+        const scrolled = window.scrollY;
+        if (heroImgRef.current) {
+          heroImgRef.current.style.transform = `translateY(${scrolled * 0.42}px)`;
+        }
+        if (heroTextRef.current) {
+          heroTextRef.current.style.transform = `translateY(${scrolled * 0.18}px)`;
+          heroTextRef.current.style.opacity = `${1 - scrolled / 600}`;
+        }
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  // Scroll-reveal for elements with .reveal class
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    );
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div className="pet-page">
+
+      {/* ── Hero ── */}
+      <section className="pet-hero">
+        <div className="pet-hero__parallax-img" ref={heroImgRef}>
+          <img
+            src="https://images.pexels.com/photos/32742546/pexels-photo-32742546.jpeg?auto=compress&cs=tinysrgb&w=1400"
+            alt="Happy golden retriever in sunshine"
+          />
+        </div>
+        <div className="pet-hero__overlay" />
+
+        <div className="pet-hero__body" ref={heroTextRef}>
+          <div className="pet-hero__eyebrow">
+            <FavoriteFilled size={16} />
+            <span>New from InsureCo</span>
+          </div>
+          <h1 className="pet-hero__heading">
+            Every Paw<br />Deserves<br />Protection
+          </h1>
+          <p className="pet-hero__sub">
+            Comprehensive insurance for dogs &amp; cats — accidents, illness,
+            and routine care. Starting at just&nbsp;<strong>$19/month</strong>.
+          </p>
+          <div className="pet-hero__actions">
+            <Button
+              kind="primary"
+              size="lg"
+              onClick={() => setQuoteModalOpen(true)}
+              renderIcon={ArrowRight}
+            >
+              Get a Free Quote
+            </Button>
+            <button
+              className="pet-hero__ghost-btn"
+              onClick={() => navigate('/signup')}
+            >
+              View Plans
+            </button>
+          </div>
+          <div className="pet-hero__trust">
+            <CheckmarkFilled size={14} /><span>No breed restrictions</span>
+            <CheckmarkFilled size={14} /><span>Cancel anytime</span>
+            <CheckmarkFilled size={14} /><span>Any licensed vet</span>
+          </div>
+        </div>
+
+        <div className="pet-hero__scroll-hint">
+          <span />
+        </div>
       </section>
 
-      {/* Benefits Section */}
-      <section className="pet-benefits-section">
+      {/* ── Stats Bar ── */}
+      <div className="pet-stats">
+        {stats.map((s, i) => (
+          <div className="pet-stats__item reveal" key={i} style={{ transitionDelay: `${i * 0.08}s` }}>
+            <span className="pet-stats__value">{s.value}</span>
+            <span className="pet-stats__label">{s.label}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* ── Benefits ── */}
+      <section className="pet-benefits">
+        <div className="pet-benefits__header reveal">
+          <h2 className="pet-section-title">What's Covered</h2>
+          <p className="pet-section-sub">Comprehensive protection at every stage of your pet's life.</p>
+        </div>
         <Grid>
-          <Column lg={16} md={8} sm={4}>
-            <Heading className="pet-section-heading">What's Covered</Heading>
-            <p className="pet-section-subheading">
-              Comprehensive protection at every stage of your pet's life.
-            </p>
-          </Column>
-          {benefits.map((benefit, index) => (
-            <Column lg={4} md={4} sm={4} key={index}>
-              <Tile className="pet-benefit-tile">
-                <div className="pet-benefit-icon">{benefit.icon}</div>
-                <h3 className="pet-benefit-title">{benefit.title}</h3>
-                <p className="pet-benefit-description">{benefit.description}</p>
-              </Tile>
+          {benefits.map((b, i) => (
+            <Column lg={4} md={4} sm={4} key={i}>
+              <div
+                className="pet-benefit-card reveal"
+                style={{ transitionDelay: `${i * 0.1}s` }}
+              >
+                <div className="pet-benefit-card__icon">{b.icon}</div>
+                <h3 className="pet-benefit-card__title">{b.title}</h3>
+                <p className="pet-benefit-card__desc">{b.description}</p>
+              </div>
             </Column>
           ))}
         </Grid>
       </section>
 
-      {/* Vet Visit Section */}
+      {/* ── Parallax Banner ── */}
+      <div className="pet-parallax-banner">
+        <div className="pet-parallax-banner__overlay" />
+        <div className="pet-parallax-banner__content reveal">
+          <span className="pet-parallax-banner__eyebrow">Why it matters</span>
+          <blockquote className="pet-parallax-banner__quote">
+            "1 in 3 pets needs emergency veterinary care each year. 
+            Are you prepared?"
+          </blockquote>
+          <p className="pet-parallax-banner__note">
+            Average emergency vet bill: <strong>$1,500–$4,000</strong>
+          </p>
+        </div>
+      </div>
+
+      {/* ── Use Any Vet ── */}
       <section className="pet-vet-section">
         <Grid>
-          <Column lg={8} md={4} sm={4}>
-            <div className="pet-vet-image">
+          <Column lg={7} md={4} sm={4}>
+            <div className="pet-vet-img reveal">
               <img
-                src="https://images.pexels.com/photos/7468978/pexels-photo-7468978.jpeg?auto=compress&cs=tinysrgb&w=800"
-                alt="Veterinarian examining a dog during a checkup"
+                src="https://images.pexels.com/photos/7468978/pexels-photo-7468978.jpeg?auto=compress&cs=tinysrgb&w=900"
+                alt="Veterinarian examining a dog"
                 loading="lazy"
               />
             </div>
           </Column>
-          <Column lg={8} md={4} sm={4}>
-            <div className="pet-vet-content">
-              <Heading className="pet-section-heading pet-section-heading--left">
+          <Column lg={9} md={4} sm={4}>
+            <div className="pet-vet-content reveal">
+              <span className="pet-section-eyebrow">Freedom to choose</span>
+              <h2 className="pet-section-title pet-section-title--left">
                 Use Any Vet, Anywhere
-              </Heading>
-              <p className="pet-vet-description">
-                Unlike some plans that restrict you to a network, InsureCo Pet 
-                Insurance works with any licensed veterinarian or specialist in 
-                the US and Canada.
+              </h2>
+              <p className="pet-vet-content__desc">
+                Unlike plans that lock you into a network, InsureCo Pet Insurance
+                works with any licensed veterinarian or specialist in the US and Canada.
               </p>
-              <ul className="pet-vet-list">
-                <li><CheckmarkFilled size={20} /> Family veterinarians</li>
-                <li><CheckmarkFilled size={20} /> Emergency animal hospitals</li>
-                <li><CheckmarkFilled size={20} /> Specialty &amp; specialist clinics</li>
-                <li><CheckmarkFilled size={20} /> Telehealth vet consultations</li>
-                <li><CheckmarkFilled size={20} /> University veterinary clinics</li>
+              <ul className="pet-vet-content__list">
+                {[
+                  'Family veterinarians',
+                  'Emergency animal hospitals',
+                  'Specialty & specialist clinics',
+                  'Telehealth vet consultations',
+                  'University veterinary clinics',
+                ].map((item, i) => (
+                  <li key={i}>
+                    <CheckmarkFilled size={18} />
+                    <span>{item}</span>
+                  </li>
+                ))}
               </ul>
             </div>
           </Column>
         </Grid>
       </section>
 
-      {/* Plans Section */}
-      <section className="pet-plans-section">
+      {/* ── Plans ── */}
+      <section className="pet-plans">
+        <div className="pet-plans__header reveal">
+          <h2 className="pet-section-title">Simple, Transparent Plans</h2>
+          <p className="pet-section-sub">
+            Pick the plan that fits your pet and budget. Upgrade or downgrade anytime.
+          </p>
+        </div>
         <Grid>
-          <Column lg={16} md={8} sm={4}>
-            <Heading className="pet-section-heading">Simple, Transparent Plans</Heading>
-            <p className="pet-section-subheading">
-              Pick the plan that fits your pet and your budget. Upgrade or downgrade anytime.
-            </p>
-          </Column>
-          {plans.map((plan, index) => (
-            <Column lg={5} md={4} sm={4} key={index}>
-              <div className={`pet-plan-card ${plan.tag ? 'pet-plan-card--featured' : ''}`}>
-                {plan.tag && (
-                  <div className="pet-plan-badge">{plan.tag}</div>
+          {plans.map((plan, i) => (
+            <Column lg={5} md={4} sm={4} key={i}>
+              <div
+                className={`pet-plan reveal ${plan.featured ? 'pet-plan--featured' : ''}`}
+                style={{ transitionDelay: `${i * 0.1}s` }}
+              >
+                {plan.featured && (
+                  <div className="pet-plan__badge">Most Popular</div>
                 )}
-                <div className="pet-plan-header">
-                  <h3 className="pet-plan-name">{plan.name}</h3>
-                  <div className="pet-plan-price">
-                    <span className="pet-plan-amount">{plan.price}</span>
-                    <span className="pet-plan-period">/mo per pet</span>
+                <div className="pet-plan__top">
+                  <h3 className="pet-plan__name">{plan.name}</h3>
+                  <div className="pet-plan__price">
+                    <span className="pet-plan__amount">{plan.price}</span>
+                    <span className="pet-plan__per">/mo per pet</span>
                   </div>
-                  <p className="pet-plan-tagline">{plan.tagline}</p>
+                  <p className="pet-plan__tagline">{plan.tagline}</p>
                 </div>
-                <ul className="pet-plan-features">
-                  {plan.features.map((feature, fi) => (
+                <ul className="pet-plan__features">
+                  {plan.features.map((f, fi) => (
                     <li key={fi}>
-                      <CheckmarkFilled size={16} />
-                      <span>{feature}</span>
+                      <CheckmarkFilled size={15} />
+                      <span>{f}</span>
                     </li>
                   ))}
                 </ul>
                 <Button
-                  kind={plan.tag ? 'primary' : 'tertiary'}
-                  className="pet-plan-cta"
+                  kind={plan.featured ? 'primary' : 'tertiary'}
+                  className="pet-plan__cta"
                   onClick={() => navigate('/signup')}
                   renderIcon={ArrowRight}
                 >
@@ -271,36 +349,40 @@ export default function PetInsurancePage() {
         </Grid>
       </section>
 
-      {/* FAQ Section */}
-      <section className="pet-faq-section">
+      {/* ── FAQ ── */}
+      <section className="pet-faq">
         <Grid>
-          <Column lg={10} md={8} sm={4}>
-            <Heading className="pet-section-heading pet-section-heading--left">
-              Frequently Asked Questions
-            </Heading>
-            <div className="pet-faq-list">
-              {faqs.map((faq, index) => (
+          <Column lg={9} md={5} sm={4}>
+            <div className="reveal">
+              <span className="pet-section-eyebrow">Got questions?</span>
+              <h2 className="pet-section-title pet-section-title--left">
+                Frequently Asked
+              </h2>
+            </div>
+            <div className="pet-faq__list">
+              {faqs.map((faq, i) => (
                 <div
-                  key={index}
-                  className={`pet-faq-item ${openFaq === index ? 'pet-faq-item--open' : ''}`}
+                  key={i}
+                  className={`pet-faq__item reveal ${openFaq === i ? 'pet-faq__item--open' : ''}`}
+                  style={{ transitionDelay: `${i * 0.07}s` }}
                 >
                   <button
-                    className="pet-faq-question"
-                    onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                    aria-expanded={openFaq === index}
+                    className="pet-faq__q"
+                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                    aria-expanded={openFaq === i}
                   >
                     <span>{faq.question}</span>
-                    <span className="pet-faq-toggle">{openFaq === index ? '−' : '+'}</span>
+                    <span className="pet-faq__toggle" aria-hidden="true" />
                   </button>
-                  {openFaq === index && (
-                    <p className="pet-faq-answer">{faq.answer}</p>
-                  )}
+                  <div className="pet-faq__a-wrap">
+                    <p className="pet-faq__a">{faq.answer}</p>
+                  </div>
                 </div>
               ))}
             </div>
           </Column>
-          <Column lg={6} md={8} sm={4}>
-            <div className="pet-faq-image">
+          <Column lg={7} md={3} sm={4}>
+            <div className="pet-faq__img reveal">
               <img
                 src="https://images.pexels.com/photos/16395151/pexels-photo-16395151.jpeg?auto=compress&cs=tinysrgb&w=700"
                 alt="Yorkshire terrier and Bengal cat playing together"
@@ -311,89 +393,60 @@ export default function PetInsurancePage() {
         </Grid>
       </section>
 
-      {/* CTA Section */}
-      <section className="pet-cta-section">
-        <Grid>
-          <Column lg={16} md={8} sm={4}>
-            <div className="pet-cta-content">
-              <FavoriteFilled size={48} className="pet-cta-icon" />
-              <Heading className="pet-cta-heading">
-                Protect Your Pet Today
-              </Heading>
-              <p className="pet-cta-text">
-                Join thousands of pet owners who trust InsureCo to keep their 
-                furry family members covered.
-              </p>
-              <Button
-                kind="primary"
-                size="lg"
-                onClick={() => setQuoteModalOpen(true)}
-                renderIcon={ArrowRight}
-              >
-                Get a Free Quote
-              </Button>
-            </div>
-          </Column>
-        </Grid>
+      {/* ── CTA ── */}
+      <section className="pet-cta">
+        <div className="pet-cta__content reveal">
+          <FavoriteFilled size={52} className="pet-cta__icon" />
+          <h2 className="pet-cta__heading">Protect Your Pet Today</h2>
+          <p className="pet-cta__text">
+            Join thousands of pet owners who trust InsureCo to keep their
+            furry family members covered.
+          </p>
+          <Button
+            kind="primary"
+            size="lg"
+            onClick={() => setQuoteModalOpen(true)}
+            renderIcon={ArrowRight}
+          >
+            Get a Free Quote
+          </Button>
+        </div>
       </section>
 
-      {/* Footer */}
+      {/* ── Footer ── */}
       <footer className="pet-footer">
         <Grid>
           <Column lg={8} md={4} sm={4}>
-            <p className="pet-footer-brand">InsureCo Pet Insurance</p>
-            <p className="pet-footer-copy">
-              &copy; 2024 InsureCo. All rights reserved.
-            </p>
+            <p className="pet-footer__brand">InsureCo Pet Insurance</p>
+            <p className="pet-footer__copy">&copy; 2024 InsureCo. All rights reserved.</p>
           </Column>
           <Column lg={8} md={4} sm={4}>
-            <div className="pet-footer-links">
-              <button onClick={() => navigate('/')} className="pet-footer-link">Home</button>
-              <button onClick={() => navigate('/signup')} className="pet-footer-link">Sign Up</button>
-              <button onClick={() => navigate('/about')} className="pet-footer-link">About</button>
-              <a href="#" className="pet-footer-link">Privacy Policy</a>
-              <a href="#" className="pet-footer-link">Terms of Service</a>
-            </div>
+            <nav className="pet-footer__links">
+              <button onClick={() => navigate('/')} className="pet-footer__link">Home</button>
+              <button onClick={() => navigate('/signup')} className="pet-footer__link">Sign Up</button>
+              <button onClick={() => navigate('/about')} className="pet-footer__link">About</button>
+              <a href="#" className="pet-footer__link">Privacy</a>
+              <a href="#" className="pet-footer__link">Terms</a>
+            </nav>
           </Column>
         </Grid>
       </footer>
 
-      {/* Quote Modal */}
+      {/* ── Quote Modal ── */}
       <Modal
         open={quoteModalOpen}
         onRequestClose={() => setQuoteModalOpen(false)}
         modalHeading="Get a Free Pet Insurance Quote"
         primaryButtonText="Get My Quote"
         secondaryButtonText="Cancel"
-        onRequestSubmit={() => {
-          setQuoteModalOpen(false);
-          navigate('/signup');
-        }}
+        onRequestSubmit={() => { setQuoteModalOpen(false); navigate('/signup'); }}
         size="sm"
       >
         <Stack gap={6}>
-          <TextInput
-            id="pet-owner-name"
-            labelText="Your Name"
-            placeholder="Enter your name"
-          />
-          <TextInput
-            id="pet-owner-email"
-            labelText="Email Address"
-            placeholder="Enter your email"
-            type="email"
-          />
-          <TextInput
-            id="pet-name"
-            labelText="Pet's Name"
-            placeholder="Enter your pet's name"
-          />
-          <TextArea
-            id="pet-details"
-            labelText="Tell us about your pet (breed, age)"
-            placeholder="e.g. 3-year-old Labrador Retriever"
-            rows={3}
-          />
+          <TextInput id="pet-owner-name" labelText="Your Name" placeholder="Enter your name" />
+          <TextInput id="pet-owner-email" labelText="Email Address" placeholder="Enter your email" type="email" />
+          <TextInput id="pet-name" labelText="Pet's Name" placeholder="Enter your pet's name" />
+          <TextArea id="pet-details" labelText="Tell us about your pet (breed, age)" placeholder="e.g. 3-year-old Labrador Retriever" rows={3} />
         </Stack>
       </Modal>
     </div>
