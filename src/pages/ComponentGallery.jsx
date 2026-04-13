@@ -160,11 +160,15 @@ export default function ComponentGallery() {
             </p>
             <div className="gallery-page-header__stats">
               <div className="gallery-stat">
+                <span className="gallery-stat__num">14</span>
+                <span className="gallery-stat__label">Total documented</span>
+              </div>
+              <div className="gallery-stat">
                 <span className="gallery-stat__num">2</span>
                 <span className="gallery-stat__label">Reusable components</span>
               </div>
               <div className="gallery-stat">
-                <span className="gallery-stat__num">9</span>
+                <span className="gallery-stat__num">12</span>
                 <span className="gallery-stat__label">Inline patterns</span>
               </div>
               <div className="gallery-stat">
