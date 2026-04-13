@@ -1,3 +1,8 @@
+---
+name: review-page
+description: Assess a page to report back what is new custom work that should be standardized into the app.
+---
+
 # Skill: Page Component Review
 
 ## When to invoke
