@@ -561,8 +561,10 @@
 
   &__item {
     border-bottom: 1px solid var(--border-subtle);
+  }
 
-    &:first-child { border-top: 1px solid var(--border-subtle); }
+  &__list > div:first-child &__item {
+    border-top: 1px solid var(--border-subtle);
   }
 
   &__q {

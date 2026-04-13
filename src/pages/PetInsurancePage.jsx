@@ -361,21 +361,19 @@ export default function PetInsurancePage() {
             </div>
             <div className="pet-faq__list">
               {faqs.map((faq, i) => (
-                <div
-                  key={i}
-                  className={`pet-faq__item reveal ${openFaq === i ? 'pet-faq__item--open' : ''}`}
-                  style={{ transitionDelay: `${i * 0.07}s` }}
-                >
-                  <button
-                    className="pet-faq__q"
-                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                    aria-expanded={openFaq === i}
-                  >
-                    <span>{faq.question}</span>
-                    <span className="pet-faq__toggle" aria-hidden="true" />
-                  </button>
-                  <div className="pet-faq__a-wrap">
-                    <p className="pet-faq__a">{faq.answer}</p>
+                <div key={i} className="reveal" style={{ transitionDelay: `${i * 0.07}s` }}>
+                  <div className={`pet-faq__item ${openFaq === i ? 'pet-faq__item--open' : ''}`}>
+                    <button
+                      className="pet-faq__q"
+                      onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                      aria-expanded={openFaq === i}
+                    >
+                      <span>{faq.question}</span>
+                      <span className="pet-faq__toggle" aria-hidden="true" />
+                    </button>
+                    <div className="pet-faq__a-wrap">
+                      <p className="pet-faq__a">{faq.answer}</p>
+                    </div>
                   </div>
                 </div>
               ))}
