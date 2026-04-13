@@ -16,6 +16,7 @@ import {
   Home as HomeIcon,
   CheckmarkFilled,
   ArrowRight,
+  FavoriteFilled,
 } from '@carbon/icons-react';
 import { useNavigate } from 'react-router-dom';
 import './LandingPage.scss';
@@ -76,7 +77,7 @@ export default function LandingPage() {
                 Protect Your Future with Confidence
               </Heading>
               <p className="hero-tagline">
-                Comprehensive car and home insurance designed for the modern world. 
+                Comprehensive car, home, and pet insurance designed for the modern world.
                 Get covered in minutes with InsureCo.
               </p>
               <div className="hero-actions">
@@ -203,6 +204,47 @@ export default function LandingPage() {
         </Grid>
       </section>
 
+      {/* Pet Insurance Section */}
+      <section id="pet-insurance" className="product-section pet-insurance-section">
+        <Grid>
+          <Column lg={8} md={4} sm={4}>
+            <div className="product-content">
+              <div className="product-icon">
+                <FavoriteFilled size={64} />
+              </div>
+              <Heading className="product-heading">Pet Insurance</Heading>
+              <p className="product-description">
+                Your pets are family — make sure they're protected too. Our pet insurance
+                covers accidents, illnesses, and routine care so you can focus on the moments
+                that matter, not the bills.
+              </p>
+              <ul className="product-features">
+                <li><CheckmarkFilled size={20} /> Accident &amp; illness coverage</li>
+                <li><CheckmarkFilled size={20} /> Routine wellness visits</li>
+                <li><CheckmarkFilled size={20} /> Prescription medication coverage</li>
+                <li><CheckmarkFilled size={20} /> Emergency &amp; specialist care</li>
+              </ul>
+              <Button
+                kind="tertiary"
+                onClick={() => navigate('/signup')}
+                renderIcon={ArrowRight}
+              >
+                Learn More
+              </Button>
+            </div>
+          </Column>
+          <Column lg={8} md={4} sm={4}>
+            <div className="product-image">
+              <img
+                src="https://images.pexels.com/photos/46024/pexels-photo-46024.jpeg?auto=compress&cs=tinysrgb&w=800"
+                alt="A cat and dog cuddling together outdoors representing pet insurance coverage"
+                loading="lazy"
+              />
+            </div>
+          </Column>
+        </Grid>
+      </section>
+
       {/* Testimonials Section */}
       <section className="testimonials-section">
         <Grid>
@@ -266,6 +308,7 @@ export default function LandingPage() {
               <ul className="footer-links">
                 <li><a href="#car-insurance">Car Insurance</a></li>
                 <li><a href="#home-insurance">Home Insurance</a></li>
+                <li><a href="#pet-insurance">Pet Insurance</a></li>
                 <li><button onClick={() => navigate('/signup')} className="footer-link-button">Bundle & Save</button></li>
               </ul>
             </div>
