@@ -16,6 +16,8 @@ import {
   Home as HomeIcon,
   CheckmarkFilled,
   ArrowRight,
+  FavoriteFilled,
+  Launch,
 } from '@carbon/icons-react';
 import { useNavigate } from 'react-router-dom';
 import './LandingPage.scss';
@@ -67,6 +69,18 @@ export default function LandingPage() {
 
   return (
     <div className="landing-page">
+      {/* Pet Insurance Announcement Banner */}
+      <div className="new-product-banner">
+        <FavoriteFilled size={16} />
+        <span>New: <strong>Pet Insurance</strong> is here — protect your furry family members.</span>
+        <button
+          className="new-product-banner__cta"
+          onClick={() => navigate('/pet-insurance')}
+        >
+          Explore Plans <Launch size={14} />
+        </button>
+      </div>
+
       {/* Hero Section */}
       <section className="hero-section">
         <Grid>
@@ -76,7 +90,7 @@ export default function LandingPage() {
                 Protect Your Future with Confidence
               </Heading>
               <p className="hero-tagline">
-                Comprehensive car and home insurance designed for the modern world. 
+                Comprehensive car and home insurance designed for the modern world.
                 Get covered in minutes with InsureCo.
               </p>
               <div className="hero-actions">
@@ -266,6 +280,7 @@ export default function LandingPage() {
               <ul className="footer-links">
                 <li><a href="#car-insurance">Car Insurance</a></li>
                 <li><a href="#home-insurance">Home Insurance</a></li>
+                <li><button onClick={() => navigate('/pet-insurance')} className="footer-link-button">Pet Insurance</button></li>
                 <li><button onClick={() => navigate('/signup')} className="footer-link-button">Bundle & Save</button></li>
               </ul>
             </div>
