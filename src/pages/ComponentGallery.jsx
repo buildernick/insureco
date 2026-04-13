@@ -164,7 +164,7 @@ export default function ComponentGallery() {
                 <span className="gallery-stat__label">Reusable components</span>
               </div>
               <div className="gallery-stat">
-                <span className="gallery-stat__num">6</span>
+                <span className="gallery-stat__num">9</span>
                 <span className="gallery-stat__label">Inline patterns</span>
               </div>
               <div className="gallery-stat">
@@ -185,12 +185,18 @@ export default function ComponentGallery() {
               {[
                 ['#step-breadcrumb', 'StepBreadcrumb'],
                 ['#theme-toggle', 'ThemeToggle'],
+                ['#hero', 'Hero'],
+                ['#eyebrow-pill', 'Eyebrow Pill'],
+                ['#ghost-button', 'Ghost Button'],
+                ['#scroll-hint', 'Scroll Hint'],
                 ['#announcement-banner', 'Announcement Banner'],
                 ['#benefit-cards', 'Benefit Cards'],
                 ['#stats-bar', 'Stats Bar'],
                 ['#plan-cards', 'Plan Cards'],
                 ['#faq-accordion', 'FAQ Accordion'],
                 ['#parallax-banner', 'Parallax Banner'],
+                ['#vet-feature-list', 'Vet Feature List'],
+                ['#footer', 'Footer'],
               ].map(([href, label]) => (
                 <a key={href} href={href} className="gallery-toc__link">{label}</a>
               ))}
@@ -553,6 +559,288 @@ const { isDark, toggleTheme } = useTheme();
           <Column lg={16} md={8} sm={4}>
             <div className="gallery-callout gallery-callout--warning">
               <strong>Mobile note:</strong> <code>background-attachment: fixed</code> is not supported on iOS Safari. The page's responsive stylesheet overrides this to <code>background-attachment: scroll</code> below <code>$breakpoint-md</code>.
+            </div>
+          </Column>
+        </Grid>
+      </section>
+
+      {/* ══════════════════════════════════════════════
+          9. Hero Section
+      ══════════════════════════════════════════════ */}
+      <section id="hero" className="gallery-section">
+        <Grid>
+          <Column lg={16} md={8} sm={4}>
+            <SectionHeader
+              label="Inline Pattern"
+              title="Hero Section"
+              source="src/pages/PetInsurancePage.jsx"
+              description="Full-screen (100vh) parallax landing hero. The background image moves at ~42% of scroll speed via requestAnimationFrame, and the text content drifts up and fades as the user scrolls away. A layered gradient overlay ensures text legibility over any photo."
+            />
+          </Column>
+          <Column lg={16} md={8} sm={4}>
+            <DemoFrame label="Static preview — live parallax visible on /pet-insurance">
+              <div className="gallery-hero-preview">
+                <div className="gallery-hero-preview__overlay" />
+                <div className="gallery-hero-preview__body">
+                  <div className="gallery-hero-preview__eyebrow">
+                    <FavoriteFilled size={14} /><span>New from InsureCo</span>
+                  </div>
+                  <h2 className="gallery-hero-preview__heading">Every Paw Deserves Protection</h2>
+                  <p className="gallery-hero-preview__sub">Starting at just <strong>$19/month</strong>.</p>
+                  <div className="gallery-hero-preview__actions">
+                    <button className="gallery-hero-preview__primary-btn">Get a Free Quote</button>
+                    <button className="gallery-hero-preview__ghost-btn">View Plans</button>
+                  </div>
+                </div>
+                <div className="gallery-hero-preview__scroll-hint"><span /></div>
+              </div>
+            </DemoFrame>
+          </Column>
+          <Column lg={8} md={4} sm={4}>
+            <h3 className="gallery-subsection-title">Parallax scroll logic</h3>
+            <div className="gallery-code-block">
+              <pre>{`const heroImgRef = useRef(null);
+const heroTextRef = useRef(null);
+
+useEffect(() => {
+  let rafId;
+  const onScroll = () => {
+    rafId = requestAnimationFrame(() => {
+      const scrolled = window.scrollY;
+      heroImgRef.current.style.transform =
+        \`translateY(\${scrolled * 0.42}px)\`;
+      heroTextRef.current.style.transform =
+        \`translateY(\${scrolled * 0.18}px)\`;
+      heroTextRef.current.style.opacity =
+        \`\${1 - scrolled / 600}\`;
+    });
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  return () => window.removeEventListener('scroll', onScroll);
+}, []);`}</pre>
+            </div>
+          </Column>
+          <Column lg={8} md={4} sm={4}>
+            <div className="gallery-callout" style={{ marginTop: '3.5rem' }}>
+              Image container uses <code>inset: -20% 0 -20%</code> so it's taller than the viewport, preventing empty space during parallax movement. <code>will-change: transform</code> triggers GPU compositing. <code>passive: true</code> keeps scroll performance smooth.
+            </div>
+          </Column>
+        </Grid>
+      </section>
+
+      {/* ══════════════════════════════════════════════
+          10. Eyebrow Pill
+      ══════════════════════════════════════════════ */}
+      <section id="eyebrow-pill" className="gallery-section gallery-section--alt">
+        <Grid>
+          <Column lg={16} md={8} sm={4}>
+            <SectionHeader
+              label="Inline Pattern"
+              title='Eyebrow Pill — "New from InsureCo"'
+              source="src/pages/PetInsurancePage.jsx"
+              description='A small frosted-glass pill badge rendered above the hero headline to label a new product or section. Uses backdrop-filter blur over a semi-transparent white background so it reads clearly over any photograph. The icon is brand red; text is white.'
+            />
+          </Column>
+          <Column lg={8} md={4} sm={4}>
+            <DemoFrame label="On dark background (hero context)" dark>
+              <div className="gallery-eyebrow-demo">
+                <div className="gallery-eyebrow-pill gallery-eyebrow-pill--dark">
+                  <FavoriteFilled size={14} /><span>New from InsureCo</span>
+                </div>
+                <div className="gallery-eyebrow-pill gallery-eyebrow-pill--dark">
+                  <span>Pet Insurance</span>
+                </div>
+              </div>
+            </DemoFrame>
+          </Column>
+          <Column lg={8} md={4} sm={4}>
+            <DemoFrame label="On light background">
+              <div className="gallery-eyebrow-demo">
+                <div className="gallery-eyebrow-pill gallery-eyebrow-pill--light">
+                  <FavoriteFilled size={14} /><span>New from InsureCo</span>
+                </div>
+                <div className="gallery-eyebrow-pill gallery-eyebrow-pill--light">
+                  <span>Pet Insurance</span>
+                </div>
+              </div>
+            </DemoFrame>
+          </Column>
+          <Column lg={16} md={8} sm={4}>
+            <div className="gallery-callout">
+              Dark: <code>background: rgba(255,255,255,0.14)</code> + <code>backdrop-filter: blur(6px)</code> + <code>border: 1px solid rgba(255,255,255,0.28)</code>. Light: <code>background: var(--background-selected)</code> + <code>color: var(--interactive-primary)</code> + <code>border: 1px solid var(--border-interactive)</code>.
+            </div>
+          </Column>
+        </Grid>
+      </section>
+
+      {/* ══════════════════════════════════════════════
+          11. Ghost Button
+      ══════════════════════════════════════════════ */}
+      <section id="ghost-button" className="gallery-section">
+        <Grid>
+          <Column lg={16} md={8} sm={4}>
+            <SectionHeader
+              label="Inline Pattern"
+              title='Ghost Button — "View Plans"'
+              source="src/pages/PetInsurancePage.jsx"
+              description="A custom outline button used inside the hero where Carbon's ghost/tertiary styles don't provide enough contrast against a dark photo background. Uses a semi-transparent white fill and white border. Rendered as a plain <button> — not a Carbon component."
+            />
+          </Column>
+          <Column lg={8} md={4} sm={4}>
+            <DemoFrame label="Default and hover states" dark>
+              <div className="gallery-ghost-demo">
+                <button className="gallery-ghost-btn">View Plans</button>
+                <button className="gallery-ghost-btn gallery-ghost-btn--hovered">View Plans (hover)</button>
+              </div>
+            </DemoFrame>
+          </Column>
+          <Column lg={8} md={4} sm={4}>
+            <DemoFrame label="Paired with Carbon primary button">
+              <div style={{ background: '#161616', padding: '1.25rem', borderRadius: '4px', display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                <Button kind="primary" renderIcon={ArrowRight}>Get a Free Quote</Button>
+                <button className="gallery-ghost-btn">View Plans</button>
+              </div>
+            </DemoFrame>
+            <div className="gallery-callout gallery-callout--warning">
+              <strong>Why not Carbon ghost?</strong> Carbon's <code>kind="ghost"</code> uses brand red text — invisible against the red-tinted dark overlay in the hero. This custom button uses white text + white border, readable over any dark background.
+            </div>
+          </Column>
+        </Grid>
+      </section>
+
+      {/* ══════════════════════════════════════════════
+          12. Scroll Hint Indicator
+      ══════════════════════════════════════════════ */}
+      <section id="scroll-hint" className="gallery-section gallery-section--alt">
+        <Grid>
+          <Column lg={16} md={8} sm={4}>
+            <SectionHeader
+              label="Inline Pattern"
+              title="Scroll Hint Indicator"
+              source="src/pages/PetInsurancePage.jsx"
+              description="An animated dot inside a rounded border at the bottom of the hero, signalling content below the fold. Built entirely in CSS — no JS, no images. A keyframe animation bounces the dot downward and fades it out in a continuous 1.8s loop."
+            />
+          </Column>
+          <Column lg={8} md={4} sm={4}>
+            <DemoFrame label="Live animation (1.8s loop)" dark>
+              <div style={{ display: 'flex', justifyContent: 'center', padding: '2.5rem 0' }}>
+                <div className="gallery-scroll-hint"><span /></div>
+              </div>
+            </DemoFrame>
+          </Column>
+          <Column lg={8} md={4} sm={4}>
+            <h3 className="gallery-subsection-title">CSS keyframe</h3>
+            <div className="gallery-code-block">
+              <pre>{`@keyframes scroll-dot {
+  0%   { transform: translateX(-50%) translateY(0);
+         opacity: 1; }
+  80%  { transform: translateX(-50%) translateY(14px);
+         opacity: 0; }
+  100% { transform: translateX(-50%) translateY(0);
+         opacity: 0; }
+}
+
+.scroll-hint span::before {
+  content: '';
+  position: absolute;
+  top: 5px; left: 50%;
+  width: 4px; height: 8px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 999px;
+  animation: scroll-dot 1.8s ease-in-out infinite;
+}`}</pre>
+            </div>
+          </Column>
+        </Grid>
+      </section>
+
+      {/* ══════════════════════════════════════════════
+          13. Vet Feature List
+      ══════════════════════════════════════════════ */}
+      <section id="vet-feature-list" className="gallery-section">
+        <Grid>
+          <Column lg={16} md={8} sm={4}>
+            <SectionHeader
+              label="Inline Pattern"
+              title="Vet Feature List"
+              source="src/pages/PetInsurancePage.jsx"
+              description='A custom <ul> used in the "Use Any Vet, Anywhere" section. Each row has a green checkmark icon and label text, separated by a bottom border that acts as a row divider. The last item removes its border via :last-child. Styled without Carbon List components for full icon and divider control.'
+            />
+          </Column>
+          <Column lg={8} md={4} sm={4}>
+            <DemoFrame label="Live preview">
+              <ul className="gallery-vet-list">
+                {['Family veterinarians', 'Emergency animal hospitals', 'Specialty & specialist clinics', 'Telehealth vet consultations', 'University veterinary clinics'].map((item, i) => (
+                  <li key={i}><CheckmarkFilled size={18} /><span>{item}</span></li>
+                ))}
+              </ul>
+            </DemoFrame>
+          </Column>
+          <Column lg={8} md={4} sm={4}>
+            <div className="gallery-callout" style={{ marginTop: '0.5rem' }}>
+              Checkmarks use <code>#42be65</code> (Carbon green-40) rather than a token — green is universally understood as success and remains readable in both themes. Each <code>li</code> uses <code>border-bottom: 1px solid var(--border-subtle)</code>; <code>:last-child</code> removes it.
+            </div>
+          </Column>
+        </Grid>
+      </section>
+
+      {/* ══════════════════════════════════════════════
+          14. Footer
+      ══════════════════════════════════════════════ */}
+      <section id="footer" className="gallery-section gallery-section--alt">
+        <Grid>
+          <Column lg={16} md={8} sm={4}>
+            <SectionHeader
+              label="Inline Pattern"
+              title="Footer"
+              source="src/pages/LandingPage.jsx · src/pages/PetInsurancePage.jsx"
+              description="Two footer variants exist in the app. The landing page footer is a 5-column layout (brand, products, company, support, legal). The pet insurance footer is a simplified 2-column layout (brand + link row). Both use Carbon Grid for structure, but typography, links, and hover states are all custom."
+            />
+          </Column>
+          <Column lg={16} md={8} sm={4}>
+            <DemoFrame label="Landing page footer — 5 columns">
+              <div className="gallery-footer-preview">
+                <div className="gallery-footer-preview__col">
+                  <h4 className="gallery-footer-preview__heading">InsureCo</h4>
+                  <p className="gallery-footer-preview__desc">Protecting what matters most since 2020.</p>
+                </div>
+                {[
+                  ['Products', ['Car Insurance', 'Home Insurance', 'Pet Insurance', 'Bundle & Save']],
+                  ['Company',  ['About Us', 'Careers', 'Contact']],
+                  ['Support',  ['Help Center', 'File a Claim', 'FAQ']],
+                  ['Legal',    ['Privacy Policy', 'Terms of Service', 'Cookies']],
+                ].map(([heading, links]) => (
+                  <div key={heading} className="gallery-footer-preview__col">
+                    <h4 className="gallery-footer-preview__heading">{heading}</h4>
+                    <ul className="gallery-footer-preview__links">
+                      {links.map(l => <li key={l}><a href="#">{l}</a></li>)}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+              <div className="gallery-footer-preview__bottom">
+                <p>&copy; 2024 InsureCo. All rights reserved.</p>
+              </div>
+            </DemoFrame>
+          </Column>
+          <Column lg={16} md={8} sm={4}>
+            <DemoFrame label="Pet insurance footer — simplified 2-column">
+              <div className="gallery-footer-simple">
+                <div>
+                  <p className="gallery-footer-simple__brand">InsureCo Pet Insurance</p>
+                  <p className="gallery-footer-simple__copy">&copy; 2024 InsureCo. All rights reserved.</p>
+                </div>
+                <nav className="gallery-footer-simple__links">
+                  {['Home', 'Sign Up', 'About', 'Privacy', 'Terms'].map(l => (
+                    <a key={l} href="#" className="gallery-footer-simple__link">{l}</a>
+                  ))}
+                </nav>
+              </div>
+            </DemoFrame>
+          </Column>
+          <Column lg={16} md={8} sm={4}>
+            <div className="gallery-callout">
+              Link hover state uses <code>color: var(--interactive-primary)</code> with <code>transition: color 0.2s ease</code>. Items that route within the SPA use <code>&lt;button&gt;</code> elements styled as links (no underline, no border, no background) rather than <code>&lt;a href&gt;</code> to avoid full-page reloads.
             </div>
           </Column>
         </Grid>
