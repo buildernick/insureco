@@ -85,6 +85,7 @@ export default function LandingPage() {
                   size="lg"
                   onClick={() => navigate('/signup')}
                   renderIcon={ArrowRight}
+                  className="hero-signup-btn"
                 >
                   Sign Up Now
                 </Button>
