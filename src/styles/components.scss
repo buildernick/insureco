@@ -4,6 +4,13 @@
 // ============================================
 // Buttons
 // ============================================
+// Center-justify text in all buttons globally
+button,
+.cds--btn {
+  text-align: center !important;
+  justify-content: center !important;
+}
+
 // Suppress the blue ring on mouse click; restore a brand-themed ring for keyboard nav
 .cds--btn {
   &:focus {
