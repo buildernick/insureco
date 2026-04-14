@@ -5,10 +5,24 @@
 // Buttons
 // ============================================
 // Center-justify text in all buttons globally
-button,
-.cds--btn {
+button {
   text-align: center !important;
+}
+
+// Center text in all Carbon button variants (two-class = 0,2,0 specificity, beats Carbon's single-class defaults)
+.cds--btn.cds--btn--primary,
+.cds--btn.cds--btn--secondary,
+.cds--btn.cds--btn--tertiary,
+.cds--btn.cds--btn--ghost,
+.cds--btn.cds--btn--danger,
+.cds--btn.cds--btn--danger--tertiary,
+.cds--btn.cds--btn--danger--ghost {
   justify-content: center !important;
+}
+
+// Exception: restore Carbon's text-left / icon-right layout for icon buttons
+.cds--btn:has(.cds--btn__icon) {
+  justify-content: space-between !important;
 }
 
 // Suppress the blue ring on mouse click; restore a brand-themed ring for keyboard nav
