@@ -209,7 +209,7 @@ export default function SignUpPage() {
               <DatePickerInput
                 id="dateOfBirth"
                 labelText="Date of Birth"
-                placeholder="mm/dd/yyyy"
+                placeholder="dd/mm/yyyy"
                 value={formData.dateOfBirth}
               />
             </DatePicker>

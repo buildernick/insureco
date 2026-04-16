@@ -382,7 +382,7 @@ export default function AddPropertyPage() {
                 <DatePickerInput
                   id="inspection-date"
                   labelText="Initial Inspection Date"
-                  placeholder="mm/dd/yyyy"
+                  placeholder="dd/mm/yyyy"
                 />
               </DatePicker>
             </Form>

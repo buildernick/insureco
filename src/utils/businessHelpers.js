@@ -75,9 +75,9 @@ export function formatDate(dateInput, format = 'medium') {
 }
 
 /**
- * Format a date for DatePickerInput (mm/dd/yyyy format only, no time)
+ * Format a date for DatePickerInput (dd/mm/yyyy format only, no time)
  * @param {string|Date} dateInput - Date to format (can be Date object or string)
- * @returns {string} Formatted date string (mm/dd/yyyy) or empty string if invalid
+ * @returns {string} Formatted date string (dd/mm/yyyy) or empty string if invalid
  */
 export function formatDateForInput(dateInput) {
   if (!dateInput) return '';
@@ -90,7 +90,7 @@ export function formatDateForInput(dateInput) {
   const day = String(date.getDate()).padStart(2, '0');
   const year = date.getFullYear();
 
-  return `${month}/${day}/${year}`;
+  return `${day}/${month}/${year}`;
 }
 
 /**

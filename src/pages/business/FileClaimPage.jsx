@@ -232,7 +232,7 @@ export default function FileClaimPage() {
                 <DatePickerInput
                   id="incident-date"
                   labelText="Incident Date"
-                  placeholder="mm/dd/yyyy"
+                  placeholder="dd/mm/yyyy"
                   invalid={!!errors.incidentDate}
                   invalidText={errors.incidentDate}
                 />
