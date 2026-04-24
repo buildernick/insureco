@@ -1,0 +1,140 @@
+@use '../styles/tokens' as *;
+
+// ============================================
+// Circular Mini-Stepper (Option 4)
+// ============================================
+
+.circular-stepper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-04);
+  width: 100%;
+  padding: var(--spacing-05);
+}
+
+.circular-stepper__counter {
+  font-size: var(--body-sm-size);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+  margin: 0;
+}
+
+.circular-stepper__circles {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-04);
+  justify-content: center;
+}
+
+// ── Circles ──────────────────────────────────
+
+.circular-stepper__circle {
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-bold);
+  transition: all 0.3s ease;
+
+  // Previous (completed) step
+  &--previous {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+    background: var(--color-success);
+    border: 2px solid var(--color-success);
+    color: var(--text-on-color);
+    opacity: 0.8;
+  }
+
+  // Current (active) step
+  &--current {
+    width: 64px;
+    height: 64px;
+    font-size: 20px;
+    background: var(--interactive-primary);
+    border: 3px solid var(--interactive-primary);
+    color: var(--text-on-color);
+    box-shadow:
+      0 0 0 4px var(--background-selected),
+      0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: stepper-pulse 2s ease-in-out infinite;
+  }
+
+  // Next (upcoming) step
+  &--next {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+    background: transparent;
+    border: 2px solid var(--border-strong);
+    color: var(--text-secondary);
+    opacity: 0.6;
+  }
+}
+
+@keyframes stepper-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 4px var(--background-selected),
+      0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  50% {
+    box-shadow:
+      0 0 0 8px var(--background-selected),
+      0 6px 16px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.circular-stepper__check {
+  fill: currentColor;
+}
+
+.circular-stepper__number {
+  line-height: 1;
+}
+
+// ── Connector line between circles ───────────
+
+.circular-stepper__connector {
+  width: 32px;
+  height: 3px;
+  background: var(--border-subtle);
+  border-radius: 2px;
+}
+
+// ── Step label below circles ──────────────────
+
+.circular-stepper__label {
+  font-size: var(--body-lg-size);
+  color: var(--text-primary);
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+  margin: var(--spacing-02) 0 0 0;
+}
+
+// ── Responsive ───────────────────────────────
+
+@media (max-width: 671px) {
+  .circular-stepper__circle {
+    &--current {
+      width: 56px;
+      height: 56px;
+      font-size: 18px;
+    }
+
+    &--previous,
+    &--next {
+      width: 36px;
+      height: 36px;
+      font-size: 14px;
+    }
+  }
+
+  .circular-stepper__label {
+    font-size: var(--body-md-size);
+  }
+}
