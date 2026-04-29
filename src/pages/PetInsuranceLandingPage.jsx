@@ -16,7 +16,7 @@ import {
   Medication,
   Favorite,
   StarFilled,
-  Shield,
+  Security,
 } from '@carbon/icons-react';
 import { useNavigate } from 'react-router-dom';
 import './PetInsuranceLandingPage.scss';
@@ -29,7 +29,7 @@ const benefits = [
       'We cover up to 90% of eligible vet expenses, so unexpected bills never come between you and the care your pet deserves.',
   },
   {
-    icon: <Shield size={40} />,
+    icon: <Security size={40} />,
     title: 'Accident & Illness',
     description:
       'Comprehensive protection against accidents and illnesses — from broken bones to cancer treatment and everything in between.',
