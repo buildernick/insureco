@@ -31,8 +31,8 @@ export default function Layout({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Remove padding for landing page
-  const isLandingPage = location.pathname === '/';
+  // Remove padding for full-width marketing pages
+  const isFullWidthPage = location.pathname === '/' || location.pathname === '/pet-insurance';
 
   return (
     <HeaderContainer
@@ -96,6 +96,9 @@ export default function Layout({ children }) {
                 </HeaderMenuItem>
                 <HeaderMenuItem onClick={() => navigate("/signup")}>
                   Sign Up
+                </HeaderMenuItem>
+                <HeaderMenuItem onClick={() => navigate("/pet-insurance")}>
+                  Pet Insurance
                 </HeaderMenuItem>
                 <HeaderMenuItem onClick={() => navigate("/about")}>
                   About
@@ -190,6 +193,9 @@ export default function Layout({ children }) {
                     <HeaderMenuItem onClick={() => handleNavigateAndClose("/signup")}>
                       Sign Up
                     </HeaderMenuItem>
+                    <HeaderMenuItem onClick={() => handleNavigateAndClose("/pet-insurance")}>
+                      Pet Insurance
+                    </HeaderMenuItem>
                     <HeaderMenuItem onClick={() => handleNavigateAndClose("/about")}>
                       About
                     </HeaderMenuItem>
@@ -202,7 +208,7 @@ export default function Layout({ children }) {
               className="cds--content"
               style={{
                 minHeight: "100vh",
-                padding: isLandingPage ? 0 : undefined
+                padding: isFullWidthPage ? 0 : undefined
               }}
             >
               {children}
