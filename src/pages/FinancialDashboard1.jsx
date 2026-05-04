@@ -91,7 +91,7 @@ export default function FinancialDashboard1() {
         {/* Page Header */}
         <Column lg={16} md={8} sm={4}>
           <div className="dashboard-header">
-            <h1>Insurance Financial Analytics Dashboard</h1>
+            <h1>Insurance Financial Analytics</h1>
             <p className="dashboard-subtitle">
               Comprehensive overview of premium collections and claim payouts across Auto and Property portfolios
             </p>
