@@ -11,7 +11,7 @@ import {
   Stack,
   Link,
 } from '@carbon/react';
-import { Login, ArrowRight } from '@carbon/icons-react';
+import { Login, ArrowRight, ArrowLeft, Checkmark } from '@carbon/icons-react';
 import './LoginPage.scss';
 
 export default function LoginPage() {
@@ -19,11 +19,119 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  // Forgot password state: 'login' | 'forgot' | 'sent'
+  const [view, setView] = useState('login');
+  const [resetEmail, setResetEmail] = useState('');
+
   const handleLogin = (e) => {
     e.preventDefault();
-    // Mock authentication - no validation, just navigate to dashboard
     navigate('/dashboard');
   };
+
+  const handleForgotSubmit = (e) => {
+    e.preventDefault();
+    setView('sent');
+  };
+
+  const handleBackToLogin = () => {
+    setResetEmail('');
+    setView('login');
+  };
+
+  if (view === 'forgot') {
+    return (
+      <Grid className="login-page">
+        <Column sm={4} md={8} lg={{ span: 8, offset: 4 }} xlg={{ span: 6, offset: 5 }}>
+          <div className="login-container">
+            <Tile className="login-card">
+              <Stack gap={6} className="login-content">
+                <div className="login-header">
+                  <Heading className="login-title">Reset Password</Heading>
+                  <p className="login-subtitle">
+                    Enter your email and we'll send you a reset link
+                  </p>
+                </div>
+
+                <Form onSubmit={handleForgotSubmit} className="login-form">
+                  <Stack gap={5}>
+                    <TextInput
+                      id="reset-email"
+                      labelText="Email Address"
+                      placeholder="you@example.com"
+                      value={resetEmail}
+                      onChange={(e) => setResetEmail(e.target.value)}
+                      type="email"
+                      required
+                    />
+
+                    <Button
+                      type="submit"
+                      kind="primary"
+                      size="lg"
+                      renderIcon={ArrowRight}
+                      className="login-button"
+                    >
+                      Send Reset Link
+                    </Button>
+                  </Stack>
+                </Form>
+
+                <div className="login-footer">
+                  <Link
+                    href="#"
+                    onClick={(e) => { e.preventDefault(); handleBackToLogin(); }}
+                    className="back-to-login-link"
+                  >
+                    <ArrowLeft size={16} />
+                    Back to sign in
+                  </Link>
+                </div>
+              </Stack>
+            </Tile>
+          </div>
+        </Column>
+      </Grid>
+    );
+  }
+
+  if (view === 'sent') {
+    return (
+      <Grid className="login-page">
+        <Column sm={4} md={8} lg={{ span: 8, offset: 4 }} xlg={{ span: 6, offset: 5 }}>
+          <div className="login-container">
+            <Tile className="login-card">
+              <Stack gap={6} className="login-content">
+                <div className="reset-success-icon">
+                  <div className="reset-success-circle">
+                    <Checkmark size={32} />
+                  </div>
+                </div>
+
+                <div className="login-header">
+                  <Heading className="login-title">Check your email</Heading>
+                  <p className="login-subtitle">
+                    If <strong>{resetEmail}</strong> is associated with an account, you'll
+                    receive a password reset link shortly.
+                  </p>
+                </div>
+
+                <div className="login-footer">
+                  <Link
+                    href="#"
+                    onClick={(e) => { e.preventDefault(); handleBackToLogin(); }}
+                    className="back-to-login-link"
+                  >
+                    <ArrowLeft size={16} />
+                    Back to sign in
+                  </Link>
+                </div>
+              </Stack>
+            </Tile>
+          </div>
+        </Column>
+      </Grid>
+    );
+  }
 
   return (
     <Grid className="login-page">
@@ -38,9 +146,7 @@ export default function LoginPage() {
 
             <Stack gap={6} className="login-content">
               <div className="login-header">
-                <Heading className="login-title">
-                  Welcome Back
-                </Heading>
+                <Heading className="login-title">Welcome Back</Heading>
                 <p className="login-subtitle">
                   Sign in to access your InsureCo dashboard
                 </p>
@@ -57,7 +163,7 @@ export default function LoginPage() {
                     type="email"
                     required
                   />
-                  
+
                   <TextInput
                     id="password"
                     labelText="Password"
@@ -69,7 +175,11 @@ export default function LoginPage() {
                   />
 
                   <div className="login-options">
-                    <Link href="#" className="forgot-password-link">
+                    <Link
+                      href="#"
+                      className="forgot-password-link"
+                      onClick={(e) => { e.preventDefault(); setView('forgot'); }}
+                    >
                       Forgot password?
                     </Link>
                   </div>
@@ -89,10 +199,10 @@ export default function LoginPage() {
               <div className="login-footer">
                 <p className="signup-prompt">
                   Don't have an account?{' '}
-                  <Link href="/signup" onClick={(e) => {
-                    e.preventDefault();
-                    navigate('/signup');
-                  }}>
+                  <Link
+                    href="/signup"
+                    onClick={(e) => { e.preventDefault(); navigate('/signup'); }}
+                  >
                     Sign up now
                   </Link>
                 </p>
