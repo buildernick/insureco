@@ -186,7 +186,7 @@ function SectionInteract() {
         <PromptBlock>Add this filter to the map page. Look at the data model and populate the filter with the values from Properties and Vehicles</PromptBlock>
 
         <h4 style={{ marginTop: "1rem" }}>Bonus: Screenshot → Prompt</h4>
-        <p>Take a screenshot of something that could look better in your new form, then send it to the agent with a prompt describing the improvement you want.</p>
+        <PromptBlock>Take a screenshot of something that could look better in your new form, then send it to the agent with a prompt describing the improvement you want.</PromptBlock>
       </BonusCard>
     </div>
   );
