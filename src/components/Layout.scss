@@ -202,6 +202,19 @@
   }
 }
 
+// Workshop Help nav link — red and stands out
+.workshop-nav-link.cds--header__menu-item,
+.cds--header__menu-bar .workshop-nav-link,
+.cds--side-nav .workshop-nav-link.cds--header__menu-item {
+  color: var(--interactive-primary) !important;
+  font-weight: var(--font-weight-semibold) !important;
+
+  &:hover {
+    background-color: rgba(218, 30, 40, 0.1) !important;
+    color: var(--interactive-hover) !important;
+  }
+}
+
 // Tooltips in header
 .cds--header__action .cds--popover-container {
   .cds--popover-content {

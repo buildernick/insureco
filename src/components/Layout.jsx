@@ -25,6 +25,7 @@ import {
   Search,
 } from "@carbon/icons-react";
 import ThemeToggle from "./ThemeToggle";
+import WorkshopHelpHub from "./WorkshopHelpHub";
 import "./Layout.scss";
 
 export default function Layout({ children }) {
@@ -99,6 +100,12 @@ export default function Layout({ children }) {
                 </HeaderMenuItem>
                 <HeaderMenuItem onClick={() => navigate("/about")}>
                   About
+                </HeaderMenuItem>
+                <HeaderMenuItem
+                  onClick={() => navigate("/workshop")}
+                  className="workshop-nav-link"
+                >
+                  Workshop Help
                 </HeaderMenuItem>
               </HeaderNavigation>
               <HeaderGlobalBar>
@@ -193,6 +200,12 @@ export default function Layout({ children }) {
                     <HeaderMenuItem onClick={() => handleNavigateAndClose("/about")}>
                       About
                     </HeaderMenuItem>
+                    <HeaderMenuItem
+                      onClick={() => handleNavigateAndClose("/workshop")}
+                      className="workshop-nav-link"
+                    >
+                      Workshop Help
+                    </HeaderMenuItem>
                   </HeaderSideNavItems>
                 </SideNavItems>
               </SideNav>
@@ -207,6 +220,7 @@ export default function Layout({ children }) {
             >
               {children}
             </Content>
+            <WorkshopHelpHub />
           </>
         );
       }}
