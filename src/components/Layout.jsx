@@ -101,13 +101,14 @@ export default function Layout({ children }) {
                 <HeaderMenuItem onClick={() => navigate("/about")}>
                   About
                 </HeaderMenuItem>
-                <HeaderMenuItem
-                  onClick={() => navigate("/workshop")}
-                  className="workshop-nav-link"
-                >
-                  Workshop Help
-                </HeaderMenuItem>
               </HeaderNavigation>
+              <button
+                className="workshop-help-nav-btn"
+                onClick={() => navigate("/workshop")}
+                aria-label="Workshop Help"
+              >
+                Workshop Help
+              </button>
               <HeaderGlobalBar>
                 <HeaderGlobalAction aria-label="Search">
                   <Search size={20} />

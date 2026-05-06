@@ -104,26 +104,6 @@ function SectionOverview() {
         </div>
       </div>
 
-      <div className="workshop-agenda">
-        <h3 className="workshop-agenda-title">Workshop Agenda</h3>
-        <div className="workshop-agenda-items">
-          <div className="workshop-agenda-item">
-            <span className="workshop-agenda-num">1</span>
-            <span className="workshop-agenda-label">Intro</span>
-            <span className="workshop-agenda-time">5 min</span>
-          </div>
-          <div className="workshop-agenda-item">
-            <span className="workshop-agenda-num">2</span>
-            <span className="workshop-agenda-label">Workshop</span>
-            <span className="workshop-agenda-time">45 min</span>
-          </div>
-          <div className="workshop-agenda-item">
-            <span className="workshop-agenda-num">3</span>
-            <span className="workshop-agenda-label">Discussion</span>
-            <span className="workshop-agenda-time">10 min</span>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

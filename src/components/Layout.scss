@@ -202,10 +202,34 @@
   }
 }
 
-// Workshop Help nav link — red and stands out
-.workshop-nav-link.cds--header__menu-item,
-.cds--header__menu-bar .workshop-nav-link,
-.cds--side-nav .workshop-nav-link.cds--header__menu-item {
+// Workshop Help — standalone red pill button in header
+.workshop-help-nav-btn {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 var(--spacing-04);
+  background: var(--interactive-primary);
+  color: var(--text-on-color) !important;
+  border: none;
+  font-size: var(--body-sm-size);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+  letter-spacing: 0.01em;
+
+  &:hover {
+    background: var(--interactive-hover);
+  }
+
+  &:focus {
+    outline: 2px solid var(--text-on-color);
+    outline-offset: -3px;
+  }
+}
+
+// Workshop Help side nav item — keep red text
+.workshop-nav-link.cds--header__menu-item {
   color: var(--interactive-primary) !important;
   font-weight: var(--font-weight-semibold) !important;
 
