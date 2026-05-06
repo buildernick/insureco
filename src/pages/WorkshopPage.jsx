@@ -11,6 +11,8 @@ import {
   Code,
   ListChecked,
   Rocket,
+  Lightning,
+  Copy,
 } from "@carbon/icons-react";
 import "./WorkshopPage.scss";
 
@@ -21,6 +23,7 @@ const sections = [
   { id: "style", label: "Style Mode", icon: PaintBrush },
   { id: "collaboration", label: "Collaboration", icon: UserMultiple },
   { id: "discussion", label: "Discussion", icon: Chat },
+  { id: "prompts", label: "Prompt Ideas", icon: Lightning },
 ];
 
 function PromptBlock({ children }) {
@@ -423,6 +426,119 @@ function SectionDiscussion() {
   );
 }
 
+const allPrompts = [
+  {
+    category: "Interact Mode",
+    badge: "interact",
+    items: [
+      {
+        label: "Add the Sign Up Flow",
+        desc: "Imports a Figma design and builds out the multi-step sign-up form.",
+        text: "Add the sign up flow to my sign up page",
+      },
+      {
+        label: "Add Form Validation",
+        desc: "Adds required-field checks, error states, and messages to each step.",
+        text: "Add validation to the new sign up form",
+      },
+      {
+        label: "Add a Map Filter",
+        desc: "Adds a cascading filter to the Map page using Properties and Vehicles data.",
+        text: "Add this filter to the map page. Look at the data model and populate the filter with the values from Properties and Vehicles",
+      },
+      {
+        label: "Screenshot → Improve",
+        desc: "Attach a screenshot and describe the visual problem you want fixed.",
+        text: "Take a screenshot of something that could look better in your new form, then send it to the agent with a prompt describing the improvement you want.",
+      },
+    ],
+  },
+  {
+    category: "Plan Mode",
+    badge: "plan",
+    items: [
+      {
+        label: "Research & Suggest a Feature",
+        desc: "Agent searches the web, analyzes top insurers, and proposes a conversion-driving feature — without writing code.",
+        text: "Do a web search for popular insurance providers. Suggest a high-impact feature they use that I could add to drive user conversion in my new sign up flow.",
+      },
+    ],
+  },
+  {
+    category: "Bonus Ideas",
+    badge: "bonus",
+    items: [
+      {
+        label: "Add an Animation",
+        desc: "Select an element first, then send this prompt.",
+        text: "Add an animation to this element",
+      },
+      {
+        label: "WCAG Design Audit",
+        desc: "Audits the current page for accessibility violations.",
+        text: "Audit this design against WCAG 2.2. Flag any violations, suggest corrections, and explain the relevant rule for each finding.",
+      },
+      {
+        label: "Better Progress Bar",
+        desc: "Get component suggestions optimised for mobile users.",
+        text: "Make me suggestions for a better progress bar that is optimized for mobile",
+      },
+    ],
+  },
+];
+
+function CopyButton({ text }) {
+  const [copied, setCopied] = React.useState(false);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    });
+  };
+  return (
+    <button className={`prompt-copy-btn ${copied ? "prompt-copy-btn--copied" : ""}`} onClick={handleCopy} aria-label="Copy prompt">
+      <Copy size={14} />
+      <span>{copied ? "Copied!" : "Copy"}</span>
+    </button>
+  );
+}
+
+function SectionPrompts() {
+  return (
+    <div className="workshop-section-content">
+      <div className="workshop-section-header">
+        <div className="workshop-section-mode-badge workshop-section-mode-badge--prompts">
+          <Lightning size={16} /> Prompt Ideas
+        </div>
+        <h2 className="workshop-section-title">All Workshop Prompts</h2>
+        <p className="workshop-section-subtitle">
+          Every prompt from the workshop in one place. Click "Copy" to paste directly into the Builder.io chat.
+        </p>
+      </div>
+
+      {allPrompts.map((group) => (
+        <div key={group.category} className="prompt-group">
+          <div className={`prompt-group-label prompt-group-label--${group.badge}`}>{group.category}</div>
+          <div className="prompt-cards">
+            {group.items.map((item, i) => (
+              <div key={i} className="prompt-card">
+                <div className="prompt-card-meta">
+                  <strong className="prompt-card-label">{item.label}</strong>
+                  <p className="prompt-card-desc">{item.desc}</p>
+                </div>
+                <div className="prompt-card-text-row">
+                  <p className="prompt-card-text">{item.text}</p>
+                  <CopyButton text={item.text} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function WorkshopPage() {
   const [searchParams] = useSearchParams();
   const [activeSection, setActiveSection] = useState(() => {
@@ -445,6 +561,7 @@ export default function WorkshopPage() {
       case "style": return <SectionStyle />;
       case "collaboration": return <SectionCollaboration />;
       case "discussion": return <SectionDiscussion />;
+      case "prompts": return <SectionPrompts />;
       default: return <SectionOverview />;
     }
   };

@@ -10,6 +10,7 @@ import {
   Chat,
   ArrowRight,
   Rocket,
+  Lightning,
 } from "@carbon/icons-react";
 import "./WorkshopHelpHub.scss";
 
@@ -49,6 +50,12 @@ const workshopLinks = [
     label: "Discussion",
     desc: "Reflection questions",
     icon: Chat,
+  },
+  {
+    id: "prompts",
+    label: "Prompt Ideas",
+    desc: "All workshop prompts in one place",
+    icon: Lightning,
   },
 ];
 
