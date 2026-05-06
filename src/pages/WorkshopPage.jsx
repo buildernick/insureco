@@ -4,7 +4,7 @@ import { Grid, Column, Tag } from "@carbon/react";
 import {
   Play,
   Idea,
-  Brush,
+  PaintBrush,
   UserMultiple,
   Chat,
   ChevronRight,
@@ -18,7 +18,7 @@ const sections = [
   { id: "overview", label: "Overview", icon: Rocket },
   { id: "interact", label: "Interact Mode", icon: Play },
   { id: "plan", label: "Plan Mode", icon: Idea },
-  { id: "style", label: "Style Mode", icon: Brush },
+  { id: "style", label: "Style Mode", icon: PaintBrush },
   { id: "collaboration", label: "Collaboration", icon: UserMultiple },
   { id: "discussion", label: "Discussion", icon: Chat },
 ];
@@ -85,7 +85,7 @@ function SectionOverview() {
         </div>
         <div className="workshop-mode-card">
           <div className="workshop-mode-icon-wrap workshop-mode-icon--style">
-            <Brush size={24} />
+            <PaintBrush size={24} />
           </div>
           <div className="workshop-mode-details">
             <h3>Style Mode</h3>
@@ -260,7 +260,7 @@ function SectionStyle() {
     <div className="workshop-section-content">
       <div className="workshop-section-header">
         <div className="workshop-section-mode-badge workshop-section-mode-badge--style">
-          <Brush size={16} /> Style Mode
+          <PaintBrush size={16} /> Style Mode
         </div>
         <h2 className="workshop-section-title">Tweak & Refine Visually</h2>
         <p className="workshop-section-subtitle">

@@ -5,7 +5,7 @@ import {
   Close,
   Play,
   Idea,
-  Brush,
+  PaintBrush,
   UserMultiple,
   Chat,
   ArrowRight,
@@ -36,7 +36,7 @@ const workshopLinks = [
     id: "style",
     label: "Style Mode",
     desc: "Visually tweak & refine",
-    icon: Brush,
+    icon: PaintBrush,
   },
   {
     id: "collaboration",
