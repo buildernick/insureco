@@ -148,7 +148,17 @@ function SectionInteract() {
       <div className="workshop-steps">
         <StepCard number={1} title="Import the Figma Screens">
           <ol className="workshop-ol">
-            <li>Navigate to the Figma design file shared with you</li>
+            <li>
+              Navigate to the{" "}
+              <a
+                href="https://www.figma.com/design/N9IZ3G9t4Wz2tc4PBJTJEw/Workshop---InsureCo?node-id=11147-17281"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="workshop-link"
+              >
+                Figma design file
+              </a>
+            </li>
             <li>Duplicate the design file to your personal drafts</li>
             <li>Open the <strong>Builder.io Figma plugin</strong> and log in</li>
             <li>Navigate to the <strong>"Web App – Sign Up"</strong> page and select the sign-up frames</li>

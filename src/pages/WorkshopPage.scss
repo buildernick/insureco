@@ -334,6 +334,16 @@
   margin-top: var(--spacing-03) !important;
 }
 
+.workshop-link {
+  color: var(--interactive-primary);
+  text-decoration: underline;
+  font-weight: var(--font-weight-semibold);
+
+  &:hover {
+    color: var(--interactive-hover);
+  }
+}
+
 .workshop-ol {
   margin: 0;
   padding-left: var(--spacing-05);
