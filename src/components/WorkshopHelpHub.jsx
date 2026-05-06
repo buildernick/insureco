@@ -7,7 +7,6 @@ import {
   Idea,
   PaintBrush,
   UserMultiple,
-  Chat,
   ArrowRight,
   Rocket,
   Lightning,
@@ -46,23 +45,11 @@ const workshopLinks = [
     icon: UserMultiple,
   },
   {
-    id: "discussion",
-    label: "Discussion",
-    desc: "Reflection questions",
-    icon: Chat,
-  },
-  {
     id: "prompts",
     label: "Prompt Ideas",
     desc: "All workshop prompts in one place",
     icon: Lightning,
   },
-];
-
-const samplePrompts = [
-  "Add the sign up flow to my sign up page",
-  "Add validation to the new sign up form",
-  "Do a web search for popular insurance providers. Suggest a high-impact feature they use that I could add to drive user conversion in my new sign up flow.",
 ];
 
 export default function WorkshopHelpHub() {
@@ -164,17 +151,6 @@ export default function WorkshopHelpHub() {
               );
             })}
           </nav>
-
-          {/* Quick Prompts */}
-          <div className="help-hub-section-label help-hub-section-label--spaced">Quick prompts to try</div>
-          <div className="help-hub-prompts">
-            {samplePrompts.map((prompt, i) => (
-              <div key={i} className="help-hub-prompt">
-                <span className="help-hub-prompt-num">{i + 1}</span>
-                <p>{prompt}</p>
-              </div>
-            ))}
-          </div>
 
           {/* Full page link */}
           <button

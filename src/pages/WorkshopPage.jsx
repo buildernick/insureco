@@ -6,7 +6,6 @@ import {
   Idea,
   PaintBrush,
   UserMultiple,
-  Chat,
   ChevronRight,
   Code,
   ListChecked,
@@ -22,7 +21,6 @@ const sections = [
   { id: "plan", label: "Plan Mode", icon: Idea },
   { id: "style", label: "Style Mode", icon: PaintBrush },
   { id: "collaboration", label: "Collaboration", icon: UserMultiple },
-  { id: "discussion", label: "Discussion", icon: Chat },
   { id: "prompts", label: "Prompt Ideas", icon: Lightning },
 ];
 
@@ -370,61 +368,6 @@ function SectionCollaboration() {
   );
 }
 
-function SectionDiscussion() {
-  const questions = [
-    {
-      num: 1,
-      q: "How did your application differ from others?",
-      sub: "Were there any similarities in what people built?",
-    },
-    {
-      num: 2,
-      q: "Which tasks seemed easier with AI?",
-      sub: "Were there any tasks where AI felt less helpful or got in the way?",
-    },
-    {
-      num: 3,
-      q: "Were any of your prompts interpreted differently than you expected?",
-      sub: "What did you learn from working with the agent about how to prompt effectively?",
-    },
-    {
-      num: 4,
-      q: "Do you use AI to collaborate in your day-to-day today?",
-      sub: "If so, in what ways? Code generation, content, design, research?",
-    },
-    {
-      num: 5,
-      q: "Do you see ways to leverage greater collaboration in your day-to-day work?",
-      sub: "Can AI-assisted collaboration unblock any of your current bottlenecks?",
-    },
-  ];
-
-  return (
-    <div className="workshop-section-content">
-      <div className="workshop-section-header">
-        <div className="workshop-section-mode-badge workshop-section-mode-badge--discussion">
-          <Chat size={16} /> Discussion
-        </div>
-        <h2 className="workshop-section-title">Reflect & Share</h2>
-        <p className="workshop-section-subtitle">
-          Take a few minutes to discuss these questions with your group. There are no right or wrong answers — the goal is to share observations and learn from each other.
-        </p>
-      </div>
-
-      <div className="workshop-discussion-questions">
-        {questions.map((item) => (
-          <div key={item.num} className="workshop-discussion-item">
-            <div className="workshop-discussion-num">{item.num}</div>
-            <div className="workshop-discussion-text">
-              <strong>{item.q}</strong>
-              <p>{item.sub}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 const allPrompts = [
   {
@@ -560,7 +503,6 @@ export default function WorkshopPage() {
       case "plan": return <SectionPlan />;
       case "style": return <SectionStyle />;
       case "collaboration": return <SectionCollaboration />;
-      case "discussion": return <SectionDiscussion />;
       case "prompts": return <SectionPrompts />;
       default: return <SectionOverview />;
     }
