@@ -19,6 +19,9 @@ import {
   RadioTile,
   ProgressIndicator,
   ProgressStep,
+  ProgressBar,
+  ContentSwitcher,
+  Switch,
   DatePicker,
   DatePickerInput,
 } from '@carbon/react';
@@ -28,6 +31,7 @@ import './SignUpPage.scss';
 export default function SignUpPage() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
+  const [progressStyle, setProgressStyle] = useState('carbon-indicator');
   const [formData, setFormData] = useState({
     // Step 1: Personal Info
     firstName: '',
@@ -608,25 +612,75 @@ export default function SignUpPage() {
           </p>
         </header>
 
-        <Tile className="signup-progress">
-          <ProgressIndicator currentIndex={currentStep} spaceEqually>
-            {steps.map((step, index) => (
-              <ProgressStep
-                key={step.key}
-                label={step.label}
-                description={
-                  index < currentStep
-                    ? 'Complete'
-                    : index === currentStep
-                    ? 'Current'
-                    : ''
-                }
-                complete={index < currentStep}
-                current={index === currentStep}
-              />
-            ))}
-          </ProgressIndicator>
-        </Tile>
+        <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
+          <ContentSwitcher
+            onChange={(e) => setProgressStyle(e.name)}
+            selectedIndex={
+              progressStyle === 'carbon-indicator' ? 0 :
+              progressStyle === 'carbon-bar' ? 1 : 2
+            }
+          >
+            <Switch name="carbon-indicator" text="Option 1 (Carbon Indicator)" />
+            <Switch name="carbon-bar" text="Option 2 (Carbon Bar)" />
+            <Switch name="custom-pills" text="Option 3 (Custom Pills)" />
+          </ContentSwitcher>
+        </div>
+
+        {progressStyle === 'carbon-indicator' && (
+          <Tile className="signup-progress">
+            <ProgressIndicator currentIndex={currentStep} spaceEqually>
+              {steps.map((step, index) => (
+                <ProgressStep
+                  key={step.key}
+                  label={step.label}
+                  description={
+                    index < currentStep
+                      ? 'Complete'
+                      : index === currentStep
+                      ? 'Current'
+                      : ''
+                  }
+                  complete={index < currentStep}
+                  current={index === currentStep}
+                />
+              ))}
+            </ProgressIndicator>
+          </Tile>
+        )}
+
+        {progressStyle === 'carbon-bar' && (
+          <div className="signup-progress-bar">
+            <div className="progress-bar-label">
+              <span>{currentStepData.label}</span>
+              <span>Step {currentStep + 1} of {steps.length}</span>
+            </div>
+            <ProgressBar
+              value={currentStep + 1}
+              max={steps.length}
+              hideLabel
+            />
+          </div>
+        )}
+
+        {progressStyle === 'custom-pills' && (
+          <div className="signup-progress-custom">
+            {steps.map((step, index) => {
+              const isActive = index === currentStep;
+              const isComplete = index < currentStep;
+              return (
+                <div
+                  key={step.key}
+                  className={`custom-step ${isActive ? 'custom-step--active' : ''} ${isComplete ? 'custom-step--complete' : ''}`}
+                >
+                  <div className="custom-step-indicator">
+                    {isComplete ? <Checkmark size={16} /> : index + 1}
+                  </div>
+                  <div className="custom-step-label">{step.label}</div>
+                </div>
+              );
+            })}
+          </div>
+        )}
 
         <Form className="signup-form" onSubmit={handleSubmit}>
           <Stack gap={7} className="signup-step-content">

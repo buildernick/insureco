@@ -283,6 +283,115 @@
   }
 }
 
+.signup-progress-bar {
+  margin-bottom: var(--spacing-06);
+  padding: var(--spacing-05);
+  background: var(--background-secondary);
+  border-radius: var(--radius-sm);
+  box-shadow:
+    0 1px 2px 0 rgba(0, 0, 0, 0.1),
+    0 1px 3px 0 rgba(0, 0, 0, 0.1);
+
+  .progress-bar-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-03);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+  }
+}
+
+.signup-progress-custom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-04);
+  padding: var(--spacing-05) var(--spacing-04);
+  background: var(--background-secondary);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--spacing-06);
+  box-shadow:
+    0 1px 2px 0 rgba(0, 0, 0, 0.1),
+    0 1px 3px 0 rgba(0, 0, 0, 0.1);
+
+  .custom-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-02);
+    position: relative;
+    flex: 1;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      width: 100%;
+      height: 2px;
+      background: var(--border-subtle);
+      z-index: 1;
+    }
+
+    &:last-child::after {
+      display: none;
+    }
+  }
+
+  .custom-step--active {
+    .custom-step-indicator {
+      background: var(--interactive-primary);
+      border-color: var(--interactive-primary);
+      color: var(--text-on-color);
+    }
+    .custom-step-label {
+      color: var(--interactive-primary);
+      font-weight: var(--font-weight-semibold);
+    }
+  }
+
+  .custom-step--complete {
+    .custom-step-indicator {
+      background: var(--interactive-primary);
+      border-color: var(--interactive-primary);
+      color: var(--text-on-color);
+    }
+    &::after {
+      background: var(--interactive-primary);
+    }
+  }
+
+  .custom-step-indicator {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--border-subtle);
+    background: var(--background-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-secondary);
+    z-index: 2;
+    transition: all 0.3s ease;
+
+    svg {
+      fill: var(--text-on-color);
+    }
+  }
+
+  .custom-step-label {
+    font-size: var(--body-sm-size);
+    color: var(--text-secondary);
+    text-align: center;
+
+    @media (max-width: 671px) {
+      font-size: 10px;
+    }
+  }
+}
+
 .signup-form {
   background: var(--background-secondary);
   border-radius: var(--radius-lg);
