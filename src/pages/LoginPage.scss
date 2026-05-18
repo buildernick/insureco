@@ -159,3 +159,26 @@
     font-weight: var(--font-weight-semibold);
   }
 }
+
+.back-to-login {
+  text-align: center;
+  padding-top: var(--spacing-04);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-02);
+  font-size: var(--body-sm-size);
+  color: var(--interactive-primary);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  svg {
+    fill: currentColor;
+  }
+}
