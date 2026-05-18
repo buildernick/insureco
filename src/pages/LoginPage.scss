@@ -141,6 +141,65 @@
   }
 }
 
+// Forgot password modal
+.forgot-description {
+  font-size: var(--body-md-size);
+  color: var(--text-secondary);
+  margin: 0 0 var(--spacing-05) 0;
+}
+
+.forgot-form {
+  width: 100%;
+}
+
+.magic-link-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--spacing-05) 0;
+}
+
+.magic-link-success-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--color-success, #24a148);
+  margin-bottom: var(--spacing-05);
+
+  svg {
+    fill: var(--text-on-color);
+  }
+}
+
+.magic-link-success-heading {
+  font-size: var(--body-lg-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-03) 0;
+}
+
+.magic-link-success-text {
+  font-size: var(--body-md-size);
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
+
+  strong {
+    color: var(--text-primary);
+    font-weight: var(--font-weight-semibold);
+  }
+}
+
+.magic-link-loading {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--spacing-05);
+}
+
 .demo-notice {
   background: var(--background-tertiary);
   padding: var(--spacing-04);
