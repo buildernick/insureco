@@ -404,6 +404,57 @@
 }
 
 // ============================================
+// Progress Indicator (vertical, signup flow)
+// ============================================
+// High specificity required: Carbon's defaults use 3+ class selectors with
+// hardcoded colors that don't adapt to custom theme tokens.
+
+.signup-progress-indicator {
+  .cds--progress-step .cds--progress-label {
+    color: var(--text-primary) !important;
+  }
+
+  .cds--progress-step--current {
+    .cds--progress-step-button .cds--progress-label {
+      color: var(--interactive-primary) !important;
+      font-weight: 600;
+    }
+
+    .cds--progress-step-button .cds--progress-line {
+      background-color: var(--interactive-primary) !important;
+    }
+
+    svg {
+      fill: var(--interactive-primary) !important;
+    }
+  }
+
+  .cds--progress-step--complete {
+    .cds--progress-step-button .cds--progress-label {
+      color: var(--text-primary) !important;
+    }
+
+    svg {
+      fill: var(--interactive-primary) !important;
+    }
+  }
+
+  .cds--progress-step--incomplete {
+    .cds--progress-step-button .cds--progress-label {
+      color: var(--text-secondary) !important;
+    }
+
+    svg {
+      fill: var(--text-secondary) !important;
+    }
+  }
+
+  .cds--progress-line {
+    background-color: var(--border-subtle) !important;
+  }
+}
+
+// ============================================
 // Progress Bar (not ProgressIndicator)
 // ============================================
 .cds--progress-bar {
