@@ -18,12 +18,106 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [view, setView] = useState('login'); // 'login' | 'forgot' | 'forgot-sent'
+  const [resetEmail, setResetEmail] = useState('');
 
   const handleLogin = (e) => {
     e.preventDefault();
-    // Mock authentication - no validation, just navigate to dashboard
     navigate('/dashboard');
   };
+
+  const handleForgotSubmit = (e) => {
+    e.preventDefault();
+    setView('forgot-sent');
+  };
+
+  if (view === 'forgot') {
+    return (
+      <Grid className="login-page">
+        <Column sm={4} md={8} lg={{ span: 8, offset: 4 }} xlg={{ span: 6, offset: 5 }}>
+          <div className="login-container">
+            <Tile className="login-card">
+              <Stack gap={6} className="login-content">
+                <div className="login-header">
+                  <Heading className="login-title">Reset Password</Heading>
+                  <p className="login-subtitle">
+                    Enter your email and we'll send you a reset link.
+                  </p>
+                </div>
+
+                <Form onSubmit={handleForgotSubmit} className="login-form">
+                  <Stack gap={5}>
+                    <TextInput
+                      id="reset-email"
+                      labelText="Email Address"
+                      placeholder="you@example.com"
+                      value={resetEmail}
+                      onChange={(e) => setResetEmail(e.target.value)}
+                      type="email"
+                      required
+                    />
+                    <Button
+                      type="submit"
+                      kind="primary"
+                      size="lg"
+                      renderIcon={ArrowRight}
+                      className="login-button"
+                    >
+                      Send Reset Link
+                    </Button>
+                  </Stack>
+                </Form>
+
+                <div className="login-footer">
+                  <Link
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setView('login');
+                    }}
+                  >
+                    Back to sign in
+                  </Link>
+                </div>
+              </Stack>
+            </Tile>
+          </div>
+        </Column>
+      </Grid>
+    );
+  }
+
+  if (view === 'forgot-sent') {
+    return (
+      <Grid className="login-page">
+        <Column sm={4} md={8} lg={{ span: 8, offset: 4 }} xlg={{ span: 6, offset: 5 }}>
+          <div className="login-container">
+            <Tile className="login-card">
+              <Stack gap={6} className="login-content">
+                <div className="login-header">
+                  <Heading className="login-title">Check Your Email</Heading>
+                  <p className="login-subtitle">
+                    If an account exists for <strong>{resetEmail}</strong>, a reset link has been sent.
+                  </p>
+                </div>
+                <div className="login-footer">
+                  <Link
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setView('login');
+                    }}
+                  >
+                    Back to sign in
+                  </Link>
+                </div>
+              </Stack>
+            </Tile>
+          </div>
+        </Column>
+      </Grid>
+    );
+  }
 
   return (
     <Grid className="login-page">
@@ -69,7 +163,14 @@ export default function LoginPage() {
                   />
 
                   <div className="login-options">
-                    <Link href="#" className="forgot-password-link">
+                    <Link
+                      href="#"
+                      className="forgot-password-link"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setView('forgot');
+                      }}
+                    >
                       Forgot password?
                     </Link>
                   </div>
