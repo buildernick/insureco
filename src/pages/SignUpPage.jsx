@@ -17,11 +17,10 @@ import {
   NumberInput,
   TileGroup,
   RadioTile,
-  ProgressIndicator,
-  ProgressStep,
   DatePicker,
   DatePickerInput,
 } from '@carbon/react';
+import CircularMiniStepper from '../components/CircularMiniStepper';
 import { ArrowRight, ArrowLeft, Checkmark, Car, Home as HomeIcon } from '@carbon/icons-react';
 import './SignUpPage.scss';
 
@@ -608,25 +607,9 @@ export default function SignUpPage() {
           </p>
         </header>
 
-        <Tile className="signup-progress">
-          <ProgressIndicator currentIndex={currentStep} spaceEqually>
-            {steps.map((step, index) => (
-              <ProgressStep
-                key={step.key}
-                label={step.label}
-                description={
-                  index < currentStep
-                    ? 'Complete'
-                    : index === currentStep
-                    ? 'Current'
-                    : ''
-                }
-                complete={index < currentStep}
-                current={index === currentStep}
-              />
-            ))}
-          </ProgressIndicator>
-        </Tile>
+        <div className="signup-progress">
+          <CircularMiniStepper steps={steps} currentIndex={currentStep} />
+        </div>
 
         <Form className="signup-form" onSubmit={handleSubmit}>
           <Stack gap={7} className="signup-step-content">
