@@ -19,8 +19,8 @@ import {
   RadioTile,
   DatePicker,
   DatePickerInput,
+  ProgressBar,
 } from '@carbon/react';
-import CircularMiniStepper from '../components/CircularMiniStepper';
 import { ArrowRight, ArrowLeft, Checkmark, Car, Home as HomeIcon } from '@carbon/icons-react';
 import './SignUpPage.scss';
 
@@ -608,7 +608,30 @@ export default function SignUpPage() {
         </header>
 
         <div className="signup-progress">
-          <CircularMiniStepper steps={steps} currentIndex={currentStep} />
+          <div className="progress-bar-wrapper">
+            <ProgressBar
+              label="Sign-up Progress"
+              helperText={`Step ${currentStep + 1} of ${steps.length}: ${steps[currentStep].label}`}
+              value={((currentStep + 1) / steps.length) * 100}
+              max={100}
+              status={currentStep === steps.length - 1 ? 'finished' : 'active'}
+            />
+            <div className="progress-bar-steps">
+              {steps.map((step, index) => (
+                <div
+                  key={step.key}
+                  className={`progress-bar-step${
+                    index < currentStep ? ' progress-bar-step--complete' : ''
+                  }${index === currentStep ? ' progress-bar-step--current' : ''}`}
+                >
+                  <div className="progress-bar-step-marker">
+                    {index < currentStep ? <Checkmark size={12} /> : index + 1}
+                  </div>
+                  <span className="progress-bar-step-label">{step.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         <Form className="signup-form" onSubmit={handleSubmit}>
