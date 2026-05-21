@@ -19,6 +19,7 @@ import {
   RadioTile,
   DatePicker,
   DatePickerInput,
+  Tag,
 } from '@carbon/react';
 import { ArrowRight, ArrowLeft, Checkmark, Car, Home as HomeIcon } from '@carbon/icons-react';
 import './SignUpPage.scss';
@@ -38,16 +39,17 @@ function CircularMiniStepper({ steps, currentIndex }) {
       <div className="signup-mini-stepper__progress-text">
         Step {currentIndex + 1} of {steps.length}
       </div>
-      <div className="signup-mini-stepper__circles">
+      <div className="signup-mini-stepper__tags">
         {visibleSteps.map((step, idx) => (
           <React.Fragment key={step.index}>
-            <div className={`signup-mini-stepper__circle signup-mini-stepper__circle--${step.status}`}>
-              {step.status === 'previous' ? (
-                <Checkmark size={20} />
-              ) : (
-                <span className="signup-mini-stepper__number">{step.index + 1}</span>
-              )}
-            </div>
+            <Tag
+              type={step.status === 'previous' ? 'green' : step.status === 'current' ? 'blue' : 'gray'}
+              renderIcon={step.status === 'previous' ? Checkmark : undefined}
+              size={step.status === 'current' ? 'lg' : 'md'}
+              className={`signup-mini-stepper__tag signup-mini-stepper__tag--${step.status}`}
+            >
+              {step.index + 1}
+            </Tag>
             {idx < visibleSteps.length - 1 && (
               <div className="signup-mini-stepper__connector" />
             )}
