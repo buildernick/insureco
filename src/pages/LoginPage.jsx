@@ -69,7 +69,10 @@ export default function LoginPage() {
                   />
 
                   <div className="login-options">
-                    <Link href="#" className="forgot-password-link">
+                    <Link href="/forgot-password" className="forgot-password-link" onClick={(e) => {
+                      e.preventDefault();
+                      navigate('/forgot-password');
+                    }}>
                       Forgot password?
                     </Link>
                   </div>
