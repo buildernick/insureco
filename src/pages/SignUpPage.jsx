@@ -35,7 +35,7 @@ import './SignUpPage.scss';
 export default function SignUpPage() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
-  const [progressVariant, setProgressVariant] = useState(1);
+  const [progressVariant, setProgressVariant] = useState(0);
   const [formData, setFormData] = useState({
     // Step 1: Personal Info
     firstName: '',
@@ -115,6 +115,7 @@ export default function SignUpPage() {
   const progressPercentage = ((currentStep + 1) / steps.length) * 100;
 
   const VARIANT_LABELS = [
+    { id: 0, label: 'Original' },
     { id: 1, label: 'Vertical' },
     { id: 2, label: 'Bar' },
     { id: 3, label: 'Tabs' },
@@ -123,9 +124,24 @@ export default function SignUpPage() {
 
   const renderProgressIndicator = () => {
     switch (progressVariant) {
-      case 1:
+      case 0:
         return (
           <ProgressIndicator currentIndex={currentStep} spaceEqually>
+            {steps.map((step, index) => (
+              <ProgressStep
+                key={step.key}
+                label={step.label}
+                description={index < currentStep ? 'Complete' : index === currentStep ? 'Current' : ''}
+                complete={index < currentStep}
+                current={index === currentStep}
+              />
+            ))}
+          </ProgressIndicator>
+        );
+
+      case 1:
+        return (
+          <ProgressIndicator currentIndex={currentStep} vertical>
             {steps.map((step, index) => (
               <ProgressStep
                 key={step.key}
