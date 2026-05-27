@@ -1,0 +1,286 @@
+@use '../styles/tokens' as *;
+
+// ─── Page Layout ──────────────────────────────────────────────────────────────
+.progress-mockups-page {
+  padding: var(--spacing-07) var(--spacing-05);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.mockups-page-header {
+  margin-bottom: var(--spacing-07);
+}
+
+.mockups-page-title {
+  font-size: var(--heading-h2-size);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-03);
+}
+
+.mockups-page-subtitle {
+  font-size: var(--body-md-size);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+// ─── Option Card ──────────────────────────────────────────────────────────────
+.option-card {
+  background: var(--background-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-06);
+  margin-bottom: var(--spacing-06);
+}
+
+.option-card__header {
+  margin-bottom: 0;
+}
+
+.option-badge {
+  display: inline-block;
+  padding: 2px var(--spacing-03);
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--spacing-03);
+
+  &--design-system {
+    background: rgba(218, 30, 40, 0.1);
+    color: var(--interactive-primary);
+    border: 1px solid rgba(218, 30, 40, 0.25);
+  }
+
+  &--custom {
+    background: rgba(100, 56, 255, 0.1);
+    color: #6438ff;
+    border: 1px solid rgba(100, 56, 255, 0.25);
+
+    :root[data-carbon-theme='g90'] &,
+    :root[data-carbon-theme='g100'] & {
+      color: #a78bff;
+      background: rgba(100, 56, 255, 0.15);
+      border-color: rgba(167, 139, 255, 0.3);
+    }
+  }
+}
+
+.option-card__title {
+  font-size: var(--heading-h4-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-02);
+}
+
+.option-card__description {
+  font-size: var(--body-sm-size);
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0 0 var(--spacing-02);
+}
+
+.option-card__components {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  margin: 0;
+}
+
+.option-card__divider {
+  border: none;
+  border-top: 1px solid var(--border-subtle);
+  margin: var(--spacing-05) 0;
+}
+
+// ─── Preview Area (shared) ────────────────────────────────────────────────────
+.option-preview-area {
+  background: var(--background-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-05);
+  margin-bottom: var(--spacing-04);
+}
+
+// ─── Demo Controls ────────────────────────────────────────────────────────────
+.demo-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.demo-controls__hint {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  text-align: center;
+}
+
+// ─── Option 1: ProgressBar brand color override ───────────────────────────────
+.option-preview-area {
+  .cds--progress-bar__bar {
+    background: var(--interactive-primary) !important;
+  }
+
+  // Slim variant (Option 3)
+  .cds--progress-bar--sm .cds--progress-bar__bar {
+    background: var(--interactive-primary) !important;
+  }
+}
+
+// ─── Option 2: Tag Stepper ────────────────────────────────────────────────────
+.tag-stepper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-04);
+}
+
+.tag-stepper__row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+// Override Carbon Tag to be more circular / compact
+.tag-stepper__tag.cds--tag {
+  border-radius: 50% !important;
+  min-width: 26px !important;
+  height: 26px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 11px !important;
+  font-weight: var(--font-weight-semibold) !important;
+  flex-shrink: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &.tag-stepper__tag--current {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 3px rgba(218, 30, 40, 0.2);
+  }
+}
+
+.tag-stepper__connector {
+  flex: 1;
+  height: 2px;
+  background: var(--border-subtle);
+  transition: background 0.3s ease;
+
+  &--done {
+    background: var(--interactive-primary);
+  }
+}
+
+.tag-stepper__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tag-stepper__step-name {
+  font-size: var(--body-md-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.tag-stepper__step-count {
+  font-size: var(--body-sm-size);
+  color: var(--text-secondary);
+}
+
+// ─── Option 3: Breadcrumb + slim ProgressBar ──────────────────────────────────
+.breadcrumb-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-04);
+}
+
+.breadcrumb-progress__trail {
+  // Prevent breadcrumb from wrapping on mobile
+  .cds--breadcrumb {
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+
+  .cds--breadcrumb-item {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
+  }
+
+  // Make current breadcrumb item use brand color
+  .cds--breadcrumb-item--current .cds--link {
+    color: var(--interactive-primary) !important;
+    font-weight: var(--font-weight-semibold) !important;
+  }
+}
+
+// ─── Option 4: Glowing LED Segments (Custom) ──────────────────────────────────
+.glow-stepper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-03);
+}
+
+.glow-stepper__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.glow-stepper__step-name {
+  font-size: var(--body-md-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.glow-stepper__badge {
+  font-size: 12px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-on-color);
+  background: var(--interactive-primary);
+  padding: 2px var(--spacing-03);
+  border-radius: 12px;
+  letter-spacing: 0.03em;
+}
+
+.glow-stepper__track {
+  display: flex;
+  gap: 5px;
+  height: 12px;
+}
+
+.glow-stepper__segment {
+  flex: 1;
+  height: 100%;
+  border-radius: 6px;
+  transition: background 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+
+  &--complete {
+    background: var(--interactive-primary);
+    opacity: 0.65;
+  }
+
+  &--current {
+    background: var(--interactive-primary);
+    box-shadow: 0 0 10px 3px rgba(218, 30, 40, 0.55);
+    animation: glow-pulse 1.6s ease-in-out infinite;
+  }
+
+  &--upcoming {
+    background: var(--border-subtle);
+    opacity: 0.6;
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 6px 2px rgba(218, 30, 40, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 14px 4px rgba(218, 30, 40, 0.7);
+  }
+}
