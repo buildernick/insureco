@@ -119,7 +119,7 @@ export default function SignUpPage() {
     { id: 1, label: 'Vertical' },
     { id: 2, label: 'Bar' },
     { id: 3, label: 'Tabs' },
-    { id: 4, label: 'Compact' },
+    { id: 4, label: 'Circular' },
   ];
 
   const renderProgressIndicator = () => {
