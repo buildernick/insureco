@@ -13,7 +13,7 @@ const vehicleFacets = [
     key: 'status',
     label: 'Status',
     options: [
-      { value: 'active', label: 'Active', count: 42 },
+      { value: 'active', label: 'Alive', count: 42 },
       { value: 'inactive', label: 'Inactive', count: 8 },
       { value: 'pending', label: 'Pending', count: 5 },
     ],
