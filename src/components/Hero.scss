@@ -51,3 +51,20 @@
     flex-wrap: wrap;
   }
 }
+
+@media (max-width: $breakpoint-md) {
+  .hero-section {
+    padding: var(--spacing-09) var(--spacing-05);
+    min-height: 500px;
+    background-position: 65% center;
+
+    .hero-heading {
+      font-size: var(--heading-h2-size);
+    }
+
+    .hero-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+}

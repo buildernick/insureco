@@ -19,6 +19,7 @@ import {
 } from '@carbon/icons-react';
 import { useNavigate } from 'react-router-dom';
 import Hero from '../components/Hero';
+import SplitHero from '../components/SplitHero';
 import './LandingPage.scss';
 
 export default function LandingPage() {
@@ -96,87 +97,31 @@ export default function LandingPage() {
         </Grid>
       </section>
 
-      {/* Car Insurance Section */}
-      <section id="car-insurance" className="product-section car-insurance-section">
-        <Grid>
-          <Column lg={8} md={4} sm={4}>
-            <div className="product-content">
-              <div className="product-icon">
-                <Car size={64} />
-              </div>
-              <Heading className="product-heading">Car Insurance</Heading>
-              <p className="product-description">
-                Drive with confidence knowing you're protected. Our comprehensive auto insurance 
-                covers collision, liability, and more. Get instant quotes and customize your 
-                coverage to match your needs.
-              </p>
-              <ul className="product-features">
-                <li><CheckmarkFilled size={20} /> Collision coverage</li>
-                <li><CheckmarkFilled size={20} /> Liability protection</li>
-                <li><CheckmarkFilled size={20} /> Roadside assistance</li>
-                <li><CheckmarkFilled size={20} /> Rental car coverage</li>
-              </ul>
-              <Button
-                kind="tertiary"
-                onClick={() => navigate('/signup')}
-                renderIcon={ArrowRight}
-              >
-                Learn More
-              </Button>
-            </div>
-          </Column>
-          <Column lg={8} md={4} sm={4}>
-            <div className="product-image">
-              <img
-                src="https://images.pexels.com/photos/220309/pexels-photo-220309.jpeg?auto=compress&cs=tinysrgb&w=800"
-                alt="Modern blue sedan representing everyday auto insurance coverage"
-                loading="lazy"
-              />
-            </div>
-          </Column>
-        </Grid>
-      </section>
+      <SplitHero
+        id="car-insurance"
+        image="https://images.pexels.com/photos/220309/pexels-photo-220309.jpeg?auto=compress&cs=tinysrgb&w=800"
+        imageAlt="Modern blue sedan representing everyday auto insurance coverage"
+        imagePosition="right"
+        icon={<Car size={64} />}
+        headline="Car Insurance"
+        description="Drive with confidence knowing you're protected. Our comprehensive auto insurance covers collision, liability, and more. Get instant quotes and customize your coverage to match your needs."
+        features={['Collision coverage', 'Liability protection', 'Roadside assistance', 'Rental car coverage']}
+        button={{ label: 'Learn More', onClick: () => navigate('/signup') }}
+        background="primary"
+      />
 
-      {/* Home Insurance Section */}
-      <section id="home-insurance" className="product-section home-insurance-section">
-        <Grid>
-          <Column lg={8} md={4} sm={4}>
-            <div className="product-image">
-              <img
-                src="https://images.pexels.com/photos/7587856/pexels-photo-7587856.jpeg?auto=compress&cs=tinysrgb&w=800"
-                alt="Modern suburban home representing comprehensive home insurance protection"
-                loading="lazy"
-              />
-            </div>
-          </Column>
-          <Column lg={8} md={4} sm={4}>
-            <div className="product-content">
-              <div className="product-icon">
-                <HomeIcon size={64} />
-              </div>
-              <Heading className="product-heading">Home Insurance</Heading>
-              <p className="product-description">
-                Protect your home and belongings with our comprehensive homeowners insurance. 
-                Coverage for property damage, personal liability, and more. Your peace of mind 
-                is our priority.
-              </p>
-              <ul className="product-features">
-                <li><CheckmarkFilled size={20} /> Property damage coverage</li>
-                <li><CheckmarkFilled size={20} /> Personal liability protection</li>
-                <li><CheckmarkFilled size={20} /> Natural disaster coverage</li>
-                <li><CheckmarkFilled size={20} /> Personal property protection</li>
-              </ul>
-              <Button
-                kind="tertiary"
-                onClick={() => navigate('/signup')}
-                renderIcon={ArrowRight}
-              >
-                Learn More
-              </Button>
-            </div>
-          </Column>
-        </Grid>
-      </section>
+      <SplitHero
+        id="home-insurance"
+        image="https://images.pexels.com/photos/7587856/pexels-photo-7587856.jpeg?auto=compress&cs=tinysrgb&w=800"
+        imageAlt="Modern suburban home representing comprehensive home insurance protection"
+        imagePosition="left"
+        icon={<HomeIcon size={64} />}
+        headline="Home Insurance"
+        description="Protect your home and belongings with our comprehensive homeowners insurance. Coverage for property damage, personal liability, and more. Your peace of mind is our priority."
+        features={['Property damage coverage', 'Personal liability protection', 'Natural disaster coverage', 'Personal property protection']}
+        button={{ label: 'Learn More', onClick: () => navigate('/signup') }}
+        background="secondary"
+      />
 
       {/* Testimonials Section */}
       <section className="testimonials-section">
