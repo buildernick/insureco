@@ -1,57 +1,165 @@
 @use '../styles/tokens' as *;
 
 .landing-page {
-  min-height: 100vh;
   background: var(--background-primary);
 }
 
-.benefits-section {
-  padding: var(--spacing-10) var(--spacing-05);
-  background: var(--background-secondary);
-}
-
-.benefits-heading {
-  font-size: var(--heading-h2-size);
-  font-weight: var(--heading-h2-weight);
+// Bordered section heading row (matches Figma full-width boxed headings)
+.section-heading-row {
+  border: 1px solid var(--text-primary);
   text-align: center;
+  padding: var(--spacing-04) var(--spacing-05);
   margin-bottom: var(--spacing-09);
-  color: var(--text-primary);
-}
 
-.benefit-tile {
-  height: 100%;
-  text-align: center;
-  padding: var(--spacing-07);
-  transition: transform var(--motion-hover), box-shadow var(--motion-hover);
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--card-shadow-hover);
+  &__text {
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--text-primary);
+    margin: 0;
   }
 }
 
-.benefit-icon {
-  color: var(--interactive-primary);
-  margin-bottom: var(--spacing-05);
+// Features Section
+.features-section {
+  padding: var(--spacing-09) var(--spacing-05);
+  background: var(--background-secondary);
+}
+
+.feature-tile {
+  height: 100%;
+  text-align: center;
+  padding: var(--spacing-07) var(--spacing-06) !important;
+
+  &__icon {
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-05);
+    display: flex;
+    justify-content: center;
+  }
+
+  &__title {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0.16px;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-04);
+  }
+
+  &__description {
+    font-size: var(--body-md-size);
+    line-height: 1.43;
+    letter-spacing: 0.16px;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+}
+
+// Testimonials Section
+.testimonials-section {
+  padding: var(--spacing-09) var(--spacing-05);
+  background: var(--background-primary);
+}
+
+.testimonial-tile {
+  height: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  padding: var(--spacing-06) !important;
+
+  &__quote {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.43;
+    letter-spacing: 0.16px;
+    color: var(--text-primary);
+    flex-grow: 1;
+    margin-bottom: var(--spacing-06);
+  }
+
+  &__author {
+    border-top: 1px solid var(--border-subtle);
+    padding-top: var(--spacing-04);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-02);
+  }
+
+  &__name {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: 0.16px;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  &__role {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0.16px;
+    color: var(--text-secondary);
+    margin: 0;
+  }
 }
 
-.benefit-title {
-  font-size: var(--heading-h4-size);
-  font-weight: var(--heading-h4-weight);
-  margin-bottom: var(--spacing-03);
-  color: var(--text-primary);
+// Footer
+.landing-footer {
+  padding: var(--spacing-09) var(--spacing-05) var(--spacing-06);
+  background: var(--background-secondary);
 }
 
-.benefit-description {
-  font-size: var(--body-md-size);
+.footer-col {
+  padding-bottom: var(--spacing-06);
+
+  &__heading {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    margin: 0 0 var(--spacing-04) 0;
+  }
+
+  &__body {
+    font-size: 14px;
+    line-height: 1;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  &__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-03);
+
+    li {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+  }
+}
+
+.footer-copyright {
+  margin-top: var(--spacing-07);
+  padding-top: var(--spacing-05);
+  border-top: 1px solid var(--border-subtle);
+  text-align: center;
+  font-size: 14px;
   color: var(--text-secondary);
-  line-height: var(--line-height-normal);
 }
 
+// Responsive
 @media (max-width: $breakpoint-md) {
-  .benefits-heading {
-    font-size: var(--heading-h3-size);
+  .section-heading-row__text {
+    font-size: 22px;
+  }
+
+  .feature-tile__title {
+    font-size: 20px;
   }
 }
