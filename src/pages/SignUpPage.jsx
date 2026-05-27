@@ -19,15 +19,23 @@ import {
   RadioTile,
   ProgressIndicator,
   ProgressStep,
+  ProgressBar,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
   DatePicker,
   DatePickerInput,
 } from '@carbon/react';
 import { ArrowRight, ArrowLeft, Checkmark, Car, Home as HomeIcon } from '@carbon/icons-react';
+import CircularMiniStepper from '../components/CircularMiniStepper';
 import './SignUpPage.scss';
 
 export default function SignUpPage() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
+  const [progressVariant, setProgressVariant] = useState(1);
   const [formData, setFormData] = useState({
     // Step 1: Personal Info
     firstName: '',
@@ -104,6 +112,94 @@ export default function SignUpPage() {
 
   const steps = getSteps();
   const currentStepData = steps[currentStep];
+  const progressPercentage = ((currentStep + 1) / steps.length) * 100;
+
+  const VARIANT_LABELS = [
+    { id: 1, label: 'Vertical' },
+    { id: 2, label: 'Bar' },
+    { id: 3, label: 'Tabs' },
+    { id: 4, label: 'Compact' },
+  ];
+
+  const renderProgressIndicator = () => {
+    switch (progressVariant) {
+      case 1:
+        return (
+          <ProgressIndicator currentIndex={currentStep} spaceEqually>
+            {steps.map((step, index) => (
+              <ProgressStep
+                key={step.key}
+                label={step.label}
+                description={index < currentStep ? 'Complete' : index === currentStep ? 'Current' : ''}
+                complete={index < currentStep}
+                current={index === currentStep}
+              />
+            ))}
+          </ProgressIndicator>
+        );
+
+      case 2:
+        return (
+          <div className="signup-progress-bar-wrapper">
+            <ProgressBar
+              label="Sign-up Progress"
+              helperText={`Step ${currentStep + 1} of ${steps.length}: ${steps[currentStep].label}`}
+              value={progressPercentage}
+              max={100}
+              status={currentStep === steps.length - 1 ? 'finished' : 'active'}
+            />
+            <div className="signup-step-list">
+              {steps.map((step, index) => (
+                <div
+                  key={step.key}
+                  className={`signup-step-list-item ${index < currentStep ? 'signup-step-list-item--complete' : ''} ${index === currentStep ? 'signup-step-list-item--current' : ''}`}
+                >
+                  <div className="signup-step-list-marker">
+                    {index < currentStep ? <Checkmark size={12} /> : index + 1}
+                  </div>
+                  <span className="signup-step-list-label">{step.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 3:
+        return (
+          <Tabs selectedIndex={currentStep}>
+            <TabList aria-label="Sign-up steps" className="signup-tabs-stepper">
+              {steps.map((step, index) => (
+                <Tab
+                  key={step.key}
+                  disabled
+                  className={`signup-tabs-tab ${index < currentStep ? 'signup-tabs-tab--complete' : ''}`}
+                >
+                  <span className="signup-tabs-marker">
+                    {index < currentStep ? <Checkmark size={16} /> : index + 1}
+                  </span>
+                  <span className="signup-tabs-label">{step.label}</span>
+                </Tab>
+              ))}
+            </TabList>
+            <TabPanels>
+              {steps.map((step) => (
+                <TabPanel key={step.key} />
+              ))}
+            </TabPanels>
+          </Tabs>
+        );
+
+      case 4:
+        return (
+          <div className="signup-compact-stepper-wrapper">
+            <CircularMiniStepper steps={steps} currentIndex={currentStep} />
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
@@ -608,25 +704,26 @@ export default function SignUpPage() {
           </p>
         </header>
 
-        <Tile className="signup-progress">
-          <ProgressIndicator currentIndex={currentStep} spaceEqually>
-            {steps.map((step, index) => (
-              <ProgressStep
-                key={step.key}
-                label={step.label}
-                description={
-                  index < currentStep
-                    ? 'Complete'
-                    : index === currentStep
-                    ? 'Current'
-                    : ''
-                }
-                complete={index < currentStep}
-                current={index === currentStep}
-              />
-            ))}
-          </ProgressIndicator>
-        </Tile>
+        <div className="signup-progress-container">
+          <div className="signup-progress-toggle">
+            <span className="signup-progress-toggle-label">Style:</span>
+            <div className="signup-progress-toggle-buttons">
+              {VARIANT_LABELS.map(({ id, label }) => (
+                <button
+                  key={id}
+                  type="button"
+                  className={`signup-progress-toggle-btn ${progressVariant === id ? 'signup-progress-toggle-btn--active' : ''}`}
+                  onClick={() => setProgressVariant(id)}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <Tile className="signup-progress">
+            {renderProgressIndicator()}
+          </Tile>
+        </div>
 
         <Form className="signup-form" onSubmit={handleSubmit}>
           <Stack gap={7} className="signup-step-content">
