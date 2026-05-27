@@ -2,36 +2,36 @@
 
 // ============================================
 // Faceted Filter Button (Cascading Filter)
-// Matches Figma design exactly
+// Matches Figma design: trigger + 3-column panel
 // ============================================
 
-.faceted-filter-button {
+.faceted-filter {
   position: relative;
-  width: 100%;
+  display: inline-block;
 
   // ============================================
-  // Collapsed Button (Filter Vehicles)
+  // Trigger button (collapsed state)
   // ============================================
-  .filter-toggle-button {
+  &__trigger {
     display: flex;
     align-items: center;
     gap: 8px;
-    width: 100%;
     height: 40px;
-    padding: 0 12px;
-    border: 1px solid #0F62FE;
-    background: var(--background-primary);
-    color: #0F62FE;
+    padding: 11px 18px 11px 16px;
+    border: 1px solid #0f62fe;
+    background: rgba(141, 141, 141, 0.12);
+    color: #0f62fe;
     font-family: var(--font-family-sans);
     font-size: 14px;
     font-weight: 400;
     line-height: 18px;
     letter-spacing: 0.16px;
     cursor: pointer;
-    transition: all 0.1s ease;
+    white-space: nowrap;
+    transition: background 0.1s ease;
 
     &:hover:not(:disabled) {
-      background: rgba(15, 98, 254, 0.1);
+      background: rgba(15, 98, 254, 0.15);
     }
 
     &:disabled {
@@ -39,253 +39,246 @@
       cursor: not-allowed;
     }
 
-    &.active {
-      border-color: var(--border-interactive);
-    }
-
-    .filter-icon {
-      flex-shrink: 0;
-      fill: currentColor;
-    }
-
-    .filter-label {
-      flex: 1;
-      text-align: left;
-    }
-
-    .chevron-icon {
-      flex-shrink: 0;
-      fill: var(--text-primary);
+    &--open {
+      background: rgba(15, 98, 254, 0.1);
     }
   }
 
+  &__trigger-icon {
+    flex-shrink: 0;
+    fill: currentColor;
+  }
+
+  &__trigger-label {
+    flex: 1;
+    text-align: left;
+  }
+
+  &__trigger-chevron {
+    flex-shrink: 0;
+    fill: var(--text-primary);
+  }
+
   // ============================================
-  // Cascading Filter Panel
+  // Expanded filter panel (3-column layout)
   // ============================================
-  .filter-panel {
+  &__panel {
     position: absolute;
-    top: calc(100% + 4px);
-    right: 0;
+    top: calc(100% + 2px);
+    left: 0;
     display: flex;
     width: 579px;
     max-width: calc(100vw - 32px);
-    min-height: 367px;
-    border: 1px solid var(--border-subtle);
+    border: 1px solid #939292;
     background: var(--background-primary);
     box-shadow: var(--shadow-02);
     z-index: 1000;
+  }
 
-    // Ensure it stays within viewport
-    @media (min-width: 673px) {
-      max-width: min(579px, calc(100vw - 64px));
+  // ============================================
+  // Shared panel header (top row of each column)
+  // ============================================
+  &__panel-header {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 16px;
+    border-bottom: 1px solid rgba(141, 141, 141, 0.12);
+    background: var(--background-primary);
+    flex-shrink: 0;
+  }
+
+  &__panel-header-label {
+    font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    color: var(--text-primary);
+  }
+
+  // ============================================
+  // Left column: filter categories
+  // ============================================
+  &__categories {
+    display: flex;
+    flex-direction: column;
+    width: 181px;
+    flex-shrink: 0;
+    align-self: stretch;
+    border-right: 1px solid rgba(141, 141, 141, 0.12);
+    background: var(--background-primary);
+    padding: 15px 0;
+  }
+
+  &__category-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 40px;
+    padding: 11px 64px 11px 16px;
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    font-family: var(--font-family-sans);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0.16px;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.1s ease;
+    width: 100%;
+
+    &:hover {
+      background: var(--background-hover);
     }
 
-    // ============================================
-    // Left Panel: Filter Categories
-    // ============================================
-    .filter-categories {
-      display: flex;
-      flex-direction: column;
-      width: 181px;
-      flex-shrink: 0;
-      border-right: 1px solid var(--border-subtle);
-      background: var(--background-primary);
-
-      .categories-header {
-        display: flex;
-        align-items: center;
-        height: 40px;
-        padding: 0 16px;
-        border-bottom: 1px solid rgba(141, 141, 141, 0.12);
-        background: var(--background-primary);
-
-        .header-label {
-          font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
-          font-size: 12px;
-          font-weight: 500;
-          line-height: 16px;
-          color: var(--text-primary);
-        }
-      }
-
-      .category-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 40px;
-        padding: 0 16px;
-        border: none;
-        background: transparent;
-        color: var(--text-primary);
-        font-family: var(--font-family-sans);
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 18px;
-        letter-spacing: 0.16px;
-        text-align: left;
-        cursor: pointer;
-        transition: background 0.1s ease;
-
-        &:hover {
-          background: var(--background-hover);
-        }
-
-        &.active {
-          background: var(--background-selected);
-        }
-
-        .category-label {
-          flex: 1;
-        }
-
-        .category-icon {
-          flex-shrink: 0;
-          fill: var(--text-primary);
-        }
-      }
+    &--active {
+      background: var(--background-selected, rgba(141, 141, 141, 0.12));
     }
+  }
 
-    // ============================================
-    // Right Panel: Filter Options
-    // ============================================
-    .filter-options {
-      display: flex;
-      flex-direction: column;
+  &__category-label {
+    flex: 1;
+  }
+
+  &__category-chevron {
+    flex-shrink: 0;
+    fill: var(--text-primary);
+  }
+
+  // ============================================
+  // Middle column: checkbox options
+  // ============================================
+  &__options {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    background: var(--background-primary);
+  }
+
+  &__options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    padding: 15px 5px;
+    overflow-y: auto;
+    max-height: 340px;
+  }
+
+  &__option-row {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 0 0 0 16px;
+
+    // Carbon checkbox wrapper takes remaining space
+    .cds--checkbox-wrapper {
       flex: 1;
       min-width: 0;
+    }
+  }
 
-      .options-header {
-        display: flex;
-        align-items: center;
-        height: 40px;
-        padding: 0 16px;
-        border-bottom: 1px solid rgba(141, 141, 141, 0.12);
-        background: var(--background-primary);
+  &__option-count {
+    flex-shrink: 0;
+    padding-right: 26px;
+    font-family: var(--font-family-sans);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0.16px;
+    color: var(--text-primary);
+    text-align: right;
+  }
 
-        .header-label {
-          font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
-          font-size: 12px;
-          font-weight: 500;
-          line-height: 16px;
-          color: var(--text-primary);
-        }
-      }
+  // ============================================
+  // Right column: Clear All
+  // ============================================
+  &__clear-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 14px;
+    align-self: stretch;
+    background: var(--background-primary);
+    border-left: 1px solid rgba(141, 141, 141, 0.12);
+    flex-shrink: 0;
+  }
 
-      .options-list {
-        flex: 1;
-        padding: 13px 16px;
-        overflow-y: auto;
-        max-height: 300px;
+  &__clear-btn {
+    border: none;
+    background: transparent;
+    color: #939292;
+    font-family: var(--font-family-sans);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0.16px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.1s ease;
+    padding: 4px 0;
 
-        .option-row {
-          display: flex;
-          align-items: center;
-          gap: 13px;
-          margin-bottom: 13px;
+    &:hover:not(:disabled) {
+      color: var(--interactive-primary);
+    }
 
-          &:last-child {
-            margin-bottom: 0;
-          }
-
-          .cds--checkbox-wrapper {
-            flex: 1;
-            min-width: 0;
-          }
-
-          .option-count {
-            flex-shrink: 0;
-            font-family: var(--font-family-sans);
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 18px;
-            letter-spacing: 0.16px;
-            color: var(--text-primary);
-          }
-        }
-      }
-
-      .options-footer {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 16px;
-        border-top: 1px solid var(--border-subtle);
-
-        .clear-all-button {
-          border: none;
-          background: transparent;
-          color: #939292;
-          font-family: var(--font-family-sans);
-          font-size: 14px;
-          font-weight: 400;
-          line-height: 18px;
-          letter-spacing: 0.16px;
-          cursor: pointer;
-          padding: 8px 16px;
-          transition: color 0.1s ease;
-
-          &:hover:not(:disabled) {
-            color: var(--interactive-primary);
-          }
-
-          &:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-          }
-        }
-      }
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
     }
   }
 }
 
 // ============================================
-// Responsive Adjustments
+// Responsive: tablet
 // ============================================
-
-// Tablet and below
 @media (max-width: 1056px) {
-  .faceted-filter-button {
-    .filter-panel {
-      width: 100%;
-      max-width: 100%;
+  .faceted-filter {
+    &__panel {
+      width: min(579px, calc(100vw - 32px));
+    }
 
-      .filter-categories {
-        width: 160px;
-      }
+    &__categories {
+      width: 160px;
     }
   }
 }
 
-// Mobile
+// ============================================
+// Responsive: mobile — stack vertically
+// ============================================
 @media (max-width: 672px) {
-  .faceted-filter-button {
-    .filter-panel {
+  .faceted-filter {
+    &__panel {
       flex-direction: column;
-      width: 100%;
-      min-height: auto;
+      width: calc(100vw - 32px);
       left: 0;
-      right: 0;
-      max-width: 100%;
+    }
 
-      .filter-categories {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid var(--border-subtle);
+    &__categories {
+      width: 100%;
+      border-right: none;
+      border-bottom: 1px solid rgba(141, 141, 141, 0.12);
+      padding: 8px 0;
+    }
 
-        .category-item {
-          border-bottom: 1px solid rgba(141, 141, 141, 0.12);
+    &__category-btn {
+      padding: 11px 16px;
+    }
 
-          &:last-child {
-            border-bottom: none;
-          }
-        }
-      }
+    &__options-list {
+      max-height: 220px;
+    }
 
-      .filter-options {
-        .options-list {
-          max-height: 250px;
-        }
-      }
+    &__clear-col {
+      border-left: none;
+      border-top: 1px solid rgba(141, 141, 141, 0.12);
+      padding: 12px 14px;
+      flex-direction: row;
+      justify-content: flex-end;
     }
   }
 }
