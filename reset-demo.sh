@@ -1,9 +1,19 @@
+cat > reset-demo.sh << 'EOF'
 #!/bin/bash
 set -e
 
-echo "🔄 Resetting to demo state..."
+BRANCH=$1
 
-git reset --soft demo-forgot-pw
-git add .
+if [ -z "$BRANCH" ]; then
+  echo "❌ Please provide a branch name: ./reset-demo.sh boot-shelf"
+  exit 1
+fi
 
-echo "✅ Done — files are staged and ready to commit in VS Code"
+echo "🔄 Setting up demo branch: $BRANCH..."
+
+git checkout main
+git checkout -b $BRANCH
+git apply --index demo-changes.patch
+
+echo "✅ Done — branch '$BRANCH' is ready with files staged in VS Code"
+EOF
