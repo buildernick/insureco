@@ -140,7 +140,7 @@ export default function DashboardHome() {
             </div>
             <div className="action-content">
               <h4>View Policies</h4>
-              <p>Manage your active insurance policies</p>
+              <p>Manage your active insurance policyu</p>
             </div>
             <ArrowRight size={20} className="action-arrow" />
           </ClickableTile>
