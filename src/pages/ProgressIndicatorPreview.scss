@@ -48,6 +48,12 @@
   flex-wrap: wrap;
 }
 
+.preview-demo-controls {
+  display: flex;
+  gap: var(--spacing-03);
+  margin-top: var(--spacing-05);
+}
+
 // ============================================
 // Preview Option Card
 // ============================================

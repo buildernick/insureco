@@ -153,6 +153,10 @@ export default function ProgressIndicatorPreview() {
               ))}
             </ProgressIndicator>
           </div>
+          <div className="preview-demo-controls">
+            <Button kind="secondary" onClick={handleBack} disabled={currentStep === 0} renderIcon={ArrowLeft} size="sm">Back</Button>
+            <Button kind="primary" onClick={handleNext} disabled={currentStep === steps.length - 1} renderIcon={ArrowRight} size="sm">Next</Button>
+          </div>
 
           <div className="preview-pros-cons">
             <div className="preview-pros">
@@ -213,6 +217,10 @@ export default function ProgressIndicatorPreview() {
                 ))}
               </div>
             </div>
+          </div>
+          <div className="preview-demo-controls">
+            <Button kind="secondary" onClick={handleBack} disabled={currentStep === 0} renderIcon={ArrowLeft} size="sm">Back</Button>
+            <Button kind="primary" onClick={handleNext} disabled={currentStep === steps.length - 1} renderIcon={ArrowRight} size="sm">Next</Button>
           </div>
 
           <div className="preview-pros-cons">
@@ -278,6 +286,10 @@ export default function ProgressIndicatorPreview() {
               </TabPanels>
             </Tabs>
           </div>
+          <div className="preview-demo-controls">
+            <Button kind="secondary" onClick={handleBack} disabled={currentStep === 0} renderIcon={ArrowLeft} size="sm">Back</Button>
+            <Button kind="primary" onClick={handleNext} disabled={currentStep === steps.length - 1} renderIcon={ArrowRight} size="sm">Next</Button>
+          </div>
 
           <div className="preview-pros-cons">
             <div className="preview-pros">
@@ -315,6 +327,10 @@ export default function ProgressIndicatorPreview() {
           
           <div className="preview-demo">
             <CircularMiniStepper steps={steps} currentIndex={currentStep} />
+          </div>
+          <div className="preview-demo-controls">
+            <Button kind="secondary" onClick={handleBack} disabled={currentStep === 0} renderIcon={ArrowLeft} size="sm">Back</Button>
+            <Button kind="primary" onClick={handleNext} disabled={currentStep === steps.length - 1} renderIcon={ArrowRight} size="sm">Next</Button>
           </div>
 
           <div className="preview-pros-cons">
