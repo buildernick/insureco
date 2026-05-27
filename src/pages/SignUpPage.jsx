@@ -118,7 +118,7 @@ export default function SignUpPage() {
     { id: 0, label: 'Original' },
     { id: 1, label: 'Vertical' },
     { id: 2, label: 'Bar' },
-    { id: 3, label: 'Tabs' },
+    { id: 3, label: 'Tab' },
     { id: 4, label: 'Compact' },
   ];
 
