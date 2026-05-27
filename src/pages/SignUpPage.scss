@@ -124,8 +124,11 @@
   box-shadow:
     0 1px 2px 0 rgba(0, 0, 0, 0.1),
     0 1px 3px 0 rgba(0, 0, 0, 0.1);
-  overflow-x: auto; // Allow horizontal scroll for progress bar
+  overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-03);
 
   @media (min-width: 480px) {
     padding: 0 var(--spacing-04) var(--spacing-04) var(--spacing-04);
@@ -916,9 +919,10 @@
 .signup-progress-toggle {
   display: flex;
   align-items: center;
-  gap: var(--spacing-03);
+  gap: 30px;
   margin-bottom: var(--spacing-03);
   flex-wrap: wrap;
+  border: 5px solid rgba(27, 19, 236, 1);
 }
 
 .signup-progress-toggle-label {
