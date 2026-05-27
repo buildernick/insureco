@@ -18,6 +18,7 @@ import {
   ArrowRight,
 } from '@carbon/icons-react';
 import { useNavigate } from 'react-router-dom';
+import Hero from '../components/Hero';
 import './LandingPage.scss';
 
 export default function LandingPage() {
@@ -67,39 +68,13 @@ export default function LandingPage() {
 
   return (
     <div className="landing-page">
-      {/* Hero Section */}
-      <section className="hero-section">
-        <Grid>
-          <Column lg={16} md={8} sm={4}>
-            <div className="hero-content">
-              <Heading className="hero-heading">
-                Protect Your Future with Confidence
-              </Heading>
-              <p className="hero-tagline">
-                Comprehensive car and home insurance designed for the modern world. 
-                Get covered in minutes with InsureCo.
-              </p>
-              <div className="hero-actions">
-                <Button
-                  kind="primary"
-                  size="lg"
-                  onClick={() => navigate('/signup')}
-                  renderIcon={ArrowRight}
-                >
-                  Sign Up Now
-                </Button>
-                <Button
-                  kind="secondary"
-                  size="lg"
-                  onClick={() => setDemoModalOpen(true)}
-                >
-                  Get a Demo
-                </Button>
-              </div>
-            </div>
-          </Column>
-        </Grid>
-      </section>
+      <Hero
+        image="https://images.pexels.com/photos/4145355/pexels-photo-4145355.jpeg?auto=compress&cs=tinysrgb&w=1920"
+        headline="Protect Your Future with Confidence"
+        subtitle="Comprehensive car and home insurance designed for the modern world. Get covered in minutes with InsureCo."
+        primaryButton={{ label: 'Sign Up Now', onClick: () => navigate('/signup') }}
+        secondaryButton={{ label: 'Get a Demo', onClick: () => setDemoModalOpen(true) }}
+      />
 
       {/* Features Section */}
       <section className="features-section">
