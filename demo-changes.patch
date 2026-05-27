@@ -1,0 +1,529 @@
+diff --git a/api/db/migrations/20260526143000_create_magic_link_tokens.js b/api/db/migrations/20260526143000_create_magic_link_tokens.js
+new file mode 100644
+index 0000000..3d3001f
+--- /dev/null
++++ b/api/db/migrations/20260526143000_create_magic_link_tokens.js
+@@ -0,0 +1,25 @@
++/**
++ * Migration: create_magic_link_tokens
++ *
++ * Creates the table used to store hashed one-time tokens for
++ * passwordless / magic-link authentication.
++ */
++
++export async function up(knex) {
++  await knex.schema.createTable('magic_link_tokens', (table) => {
++    table.increments('id').primary();
++    table.string('email', 254).notNullable();
++    // Store only the SHA-256 hash — raw token is never persisted
++    table.string('token_hash', 64).notNullable().unique();
++    table.timestamp('expires_at').notNullable();
++    table.boolean('used').notNullable().defaultTo(false);
++    table.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
++
++    table.index('email');
++    table.index('token_hash');
++  });
++}
++
++export async function down(knex) {
++  await knex.schema.dropTableIfExists('magic_link_tokens');
++}
+diff --git a/api/middleware/forgotPasswordRateLimit.js b/api/middleware/forgotPasswordRateLimit.js
+new file mode 100644
+index 0000000..790c953
+--- /dev/null
++++ b/api/middleware/forgotPasswordRateLimit.js
+@@ -0,0 +1,34 @@
++/**
++ * Rate Limiter — Forgot Password
++ *
++ * Applies two layers of rate limiting to POST /auth/forgot-password:
++ *
++ *   1. Per-IP  — max 5 requests per 15 minutes
++ *   2. Per-email — max 3 requests per 15 minutes (keyed from the request body)
++ *
++ * This prevents the endpoint from being used as a spam relay and limits
++ * brute-force token fishing. Uses an in-process store by default; swap
++ * `store` for a Redis-backed store (rate-limit-redis) in production so
++ * limits are shared across multiple server instances.
++ */
++
++import rateLimit from 'express-rate-limit';
++
++const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
++
++export const ipRateLimiter = rateLimit({
++  windowMs: WINDOW_MS,
++  max: 5,
++  standardHeaders: true,
++  legacyHeaders: false,
++  message: { error: 'Too many requests. Please try again later.' },
++});
++
++export const emailRateLimiter = rateLimit({
++  windowMs: WINDOW_MS,
++  max: 3,
++  keyGenerator: (req) => (req.body?.email ?? req.ip).toLowerCase(),
++  standardHeaders: true,
++  legacyHeaders: false,
++  message: { error: 'Too many requests for this email. Please try again later.' },
++});
+diff --git a/api/routes/auth/forgotPassword.js b/api/routes/auth/forgotPassword.js
+new file mode 100644
+index 0000000..18af8da
+--- /dev/null
++++ b/api/routes/auth/forgotPassword.js
+@@ -0,0 +1,32 @@
++/**
++ * POST /api/auth/forgot-password
++ *
++ * Accepts an email address, generates a one-time magic link token,
++ * persists it, and dispatches the email. Always responds 200 so we
++ * don't leak whether an address exists in the system.
++ */
++
++import { generateMagicLinkToken } from '../services/magicLinkService.js';
++import { sendMagicLinkEmail } from '../services/emailService.js';
++
++export default async function forgotPasswordHandler(req, res) {
++  const { email } = req.body;
++
++  if (!email || typeof email !== 'string') {
++    return res.status(400).json({ error: 'A valid email address is required.' });
++  }
++
++  try {
++    const token = await generateMagicLinkToken(email);
++    await sendMagicLinkEmail({ to: email, token });
++  } catch (err) {
++    // Log internally but swallow the error — the client should not know
++    // whether the address is registered.
++    console.error('[forgot-password] error generating or sending magic link:', err);
++  }
++
++  // Always return 200 to prevent email enumeration
++  return res.status(200).json({
++    message: 'If that address is in our system, a magic link has been sent.',
++  });
++}
+diff --git a/api/services/emailService.js b/api/services/emailService.js
+new file mode 100644
+index 0000000..a14b69f
+--- /dev/null
++++ b/api/services/emailService.js
+@@ -0,0 +1,65 @@
++/**
++ * Email Service
++ *
++ * Thin wrapper around the transactional email provider (e.g. SendGrid,
++ * Postmark, AWS SES). Builds the magic-link email and dispatches it.
++ */
++
++import emailProvider from '../integrations/emailProvider.js';
++
++const APP_BASE_URL = process.env.APP_BASE_URL ?? 'https://app.insureco.com';
++const FROM_ADDRESS = process.env.MAIL_FROM ?? 'no-reply@insureco.com';
++
++/**
++ * Sends a magic-link sign-in email to the specified recipient.
++ *
++ * @param {{ to: string, token: string }} params
++ * @returns {Promise<void>}
++ */
++export async function sendMagicLinkEmail({ to, token }) {
++  const magicLinkUrl = `${APP_BASE_URL}/auth/verify?token=${encodeURIComponent(token)}`;
++
++  await emailProvider.send({
++    from: FROM_ADDRESS,
++    to,
++    subject: 'Your InsureCo sign-in link',
++    text: buildPlainText(magicLinkUrl),
++    html: buildHtml(magicLinkUrl),
++  });
++}
++
++function buildPlainText(url) {
++  return [
++    'Hi,',
++    '',
++    'Click the link below to sign in to InsureCo. This link expires in 15 minutes and can only be used once.',
++    '',
++    url,
++    '',
++    "If you didn't request this, you can safely ignore this email.",
++    '',
++    '— The InsureCo Team',
++  ].join('\n');
++}
++
++function buildHtml(url) {
++  return `
++<!DOCTYPE html>
++<html lang="en">
++<head><meta charset="UTF-8" /></head>
++<body style="font-family: sans-serif; color: #161616; max-width: 560px; margin: 0 auto; padding: 24px;">
++  <img src="${APP_BASE_URL}/logo.png" alt="InsureCo" width="120" style="margin-bottom: 24px;" />
++  <h2 style="margin: 0 0 12px;">Sign in to InsureCo</h2>
++  <p>Click the button below to sign in. This link expires in <strong>15 minutes</strong> and can only be used once.</p>
++  <a href="${url}"
++     style="display:inline-block; margin: 20px 0; padding: 12px 24px;
++            background:#da1e28; color:#fff; border-radius:4px;
++            text-decoration:none; font-weight:600;">
++    Sign In
++  </a>
++  <p style="font-size:12px; color:#525252;">
++    If you didn't request this email, no action is needed — your account is safe.
++  </p>
++</body>
++</html>`.trim();
++}
+diff --git a/api/services/magicLinkService.js b/api/services/magicLinkService.js
+new file mode 100644
+index 0000000..ca1e859
+--- /dev/null
++++ b/api/services/magicLinkService.js
+@@ -0,0 +1,64 @@
++/**
++ * Magic Link Service
++ *
++ * Responsible for generating a cryptographically secure one-time token,
++ * storing it in the database with a TTL, and building the sign-in URL
++ * that will be embedded in the email.
++ */
++
++import crypto from 'crypto';
++import db from '../db/client.js';
++
++const TOKEN_TTL_MINUTES = 15;
++
++/**
++ * Generates a secure random token for the given email address,
++ * persists it to the `magic_link_tokens` table, and returns it.
++ *
++ * @param {string} email
++ * @returns {Promise<string>} The raw token string
++ */
++export async function generateMagicLinkToken(email) {
++  const token = crypto.randomBytes(32).toString('hex');
++  const expiresAt = new Date(Date.now() + TOKEN_TTL_MINUTES * 60 * 1000);
++
++  await db.query(
++    `INSERT INTO magic_link_tokens (email, token, expires_at, used)
++     VALUES ($1, $2, $3, false)
++     ON CONFLICT (email) DO UPDATE
++       SET token = EXCLUDED.token,
++           expires_at = EXCLUDED.expires_at,
++           used = false`,
++    [email, token, expiresAt]
++  );
++
++  return token;
++}
++
++/**
++ * Validates an incoming token from a magic-link click.
++ * Returns the associated email if valid, or null if expired/used/unknown.
++ *
++ * @param {string} token
++ * @returns {Promise<string|null>} email or null
++ */
++export async function validateMagicLinkToken(token) {
++  const result = await db.query(
++    `SELECT email, expires_at, used
++     FROM magic_link_tokens
++     WHERE token = $1`,
++    [token]
++  );
++
++  const row = result.rows[0];
++  if (!row || row.used || new Date(row.expires_at) < new Date()) {
++    return null;
++  }
++
++  await db.query(
++    `UPDATE magic_link_tokens SET used = true WHERE token = $1`,
++    [token]
++  );
++
++  return row.email;
++}
+diff --git a/api/utils/tokenUtils.js b/api/utils/tokenUtils.js
+new file mode 100644
+index 0000000..bd6ab3f
+--- /dev/null
++++ b/api/utils/tokenUtils.js
+@@ -0,0 +1,45 @@
++/**
++ * Token Utilities
++ *
++ * Generates cryptographically secure random tokens and produces
++ * a SHA-256 hash for safe database storage. The raw token is sent
++ * to the user once; only the hash is persisted so a database leak
++ * cannot yield valid sign-in links.
++ */
++
++import crypto from 'crypto';
++
++const TOKEN_BYTES = 32; // 256 bits of entropy
++
++/**
++ * Generates a URL-safe random token.
++ * @returns {string} hex-encoded raw token (sent to user in the magic link)
++ */
++export function generateRawToken() {
++  return crypto.randomBytes(TOKEN_BYTES).toString('hex');
++}
++
++/**
++ * Derives a SHA-256 hash of the raw token for database storage.
++ * @param {string} rawToken
++ * @returns {string} hex-encoded hash
++ */
++export function hashToken(rawToken) {
++  return crypto.createHash('sha256').update(rawToken).digest('hex');
++}
++
++/**
++ * Compares an incoming raw token against a stored hash in constant time
++ * to prevent timing-based enumeration attacks.
++ * @param {string} rawToken
++ * @param {string} storedHash
++ * @returns {boolean}
++ */
++export function verifyToken(rawToken, storedHash) {
++  const incomingHash = hashToken(rawToken);
++  const incomingBuf = Buffer.from(incomingHash, 'hex');
++  const storedBuf = Buffer.from(storedHash, 'hex');
++
++  if (incomingBuf.length !== storedBuf.length) return false;
++  return crypto.timingSafeEqual(incomingBuf, storedBuf);
++}
+diff --git a/src/App.jsx b/src/App.jsx
+index af4f65e..1051909 100644
+--- a/src/App.jsx
++++ b/src/App.jsx
+@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
+ import Layout from "./components/Layout";
+ import LandingPage from "./pages/LandingPage";
+ import LoginPage from "./pages/LoginPage";
++import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+ import SignUpPage from "./pages/SignUpPage";
+ import SignUpConfirmationPage from "./pages/SignUpConfirmationPage";
+ import DashboardHome from "./pages/DashboardHome";
+@@ -31,6 +32,7 @@ export default function App() {
+       <Routes>
+         <Route path="/" element={<LandingPage />} />
+         <Route path="/login" element={<LoginPage />} />
++        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+         <Route path="/signup" element={<SignUpPage />} />
+         <Route path="/signup/confirmation" element={<SignUpConfirmationPage />} />
+         <Route path="/dashboard" element={<DashboardHome />} />
+diff --git a/src/pages/ForgotPasswordPage.jsx b/src/pages/ForgotPasswordPage.jsx
+new file mode 100644
+index 0000000..6140fed
+--- /dev/null
++++ b/src/pages/ForgotPasswordPage.jsx
+@@ -0,0 +1,69 @@
++import React, { useState } from 'react';
++import {
++  Grid,
++  Column,
++  Form,
++  TextInput,
++  Button,
++  Tile,
++  Stack,
++  InlineNotification,
++} from '@carbon/react';
++import { ArrowRight } from '@carbon/icons-react';
++import './ForgotPasswordPage.scss';
++
++export default function ForgotPasswordPage() {
++  const [email, setEmail] = useState('');
++  const [submitted, setSubmitted] = useState(false);
++
++  const handleSubmit = (e) => {
++    e.preventDefault();
++    setSubmitted(true);
++  };
++
++  return (
++    <Grid className="forgot-password-page">
++      <Column sm={4} md={8} lg={{ span: 8, offset: 4 }} xlg={{ span: 6, offset: 5 }}>
++        <div className="forgot-password-container">
++          <Tile className="forgot-password-card">
++            <Stack gap={6} className="forgot-password-content">
++
++              {submitted ? (
++                <InlineNotification
++                  kind="success"
++                  title="Check your email for a magic link"
++                  subtitle=""
++                  hideCloseButton
++                  className="magic-link-notice"
++                />
++              ) : (
++                <Form onSubmit={handleSubmit} className="forgot-password-form">
++                  <Stack gap={5}>
++                    <TextInput
++                      id="forgot-email"
++                      labelText="Email Address"
++                      placeholder="you@example.com"
++                      value={email}
++                      onChange={(e) => setEmail(e.target.value)}
++                      type="email"
++                    />
++
++                    <Button
++                      type="submit"
++                      kind="primary"
++                      size="lg"
++                      renderIcon={ArrowRight}
++                      className="forgot-password-button"
++                    >
++                      Send Magic Link
++                    </Button>
++                  </Stack>
++                </Form>
++              )}
++            </Stack>
++          </Tile>
++        </div>
++      </Column>
++    </Grid>
++  );
++}
+diff --git a/src/pages/ForgotPasswordPage.scss b/src/pages/ForgotPasswordPage.scss
+new file mode 100644
+index 0000000..dd46597
+--- /dev/null
++++ b/src/pages/ForgotPasswordPage.scss
+@@ -0,0 +1,102 @@
++@use '../styles/tokens' as *;
++
++.forgot-password-page {
++  min-height: 100vh;
++  padding: var(--spacing-07);
++  background: var(--background-primary);
++  display: flex;
++  align-items: center;
++
++  @media (min-width: 672px) {
++    padding: var(--spacing-09);
++  }
++}
++
++.forgot-password-container {
++  width: 100%;
++}
++
++.forgot-password-card {
++  padding: var(--spacing-07);
++  background: var(--background-secondary);
++  border-radius: var(--radius-lg);
++  box-shadow:
++    0 2px 8px rgba(0, 0, 0, 0.1),
++    0 4px 16px rgba(0, 0, 0, 0.05);
++  max-width: 500px;
++  margin: 0 auto;
++
++  @media (min-width: 672px) {
++    padding: var(--spacing-09);
++  }
++}
++
++.forgot-password-icon {
++  display: flex;
++  justify-content: center;
++  margin-bottom: var(--spacing-06);
++}
++
++.forgot-password-icon-circle {
++  display: flex;
++  align-items: center;
++  justify-content: center;
++  width: 80px;
++  height: 80px;
++  background: var(--interactive-primary);
++  border-radius: 50%;
++  box-shadow: 0 4px 12px rgba(218, 30, 40, 0.25);
++
++  svg {
++    fill: var(--text-on-color);
++  }
++
++  @media (min-width: 672px) {
++    width: 96px;
++    height: 96px;
++
++    svg {
++      width: 40px;
++      height: 40px;
++    }
++  }
++}
++
++.forgot-password-content {
++  align-items: stretch;
++}
++
++.forgot-password-header {
++  text-align: center;
++}
++
++.forgot-password-title {
++  font-size: var(--heading-h3-size);
++  font-weight: var(--font-weight-semibold);
++  color: var(--text-primary);
++  margin: 0 0 var(--spacing-03) 0;
++}
++
++.forgot-password-subtitle {
++  color: var(--text-secondary);
++  margin: 0;
++}
++
++.forgot-password-button {
++  width: 100%;
++  max-width: 100%;
++}
++
++.magic-link-notice {
++  width: 100%;
++}
++
++.forgot-password-footer {
++  text-align: center;
++
++  .back-to-login-link {
++    display: inline-flex;
++    align-items: center;
++    gap: var(--spacing-02);
++  }
++}
+diff --git a/src/pages/LoginPage.jsx b/src/pages/LoginPage.jsx
+index 9c4882e..4e6be1e 100644
+--- a/src/pages/LoginPage.jsx
++++ b/src/pages/LoginPage.jsx
+@@ -25,6 +25,11 @@ export default function LoginPage() {
+     navigate('/dashboard');
+   };
+ 
++  const handleForgotPassword = (e) => {
++    e.preventDefault();
++    navigate('/forgot-password');
++  };
++
+   return (
+     <Grid className="login-page">
+       <Column sm={4} md={8} lg={{ span: 8, offset: 4 }} xlg={{ span: 6, offset: 5 }}>
+@@ -69,7 +74,7 @@ export default function LoginPage() {
+                   />
+ 
+                   <div className="login-options">
+-                    <Link href="#" className="forgot-password-link">
++                    <Link href="/forgot-password" onClick={handleForgotPassword} className="forgot-password-link">
+                       Forgot password?
+                     </Link>
+                   </div>

@@ -1,4 +1,3 @@
-cat > reset-demo.sh << 'EOF'
 #!/bin/bash
 set -e
 
@@ -16,4 +15,3 @@ git checkout -b $BRANCH
 git apply --index demo-changes.patch
 
 echo "✅ Done — branch '$BRANCH' is ready with files staged in VS Code"
-EOF
