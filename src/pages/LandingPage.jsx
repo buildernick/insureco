@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Grid, Column, Tile, Button } from '@carbon/react';
+import { Grid, Column, Tile, Button, SkeletonText } from '@carbon/react';
 import {
   Security,
   CheckmarkFilled,
@@ -13,6 +13,7 @@ import Hero from '../components/Hero';
 import SplitHero from '../components/SplitHero';
 import InfoCard from '../components/InfoCard';
 import Footer from '../components/Footer';
+import { fetchTestimonials } from '../services/contentful';
 import './LandingPage.scss';
 
 const HERO_IMAGE = 'https://api.builder.io/api/v1/image/assets/TEMP/58e131f07a038151043ed2cdafdc61264418a371?width=2292';
@@ -42,18 +43,21 @@ const benefits = [
   },
 ];
 
-const testimonials = [
+const STATIC_TESTIMONIALS = [
   {
+    id: 'static-1',
     quote: '" InsureCo made switching my insurance so easy. The process was smooth and the savings were immediate. "',
     name: 'Sarah Johnson',
     since: 'Customer since 2022',
   },
   {
+    id: 'static-2',
     quote: '" When I had a claim, they handled everything professionally and got me back on the road quickly. "',
     name: 'Michael Chen',
     since: 'Customer since 2021',
   },
   {
+    id: 'static-3',
     quote: '" Best insurance experience I\'ve had. The customer service is exceptional and the rates are competitive. "',
     name: 'Emily Rodriguez',
     since: 'Customer since 2023',
@@ -62,6 +66,21 @@ const testimonials = [
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const [testimonials, setTestimonials] = useState([]);
+  const [testimonialsLoading, setTestimonialsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchTestimonials()
+      .then((items) => {
+        setTestimonials(items.length > 0 ? items : STATIC_TESTIMONIALS);
+      })
+      .catch(() => {
+        setTestimonials(STATIC_TESTIMONIALS);
+      })
+      .finally(() => {
+        setTestimonialsLoading(false);
+      });
+  }, []);
 
   return (
     <div className="landing-page">
@@ -127,17 +146,29 @@ export default function LandingPage() {
           <h2 className="section-heading-text">What Our Customers Say</h2>
         </div>
         <Grid className="testimonials-grid">
-          {testimonials.map((t) => (
-            <Column lg={5} md={8} sm={4} key={t.name}>
-              <Tile className="testimonial-card">
-                <p className="testimonial-quote">{t.quote}</p>
-                <div className="testimonial-author">
-                  <span className="testimonial-name">{t.name}</span>
-                  <span className="testimonial-since">{t.since}</span>
-                </div>
-              </Tile>
-            </Column>
-          ))}
+          {testimonialsLoading
+            ? [1, 2, 3].map((n) => (
+                <Column lg={5} md={8} sm={4} key={n}>
+                  <Tile className="testimonial-card testimonial-card--skeleton">
+                    <SkeletonText paragraph lineCount={4} />
+                    <div className="testimonial-author">
+                      <SkeletonText width="60%" />
+                      <SkeletonText width="40%" />
+                    </div>
+                  </Tile>
+                </Column>
+              ))
+            : testimonials.map((t) => (
+                <Column lg={5} md={8} sm={4} key={t.id ?? t.name}>
+                  <Tile className="testimonial-card">
+                    <p className="testimonial-quote">{t.quote}</p>
+                    <div className="testimonial-author">
+                      <span className="testimonial-name">{t.name}</span>
+                      <span className="testimonial-since">{t.since}</span>
+                    </div>
+                  </Tile>
+                </Column>
+              ))}
         </Grid>
       </section>
 
