@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Grid, Column, Tile } from '@carbon/react';
+import { Button, Grid, Column } from '@carbon/react';
 import {
   Security,
   CheckmarkFilled,
@@ -114,13 +114,13 @@ export default function LandingPage() {
         </div>
         <div className="testimonials-grid">
           {testimonials.map((t) => (
-            <Tile key={t.name} className="testimonial-card">
+            <div key={t.name} className="testimonial-card">
               <p className="testimonial-card__quote">&ldquo;{t.quote}&rdquo;</p>
               <div className="testimonial-card__author">
                 <p className="testimonial-card__name">{t.name}</p>
                 <p className="testimonial-card__since">{t.since}</p>
               </div>
-            </Tile>
+            </div>
           ))}
         </div>
       </section>
