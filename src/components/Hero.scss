@@ -28,6 +28,7 @@
       z-index: 1;
     }
 
+    .hero-heading,
     .hero-tagline {
       color: #fff;
     }
@@ -52,7 +53,7 @@
   font-size: var(--heading-h1-size);
   font-weight: var(--heading-h1-weight);
   line-height: var(--heading-h1-line-height);
-  color: var(--interactive-primary);
+  color: var(--text-primary);
   margin: 0 0 var(--spacing-05);
 }
 
