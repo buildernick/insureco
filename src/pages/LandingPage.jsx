@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Hero from '../components/Hero';
 import SplitHero from '../components/SplitHero';
 import InfoCard from '../components/InfoCard';
+import Footer from '../components/Footer';
 import './LandingPage.scss';
 
 const features = [
@@ -128,61 +129,7 @@ export default function LandingPage() {
         </Grid>
       </section>
 
-      <footer className="landing-footer">
-        <Grid>
-          <Column lg={4} md={2} sm={4}>
-            <div className="footer-col">
-              <h4 className="footer-col__heading">InsureCo</h4>
-              <p className="footer-col__body">Protecting what matters most since 2020.</p>
-            </div>
-          </Column>
-          <Column lg={3} md={2} sm={4}>
-            <div className="footer-col">
-              <h4 className="footer-col__heading">Products</h4>
-              <ul className="footer-col__links">
-                <li>Car Insurance</li>
-                <li>Home Insurance</li>
-                <li>Bundle &amp; Save</li>
-              </ul>
-            </div>
-          </Column>
-          <Column lg={3} md={2} sm={4}>
-            <div className="footer-col">
-              <h4 className="footer-col__heading">Company</h4>
-              <ul className="footer-col__links">
-                <li>About Us</li>
-                <li>Careers</li>
-                <li>Contact</li>
-              </ul>
-            </div>
-          </Column>
-          <Column lg={3} md={2} sm={4}>
-            <div className="footer-col">
-              <h4 className="footer-col__heading">Support</h4>
-              <ul className="footer-col__links">
-                <li>Help Center</li>
-                <li>File a Claim</li>
-                <li>FAQ</li>
-              </ul>
-            </div>
-          </Column>
-          <Column lg={3} md={2} sm={4}>
-            <div className="footer-col">
-              <h4 className="footer-col__heading">Legal</h4>
-              <ul className="footer-col__links">
-                <li>Privacy Policy</li>
-                <li>Terms of Service</li>
-                <li>Cookie Policy</li>
-              </ul>
-            </div>
-          </Column>
-        </Grid>
-        <Grid>
-          <Column lg={16} md={8} sm={4}>
-            <p className="footer-copyright">© 2024 InsureCo. All rights reserved.</p>
-          </Column>
-        </Grid>
-      </footer>
+      <Footer />
 
       <Modal
         open={demoModalOpen}
