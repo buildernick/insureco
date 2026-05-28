@@ -13,6 +13,7 @@ import Hero from '../components/Hero';
 import SplitHero from '../components/SplitHero';
 import InfoCard from '../components/InfoCard';
 import Footer from '../components/Footer';
+import SignUpDrawer from '../components/SignUpDrawer';
 import { fetchTestimonials } from '../services/contentful';
 import './LandingPage.scss';
 
@@ -66,6 +67,7 @@ const STATIC_TESTIMONIALS = [
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [testimonials, setTestimonials] = useState([]);
   const [testimonialsLoading, setTestimonialsLoading] = useState(true);
 
@@ -84,11 +86,13 @@ export default function LandingPage() {
 
   return (
     <div className="landing-page">
+      <SignUpDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+
       <Hero
         headline="Protect Your Future with Confidence"
         subtitle="Comprehensive car and home insurance designed for the modern world. Get covered in minutes with InsureCo."
         backgroundImage={HERO_IMAGE}
-        primaryButton={{ label: 'Sign Up Now', onClick: () => navigate('/signup') }}
+        primaryButton={{ label: 'Sign Up Now', onClick: () => setIsDrawerOpen(true) }}
         secondaryButton={{ label: 'Get a Demo', onClick: () => {} }}
       />
 
