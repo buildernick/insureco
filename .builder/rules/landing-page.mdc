@@ -19,6 +19,27 @@ The landing page (`src/pages/LandingPage.jsx`) is the marketing home page for In
 
 ---
 
+## ⚠️ Icons — NEVER Use Inline SVGs
+
+**Always** use `@carbon/icons-react` for all icons on this page. Do not write `<svg>` elements by hand, embed SVG markup inline, or import raw `.svg` files.
+
+
+// ✅ CORRECT
+import { Car, Home, CheckmarkFilled, ArrowRight, Security } from '@carbon/icons-react';
+
+<Car size={64} />
+<CheckmarkFilled size={20} />
+```
+
+```jsx
+// ❌ WRONG
+<svg viewBox="0 0 24 24"><path d="M..." /></svg>
+```
+
+Pick the `@carbon/icons-react` icon whose name best matches the intended concept. If unsure, choose the closest semantic match from the library. See `.builder/rules/carbon-design-system.mdc` for a reference mapping table.
+
+---
+
 ## ⚠️ Component Usage Rules
 
 ### Custom Components — ALWAYS Use These First
