@@ -14,6 +14,7 @@ import SplitHero from '../components/SplitHero';
 import InfoCard from '../components/InfoCard';
 import Footer from '../components/Footer';
 import { fetchTestimonials } from '../services/contentful';
+import { useSignUpDrawer } from '../contexts/SignUpDrawerContext';
 import './LandingPage.scss';
 
 const features = [
@@ -41,6 +42,7 @@ const features = [
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const { openDrawer } = useSignUpDrawer();
   const [testimonials, setTestimonials] = useState([]);
 
   useEffect(() => {
@@ -53,7 +55,7 @@ export default function LandingPage() {
         headline="Protect Your Future with Confidence"
         subtitle="Comprehensive car and home insurance designed for the modern world. Get covered in minutes with InsureCo."
         backgroundImage="https://api.builder.io/api/v1/image/assets/TEMP/58e131f07a038151043ed2cdafdc61264418a371?width=2292"
-        primaryButton={{ label: 'Sign Up Now', onClick: () => navigate('/signup') }}
+        primaryButton={{ label: 'Sign Up Now', onClick: openDrawer }}
         secondaryButton={{ label: 'Get a Demo', onClick: () => {} }}
       />
 
@@ -131,7 +133,7 @@ export default function LandingPage() {
         <Button
           kind="ghost"
           renderIcon={ArrowRight}
-          onClick={() => navigate('/signup')}
+          onClick={openDrawer}
           className="cta-section__btn"
         >
           Get Your Free Quote

@@ -25,11 +25,13 @@ import {
   Search,
 } from "@carbon/icons-react";
 import ThemeToggle from "./ThemeToggle";
+import { useSignUpDrawer } from "../contexts/SignUpDrawerContext";
 import "./Layout.scss";
 
 export default function Layout({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const { openDrawer } = useSignUpDrawer();
 
   // Remove padding for landing page
   const isLandingPage = location.pathname === '/';
@@ -94,7 +96,7 @@ export default function Layout({ children }) {
                 <HeaderMenuItem onClick={() => navigate("/login")}>
                   Login
                 </HeaderMenuItem>
-                <HeaderMenuItem onClick={() => navigate("/signup")}>
+                <HeaderMenuItem onClick={openDrawer}>
                   Sign Up
                 </HeaderMenuItem>
                 <HeaderMenuItem onClick={() => navigate("/about")}>
@@ -187,7 +189,7 @@ export default function Layout({ children }) {
                     <HeaderMenuItem onClick={() => handleNavigateAndClose("/login")}>
                       Login
                     </HeaderMenuItem>
-                    <HeaderMenuItem onClick={() => handleNavigateAndClose("/signup")}>
+                    <HeaderMenuItem onClick={() => { openDrawer(); if (isSideNavExpanded) onClickSideNavExpand(); }}>
                       Sign Up
                     </HeaderMenuItem>
                     <HeaderMenuItem onClick={() => handleNavigateAndClose("/about")}>

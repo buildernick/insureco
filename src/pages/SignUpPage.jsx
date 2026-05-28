@@ -25,7 +25,7 @@ import {
 import { ArrowRight, ArrowLeft, Checkmark, Car, Home as HomeIcon } from '@carbon/icons-react';
 import './SignUpPage.scss';
 
-export default function SignUpPage() {
+export default function SignUpPage({ onComplete, isDrawer = false }) {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
@@ -131,10 +131,11 @@ export default function SignUpPage() {
     console.log('Form submitted:', formData);
     console.log('Confirmation Number:', confirmationNumber);
 
-    // Navigate to confirmation page with confirmation number
-    navigate('/signup/confirmation', {
-      state: { confirmationNumber }
-    });
+    if (onComplete) {
+      onComplete(confirmationNumber);
+    } else {
+      navigate('/signup/confirmation', { state: { confirmationNumber } });
+    }
   };
 
   const isStepValid = () => {
