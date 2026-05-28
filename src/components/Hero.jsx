@@ -22,7 +22,7 @@ export default function Hero({ headline, subtitle, primaryButton, secondaryButto
           const scrollY = window.scrollY;
           const sectionBottom = section.offsetTop + section.offsetHeight;
           if (scrollY <= sectionBottom) {
-            section.style.setProperty('--parallax-offset', `${scrollY * 0.35}px`);
+            section.style.setProperty('--parallax-offset', `${scrollY * 0.55}px`);
           }
           ticking = false;
         });
