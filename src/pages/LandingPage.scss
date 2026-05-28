@@ -4,163 +4,74 @@
   background: var(--background-primary);
 }
 
-// ── Features Section ──────────────────────────────────────────
-.features-section {
+// ── Benefits Section ──────────────────────────────────────────
+.benefits-section {
+  padding: var(--spacing-10) var(--spacing-05);
   background: var(--background-secondary);
-  padding: 0 0 var(--spacing-09);
+}
 
-  &__header {
-    border: 1px solid var(--border-strong);
-    padding: var(--spacing-05) var(--spacing-05);
-    margin-bottom: var(--spacing-08);
-    text-align: center;
+.benefits-heading {
+  font-size: var(--heading-h3-size);
+  font-weight: var(--heading-h3-weight);
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-07);
+}
+
+.benefit-tile {
+  height: 100%;
+
+  &__icon {
+    color: var(--interactive-primary);
+    margin-bottom: var(--spacing-04);
   }
 
   &__title {
-    font-size: var(--heading-h3-size);
-    font-weight: var(--heading-h3-weight);
-    color: var(--text-primary);
-    margin: 0;
-  }
-
-  &__grid {
-    padding: 0 var(--spacing-05);
-  }
-}
-
-// ── Testimonials Section ──────────────────────────────────────
-.testimonials-section {
-  background: var(--background-primary);
-  padding: 0 0 var(--spacing-09);
-
-  &__header {
-    border: 1px solid var(--border-strong);
-    padding: var(--spacing-05);
-    margin-bottom: var(--spacing-08);
-    text-align: center;
-  }
-
-  &__title {
-    font-size: var(--heading-h3-size);
-    font-weight: var(--heading-h3-weight);
-    color: var(--text-primary);
-    margin: 0;
-  }
-
-  &__grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--spacing-05);
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 var(--spacing-05);
-  }
-}
-
-.testimonial-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: var(--spacing-06);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1);
-
-  &__quote {
     font-size: var(--body-lg-size);
-    line-height: 1.43;
-    letter-spacing: 0.16px;
-    color: var(--text-primary);
-    margin: 0;
-  }
-
-  &__author {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-02);
-    border-top: 1px solid var(--border-subtle);
-    padding-top: var(--spacing-04);
-  }
-
-  &__name {
-    font-size: var(--body-md-size);
     font-weight: var(--font-weight-semibold);
-    letter-spacing: 0.16px;
     color: var(--text-primary);
+    margin: 0 0 var(--spacing-03);
   }
 
-  &__since {
-    font-size: var(--body-sm-size);
-    letter-spacing: 0.16px;
+  &__description {
+    font-size: var(--body-md-size);
     color: var(--text-secondary);
+    margin: 0;
   }
 }
 
 // ── CTA Section ───────────────────────────────────────────────
 .cta-section {
-  padding: var(--spacing-13) var(--spacing-05);
-  background: var(--interactive-primary);
-  text-align: center;
-}
-
-.cta-content {
-  max-width: 640px;
-  margin: 0 auto;
+  padding: var(--spacing-10) var(--spacing-05);
+  background: var(--background-primary);
+  border-top: 1px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-06);
+  align-items: flex-start;
+  gap: var(--spacing-05);
+  max-width: 640px;
+  margin: 0 auto;
 }
 
 .cta-heading {
-  font-size: var(--heading-h2-size);
-  font-weight: var(--heading-h2-weight);
-  line-height: var(--heading-h2-line-height);
-  color: var(--text-on-color);
+  font-size: var(--heading-h3-size);
+  font-weight: var(--heading-h3-weight);
+  color: var(--text-primary);
   margin: 0;
 }
 
 .cta-description {
-  font-size: var(--body-lg-size);
-  line-height: var(--line-height-normal);
-  color: var(--text-on-color);
-  opacity: 0.9;
-  margin: 0;
-}
-
-.cta-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-03);
-  padding: var(--spacing-04) var(--spacing-07);
-  background: transparent;
-  color: var(--text-on-color);
-  border: 1px solid var(--text-on-color);
   font-size: var(--body-md-size);
-  font-weight: var(--font-weight-semibold);
-  cursor: pointer;
-  transition: background var(--motion-hover);
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.15);
-  }
+  color: var(--text-secondary);
+  margin: 0;
 }
 
 // ── Responsive ────────────────────────────────────────────────
 @media (max-width: $breakpoint-md) {
-  .testimonials-section__grid {
-    grid-template-columns: 1fr;
-  }
-
-  .cta-heading {
-    font-size: var(--heading-h3-size);
+  .benefits-section {
+    padding: var(--spacing-08) var(--spacing-05);
   }
 
   .cta-section {
-    padding: var(--spacing-09) var(--spacing-05);
-  }
-}
-
-@media (min-width: $breakpoint-md) and (max-width: $breakpoint-lg) {
-  .testimonials-section__grid {
-    grid-template-columns: repeat(2, 1fr);
+    padding: var(--spacing-08) var(--spacing-05);
   }
 }

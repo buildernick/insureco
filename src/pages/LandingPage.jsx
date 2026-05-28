@@ -1,129 +1,63 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Grid, Column, Tile } from '@carbon/react';
-import { fetchTestimonials } from '../services/contentful';
-import {
-  Security,
-  CheckmarkFilled,
-  CustomerService,
-  Home,
-  Car,
-  ArrowRight,
-} from '@carbon/icons-react';
+import { Grid, Column, Tile, Button } from '@carbon/react';
+import { Security, CheckmarkFilled, CustomerService, ArrowRight } from '@carbon/icons-react';
 import Hero from '../components/Hero';
-import InfoCard from '../components/InfoCard';
-import SplitHero from '../components/SplitHero';
 import Footer from '../components/Footer';
 import './LandingPage.scss';
 
-const features = [
+const benefits = [
   {
-    icon: <Security size={48} />,
+    icon: <Security size={32} />,
     title: 'Comprehensive Coverage',
-    description: 'Protect what matters most with our comprehensive insurance plans tailored to your needs.',
+    description: 'Protect what matters most with plans tailored to your needs.',
   },
   {
-    icon: <CheckmarkFilled size={48} />,
-    title: 'Fast Claims Processing',
-    description: 'Get your claims processed quickly and efficiently with our streamlined digital process.',
+    icon: <CheckmarkFilled size={32} />,
+    title: 'Fast Claims',
+    description: 'Get claims processed quickly with our streamlined digital process.',
   },
   {
-    icon: <CustomerService size={48} />,
+    icon: <CustomerService size={32} />,
     title: '24/7 Support',
-    description: 'Our dedicated support team is available around the clock to assist you when you need it most.',
-  },
-  {
-    icon: <Home size={48} />,
-    title: 'Flexible Plans',
-    description: 'Choose from a variety of coverage options that fit your lifestyle and budget.',
+    description: 'Our dedicated team is available around the clock to help you.',
   },
 ];
 
-
 export default function LandingPage() {
   const navigate = useNavigate();
-  const [testimonials, setTestimonials] = useState([]);
-
-  useEffect(() => {
-    fetchTestimonials().then(setTestimonials);
-  }, []);
 
   return (
     <div className="landing-page">
       <Hero
         headline="Protect Your Future with Confidence"
-        subtitle="Comprehensive car and home insurance designed for the modern world. Get covered in minutes with InsureCo."
+        subtitle="Comprehensive car and home insurance designed for the modern world."
         primaryButton={{ label: 'Sign Up Now', onClick: () => navigate('/signup') }}
-        secondaryButton={{ label: 'Get a Demo', onClick: () => {} }}
-        backgroundImage="https://api.builder.io/api/v1/image/assets/TEMP/58e131f07a038151043ed2cdafdc61264418a371?width=2292"
       />
 
-      <section className="features-section">
-        <div className="features-section__header">
-          <h2 className="features-section__title">Why Choose InsureCo?</h2>
-        </div>
-        <Grid className="features-section__grid">
-          {features.map((f) => (
-            <Column lg={4} md={2} sm={4} key={f.title}>
-              <InfoCard icon={f.icon} title={f.title} description={f.description} />
+      <section className="benefits-section">
+        <Grid>
+          <Column lg={16} md={8} sm={4}>
+            <h2 className="benefits-heading">Why Choose InsureCo?</h2>
+          </Column>
+          {benefits.map((b) => (
+            <Column lg={5} md={8} sm={4} key={b.title}>
+              <Tile className="benefit-tile">
+                <div className="benefit-tile__icon">{b.icon}</div>
+                <h3 className="benefit-tile__title">{b.title}</h3>
+                <p className="benefit-tile__description">{b.description}</p>
+              </Tile>
             </Column>
           ))}
         </Grid>
       </section>
 
-      <SplitHero
-        id="car-insurance"
-        headline="Car Insurance"
-        icon={<Car size={64} />}
-        description="Drive with confidence knowing you're protected. Our comprehensive auto insurance covers collision, liability, and more. Get instant quotes and customize your coverage to match your needs."
-        features={['Collision coverage', 'Liability protection', 'Roadside assistance', 'Rental car coverage']}
-        button={{ label: 'Learn More', onClick: () => navigate('/signup') }}
-        image="https://api.builder.io/api/v1/image/assets/TEMP/95e8adfb647c6b0647911779aa7ae9de21ce3721?width=1054"
-        imageAlt="Blue car on road"
-        imagePosition="right"
-        background="primary"
-      />
-
-      <SplitHero
-        id="home-insurance"
-        headline="Home Insurance"
-        icon={<Home size={64} />}
-        description="Protect your home and belongings with our comprehensive homeowners insurance. Coverage for property damage, personal liability, and more. Your peace of mind is our priority."
-        features={['Property damage coverage', 'Personal liability protection', 'Natural disaster coverage', 'Personal property protection']}
-        button={{ label: 'Learn More', onClick: () => navigate('/signup') }}
-        image="https://api.builder.io/api/v1/image/assets/TEMP/e465272c050358685dad1591ae9f2cefb40152dd?width=1054"
-        imageAlt="Modern home surrounded by trees"
-        imagePosition="left"
-        background="secondary"
-      />
-
-      <section className="testimonials-section">
-        <div className="testimonials-section__header">
-          <h2 className="testimonials-section__title">What Our Customers Say</h2>
-        </div>
-        <div className="testimonials-section__grid">
-          {testimonials.map((t) => (
-            <Tile key={t.id ?? t.name} className="testimonial-card">
-              <p className="testimonial-card__quote">&ldquo; {t.quote} &rdquo;</p>
-              <div className="testimonial-card__author">
-                <span className="testimonial-card__name">{t.name}</span>
-                <span className="testimonial-card__since">{t.since}</span>
-              </div>
-            </Tile>
-          ))}
-        </div>
-      </section>
-
       <section className="cta-section">
-        <div className="cta-content">
-          <h2 className="cta-heading">Ready to Get Started?</h2>
-          <p className="cta-description">
-            Join thousands of satisfied customers who trust InsureCo for their insurance needs.
-          </p>
-          <button className="cta-btn" onClick={() => navigate('/signup')}>
-            Get Your Free Quote <ArrowRight size={16} />
-          </button>
-        </div>
+        <h2 className="cta-heading">Ready to Get Started?</h2>
+        <p className="cta-description">Join thousands of customers who trust InsureCo.</p>
+        <Button kind="tertiary" renderIcon={ArrowRight} onClick={() => navigate('/signup')}>
+          Get Your Free Quote
+        </Button>
       </section>
 
       <Footer />
