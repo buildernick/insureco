@@ -44,51 +44,50 @@
 
 .testimonial-card {
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-06);
-  padding: var(--spacing-06) var(--spacing-06) var(--spacing-05);
-  border: 1px solid var(--border-subtle);
+  display: flex !important;
+  flex-direction: column !important;
+  gap: var(--spacing-07);
+  padding: var(--spacing-07) var(--spacing-06) var(--spacing-06) !important;
+  border: 1px solid var(--border-subtle) !important;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1);
-  background: var(--background-primary);
+  background-color: #00ff80 !important;
   overflow: hidden;
-}
 
-.testimonial-quote {
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 1.43;
-  letter-spacing: 0.16px;
-  color: var(--text-primary);
-  margin: 0;
-  flex: 1;
-}
+  &__quote {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.45;
+    letter-spacing: 0.16px;
+    color: #161616;
+    margin: 0;
+    flex: 1;
+  }
 
-.testimonial-author {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-02);
-  background: #262626;
-  margin: 0 calc(var(--spacing-06) * -1) calc(var(--spacing-05) * -1);
-  padding: var(--spacing-04) var(--spacing-06);
-  border-radius: 0 0 var(--radius-md) var(--radius-md);
-}
+  &__author {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-02);
+    padding-top: var(--spacing-05);
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
 
-.testimonial-name {
-  font-size: var(--body-md-size);
-  font-weight: var(--font-weight-semibold);
-  line-height: 1.5;
-  letter-spacing: 0.16px;
-  color: var(--text-on-color);
-}
+  &__name {
+    font-size: var(--body-md-size);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.5;
+    letter-spacing: 0.16px;
+    color: #161616;
+    margin: 0;
+  }
 
-.testimonial-since {
-  font-size: var(--body-sm-size);
-  font-weight: 400;
-  line-height: 1.5;
-  letter-spacing: 0.16px;
-  color: var(--text-on-color);
-  opacity: 0.75;
+  &__since {
+    font-size: var(--body-sm-size);
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0.16px;
+    color: #525252;
+    margin: 0;
+  }
 }
 
 // ── CTA Section ───────────────────────────────────────────────
