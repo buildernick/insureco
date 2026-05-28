@@ -14,6 +14,11 @@ const preview = {
     backgrounds: {
       disable: true, // Disable default backgrounds since we use Carbon themes
     },
+    options: {
+      storySort: {
+        order: ['Web Components', 'Components', '*'],
+      },
+    },
   },
   decorators: [
     (Story) => (
