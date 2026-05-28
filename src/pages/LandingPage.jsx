@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Grid, Column, Tile, Button, Modal, TextInput, Stack } from '@carbon/react';
+import { Grid, Column, Button, Modal, TextInput, Stack } from '@carbon/react';
 import { Security, CheckmarkFilled, Car, Home as HomeIcon } from '@carbon/icons-react';
 import { useNavigate } from 'react-router-dom';
 import Hero from '../components/Hero';
 import SplitHero from '../components/SplitHero';
+import InfoCard from '../components/InfoCard';
 import './LandingPage.scss';
 
 const features = [
@@ -70,11 +71,11 @@ export default function LandingPage() {
           </Column>
           {features.map((feature) => (
             <Column lg={4} md={4} sm={4} key={feature.title}>
-              <Tile className="feature-tile">
-                <div className="feature-tile__icon">{feature.icon}</div>
-                <h3 className="feature-tile__title">{feature.title}</h3>
-                <p className="feature-tile__description">{feature.description}</p>
-              </Tile>
+              <InfoCard
+                icon={feature.icon}
+                title={feature.title}
+                description={feature.description}
+              />
             </Column>
           ))}
         </Grid>

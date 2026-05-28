@@ -1,0 +1,31 @@
+@use '../styles/tokens' as *;
+
+.info-card {
+  height: 100%;
+  text-align: center;
+  padding: var(--spacing-07) var(--spacing-06) !important;
+
+  &__icon {
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-05);
+    display: flex;
+    justify-content: center;
+  }
+
+  &__title {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0.16px;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-04);
+  }
+
+  &__description {
+    font-size: var(--body-md-size);
+    line-height: 1.43;
+    letter-spacing: 0.16px;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+}
