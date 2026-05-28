@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Column, Tile } from '@carbon/react';
+import { fetchTestimonials } from '../services/contentful';
 import {
   Security,
   CheckmarkFilled,
@@ -38,26 +39,14 @@ const features = [
   },
 ];
 
-const testimonials = [
-  {
-    quote: '" InsureCo made switching my insurance so easy. The process was smooth and the savings were immediate. "',
-    name: 'Sarah Johnson',
-    since: 'Customer since 2022',
-  },
-  {
-    quote: '" When I had a claim, they handled everything professionally and got me back on the road quickly. "',
-    name: 'Michael Chen',
-    since: 'Customer since 2021',
-  },
-  {
-    quote: '" Best insurance experience I\'ve had. The customer service is exceptional and the rates are competitive. "',
-    name: 'Emily Rodriguez',
-    since: 'Customer since 2023',
-  },
-];
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const [testimonials, setTestimonials] = useState([]);
+
+  useEffect(() => {
+    fetchTestimonials().then(setTestimonials);
+  }, []);
 
   return (
     <div className="landing-page">
@@ -114,8 +103,8 @@ export default function LandingPage() {
         </div>
         <div className="testimonials-section__grid">
           {testimonials.map((t) => (
-            <Tile key={t.name} className="testimonial-card">
-              <p className="testimonial-card__quote">{t.quote}</p>
+            <Tile key={t.id ?? t.name} className="testimonial-card">
+              <p className="testimonial-card__quote">&ldquo; {t.quote} &rdquo;</p>
               <div className="testimonial-card__author">
                 <span className="testimonial-card__name">{t.name}</span>
                 <span className="testimonial-card__since">{t.since}</span>
