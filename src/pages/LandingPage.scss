@@ -1,4 +1,5 @@
 @use '../styles/tokens' as *;
+@use '../styles/animations';
 
 .landing-page {
   background: var(--background-primary);

@@ -84,6 +84,26 @@ export default function LandingPage() {
       });
   }, []);
 
+  // Scroll reveal observer for sections not handled by their own components
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    const els = document.querySelectorAll('.landing-page .scroll-reveal');
+    els.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, [testimonialsLoading]); // re-run after testimonials render
+
   return (
     <div className="landing-page">
       <SignUpDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
@@ -97,13 +117,18 @@ export default function LandingPage() {
       />
 
       <section className="benefits-section">
-        <div className="section-heading-banner">
+        <div className="section-heading-banner scroll-reveal reveal-up">
           <h2 className="section-heading-text">Why Choose InsureCo?</h2>
         </div>
         <Grid className="benefits-grid">
-          {benefits.map((b) => (
+          {benefits.map((b, i) => (
             <Column lg={4} md={4} sm={4} key={b.title}>
-              <InfoCard icon={b.icon} title={b.title} description={b.description} />
+              <div
+                className="scroll-reveal reveal-scale"
+                style={{ '--reveal-delay': `${i * 100}ms` }}
+              >
+                <InfoCard icon={b.icon} title={b.title} description={b.description} />
+              </div>
             </Column>
           ))}
         </Grid>
@@ -146,7 +171,7 @@ export default function LandingPage() {
       />
 
       <section className="testimonials-section">
-        <div className="section-heading-banner">
+        <div className="section-heading-banner scroll-reveal reveal-up">
           <h2 className="section-heading-text">What Our Customers Say</h2>
         </div>
         <Grid className="testimonials-grid">
@@ -162,9 +187,12 @@ export default function LandingPage() {
                   </Tile>
                 </Column>
               ))
-            : testimonials.map((t) => (
+            : testimonials.map((t, i) => (
                 <Column lg={5} md={8} sm={4} key={t.id ?? t.name}>
-                  <Tile className="testimonial-card">
+                  <Tile
+                    className="testimonial-card scroll-reveal reveal-up"
+                    style={{ '--reveal-delay': `${i * 120}ms` }}
+                  >
                     <p className="testimonial-quote">{t.quote}</p>
                     <div className="testimonial-author">
                       <span className="testimonial-name">{t.name}</span>
@@ -176,7 +204,7 @@ export default function LandingPage() {
         </Grid>
       </section>
 
-      <section className="cta-section">
+      <section className="cta-section scroll-reveal reveal-scale">
         <h2 className="cta-heading">Ready to Get Started?</h2>
         <p className="cta-description">
           Join thousands of satisfied customers who trust InsureCo for their insurance needs.

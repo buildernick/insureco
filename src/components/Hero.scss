@@ -13,7 +13,7 @@
     min-height: 600px;
     background-image: var(--hero-bg-image);
     background-size: cover;
-    background-position: center;
+    background-position: center calc(50% + var(--parallax-offset, 0px));
     position: relative;
 
     &::before {
