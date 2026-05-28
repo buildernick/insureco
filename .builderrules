@@ -33,9 +33,9 @@ alwaysApply: false
 
 ## Components Usage
 
-- ALWAYS try to use Carbon components whenever building in this app. 
+- ALWAYS try to first use components from /src/components then try Carbon components whenever building in this app. 
 
-- When importing from Figma especially try to find an equivalent component for the figma designs. If there isn't a suitable component notify the user in the summary after you've built that you made something custom.
+- When importing from Figma especially try to find an equivalent component for the figma designs in /src/components then Carbon. If there isn't a suitable component notify the user in the summary after you've built that you made something custom.
 
 - When changing colors ALWAYS check for suitable variants of components. Carbon components often have built-in `kind` or variant props (e.g. `kind="warning"`, `kind="error"`, `kind="success"`) that already apply the correct color — use those instead of overriding styles.
 
