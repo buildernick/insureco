@@ -25,6 +25,52 @@ Carbon is already installed and configured:
 
 Global Carbon styles are imported in `src/index.scss`.
 
+## Icons
+
+### ⚠️ NEVER create inline SVGs for icons
+
+**Always** use icons from `@carbon/icons-react`. Do not write `<svg>` elements by hand, embed SVG markup inline, or import external SVG files for iconography.
+
+
+// ✅ CORRECT
+import { Car, Home, ShieldCheck, CheckmarkFilled, ArrowRight } from '@carbon/icons-react';
+
+<Car size={32} />
+<CheckmarkFilled size={20} />
+```
+
+```jsx
+// ❌ WRONG — never do this
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <path d="M..." />
+</svg>
+```
+
+When choosing an icon, pick the `@carbon/icons-react` icon whose name and visual best matches the intended meaning. Common mappings:
+
+| Concept | Icon |
+|---|---|
+| Car / vehicle | `Car` |
+| Home / house | `Home` |
+| Shield / protection | `Security` |
+| Checkmark / done | `CheckmarkFilled`, `Checkmark` |
+| Arrow / navigation | `ArrowRight`, `ArrowLeft` |
+| Star / rating | `Star`, `StarFilled` |
+| Phone / contact | `Phone` |
+| Email | `Email` |
+| Settings | `Settings` |
+| User / account | `User`, `UserAvatar` |
+| Warning | `WarningFilled`, `Warning` |
+| Info | `Information` |
+| Close / dismiss | `Close` |
+| Add / plus | `Add` |
+| Search | `Search` |
+| Calendar | `Calendar` |
+| Document | `Document` |
+| Chart / analytics | `ChartLine`, `Analytics` |
+
+All icons accept a `size` prop (number, in px) and inherit `color` from CSS `currentColor`.
+
 ## Available Components
 
 Carbon provides a comprehensive set of components. Refer to `design-system-docs/AGENTS.md` for a complete list and `design-system-docs/*.mdx` files for detailed component documentation.

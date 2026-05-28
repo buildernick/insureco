@@ -17,6 +17,7 @@
     "@carbon/charts": "^1.27.3",
     "@carbon/charts-react": "^1.27.3",
     "@carbon/react": "^1.83.0-rc.0",
+    "contentful": "^11.12.2",
     "leaflet": "^1.9.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

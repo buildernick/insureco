@@ -17,9 +17,140 @@ The landing page (`src/pages/LandingPage.jsx`) is the marketing home page for In
 - **Path**: `/` (root route)
 - **Component**: `LandingPage.jsx`
 
+---
+
+## ⚠️ Icons — NEVER Use Inline SVGs
+
+**Always** use `@carbon/icons-react` for all icons on this page. Do not write `<svg>` elements by hand, embed SVG markup inline, or import raw `.svg` files.
+
+
+// ✅ CORRECT
+import { Car, Home, CheckmarkFilled, ArrowRight, Security } from '@carbon/icons-react';
+
+<Car size={64} />
+<CheckmarkFilled size={20} />
+```
+
+```jsx
+// ❌ WRONG
+<svg viewBox="0 0 24 24"><path d="M..." /></svg>
+```
+
+Pick the `@carbon/icons-react` icon whose name best matches the intended concept. If unsure, choose the closest semantic match from the library. See `.builder/rules/carbon-design-system.mdc` for a reference mapping table.
+
+---
+
+## ⚠️ Component Usage Rules
+
+### Custom Components — ALWAYS Use These First
+
+The following components live in `src/components/` and **must** be used for their respective landing page sections. Do **not** rebuild these from scratch or replace them with Carbon primitives.
+
+#### `Hero` — `src/components/Hero.jsx`
+Full-width top-of-page hero banner with a headline, optional subtitle, and up to two CTA buttons.
+
+**Props:**
+
+<Hero
+  headline="Protect Your Future with Confidence"
+  subtitle="Comprehensive car and home insurance..."
+  primaryButton={{ label: 'Sign Up Now', onClick: () => navigate('/signup') }}
+  secondaryButton={{ label: 'Learn More', onClick: handleLearnMore }}
+/>
+```
+- `headline` *(string, required)* — Large `<h1>` displayed prominently
+- `subtitle` *(string, optional)* — Supporting tagline beneath the headline
+- `primaryButton` *(object, optional)* — `{ label, onClick }` — rendered as the main brand CTA
+- `secondaryButton` *(object, optional)* — `{ label, onClick }` — rendered as a ghost/outline CTA
+
+Handles its own full-width branded background (red gradient), white text, and responsive stacking of buttons. Do not re-implement these styles inline.
+
+---
+
+#### `SplitHero` — `src/components/SplitHero.jsx`
+Two-column section with rich content on one side and an image on the other. Used for the Car Insurance and Home Insurance sections.
+
+**Props:**
+```jsx
+<SplitHero
+  id="car-insurance"
+  headline="Car Insurance"
+  description="Comprehensive protection for your vehicle."
+  icon={<Car size={64} />}
+  features={['Collision coverage', 'Liability protection', 'Roadside assistance']}
+  button={{ label: 'Learn More', onClick: () => navigate('/signup') }}
+  image="/images/car.jpg"
+  imageAlt="Car on road"
+  imagePosition="right"         // 'left' | 'right'
+  background="primary"          // 'primary' | 'secondary'
+/>
+```
+- `id` *(string, optional)* — Anchor ID for smooth-scroll navigation
+- `headline` *(string, required)* — Section `<h2>`
+- `description` *(string, optional)* — Supporting paragraph
+- `icon` *(ReactNode, optional)* — Icon rendered above the headline (use `@carbon/icons-react`)
+- `features` *(string[], optional)* — Bullet list rendered with `CheckmarkFilled` icons
+- `button` *(object, optional)* — `{ label, onClick, icon? }` — tertiary Carbon `Button` with arrow icon
+- `image` *(string, optional)* — `src` for the image column
+- `imageAlt` *(string, optional)* — Alt text for the image
+- `imagePosition` *(`'left' | 'right'`, default `'right'`)* — Which side the image sits on
+- `background` *(`'primary' | 'secondary'`, default `'primary'`)* — Section background variant; use `'secondary'` to alternate between adjacent sections
+
+---
+
+#### `InfoCard` — `src/components/InfoCard.jsx`
+A themed card tile for displaying a single feature or benefit. Built on top of Carbon's `Tile`. Used in the Features section.
+
+**Props:**
+```jsx
+<InfoCard
+  icon={<ShieldCheck size={32} />}
+  title="Comprehensive Coverage"
+  description="Protection for every scenario, from fender benders to total loss."
+/>
+```
+- `icon` *(ReactNode, optional)* — Icon rendered at the top of the card (use `@carbon/icons-react`)
+- `title` *(string, required)* — Card heading (`<h3>`)
+- `description` *(string, optional)* — Supporting body text
+
+Render multiple `InfoCard` components inside a Carbon `Grid` / `Column` layout for the features grid. Do not swap this for a raw `Tile` or custom `div`.
+
+---
+
+#### `Footer` — `src/components/Footer.jsx`
+Site-wide footer with a 5-column link grid and copyright line. Always placed at the bottom of the landing page.
+
+**Props:**
+```jsx
+<Footer copyright="© 2024 InsureCo. All rights reserved." />
+```
+- `copyright` *(string, optional)* — Copyright text displayed beneath the columns. Defaults to `"© 2024 InsureCo. All rights reserved."`
+
+The column structure (InsureCo, Products, Company, Support, Legal) is defined inside the component itself. To change the links or headings, edit `src/components/Footer.jsx` directly — do not pass them as props or re-implement the footer layout in `LandingPage.jsx`.
+
+---
+
+### Carbon Design System — Everything Else
+
+All other UI elements on the landing page must come from **`@carbon/react`** and **`@carbon/icons-react`**. Do not build custom primitives when a Carbon equivalent exists.
+
+| Need | Carbon Component |
+|---|---|
+| Page grid / columns | `Grid`, `Column` |
+| Buttons | `Button` (use `kind` prop: `primary`, `secondary`, `tertiary`, `ghost`) |
+| Feature / testimonial cards | `Tile` |
+| Modals (e.g. demo request) | `Modal` |
+| Form inputs inside modals | `TextInput`, `TextArea` |
+| Stacked form layout | `Stack` |
+| Section headings | `Heading` |
+| Icons | `@carbon/icons-react` (e.g. `ShieldCheck`, `Car`, `Home`, `CheckmarkFilled`, `ArrowRight`) |
+
+---
+
 ## Page Sections
 
 ### 1. Hero Section
+- **Component**: `<Hero>` from `src/components/Hero.jsx`
 - **Purpose**: Primary conversion area with main call-to-action
 - **Content**:
   - Heading: "Protect Your Future with Confidence"
@@ -27,220 +158,130 @@ The landing page (`src/pages/LandingPage.jsx`) is the marketing home page for In
   - Two CTA buttons:
     - "Sign Up Now" → navigates to `/signup`
     - "Get a Demo" → opens demo request modal
-- **Styling**: 
-  - Full-width section with brand gradient background (red tones)
-  - White text for high contrast
-  - Minimum height: 600px (500px on mobile)
 
 ### 2. Features Section
 - **Purpose**: Highlight key benefits of InsureCo
-- **Content**: 4 feature tiles
+- **Components**: `<InfoCard>` from `src/components/InfoCard.jsx` inside a Carbon `Grid`
+- **Content**: 4 feature cards
   - Comprehensive Coverage
   - Fast Claims Processing
   - 24/7 Support
   - Flexible Plans
-- **Components**: Carbon `Tile` components in a grid
-- **Styling**: 
-  - Background: secondary background color
-  - Tiles have hover effects (lift and shadow)
-  - Icons use brand primary color
 
 ### 3. Car Insurance Section
-- **Purpose**: Detail car insurance offerings
-- **Content**:
-  - Car icon (64px)
-  - Heading and description
-  - Feature list with checkmarks:
-    - Collision coverage
-    - Liability protection
-    - Roadside assistance
-    - Rental car coverage
-  - "Learn More" button → navigates to `/signup`
-  - Image placeholder with large car icon
-- **Layout**: Two-column grid (content left, image right)
-- **ID**: `car-insurance` (for anchor navigation)
+- **Component**: `<SplitHero>` from `src/components/SplitHero.jsx`
+- **Props**: `imagePosition="right"`, `background="primary"`, `id="car-insurance"`
+- **Content**: Car icon, heading, description, 4 feature bullets, "Learn More" button
 
 ### 4. Home Insurance Section
-- **Purpose**: Detail home insurance offerings
-- **Content**:
-  - Home icon (64px)
-  - Heading and description
-  - Feature list with checkmarks:
-    - Property damage coverage
-    - Personal liability protection
-    - Natural disaster coverage
-    - Personal property protection
-  - "Learn More" button → navigates to `/signup`
-  - Image placeholder with large home icon
-- **Layout**: Two-column grid (image left, content right)
-- **ID**: `home-insurance` (for anchor navigation)
-- **Styling**: Alternate background color for visual separation
+- **Component**: `<SplitHero>` from `src/components/SplitHero.jsx`
+- **Props**: `imagePosition="left"`, `background="secondary"`, `id="home-insurance"`
+- **Content**: Home icon, heading, description, 4 feature bullets, "Learn More" button
 
 ### 5. Testimonials Section
 - **Purpose**: Build trust through customer reviews
-- **Content**: 3 testimonial cards
-  - Quote text
-  - Customer name
-  - Customer role/date
-- **Components**: Carbon `Tile` components
-- **Data**: Static testimonial data (mock)
+- **Components**: Carbon `Tile` components inside a Carbon `Grid`
+- **Data**: 3 static testimonial objects (quote, name, role)
 
 ### 6. Call-to-Action Section
-- **Purpose**: Final conversion opportunity
-- **Content**:
-  - Heading: "Ready to Get Started?"
-  - Supporting text
-  - "Get Your Free Quote" button → navigates to `/signup`
-- **Styling**: 
-  - Full-width with brand primary background
-  - White text
-  - Centered content
+- **Purpose**: Final conversion opportunity before the footer
+- **Components**: Carbon `Button` inside a full-width styled `<section>`
+- **Content**: "Ready to Get Started?" heading + "Get Your Free Quote" button → `/signup`
 
 ### 7. Footer
-- **Purpose**: Navigation and legal links
-- **Content**: 5 columns
-  1. **InsureCo**: Brand description
-  2. **Products**: Car insurance, home insurance, bundle links
-  3. **Company**: About, careers, contact
-  4. **Support**: Help center, claims, FAQ
-  5. **Legal**: Privacy, terms, cookies
-- **Functionality**:
-  - Links to anchor sections (car-insurance, home-insurance)
-  - Navigation to other pages (about, dashboard, signup)
-  - Placeholder links for future pages
-- **Copyright**: "© 2024 InsureCo. All rights reserved."
+- **Component**: `<Footer>` from `src/components/Footer.jsx`
+- **Purpose**: Navigation and legal links; always the last element on the page
+
+---
 
 ## Modal Component
 
 ### Demo Request Modal
-- **Trigger**: "Get a Demo" button in hero section
+- **Trigger**: "Get a Demo" button in the Hero
 - **Component**: Carbon `Modal`
-- **Fields**:
-  - Full Name (TextInput)
-  - Email Address (TextInput, type="email")
-  - Phone Number (TextInput, type="tel")
-  - Message (TextArea, optional)
-- **Actions**:
-  - "Submit Request" → shows alert and closes modal
-  - "Cancel" → closes modal
-- **State**: Managed with `useState` hook
+- **Fields**: Full Name, Email Address, Phone Number, Message (optional)
+- **Actions**: "Submit Request" (alert + close) / "Cancel" (close)
+- **State**: Managed with `useState`
+
+---
 
 ## Design Tokens Usage
 
-The landing page extensively uses InsureCo design tokens:
+Always use InsureCo design tokens — never hardcode colors or spacing values.
 
 ### Colors
-- `--interactive-primary`: Brand red for buttons and accents
-- `--background-primary`: Main background
-- `--background-secondary`: Alternate section backgrounds
-- `--text-primary`: Main text color
-- `--text-secondary`: Supporting text color
-- `--text-on-color`: White text on colored backgrounds
-- `--color-success`: Checkmark icons
+- `--interactive-primary` — Brand red for buttons and accents
+- `--background-primary` — Main background
+- `--background-secondary` — Alternate section backgrounds
+- `--text-primary` — Main text color
+- `--text-secondary` — Supporting text color
+- `--text-on-color` — White text on colored backgrounds
+- `--color-success` — Checkmark icons
 
 ### Spacing
-- `--spacing-03` through `--spacing-13`: Component spacing
-- `--section-spacing`: Between major sections
+- `--spacing-03` through `--spacing-13` — Component spacing
+- `--section-spacing` — Between major sections
 
 ### Typography
-- `--heading-h1-size` through `--heading-h4-size`: Heading scales
-- `--body-lg-size`, `--body-md-size`, `--body-sm-size`: Body text
+- `--heading-h1-size` through `--heading-h4-size`
+- `--body-lg-size`, `--body-md-size`, `--body-sm-size`
 
 ### Layout
 - Carbon Grid system (16 columns)
-- Responsive breakpoints (sm, md, lg)
+- Responsive breakpoints: `sm` (< 672px), `md` (672–1056px), `lg` (> 1056px)
 
 ### Motion
-- `--motion-hover`: Button and tile hover transitions
-- Smooth scroll behavior for anchor links
+- `--motion-hover` — Button and tile hover transitions
+
+---
 
 ## Responsive Design
 
 ### Mobile (< 672px)
-- Hero heading size reduced
-- CTA buttons stack vertically
-- Product sections reflow to single column
+- Hero heading size reduced; CTA buttons stack vertically
+- `SplitHero` reflows to single column
 - Reduced padding and minimum heights
 
-### Tablet (672px - 1056px)
+### Tablet (672px–1056px)
 - Two-column layouts for some sections
 - Adjusted image placeholder sizes
 
 ### Desktop (> 1056px)
-- Full multi-column layouts
-- Maximum width containers
-- Larger hero section
+- Full multi-column layouts; larger hero section
+
+---
 
 ## Layout Integration
 
-### Content Padding
-The landing page requires full-width sections without typical content padding:
+The landing page uses zero content padding so sections are truly full-width:
 
-
+```jsx
 // In Layout.jsx
 const isLandingPage = location.pathname === '/';
 
-<Content
-  style={{ 
-    padding: isLandingPage ? 0 : undefined 
-  }}
->
+<Content style={{ padding: isLandingPage ? 0 : undefined }}>
 ```
 
-### Header Behavior
-- Header remains visible on landing page
-- Theme toggle available
-- Navigation includes:
-  - Home (landing page)
-  - Dashboard
-  - Sign Up
-  - About
+---
 
 ## Navigation Flow
 
 ```
 Landing Page (/)
-  ├─> Sign Up (/signup) - Primary CTA
-  ├─> Dashboard (/dashboard) - For existing users
-  ├─> About (/about) - Company info
-  └─> Demo Modal - Lead capture
+  ├─> Sign Up (/signup)     — Primary CTA
+  ├─> Dashboard (/dashboard) — Existing users
+  ├─> About (/about)         — Company info
+  └─> Demo Modal             — Lead capture
 ```
 
-## Carbon Components Used
-
-- `Grid`, `Column` - Layout structure
-- `Button` - CTAs and actions
-- `Tile` - Feature and testimonial cards
-- `Modal` - Demo request form
-- `TextInput`, `TextArea` - Form fields
-- `Heading` - Section headings
-- `Stack` - Modal form layout
-
-## Icons Used
-
-From `@carbon/icons-react`:
-- `ShieldCheck` - Comprehensive coverage
-- `Car` - Car insurance and auto-related
-- `Home` (as `HomeIcon`) - Home insurance
-- `CheckmarkFilled` - Feature checkmarks
-- `ArrowRight` - Button icons
+---
 
 ## Best Practices
 
-1. **Theme Awareness**: All colors use CSS custom properties for automatic light/dark mode support
-2. **Accessibility**: Semantic HTML, proper heading hierarchy, ARIA labels
-3. **Performance**: Lightweight, no heavy images (using icon placeholders)
-4. **Responsive**: Mobile-first approach with Carbon grid
-5. **Consistency**: Uses Carbon components and InsureCo tokens exclusively
-6. **Navigation**: Clear paths to conversion (signup) from multiple points
-7. **Smooth Scrolling**: Enabled globally for anchor links
-
-## Future Enhancements
-
-As per PRD, these sections may be enhanced with:
-- Real customer testimonials
-- Actual product imagery
-- Integration with CRM for demo requests
-- A/B testing for conversion optimization
-- Analytics tracking
-- SEO optimization
+1. **Use `src/components/` first** — Hero, SplitHero, InfoCard, Footer are the canonical building blocks for this page.
+2. **Use Carbon for everything else** — Buttons, Grid, Tile, Modal, TextInput, etc.
+3. **Never hardcode colors** — Always use design tokens (`var(--token-name)`).
+4. **Theme awareness** — All tokens adapt automatically to light/dark mode.
+5. **Accessibility** — Semantic HTML, proper heading hierarchy (`h1` → `h2` → `h3`), ARIA labels on interactive elements.
+6. **Responsive** — Mobile-first; test all sections at sm, md, and lg breakpoints.
+7. **Smooth scrolling** — Anchor links (`#car-insurance`, `#home-insurance`) rely on global smooth scroll behavior.
