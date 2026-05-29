@@ -1,6 +1,8 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
+import SignUpDrawer from "./components/SignUpDrawer";
+import { SignUpDrawerProvider } from "./contexts/SignUpDrawerContext";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
@@ -27,7 +29,8 @@ import FinancialDashboardOptions from "./pages/FinancialDashboardOptions";
 
 export default function App() {
   return (
-    <Layout>
+    <SignUpDrawerProvider>
+      <Layout>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -57,6 +60,8 @@ export default function App() {
         <Route path="/business/file-claim" element={<FileClaimPage />} />
         <Route path="/business/make-payment" element={<MakePaymentPage />} />
       </Routes>
-    </Layout>
+      </Layout>
+      <SignUpDrawer />
+    </SignUpDrawerProvider>
   );
 }

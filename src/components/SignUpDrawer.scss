@@ -1,0 +1,114 @@
+@use '../styles/tokens' as *;
+
+$drawer-width: 520px;
+$drawer-z: 9000;
+
+// Backdrop overlay
+.signup-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: $drawer-z - 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+
+  &--visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+// Drawer panel
+.signup-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100dvh;
+  width: $drawer-width;
+  max-width: 100vw;
+  background: var(--background-primary);
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.2);
+  z-index: $drawer-z;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &--open {
+    transform: translateX(0);
+  }
+}
+
+// Sticky header bar
+.signup-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-05);
+  height: 48px;
+  min-height: 48px;
+  background: var(--background-primary);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.signup-drawer__title {
+  font-size: var(--body-lg-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.signup-drawer__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-primary);
+  border-radius: 2px;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: var(--background-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--interactive-primary);
+    outline-offset: 2px;
+  }
+}
+
+// Scrollable form body
+.signup-drawer__body {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  // Tighten the SignUpPage when inside drawer
+  .signup-container {
+    padding-top: var(--spacing-06);
+    padding-bottom: var(--spacing-08);
+  }
+
+  .signup-header {
+    padding-bottom: var(--spacing-05);
+  }
+
+  .signup-title {
+    font-size: var(--heading-h3-size) !important;
+  }
+
+  .signup-subtitle {
+    font-size: var(--body-sm-size);
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .signup-drawer {
+    width: 100vw;
+  }
+}
