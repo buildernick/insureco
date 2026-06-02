@@ -1,0 +1,33 @@
+@use '../../styles/tokens' as *;
+
+.builder-benefit-card {
+  height: 100%;
+  text-align: center;
+  padding: var(--spacing-07);
+  transition: transform var(--motion-hover), box-shadow var(--motion-hover);
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--card-shadow-hover);
+  }
+
+  &__icon {
+    color: var(--interactive-primary);
+    margin-bottom: var(--spacing-05);
+    display: flex;
+    justify-content: center;
+  }
+
+  &__title {
+    font-size: var(--heading-h4-size);
+    font-weight: var(--heading-h4-weight);
+    margin-bottom: var(--spacing-03);
+    color: var(--text-primary);
+  }
+
+  &__description {
+    font-size: var(--body-md-size);
+    color: var(--text-secondary);
+    line-height: var(--line-height-normal);
+  }
+}

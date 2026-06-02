@@ -1,0 +1,26 @@
+@use '../../styles/tokens' as *;
+
+.builder-bold-banner {
+  padding: var(--spacing-10) var(--spacing-05);
+  background: var(--interactive-primary);
+  color: var(--text-on-color);
+  text-align: center;
+
+  &__content {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  &__heading {
+    font-size: var(--heading-h2-size);
+    font-weight: var(--heading-h2-weight);
+    margin-bottom: var(--spacing-05);
+    color: var(--text-on-color);
+  }
+
+  &__subtext {
+    font-size: var(--body-lg-size);
+    margin-bottom: var(--spacing-07);
+    opacity: 0.95;
+  }
+}

@@ -1,6 +1,9 @@
 import "@carbon/charts/styles.css";
 import "./index.scss";
 
+import { registerBuilderTokens } from "./components/builder/builderTokens";
+registerBuilderTokens();
+
 import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
