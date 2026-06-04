@@ -12,25 +12,31 @@ import {
   Link,
 } from '@carbon/react';
 import { Login, ArrowRight } from '@carbon/icons-react';
+import ForgotPasswordModal from '../components/ForgotPasswordModal';
 import './LoginPage.scss';
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [forgotModalOpen, setForgotModalOpen] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
-    // Mock authentication - no validation, just navigate to dashboard
     navigate('/dashboard');
   };
 
   const handleForgotPassword = (e) => {
     e.preventDefault();
-    navigate('/forgot-password');
+    setForgotModalOpen(true);
   };
 
   return (
+    <>
+    <ForgotPasswordModal
+      open={forgotModalOpen}
+      onClose={() => setForgotModalOpen(false)}
+    />
     <Grid className="login-page">
       <Column sm={4} md={8} lg={{ span: 8, offset: 4 }} xlg={{ span: 6, offset: 5 }}>
         <div className="login-container">
@@ -113,5 +119,6 @@ export default function LoginPage() {
         </div>
       </Column>
     </Grid>
+    </>
   );
 }
