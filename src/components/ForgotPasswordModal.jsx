@@ -77,7 +77,7 @@ export default function ForgotPasswordModal({ open, onClose }) {
         ) : (
           <Stack gap={5}>
             <p className="reset-description">
-              Enter your email address and we'll send you a link to reset your password.
+              Enter your email address then check your email for a magic link!
             </p>
             <TextInput
               id="reset-email"
