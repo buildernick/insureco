@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ForgotPasswordModal from '../components/ForgotPasswordModal';
 import {
   Grid,
   Column,
@@ -16,6 +17,7 @@ import './LoginPage.scss';
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -27,10 +29,15 @@ export default function LoginPage() {
 
   const handleForgotPassword = (e) => {
     e.preventDefault();
-    navigate('/forgot-password');
+    setForgotPasswordOpen(true);
   };
 
   return (
+    <>
+    <ForgotPasswordModal
+      open={forgotPasswordOpen}
+      onClose={() => setForgotPasswordOpen(false)}
+    />
     <Grid className="login-page">
       <Column sm={4} md={8} lg={{ span: 8, offset: 4 }} xlg={{ span: 6, offset: 5 }}>
         <div className="login-container">
@@ -113,5 +120,6 @@ export default function LoginPage() {
         </div>
       </Column>
     </Grid>
+    </>
   );
 }
