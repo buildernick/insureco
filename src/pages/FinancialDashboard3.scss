@@ -128,9 +128,11 @@
       z-index: 1;
     }
 
-    .card-icon {
-      font-size: 2.5rem;
+    .card-icon-wrapper {
+      display: flex;
+      align-items: center;
       margin-bottom: var(--spacing-04);
+      color: rgba(255, 255, 255, 0.85);
       filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
     }
 
@@ -151,6 +153,10 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+
+      &.card-value--lg {
+        font-size: 1.75rem;
+      }
     }
 
     .card-trend {
@@ -251,14 +257,21 @@
         width: 100%;
       }
 
-      .radial-value {
-        font-size: 2.5rem;
+      .cds--chart-holder,
+      .bx--chart-holder {
+        background: transparent !important;
+      }
+
+      svg rect.chart-grid-backdrop,
+      svg .chart-grid-backdrop {
+        fill: transparent !important;
+      }
+
+      .radial-label {
+        font-size: 1.5rem;
         font-weight: 800;
-        margin-top: -60px;
-        background: linear-gradient(135deg, #42be65 0%, #24a148 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        margin-top: var(--spacing-03);
+        color: #42be65;
       }
     }
 
@@ -376,6 +389,16 @@
     padding: var(--spacing-06);
     max-width: 1600px;
     margin: 0 auto;
+
+    .cds--chart-holder,
+    .bx--chart-holder {
+      background: transparent !important;
+    }
+
+    svg rect.chart-grid-backdrop,
+    svg .chart-grid-backdrop {
+      fill: transparent !important;
+    }
   }
 
   // Table Section

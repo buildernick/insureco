@@ -1,9 +1,8 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Grid,
   Column,
-  Tile,
   Button,
   Toggle,
   Tag,
@@ -19,13 +18,30 @@ import {
   TableToolbarContent,
   TableToolbarSearch,
 } from '@carbon/react';
-import { ArrowUp, ArrowDown, Analytics } from '@carbon/icons-react';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from 'recharts';
+import { ArrowUp, Analytics } from '@carbon/icons-react';
+import { AreaChart, GroupedBarChart } from '@carbon/charts-react';
+import '@carbon/charts/styles.css';
+import { useTheme } from '../contexts/ThemeContext';
 import { monthlyData, assetData, calculateSummaryStats, formatCurrency, formatDate } from '../data/financialData';
 import './FinancialDashboard2.scss';
 
+const CHART_COLORS = {
+  'Property Premiums': '#24a148',
+  'Property Claims': '#da1e28',
+  'Auto Premiums': '#198038',
+  'Auto Claims': '#a2191f',
+};
+
+const SERIES_CONFIG = [
+  { key: 'propertyPremiums', label: 'Property Premiums', kind: 'primary' },
+  { key: 'propertyClaims', label: 'Property Claims', kind: 'danger' },
+  { key: 'autoPremiums', label: 'Auto Premiums', kind: 'primary' },
+  { key: 'autoClaims', label: 'Auto Claims', kind: 'danger' },
+];
+
 export default function FinancialDashboard2() {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const [chartType, setChartType] = useState('line');
   const [visibleSeries, setVisibleSeries] = useState({
     propertyPremiums: true,
@@ -34,9 +50,29 @@ export default function FinancialDashboard2() {
     autoClaims: true,
   });
 
+  const chartTheme = (theme === 'g90' || theme === 'g100') ? 'g100' : 'white';
   const stats = calculateSummaryStats();
 
-  // Table headers
+  const chartData = useMemo(() => {
+    return monthlyData.flatMap(month =>
+      SERIES_CONFIG
+        .filter(s => visibleSeries[s.key])
+        .map(s => ({ group: s.label, date: month.month, value: month[s.key] }))
+    );
+  }, [visibleSeries]);
+
+  const chartOptions = {
+    axes: {
+      left: { mapsTo: 'value', title: 'Amount (USD)' },
+      bottom: { mapsTo: 'date', scaleType: 'labels' },
+    },
+    height: '450px',
+    theme: chartTheme,
+    curve: 'curveMonotoneX',
+    color: { scale: CHART_COLORS },
+    tooltip: { valueFormatter: (v) => formatCurrency(v) },
+  };
+
   const headers = [
     { key: 'assetName', header: 'Asset Name' },
     { key: 'category', header: 'Category' },
@@ -46,7 +82,6 @@ export default function FinancialDashboard2() {
     { key: 'region', header: 'Region' },
   ];
 
-  // Format table rows with enhanced styling
   const rows = assetData.map((asset) => ({
     id: asset.id,
     assetName: asset.assetName,
@@ -58,17 +93,14 @@ export default function FinancialDashboard2() {
     _raw: asset,
   }));
 
-  const toggleSeries = (series) => {
-    setVisibleSeries(prev => ({ ...prev, [series]: !prev[series] }));
+  const toggleSeries = (key) => {
+    setVisibleSeries(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
   const handleRowClick = (row) => {
-    // Navigate to existing property or vehicle pages based on category
     if (row._raw.category === 'Property') {
-      // Navigate to business property detail page
       navigate(`/business/properties/${row._raw.id}`, { state: { asset: row._raw } });
     } else {
-      // Navigate to business fleet vehicle detail page
       navigate(`/business/fleet/${row._raw.id}`, { state: { asset: row._raw } });
     }
   };
@@ -76,7 +108,6 @@ export default function FinancialDashboard2() {
   return (
     <div className="financial-dashboard-2">
       <Grid fullWidth>
-        {/* Modern Header with Badge */}
         <Column lg={16} md={8} sm={4}>
           <div className="modern-header">
             <div className="header-content">
@@ -92,7 +123,6 @@ export default function FinancialDashboard2() {
           </div>
         </Column>
 
-        {/* Modern KPI Grid with Enhanced Cards */}
         <Column lg={8} md={8} sm={4}>
           <div className="kpi-card-modern kpi-card-modern--primary">
             <div className="kpi-card-header">
@@ -133,7 +163,6 @@ export default function FinancialDashboard2() {
           </div>
         </Column>
 
-        {/* Compact Stats Row */}
         <Column lg={4} md={4} sm={4}>
           <div className="stat-mini">
             <div className="stat-mini-label">Loss Ratio</div>
@@ -157,12 +186,11 @@ export default function FinancialDashboard2() {
 
         <Column lg={4} md={4} sm={4}>
           <div className="stat-mini">
-            <div className="stat-mini-label">Avg Premium</div>
+            <div className="stat-mini-label">Avg Monthly Premium</div>
             <div className="stat-mini-value">{formatCurrency(stats.totalOwed / 12)}</div>
           </div>
         </Column>
 
-        {/* Modern Chart with Enhanced UI */}
         <Column lg={16} md={8} sm={4}>
           <div className="chart-card-modern">
             <div className="chart-card-header">
@@ -172,39 +200,21 @@ export default function FinancialDashboard2() {
               </div>
               <div className="chart-controls-modern">
                 <div className="series-toggles">
-                  <Button
-                    kind={visibleSeries.propertyPremiums ? 'primary' : 'ghost'}
-                    size="sm"
-                    onClick={() => toggleSeries('propertyPremiums')}
-                  >
-                    Property Premiums
-                  </Button>
-                  <Button
-                    kind={visibleSeries.propertyClaims ? 'danger' : 'ghost'}
-                    size="sm"
-                    onClick={() => toggleSeries('propertyClaims')}
-                  >
-                    Property Claims
-                  </Button>
-                  <Button
-                    kind={visibleSeries.autoPremiums ? 'primary' : 'ghost'}
-                    size="sm"
-                    onClick={() => toggleSeries('autoPremiums')}
-                  >
-                    Auto Premiums
-                  </Button>
-                  <Button
-                    kind={visibleSeries.autoClaims ? 'danger' : 'ghost'}
-                    size="sm"
-                    onClick={() => toggleSeries('autoClaims')}
-                  >
-                    Auto Claims
-                  </Button>
+                  {SERIES_CONFIG.map(s => (
+                    <Button
+                      key={s.key}
+                      kind={visibleSeries[s.key] ? s.kind : 'ghost'}
+                      size="sm"
+                      onClick={() => toggleSeries(s.key)}
+                    >
+                      {s.label}
+                    </Button>
+                  ))}
                 </div>
                 <div className="chart-type-toggle">
                   <Toggle
                     id="chart-type-toggle-2"
-                    labelA="Line"
+                    labelA="Area"
                     labelB="Bar"
                     toggled={chartType === 'bar'}
                     onToggle={(checked) => setChartType(checked ? 'bar' : 'line')}
@@ -215,106 +225,21 @@ export default function FinancialDashboard2() {
             </div>
 
             <div className="chart-visualization">
-              <ResponsiveContainer width="100%" height={450}>
-                {chartType === 'line' ? (
-                  <AreaChart data={monthlyData}>
-                    <defs>
-                      <linearGradient id="propertyPremiumsGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#24a148" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#24a148" stopOpacity={0}/>
-                      </linearGradient>
-                      <linearGradient id="propertyClaimsGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#da1e28" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#da1e28" stopOpacity={0}/>
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-                    <XAxis dataKey="month" tick={{ fill: '#525252' }} />
-                    <YAxis tick={{ fill: '#525252' }} />
-                    <Tooltip 
-                      formatter={(value) => formatCurrency(value)}
-                      contentStyle={{ borderRadius: '8px', border: '1px solid #e0e0e0' }}
-                    />
-                    <Legend />
-                    {visibleSeries.propertyPremiums && (
-                      <Area 
-                        type="monotone" 
-                        dataKey="propertyPremiums" 
-                        stroke="#24a148" 
-                        strokeWidth={3}
-                        fill="url(#propertyPremiumsGradient)" 
-                        name="Property Premiums" 
-                      />
-                    )}
-                    {visibleSeries.propertyClaims && (
-                      <Area 
-                        type="monotone" 
-                        dataKey="propertyClaims" 
-                        stroke="#da1e28" 
-                        strokeWidth={3}
-                        fill="url(#propertyClaimsGradient)" 
-                        name="Property Claims" 
-                      />
-                    )}
-                    {visibleSeries.autoPremiums && (
-                      <Line 
-                        type="monotone" 
-                        dataKey="autoPremiums" 
-                        stroke="#198038" 
-                        strokeWidth={2} 
-                        strokeDasharray="5 5" 
-                        name="Auto Premiums" 
-                        dot={{ r: 4 }}
-                      />
-                    )}
-                    {visibleSeries.autoClaims && (
-                      <Line 
-                        type="monotone" 
-                        dataKey="autoClaims" 
-                        stroke="#a2191f" 
-                        strokeWidth={2} 
-                        strokeDasharray="5 5" 
-                        name="Auto Claims" 
-                        dot={{ r: 4 }}
-                      />
-                    )}
-                  </AreaChart>
-                ) : (
-                  <BarChart data={monthlyData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-                    <XAxis dataKey="month" tick={{ fill: '#525252' }} />
-                    <YAxis tick={{ fill: '#525252' }} />
-                    <Tooltip 
-                      formatter={(value) => formatCurrency(value)}
-                      contentStyle={{ borderRadius: '8px', border: '1px solid #e0e0e0' }}
-                    />
-                    <Legend />
-                    {visibleSeries.propertyPremiums && (
-                      <Bar dataKey="propertyPremiums" fill="#24a148" name="Property Premiums" radius={[8, 8, 0, 0]} />
-                    )}
-                    {visibleSeries.propertyClaims && (
-                      <Bar dataKey="propertyClaims" fill="#da1e28" name="Property Claims" radius={[8, 8, 0, 0]} />
-                    )}
-                    {visibleSeries.autoPremiums && (
-                      <Bar dataKey="autoPremiums" fill="#198038" name="Auto Premiums" radius={[8, 8, 0, 0]} />
-                    )}
-                    {visibleSeries.autoClaims && (
-                      <Bar dataKey="autoClaims" fill="#a2191f" name="Auto Claims" radius={[8, 8, 0, 0]} />
-                    )}
-                  </BarChart>
-                )}
-              </ResponsiveContainer>
+              {chartType === 'line' ? (
+                <AreaChart data={chartData} options={chartOptions} />
+              ) : (
+                <GroupedBarChart data={chartData} options={chartOptions} />
+              )}
             </div>
           </div>
         </Column>
 
-        {/* Modern Table */}
         <Column lg={16} md={8} sm={4}>
           <div className="table-card-modern">
             <DataTable rows={rows} headers={headers}>
               {({
-                rows,
-                headers,
+                rows: tableRows,
+                headers: tableHeaders,
                 getHeaderProps,
                 getRowProps,
                 getTableProps,
@@ -329,7 +254,7 @@ export default function FinancialDashboard2() {
                 >
                   <TableToolbar {...getToolbarProps()}>
                     <TableToolbarContent>
-                      <TableToolbarSearch 
+                      <TableToolbarSearch
                         onChange={onInputChange}
                         placeholder="Search assets..."
                       />
@@ -338,7 +263,7 @@ export default function FinancialDashboard2() {
                   <Table {...getTableProps()} className="modern-table">
                     <TableHead>
                       <TableRow>
-                        {headers.map((header) => (
+                        {tableHeaders.map((header) => (
                           <TableHeader {...getHeaderProps({ header })} key={header.key}>
                             {header.header}
                           </TableHeader>
@@ -346,7 +271,7 @@ export default function FinancialDashboard2() {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {rows.map((row) => (
+                      {tableRows.map((row) => (
                         <TableRow
                           {...getRowProps({ row })}
                           key={row.id}

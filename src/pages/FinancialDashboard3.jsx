@@ -1,8 +1,24 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, RadialBarChart, RadialBar, PolarAngleAxis } from 'recharts';
+import { Finance, Analytics, Building, Car, Money, ArrowUp } from '@carbon/icons-react';
+import { GaugeChart, LineChart, GroupedBarChart } from '@carbon/charts-react';
+import '@carbon/charts/styles.css';
 import { monthlyData, assetData, calculateSummaryStats, formatCurrency, formatDate } from '../data/financialData';
 import './FinancialDashboard3.scss';
+
+const CHART_COLORS = {
+  'Property Premiums': '#24a148',
+  'Property Claims': '#da1e28',
+  'Auto Premiums': '#42be65',
+  'Auto Claims': '#fa4d56',
+};
+
+const SERIES_CONFIG = [
+  { key: 'propertyPremiums', label: 'Property Premiums', colorClass: 'green' },
+  { key: 'propertyClaims', label: 'Property Claims', colorClass: 'red' },
+  { key: 'autoPremiums', label: 'Auto Premiums', colorClass: 'green' },
+  { key: 'autoClaims', label: 'Auto Claims', colorClass: 'red' },
+];
 
 export default function FinancialDashboard3() {
   const navigate = useNavigate();
@@ -17,35 +33,59 @@ export default function FinancialDashboard3() {
   });
 
   const stats = calculateSummaryStats();
+  const lossRatioValue = parseFloat(stats.lossRatio);
 
-  // Radial chart data for loss ratio
-  const radialData = [
-    {
-      name: 'Loss Ratio',
-      value: parseFloat(stats.lossRatio),
-      fill: parseFloat(stats.lossRatio) > 60 ? '#da1e28' : '#24a148',
+  const gaugeData = [{ group: 'Loss Ratio', value: lossRatioValue }];
+  const gaugeOptions = {
+    gauge: {
+      type: 'semi',
+      alignment: 'center',
+      status: lossRatioValue > 70 ? 'danger' : lossRatioValue > 55 ? 'warning' : 'success',
     },
-  ];
+    height: '180px',
+    theme: 'g100',
+    legend: { enabled: false },
+    toolbar: { enabled: false },
+  };
 
-  // Filter assets based on category and search
-  const filteredAssets = assetData.filter(asset => {
-    const matchesCategory = selectedCategory === 'all' || asset.category.toLowerCase() === selectedCategory;
-    const matchesSearch = asset.assetName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         asset.region.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  const chartData = useMemo(() => {
+    return monthlyData.flatMap(month =>
+      SERIES_CONFIG
+        .filter(s => visibleSeries[s.key])
+        .map(s => ({ group: s.label, date: month.month, value: month[s.key] }))
+    );
+  }, [visibleSeries]);
 
-  const toggleSeries = (series) => {
-    setVisibleSeries(prev => ({ ...prev, [series]: !prev[series] }));
+  const chartOptions = {
+    axes: {
+      left: { mapsTo: 'value' },
+      bottom: { mapsTo: 'date', scaleType: 'labels' },
+    },
+    height: '420px',
+    theme: 'g100',
+    curve: 'curveMonotoneX',
+    color: { scale: CHART_COLORS },
+    tooltip: { valueFormatter: (v) => formatCurrency(v) },
+    grid: { x: { enabled: false } },
+  };
+
+  const filteredAssets = useMemo(() => {
+    return assetData.filter(asset => {
+      const matchesCategory = selectedCategory === 'all' || asset.category.toLowerCase() === selectedCategory;
+      const matchesSearch = asset.assetName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        asset.region.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesCategory && matchesSearch;
+    });
+  }, [selectedCategory, searchTerm]);
+
+  const toggleSeries = (key) => {
+    setVisibleSeries(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
   const handleAssetClick = (asset) => {
-    // Navigate to existing property or vehicle pages based on category
     if (asset.category === 'Property') {
-      // Navigate to business property detail page
       navigate(`/business/properties/${asset.id}`, { state: { asset } });
     } else {
-      // Navigate to business fleet vehicle detail page
       navigate(`/business/fleet/${asset.id}`, { state: { asset } });
     }
   };
@@ -61,67 +101,56 @@ export default function FinancialDashboard3() {
         </div>
       </div>
 
-      {/* Unique KPI Layout */}
+      {/* KPI Grid */}
       <div className="kpi-section">
         <div className="kpi-grid">
-          {/* Main Premium Card */}
           <div className="kpi-card-wild kpi-card-wild--large kpi-card-wild--premium">
             <div className="card-glow"></div>
             <div className="card-content">
-              <div className="card-icon">💰</div>
+              <div className="card-icon-wrapper">
+                <Finance size={32} />
+              </div>
               <div className="card-label">Total Premiums</div>
               <div className="card-value">{formatCurrency(stats.totalOwed)}</div>
               <div className="card-trend">
-                <span className="trend-badge trend-badge--up">↑ 8.2%</span>
+                <span className="trend-badge trend-badge--up">
+                  <ArrowUp size={12} /> 8.2%
+                </span>
                 <span className="trend-text">vs last year</span>
               </div>
             </div>
           </div>
 
-          {/* Main Claims Card */}
           <div className="kpi-card-wild kpi-card-wild--large kpi-card-wild--claims">
             <div className="card-glow"></div>
             <div className="card-content">
-              <div className="card-icon">📊</div>
+              <div className="card-icon-wrapper">
+                <Analytics size={32} />
+              </div>
               <div className="card-label">Total Claims</div>
               <div className="card-value">{formatCurrency(stats.totalClaimed)}</div>
               <div className="card-trend">
-                <span className="trend-badge trend-badge--down">↑ 12.5%</span>
+                <span className="trend-badge trend-badge--down">
+                  <ArrowUp size={12} /> 12.5%
+                </span>
                 <span className="trend-text">vs last year</span>
               </div>
             </div>
           </div>
 
-          {/* Loss Ratio Radial */}
           <div className="kpi-card-wild kpi-card-wild--radial">
             <div className="card-content">
               <div className="card-label">Loss Ratio</div>
-              <ResponsiveContainer width="100%" height={120}>
-                <RadialBarChart 
-                  cx="50%" 
-                  cy="50%" 
-                  innerRadius="60%" 
-                  outerRadius="90%" 
-                  data={radialData}
-                  startAngle={180}
-                  endAngle={0}
-                >
-                  <PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} />
-                  <RadialBar 
-                    background 
-                    dataKey="value" 
-                    cornerRadius={10}
-                  />
-                </RadialBarChart>
-              </ResponsiveContainer>
-              <div className="radial-value">{stats.lossRatio}%</div>
+              <GaugeChart data={gaugeData} options={gaugeOptions} />
+              <div className="radial-label">{stats.lossRatio}%</div>
             </div>
           </div>
 
-          {/* Property Card */}
           <div className="kpi-card-wild kpi-card-wild--property">
             <div className="card-content">
-              <div className="card-icon">🏢</div>
+              <div className="card-icon-wrapper">
+                <Building size={28} />
+              </div>
               <div className="card-label">Property</div>
               <div className="card-split">
                 <div className="split-item">
@@ -137,10 +166,11 @@ export default function FinancialDashboard3() {
             </div>
           </div>
 
-          {/* Auto Card */}
           <div className="kpi-card-wild kpi-card-wild--auto">
             <div className="card-content">
-              <div className="card-icon">🚗</div>
+              <div className="card-icon-wrapper">
+                <Car size={28} />
+              </div>
               <div className="card-label">Auto</div>
               <div className="card-split">
                 <div className="split-item">
@@ -156,56 +186,42 @@ export default function FinancialDashboard3() {
             </div>
           </div>
 
-          {/* Net Revenue */}
           <div className="kpi-card-wild kpi-card-wild--net">
             <div className="card-content">
-              <div className="card-icon">💵</div>
+              <div className="card-icon-wrapper">
+                <Money size={28} />
+              </div>
               <div className="card-label">Net Revenue</div>
-              <div className="card-value">{formatCurrency(stats.totalOwed - stats.totalClaimed)}</div>
+              <div className="card-value card-value--lg">{formatCurrency(stats.totalOwed - stats.totalClaimed)}</div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Chart Section with Wild Design */}
+      {/* Chart Section */}
       <div className="chart-section-wild">
         <div className="section-header">
           <h2>Financial Trends</h2>
           <div className="chart-controls-wild">
             <div className="series-chips">
-              <button 
-                className={`chip ${visibleSeries.propertyPremiums ? 'chip--active chip--green' : 'chip--inactive'}`}
-                onClick={() => toggleSeries('propertyPremiums')}
-              >
-                Property Premiums
-              </button>
-              <button 
-                className={`chip ${visibleSeries.propertyClaims ? 'chip--active chip--red' : 'chip--inactive'}`}
-                onClick={() => toggleSeries('propertyClaims')}
-              >
-                Property Claims
-              </button>
-              <button 
-                className={`chip ${visibleSeries.autoPremiums ? 'chip--active chip--green' : 'chip--inactive'}`}
-                onClick={() => toggleSeries('autoPremiums')}
-              >
-                Auto Premiums
-              </button>
-              <button 
-                className={`chip ${visibleSeries.autoClaims ? 'chip--active chip--red' : 'chip--inactive'}`}
-                onClick={() => toggleSeries('autoClaims')}
-              >
-                Auto Claims
-              </button>
+              {SERIES_CONFIG.map(s => (
+                <button
+                  key={s.key}
+                  className={`chip ${visibleSeries[s.key] ? `chip--active chip--${s.colorClass}` : 'chip--inactive'}`}
+                  onClick={() => toggleSeries(s.key)}
+                >
+                  {s.label}
+                </button>
+              ))}
             </div>
             <div className="chart-toggle-wild">
-              <button 
+              <button
                 className={`toggle-btn ${chartType === 'line' ? 'toggle-btn--active' : ''}`}
                 onClick={() => setChartType('line')}
               >
                 Line
               </button>
-              <button 
+              <button
                 className={`toggle-btn ${chartType === 'bar' ? 'toggle-btn--active' : ''}`}
                 onClick={() => setChartType('bar')}
               >
@@ -216,74 +232,20 @@ export default function FinancialDashboard3() {
         </div>
 
         <div className="chart-container-wild">
-          <ResponsiveContainer width="100%" height={450}>
-            {chartType === 'line' ? (
-              <LineChart data={monthlyData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#333" opacity={0.2} />
-                <XAxis dataKey="month" stroke="#888" />
-                <YAxis stroke="#888" />
-                <Tooltip 
-                  formatter={(value) => formatCurrency(value)}
-                  contentStyle={{ 
-                    background: 'rgba(22, 22, 22, 0.95)', 
-                    border: 'none',
-                    borderRadius: '12px',
-                    color: '#fff'
-                  }}
-                />
-                <Legend />
-                {visibleSeries.propertyPremiums && (
-                  <Line type="monotone" dataKey="propertyPremiums" stroke="#24a148" strokeWidth={3} name="Property Premiums" dot={{ r: 5 }} />
-                )}
-                {visibleSeries.propertyClaims && (
-                  <Line type="monotone" dataKey="propertyClaims" stroke="#da1e28" strokeWidth={3} name="Property Claims" dot={{ r: 5 }} />
-                )}
-                {visibleSeries.autoPremiums && (
-                  <Line type="monotone" dataKey="autoPremiums" stroke="#42be65" strokeWidth={2} strokeDasharray="8 8" name="Auto Premiums" />
-                )}
-                {visibleSeries.autoClaims && (
-                  <Line type="monotone" dataKey="autoClaims" stroke="#fa4d56" strokeWidth={2} strokeDasharray="8 8" name="Auto Claims" />
-                )}
-              </LineChart>
-            ) : (
-              <BarChart data={monthlyData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#333" opacity={0.2} />
-                <XAxis dataKey="month" stroke="#888" />
-                <YAxis stroke="#888" />
-                <Tooltip 
-                  formatter={(value) => formatCurrency(value)}
-                  contentStyle={{ 
-                    background: 'rgba(22, 22, 22, 0.95)', 
-                    border: 'none',
-                    borderRadius: '12px',
-                    color: '#fff'
-                  }}
-                />
-                <Legend />
-                {visibleSeries.propertyPremiums && (
-                  <Bar dataKey="propertyPremiums" fill="#24a148" name="Property Premiums" radius={[8, 8, 0, 0]} />
-                )}
-                {visibleSeries.propertyClaims && (
-                  <Bar dataKey="propertyClaims" fill="#da1e28" name="Property Claims" radius={[8, 8, 0, 0]} />
-                )}
-                {visibleSeries.autoPremiums && (
-                  <Bar dataKey="autoPremiums" fill="#42be65" name="Auto Premiums" radius={[8, 8, 0, 0]} />
-                )}
-                {visibleSeries.autoClaims && (
-                  <Bar dataKey="autoClaims" fill="#fa4d56" name="Auto Claims" radius={[8, 8, 0, 0]} />
-                )}
-              </BarChart>
-            )}
-          </ResponsiveContainer>
+          {chartType === 'line' ? (
+            <LineChart data={chartData} options={chartOptions} />
+          ) : (
+            <GroupedBarChart data={chartData} options={chartOptions} />
+          )}
         </div>
       </div>
 
-      {/* Wild Table Section */}
+      {/* Asset Grid Section */}
       <div className="table-section-wild">
         <div className="section-header">
           <h2>Asset Performance</h2>
           <div className="table-controls">
-            <input 
+            <input
               type="text"
               className="search-input-wild"
               placeholder="Search assets..."
@@ -291,32 +253,23 @@ export default function FinancialDashboard3() {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <div className="category-filters">
-              <button 
-                className={`filter-btn ${selectedCategory === 'all' ? 'filter-btn--active' : ''}`}
-                onClick={() => setSelectedCategory('all')}
-              >
-                All
-              </button>
-              <button 
-                className={`filter-btn ${selectedCategory === 'property' ? 'filter-btn--active' : ''}`}
-                onClick={() => setSelectedCategory('property')}
-              >
-                Property
-              </button>
-              <button 
-                className={`filter-btn ${selectedCategory === 'auto' ? 'filter-btn--active' : ''}`}
-                onClick={() => setSelectedCategory('auto')}
-              >
-                Auto
-              </button>
+              {['all', 'property', 'auto'].map(cat => (
+                <button
+                  key={cat}
+                  className={`filter-btn ${selectedCategory === cat ? 'filter-btn--active' : ''}`}
+                  onClick={() => setSelectedCategory(cat)}
+                >
+                  {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                </button>
+              ))}
             </div>
           </div>
         </div>
 
         <div className="asset-grid">
           {filteredAssets.map((asset) => (
-            <div 
-              key={asset.id} 
+            <div
+              key={asset.id}
               className={`asset-card asset-card--${asset.category.toLowerCase()}`}
               onClick={() => handleAssetClick(asset)}
             >

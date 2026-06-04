@@ -6,7 +6,6 @@ import {
   Tile,
   Button,
   Toggle,
-  Dropdown,
   DataTable,
   TableContainer,
   Table,
@@ -19,15 +18,31 @@ import {
   TableToolbarContent,
   TableToolbarSearch,
 } from '@carbon/react';
-import { ArrowUp, ArrowDown, WarningAlt } from '@carbon/icons-react';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { ArrowUp, WarningAlt } from '@carbon/icons-react';
+import { LineChart, GroupedBarChart } from '@carbon/charts-react';
+import '@carbon/charts/styles.css';
+import { useTheme } from '../contexts/ThemeContext';
 import { monthlyData, assetData, calculateSummaryStats, formatCurrency, formatDate } from '../data/financialData';
 import './FinancialDashboard1.scss';
 
+const CHART_COLORS = {
+  'Property Premiums': '#24a148',
+  'Property Claims': '#da1e28',
+  'Auto Premiums': '#198038',
+  'Auto Claims': '#a2191f',
+};
+
+const SERIES_CONFIG = [
+  { key: 'propertyPremiums', label: 'Property Premiums', kind: 'primary' },
+  { key: 'propertyClaims', label: 'Property Claims', kind: 'danger' },
+  { key: 'autoPremiums', label: 'Auto Premiums', kind: 'primary' },
+  { key: 'autoClaims', label: 'Auto Claims', kind: 'danger' },
+];
+
 export default function FinancialDashboard1() {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const [chartType, setChartType] = useState('line');
-  const [showGross, setShowGross] = useState(true);
   const [visibleSeries, setVisibleSeries] = useState({
     propertyPremiums: true,
     propertyClaims: true,
@@ -35,9 +50,9 @@ export default function FinancialDashboard1() {
     autoClaims: true,
   });
 
+  const chartTheme = (theme === 'g90' || theme === 'g100') ? 'g100' : 'white';
   const stats = calculateSummaryStats();
 
-  // Calculate high-risk assets (worst claims-to-premium ratios)
   const highRiskAssets = useMemo(() => {
     return assetData
       .map(asset => ({
@@ -45,10 +60,29 @@ export default function FinancialDashboard1() {
         lossRatio: (asset.totalClaims / asset.premiumDue) * 100,
       }))
       .sort((a, b) => b.lossRatio - a.lossRatio)
-      .slice(0, 5); // Top 5 highest risk assets
+      .slice(0, 5);
   }, []);
 
-  // Table headers configuration
+  const chartData = useMemo(() => {
+    return monthlyData.flatMap(month =>
+      SERIES_CONFIG
+        .filter(s => visibleSeries[s.key])
+        .map(s => ({ group: s.label, date: month.month, value: month[s.key] }))
+    );
+  }, [visibleSeries]);
+
+  const chartOptions = {
+    axes: {
+      left: { mapsTo: 'value', title: 'Amount (USD)' },
+      bottom: { mapsTo: 'date', scaleType: 'labels' },
+    },
+    height: '400px',
+    theme: chartTheme,
+    curve: 'curveMonotoneX',
+    color: { scale: CHART_COLORS },
+    tooltip: { valueFormatter: (v) => formatCurrency(v) },
+  };
+
   const headers = [
     { key: 'assetName', header: 'Asset Name' },
     { key: 'category', header: 'Category' },
@@ -58,7 +92,6 @@ export default function FinancialDashboard1() {
     { key: 'region', header: 'Region' },
   ];
 
-  // Format table rows
   const rows = assetData.map((asset) => ({
     id: asset.id,
     assetName: asset.assetName,
@@ -67,20 +100,17 @@ export default function FinancialDashboard1() {
     dueDate: formatDate(asset.dueDate),
     totalClaims: formatCurrency(asset.totalClaims),
     region: asset.region,
-    _raw: asset, // Keep raw data for navigation
+    _raw: asset,
   }));
 
-  const toggleSeries = (series) => {
-    setVisibleSeries(prev => ({ ...prev, [series]: !prev[series] }));
+  const toggleSeries = (key) => {
+    setVisibleSeries(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
   const handleRowClick = (row) => {
-    // Navigate to existing property or vehicle pages based on category
     if (row._raw.category === 'Property') {
-      // Navigate to business property detail page
       navigate(`/business/properties/${row._raw.id}`, { state: { asset: row._raw } });
     } else {
-      // Navigate to business fleet vehicle detail page
       navigate(`/business/fleet/${row._raw.id}`, { state: { asset: row._raw } });
     }
   };
@@ -88,7 +118,6 @@ export default function FinancialDashboard1() {
   return (
     <div className="financial-dashboard-1">
       <Grid fullWidth>
-        {/* Page Header */}
         <Column lg={16} md={8} sm={4}>
           <div className="dashboard-header">
             <h1>Insurance Financial Analytics Dashboard</h1>
@@ -98,7 +127,6 @@ export default function FinancialDashboard1() {
           </div>
         </Column>
 
-        {/* KPI Summary Cards */}
         <Column lg={4} md={4} sm={4}>
           <Tile className="kpi-card kpi-card--primary">
             <div className="kpi-label">Total Owed (YTD)</div>
@@ -125,9 +153,7 @@ export default function FinancialDashboard1() {
           <Tile className="kpi-card kpi-card--success">
             <div className="kpi-label">Property Premiums</div>
             <div className="kpi-value">{formatCurrency(stats.propertyPremiums)}</div>
-            <div className="kpi-subtitle">
-              Claims: {formatCurrency(stats.propertyClaims)}
-            </div>
+            <div className="kpi-subtitle">Claims: {formatCurrency(stats.propertyClaims)}</div>
           </Tile>
         </Column>
 
@@ -135,47 +161,26 @@ export default function FinancialDashboard1() {
           <Tile className="kpi-card kpi-card--success">
             <div className="kpi-label">Auto Premiums</div>
             <div className="kpi-value">{formatCurrency(stats.autoPremiums)}</div>
-            <div className="kpi-subtitle">
-              Claims: {formatCurrency(stats.autoClaims)}
-            </div>
+            <div className="kpi-subtitle">Claims: {formatCurrency(stats.autoClaims)}</div>
           </Tile>
         </Column>
 
-        {/* Chart Section */}
         <Column lg={16} md={8} sm={4}>
           <Tile className="chart-tile">
             <div className="chart-header">
               <h3>Premium vs Claims Analysis</h3>
               <div className="chart-controls">
                 <div className="legend-toggles">
-                  <Button
-                    kind={visibleSeries.propertyPremiums ? 'primary' : 'ghost'}
-                    size="sm"
-                    onClick={() => toggleSeries('propertyPremiums')}
-                  >
-                    Property Premiums
-                  </Button>
-                  <Button
-                    kind={visibleSeries.propertyClaims ? 'danger' : 'ghost'}
-                    size="sm"
-                    onClick={() => toggleSeries('propertyClaims')}
-                  >
-                    Property Claims
-                  </Button>
-                  <Button
-                    kind={visibleSeries.autoPremiums ? 'primary' : 'ghost'}
-                    size="sm"
-                    onClick={() => toggleSeries('autoPremiums')}
-                  >
-                    Auto Premiums
-                  </Button>
-                  <Button
-                    kind={visibleSeries.autoClaims ? 'danger' : 'ghost'}
-                    size="sm"
-                    onClick={() => toggleSeries('autoClaims')}
-                  >
-                    Auto Claims
-                  </Button>
+                  {SERIES_CONFIG.map(s => (
+                    <Button
+                      key={s.key}
+                      kind={visibleSeries[s.key] ? s.kind : 'ghost'}
+                      size="sm"
+                      onClick={() => toggleSeries(s.key)}
+                    >
+                      {s.label}
+                    </Button>
+                  ))}
                 </div>
                 <Toggle
                   id="chart-type-toggle"
@@ -189,54 +194,15 @@ export default function FinancialDashboard1() {
             </div>
 
             <div className="chart-container">
-              <ResponsiveContainer width="100%" height={400}>
-                {chartType === 'line' ? (
-                  <LineChart data={monthlyData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip formatter={(value) => formatCurrency(value)} />
-                    <Legend />
-                    {visibleSeries.propertyPremiums && (
-                      <Line type="monotone" dataKey="propertyPremiums" stroke="#24a148" strokeWidth={2} name="Property Premiums" />
-                    )}
-                    {visibleSeries.propertyClaims && (
-                      <Line type="monotone" dataKey="propertyClaims" stroke="#da1e28" strokeWidth={2} name="Property Claims" />
-                    )}
-                    {visibleSeries.autoPremiums && (
-                      <Line type="monotone" dataKey="autoPremiums" stroke="#198038" strokeWidth={2} strokeDasharray="5 5" name="Auto Premiums" />
-                    )}
-                    {visibleSeries.autoClaims && (
-                      <Line type="monotone" dataKey="autoClaims" stroke="#a2191f" strokeWidth={2} strokeDasharray="5 5" name="Auto Claims" />
-                    )}
-                  </LineChart>
-                ) : (
-                  <BarChart data={monthlyData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip formatter={(value) => formatCurrency(value)} />
-                    <Legend />
-                    {visibleSeries.propertyPremiums && (
-                      <Bar dataKey="propertyPremiums" fill="#24a148" name="Property Premiums" />
-                    )}
-                    {visibleSeries.propertyClaims && (
-                      <Bar dataKey="propertyClaims" fill="#da1e28" name="Property Claims" />
-                    )}
-                    {visibleSeries.autoPremiums && (
-                      <Bar dataKey="autoPremiums" fill="#198038" name="Auto Premiums" />
-                    )}
-                    {visibleSeries.autoClaims && (
-                      <Bar dataKey="autoClaims" fill="#a2191f" name="Auto Claims" />
-                    )}
-                  </BarChart>
-                )}
-              </ResponsiveContainer>
+              {chartType === 'line' ? (
+                <LineChart data={chartData} options={chartOptions} />
+              ) : (
+                <GroupedBarChart data={chartData} options={chartOptions} />
+              )}
             </div>
           </Tile>
         </Column>
 
-        {/* High Risk Assets Section */}
         <Column lg={16} md={8} sm={4}>
           <div className="high-risk-section">
             <div className="section-header">
@@ -305,12 +271,11 @@ export default function FinancialDashboard1() {
           </div>
         </Column>
 
-        {/* Asset Performance Table */}
         <Column lg={16} md={8} sm={4}>
           <DataTable rows={rows} headers={headers}>
             {({
-              rows,
-              headers,
+              rows: tableRows,
+              headers: tableHeaders,
               getHeaderProps,
               getRowProps,
               getTableProps,
@@ -331,7 +296,7 @@ export default function FinancialDashboard1() {
                 <Table {...getTableProps()}>
                   <TableHead>
                     <TableRow>
-                      {headers.map((header) => (
+                      {tableHeaders.map((header) => (
                         <TableHeader {...getHeaderProps({ header })} key={header.key}>
                           {header.header}
                         </TableHeader>
@@ -339,7 +304,7 @@ export default function FinancialDashboard1() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {rows.map((row) => (
+                    {tableRows.map((row) => (
                       <TableRow
                         {...getRowProps({ row })}
                         key={row.id}

@@ -110,7 +110,16 @@
 
     .chart-container {
       width: 100%;
-      height: 400px;
+
+      .cds--chart-holder,
+      .bx--chart-holder {
+        background: transparent !important;
+      }
+
+      svg rect.chart-grid-backdrop,
+      svg .chart-grid-backdrop {
+        fill: transparent !important;
+      }
     }
   }
 
