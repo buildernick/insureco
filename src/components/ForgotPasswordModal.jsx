@@ -53,7 +53,7 @@ export default function ForgotPasswordModal({ open, onClose }) {
 
       <ModalBody>
         {submitted ? (
-          <Stack gap={5} className="modal-success-content">
+          <Stack gap={5}>
             <InlineNotification
               kind="success"
               title="Magic link sent!"
@@ -61,7 +61,7 @@ export default function ForgotPasswordModal({ open, onClose }) {
               hideCloseButton
               className="modal-success-notification"
             />
-            <p className="modal-success-body">
+            <p className="modal-hint-text">
               Didn't receive it? Check your spam folder or request a new link.
             </p>
           </Stack>
@@ -89,22 +89,32 @@ export default function ForgotPasswordModal({ open, onClose }) {
             </Stack>
           </form>
         )}
+
+        <div className="modal-help-row">
+          <Link
+            href="https://www.insureco.com/help"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="modal-help-link"
+          >
+            Still having trouble?
+          </Link>
+        </div>
       </ModalBody>
 
-      <ModalFooter className="modal-footer-layout">
+      <ModalFooter>
         {submitted ? (
           <Button
             kind="primary"
             onClick={handleClose}
             renderIcon={ArrowLeft}
-            size="lg"
             className="modal-back-button"
           >
             Back to Login
           </Button>
         ) : (
           <>
-            <Button kind="secondary" onClick={handleClose} size="lg">
+            <Button kind="secondary" onClick={handleClose}>
               Cancel
             </Button>
             <Button
@@ -112,22 +122,11 @@ export default function ForgotPasswordModal({ open, onClose }) {
               form="forgot-password-form"
               kind="primary"
               renderIcon={ArrowRight}
-              size="lg"
             >
               Send Magic Link
             </Button>
           </>
         )}
-
-        <div className="modal-help-link">
-          <Link
-            href="https://www.insureco.com/help"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Still having trouble?
-          </Link>
-        </div>
       </ModalFooter>
     </ComposedModal>
   );
