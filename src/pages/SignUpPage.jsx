@@ -17,13 +17,51 @@ import {
   NumberInput,
   TileGroup,
   RadioTile,
-  ProgressIndicator,
-  ProgressStep,
   DatePicker,
   DatePickerInput,
 } from '@carbon/react';
 import { ArrowRight, ArrowLeft, Checkmark, Car, Home as HomeIcon } from '@carbon/icons-react';
 import './SignUpPage.scss';
+
+function ChipStrip({ steps, currentIndex }) {
+  return (
+    <div className="chip-strip" role="list" aria-label="Sign-up progress">
+      {steps.map((step, index) => {
+        const isDone = index < currentIndex;
+        const isCurrent = index === currentIndex;
+        return (
+          <React.Fragment key={step.key}>
+            <div
+              role="listitem"
+              aria-current={isCurrent ? 'step' : undefined}
+              className={[
+                'chip-strip__step',
+                isDone && 'chip-strip__step--done',
+                isCurrent && 'chip-strip__step--current',
+              ]
+                .filter(Boolean)
+                .join(' ')}
+            >
+              <div className="chip-strip__bubble">
+                {isDone ? <Checkmark size={14} /> : <span>{index + 1}</span>}
+              </div>
+              {isCurrent && (
+                <span className="chip-strip__label">{step.label}</span>
+              )}
+            </div>
+            {index < steps.length - 1 && (
+              <div
+                className={`chip-strip__connector ${
+                  isDone ? 'chip-strip__connector--filled' : ''
+                }`}
+              />
+            )}
+          </React.Fragment>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function SignUpPage() {
   const navigate = useNavigate();
@@ -608,25 +646,9 @@ export default function SignUpPage() {
           </p>
         </header>
 
-        <Tile className="signup-progress">
-          <ProgressIndicator currentIndex={currentStep} spaceEqually>
-            {steps.map((step, index) => (
-              <ProgressStep
-                key={step.key}
-                label={step.label}
-                description={
-                  index < currentStep
-                    ? 'Complete'
-                    : index === currentStep
-                    ? 'Current'
-                    : ''
-                }
-                complete={index < currentStep}
-                current={index === currentStep}
-              />
-            ))}
-          </ProgressIndicator>
-        </Tile>
+        <div className="signup-progress">
+          <ChipStrip steps={steps} currentIndex={currentStep} />
+        </div>
 
         <Form className="signup-form" onSubmit={handleSubmit}>
           <Stack gap={7} className="signup-step-content">
