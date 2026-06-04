@@ -17,13 +17,68 @@ import {
   NumberInput,
   TileGroup,
   RadioTile,
-  ProgressIndicator,
-  ProgressStep,
   DatePicker,
   DatePickerInput,
+  Tag,
 } from '@carbon/react';
 import { ArrowRight, ArrowLeft, Checkmark, Car, Home as HomeIcon } from '@carbon/icons-react';
 import './SignUpPage.scss';
+
+function ChipStrip({ steps, currentIndex }) {
+  return (
+    <div className="chip-strip" role="list" aria-label="Sign-up progress">
+      {steps.map((step, index) => {
+        const isDone = index < currentIndex;
+        const isCurrent = index === currentIndex;
+        return (
+          <React.Fragment key={step.key}>
+            <span
+              role="listitem"
+              aria-current={isCurrent ? 'step' : undefined}
+              className="chip-strip__item"
+            >
+              {isDone && (
+                <Tag
+                  type="green"
+                  renderIcon={Checkmark}
+                  size="sm"
+                  className="chip-strip__tag chip-strip__tag--done"
+                >
+                  {index + 1}
+                </Tag>
+              )}
+              {isCurrent && (
+                <Tag
+                  type="red"
+                  size="sm"
+                  className="chip-strip__tag chip-strip__tag--current"
+                >
+                  {step.label}
+                </Tag>
+              )}
+              {!isDone && !isCurrent && (
+                <Tag
+                  type="gray"
+                  size="sm"
+                  className="chip-strip__tag chip-strip__tag--future"
+                >
+                  {index + 1}
+                </Tag>
+              )}
+            </span>
+            {index < steps.length - 1 && (
+              <div
+                className={`chip-strip__connector ${
+                  isDone ? 'chip-strip__connector--filled' : ''
+                }`}
+              />
+            )}
+          </React.Fragment>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function SignUpPage() {
   const navigate = useNavigate();
@@ -608,25 +663,9 @@ export default function SignUpPage() {
           </p>
         </header>
 
-        <Tile className="signup-progress">
-          <ProgressIndicator currentIndex={currentStep} spaceEqually>
-            {steps.map((step, index) => (
-              <ProgressStep
-                key={step.key}
-                label={step.label}
-                description={
-                  index < currentStep
-                    ? 'Complete'
-                    : index === currentStep
-                    ? 'Current'
-                    : ''
-                }
-                complete={index < currentStep}
-                current={index === currentStep}
-              />
-            ))}
-          </ProgressIndicator>
-        </Tile>
+        <div className="signup-progress">
+          <ChipStrip steps={steps} currentIndex={currentStep} />
+        </div>
 
         <Form className="signup-form" onSubmit={handleSubmit}>
           <Stack gap={7} className="signup-step-content">

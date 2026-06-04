@@ -4,380 +4,412 @@ import {
   Column,
   Tile,
   Button,
-  Stack,
   Heading,
-  ProgressIndicator,
-  ProgressStep,
   ProgressBar,
-  Tabs,
-  TabList,
-  Tab,
-  TabPanels,
-  TabPanel,
-  Tag
+  Tag,
 } from '@carbon/react';
-import { ArrowLeft, ArrowRight, Checkmark } from '@carbon/icons-react';
+import { ArrowLeft, ArrowRight, Checkmark, ChevronRight } from '@carbon/icons-react';
 import './ProgressIndicatorPreview.scss';
 
-// Custom Circular Mini-Stepper Component
-function CircularMiniStepper({ steps, currentIndex, className = '' }) {
-  const visibleSteps = [];
-  
-  // Show: previous (if exists), current, next (if exists)
-  if (currentIndex > 0) {
-    visibleSteps.push({ ...steps[currentIndex - 1], index: currentIndex - 1, status: 'previous' });
-  }
-  visibleSteps.push({ ...steps[currentIndex], index: currentIndex, status: 'current' });
-  if (currentIndex < steps.length - 1) {
-    visibleSteps.push({ ...steps[currentIndex + 1], index: currentIndex + 1, status: 'next' });
-  }
-
+// ─── Option 1: Slim Progress Bar (Carbon ProgressBar) ──────────────────────
+function SlimProgressBar({ steps, currentIndex }) {
+  const percentage = Math.round(((currentIndex + 1) / steps.length) * 100);
   return (
-    <div className={`circular-mini-stepper ${className}`}>
-      <div className="circular-mini-stepper__progress-text">
-        Step {currentIndex + 1} of {steps.length}
+    <div className="slim-bar">
+      <div className="slim-bar__header">
+        <span className="slim-bar__step-name">{steps[currentIndex].label}</span>
+        <span className="slim-bar__counter">
+          {currentIndex + 1} / {steps.length}
+        </span>
       </div>
-      <div className="circular-mini-stepper__circles">
-        {visibleSteps.map((step, idx) => (
-          <React.Fragment key={step.index}>
+      <ProgressBar
+        label={steps[currentIndex].label}
+        hideLabel
+        value={percentage}
+        max={100}
+        className="slim-bar__track"
+      />
+    </div>
+  );
+}
+
+// ─── Option 2: Numbered Chip Strip ─────────────────────────────────────────
+function ChipStrip({ steps, currentIndex }) {
+  return (
+    <div className="chip-strip" role="list" aria-label="Progress steps">
+      {steps.map((step, index) => {
+        const isDone = index < currentIndex;
+        const isCurrent = index === currentIndex;
+        return (
+          <React.Fragment key={step.key}>
             <div
-              className={`circular-mini-stepper__circle circular-mini-stepper__circle--${step.status}`}
+              role="listitem"
+              className={[
+                'chip-strip__step',
+                isDone && 'chip-strip__step--done',
+                isCurrent && 'chip-strip__step--current',
+              ]
+                .filter(Boolean)
+                .join(' ')}
+              aria-current={isCurrent ? 'step' : undefined}
             >
-              {step.status === 'previous' ? (
-                <Checkmark size={20} />
-              ) : (
-                <span className="circular-mini-stepper__number">{step.index + 1}</span>
+              <div className="chip-strip__bubble">
+                {isDone ? <Checkmark size={14} /> : <span>{index + 1}</span>}
+              </div>
+              {isCurrent && (
+                <span className="chip-strip__label">{step.label}</span>
               )}
             </div>
-            {idx < visibleSteps.length - 1 && (
-              <div className="circular-mini-stepper__connector" />
+            {index < steps.length - 1 && (
+              <div
+                className={`chip-strip__connector ${isDone ? 'chip-strip__connector--filled' : ''}`}
+              />
             )}
           </React.Fragment>
-        ))}
+        );
+      })}
+    </div>
+  );
+}
+
+// ─── Option 3: Context Breadcrumb (prev → current → next) ──────────────────
+function ContextStepper({ steps, currentIndex }) {
+  const prev = currentIndex > 0 ? steps[currentIndex - 1] : null;
+  const current = steps[currentIndex];
+  const next = currentIndex < steps.length - 1 ? steps[currentIndex + 1] : null;
+
+  return (
+    <div className="ctx-stepper">
+      <div className="ctx-stepper__track">
+        {prev && (
+          <>
+            <div className="ctx-stepper__node ctx-stepper__node--done">
+              <div className="ctx-stepper__dot">
+                <Checkmark size={12} />
+              </div>
+              <span className="ctx-stepper__node-label">{prev.label}</span>
+            </div>
+            <ChevronRight className="ctx-stepper__chevron" size={16} />
+          </>
+        )}
+
+        <div className="ctx-stepper__node ctx-stepper__node--current">
+          <div className="ctx-stepper__dot">
+            <span>{currentIndex + 1}</span>
+          </div>
+          <span className="ctx-stepper__node-label">{current.label}</span>
+        </div>
+
+        {next && (
+          <>
+            <ChevronRight className="ctx-stepper__chevron" size={16} />
+            <div className="ctx-stepper__node ctx-stepper__node--future">
+              <div className="ctx-stepper__dot">
+                <span>{currentIndex + 2}</span>
+              </div>
+              <span className="ctx-stepper__node-label">{next.label}</span>
+            </div>
+          </>
+        )}
       </div>
-      <div className="circular-mini-stepper__label">
-        {steps[currentIndex].label}
+
+      <Tag type="gray" size="sm" className="ctx-stepper__count">
+        Step {currentIndex + 1} of {steps.length}
+      </Tag>
+    </div>
+  );
+}
+
+// ─── Option 4: Circular Progress Ring (custom SVG) ─────────────────────────
+function CircularRing({ steps, currentIndex }) {
+  const radius = 44;
+  const circumference = 2 * Math.PI * radius;
+  const percentage = (currentIndex + 1) / steps.length;
+  const offset = circumference * (1 - percentage);
+
+  return (
+    <div className="ring-progress">
+      <div className="ring-progress__ring-wrap">
+        <svg
+          className="ring-progress__svg"
+          viewBox="0 0 120 120"
+          width="120"
+          height="120"
+          aria-hidden="true"
+        >
+          <circle
+            className="ring-progress__track"
+            cx="60"
+            cy="60"
+            r={radius}
+            fill="none"
+            strokeWidth="9"
+          />
+          <circle
+            className="ring-progress__arc"
+            cx="60"
+            cy="60"
+            r={radius}
+            fill="none"
+            strokeWidth="9"
+            strokeDasharray={circumference}
+            strokeDashoffset={offset}
+            strokeLinecap="round"
+            transform="rotate(-90 60 60)"
+          />
+          <text
+            x="60"
+            y="53"
+            textAnchor="middle"
+            className="ring-progress__num"
+            dominantBaseline="middle"
+          >
+            {currentIndex + 1}
+          </text>
+          <text
+            x="60"
+            y="72"
+            textAnchor="middle"
+            className="ring-progress__of"
+            dominantBaseline="middle"
+          >
+            of {steps.length}
+          </text>
+        </svg>
+      </div>
+
+      <p className="ring-progress__step-name">{steps[currentIndex].label}</p>
+
+      <div className="ring-progress__dots" role="list" aria-label="All steps">
+        {steps.map((step, i) => (
+          <div
+            key={step.key}
+            role="listitem"
+            aria-label={step.label}
+            aria-current={i === currentIndex ? 'step' : undefined}
+            className={[
+              'ring-progress__dot',
+              i < currentIndex && 'ring-progress__dot--done',
+              i === currentIndex && 'ring-progress__dot--current',
+            ]
+              .filter(Boolean)
+              .join(' ')}
+          />
+        ))}
       </div>
     </div>
   );
 }
 
+// ─── Main Page ──────────────────────────────────────────────────────────────
+const STEPS = [
+  { key: 'personal', label: 'Personal Info' },
+  { key: 'address', label: 'Address' },
+  { key: 'type', label: 'Insurance Type' },
+  { key: 'car', label: 'Car Details' },
+  { key: 'coverage', label: 'Coverage' },
+  { key: 'review', label: 'Review' },
+];
+
+const OPTIONS = [
+  {
+    title: 'Option 1: Slim Progress Bar',
+    badge: { label: 'Carbon ProgressBar', type: 'blue' },
+    Component: SlimProgressBar,
+    pros: [
+      'Extremely compact — just 2 lines tall',
+      'Always fits any screen with zero scrolling',
+      'Familiar progress-bar metaphor',
+      'Uses native Carbon ProgressBar component',
+      'Step name and counter are always visible',
+    ],
+    cons: [
+      'No indication of upcoming steps',
+      'Cannot see the full step list at a glance',
+      'Percentage feel can be less meaningful for short flows',
+    ],
+  },
+  {
+    title: 'Option 2: Numbered Chip Strip',
+    badge: { label: 'Carbon-Styled Chips', type: 'blue' },
+    Component: ChipStrip,
+    pros: [
+      'All steps visible in one compact row',
+      'Completed steps clearly marked with checkmarks',
+      'Current step expands to show label; others stay tiny',
+      'No horizontal scrolling — numbers keep future steps small',
+      'Very fast to scan overall progress',
+    ],
+    cons: [
+      'Past step labels are hidden (only numbers visible)',
+      'On very narrow screens (< 320px) with 7+ steps it can get tight',
+    ],
+  },
+  {
+    title: 'Option 3: Context Breadcrumb',
+    badge: { label: 'Carbon Tag + Custom', type: 'blue' },
+    Component: ContextStepper,
+    pros: [
+      'Shows exactly where you came from and where you\'re going',
+      'Never scrolls — always maximum 3 nodes visible',
+      'Step X of Y counter provides full context',
+      'Natural left-to-right reading flow',
+      'Works with any number of steps',
+    ],
+    cons: [
+      'Cannot see the full step list at once',
+      'Requires custom layout around Carbon Tag atom',
+    ],
+  },
+  {
+    title: 'Option 4: Circular Progress Ring',
+    badge: { label: 'Custom SVG', type: 'red' },
+    Component: CircularRing,
+    pros: [
+      'Visually striking and immediately understandable',
+      'Ultra-compact — ring + label + dots fit in minimal height',
+      'Dot track shows every step without labels cluttering the UI',
+      'Animated arc gives satisfying sense of progress',
+      'Scales perfectly to any number of steps',
+    ],
+    cons: [
+      'Fully custom — no Carbon components used',
+      'Less conventional; some users may need a moment to parse it',
+      'Step names only shown for the current step',
+    ],
+  },
+];
+
 export default function ProgressIndicatorPreview() {
   const [currentStep, setCurrentStep] = useState(2);
 
-  const steps = [
-    { key: 'personal', label: 'Personal Info' },
-    { key: 'contact', label: 'Contact' },
-    { key: 'address', label: 'Address' },
-    { key: 'car', label: 'Car Details' },
-    { key: 'home', label: 'Home Details' },
-    { key: 'coverage', label: 'Coverage' },
-    { key: 'review', label: 'Review' }
-  ];
-
   const handleNext = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    }
+    if (currentStep < STEPS.length - 1) setCurrentStep(s => s + 1);
   };
-
   const handleBack = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-    }
+    if (currentStep > 0) setCurrentStep(s => s - 1);
   };
-
-  const progressPercentage = ((currentStep + 1) / steps.length) * 100;
 
   return (
-    <Grid className="progress-preview-page">
+    <Grid className="pp-page">
+      {/* Header */}
       <Column lg={16} md={8} sm={4}>
-        <header className="progress-preview-header">
-          <Heading className="progress-preview-title">
-            Progress Indicator Options
-          </Heading>
-          <p className="progress-preview-subtitle">
-            4 different approaches to displaying multi-step progress on mobile
+        <header className="pp-header">
+          <Heading className="pp-title">Progress Indicator Options</Heading>
+          <p className="pp-subtitle">
+            4 mobile-friendly alternatives to the current horizontal progress indicator — use the
+            controls below to simulate stepping through the form.
           </p>
         </header>
       </Column>
 
-      {/* Controls */}
+      {/* Shared step controls */}
       <Column lg={16} md={8} sm={4}>
-        <Tile className="preview-controls">
-          <Stack gap={4}>
-            <p className="preview-controls-label">
-              Test the indicators: <strong>Step {currentStep + 1} of {steps.length}</strong>
-            </p>
-            <Stack gap={3} orientation="horizontal" className="preview-controls-buttons">
+        <Tile className="pp-controls">
+          <div className="pp-controls__inner">
+            <div className="pp-controls__info">
+              <span className="pp-controls__eyebrow">Interactive demo</span>
+              <span className="pp-controls__step-label">
+                Step {currentStep + 1} of {STEPS.length}:{' '}
+                <strong>{STEPS[currentStep].label}</strong>
+              </span>
+            </div>
+            <div className="pp-controls__nav">
               <Button
-                kind="secondary"
+                kind="ghost"
+                size="sm"
+                renderIcon={ArrowLeft}
+                iconDescription="Previous step"
+                hasIconOnly
                 onClick={handleBack}
                 disabled={currentStep === 0}
-                renderIcon={ArrowLeft}
-              >
-                Back
-              </Button>
-              <Button
-                kind="primary"
-                onClick={handleNext}
-                disabled={currentStep === steps.length - 1}
-                renderIcon={ArrowRight}
-              >
-                Next
-              </Button>
-            </Stack>
-          </Stack>
-        </Tile>
-      </Column>
-
-      {/* Option 1: Vertical ProgressIndicator */}
-      <Column lg={16} md={8} sm={4}>
-        <Tile className="preview-option">
-          <div className="preview-option-header">
-            <Heading as="h3" className="preview-option-title">
-              Option 1: Vertical Progress Indicator
-            </Heading>
-            <Tag type="blue">Carbon Component</Tag>
-          </div>
-          
-          <div className="preview-demo preview-demo--vertical">
-            <ProgressIndicator currentIndex={currentStep} vertical>
-              {steps.map((step, index) => (
-                <ProgressStep
-                  key={step.key}
-                  label={step.label}
-                  complete={index < currentStep}
-                  current={index === currentStep}
-                />
-              ))}
-            </ProgressIndicator>
-          </div>
-
-          <div className="preview-pros-cons">
-            <div className="preview-pros">
-              <h4 className="preview-section-title">Pros</h4>
-              <ul className="preview-list">
-                <li>Uses standard Carbon component</li>
-                <li>Shows all steps at once for context</li>
-                <li>Clear visual progress with checkmarks</li>
-                <li>No horizontal scrolling on mobile</li>
-                <li>Built-in accessibility features</li>
-              </ul>
-            </div>
-            <div className="preview-cons">
-              <h4 className="preview-section-title">Cons</h4>
-              <ul className="preview-list">
-                <li>Takes up significant vertical space</li>
-                <li>Still requires scrolling on mobile with many steps</li>
-                <li>Can feel lengthy in multi-step flows (7+ steps)</li>
-                <li>Less compact than horizontal alternatives</li>
-              </ul>
-            </div>
-          </div>
-        </Tile>
-      </Column>
-
-      {/* Option 2: ProgressBar with Step Counter */}
-      <Column lg={16} md={8} sm={4}>
-        <Tile className="preview-option">
-          <div className="preview-option-header">
-            <Heading as="h3" className="preview-option-title">
-              Option 2: Progress Bar with Step Counter
-            </Heading>
-            <Tag type="blue">Carbon Component</Tag>
-          </div>
-          
-          <div className="preview-demo">
-            <div className="progress-bar-wrapper">
-              <ProgressBar
-                label="Sign-up Progress"
-                helperText={`Step ${currentStep + 1} of ${steps.length}: ${steps[currentStep].label}`}
-                value={progressPercentage}
-                max={100}
-                status={currentStep === steps.length - 1 ? 'finished' : 'active'}
               />
-              <div className="progress-bar-steps">
-                {steps.map((step, index) => (
-                  <div
-                    key={step.key}
-                    className={`progress-bar-step ${
-                      index < currentStep ? 'progress-bar-step--complete' : ''
-                    } ${index === currentStep ? 'progress-bar-step--current' : ''}`}
-                  >
-                    <div className="progress-bar-step-marker">
-                      {index < currentStep ? <Checkmark size={12} /> : index + 1}
-                    </div>
-                    <span className="progress-bar-step-label">{step.label}</span>
-                  </div>
+              <div className="pp-controls__pips">
+                {STEPS.map((_, i) => (
+                  <button
+                    key={i}
+                    className={[
+                      'pp-pip',
+                      i < currentStep && 'pp-pip--done',
+                      i === currentStep && 'pp-pip--active',
+                    ]
+                      .filter(Boolean)
+                      .join(' ')}
+                    onClick={() => setCurrentStep(i)}
+                    aria-label={`Jump to step ${i + 1}: ${STEPS[i].label}`}
+                  />
                 ))}
               </div>
-            </div>
-          </div>
-
-          <div className="preview-pros-cons">
-            <div className="preview-pros">
-              <h4 className="preview-section-title">Pros</h4>
-              <ul className="preview-list">
-                <li>Visual progress bar shows completion percentage</li>
-                <li>Compact at the top, detailed list below</li>
-                <li>Clear current step highlighted</li>
-                <li>Easy to understand at a glance</li>
-                <li>Good for forms with many steps</li>
-              </ul>
-            </div>
-            <div className="preview-cons">
-              <h4 className="preview-section-title">Cons</h4>
-              <ul className="preview-list">
-                <li>Still shows all steps (vertical scrolling with many steps)</li>
-                <li>More complex layout structure</li>
-                <li>Takes up vertical space for step list</li>
-                <li>Redundant information (bar + list)</li>
-              </ul>
+              <Button
+                kind="ghost"
+                size="sm"
+                renderIcon={ArrowRight}
+                iconDescription="Next step"
+                hasIconOnly
+                onClick={handleNext}
+                disabled={currentStep === STEPS.length - 1}
+              />
             </div>
           </div>
         </Tile>
       </Column>
 
-      {/* Option 3: Tabs as Stepper */}
-      <Column lg={16} md={8} sm={4}>
-        <Tile className="preview-option">
-          <div className="preview-option-header">
-            <Heading as="h3" className="preview-option-title">
-              Option 3: Tabs as Stepper
-            </Heading>
-            <Tag type="blue">Carbon Component</Tag>
-          </div>
-          
-          <div className="preview-demo">
-            <Tabs selectedIndex={currentStep}>
-              <TabList aria-label="Sign-up steps" className="tabs-stepper">
-                {steps.map((step, index) => (
-                  <Tab
-                    key={step.key}
-                    disabled={index !== currentStep}
-                    className={`tabs-stepper-tab ${
-                      index < currentStep ? 'tabs-stepper-tab--complete' : ''
-                    }`}
-                  >
-                    <span className="tabs-stepper-tab-marker">
-                      {index < currentStep ? <Checkmark size={16} /> : index + 1}
-                    </span>
-                    <span className="tabs-stepper-tab-label">{step.label}</span>
-                  </Tab>
-                ))}
-              </TabList>
-              <TabPanels>
-                {steps.map((step) => (
-                  <TabPanel key={step.key}>
-                    <p className="tabs-content-placeholder">
-                      {step.label} form content would go here
-                    </p>
-                  </TabPanel>
-                ))}
-              </TabPanels>
-            </Tabs>
-          </div>
+      {/* Option cards */}
+      {OPTIONS.map(({ title, badge, Component, pros, cons }, idx) => (
+        <Column key={idx} lg={16} md={8} sm={4}>
+          <Tile className="pp-card">
+            <div className="pp-card__header">
+              <Heading as="h3" className="pp-card__title">
+                {title}
+              </Heading>
+              <Tag type={badge.type}>{badge.label}</Tag>
+            </div>
 
-          <div className="preview-pros-cons">
-            <div className="preview-pros">
-              <h4 className="preview-section-title">Pros</h4>
-              <ul className="preview-list">
-                <li>Familiar tab interface pattern</li>
-                <li>Horizontal layout saves vertical space</li>
-                <li>Built-in keyboard navigation</li>
-                <li>Can show content inline with tabs</li>
-                <li>Good for shorter step counts (3-5 steps)</li>
-              </ul>
+            {/* Phone mockup */}
+            <div className="pp-mockup-wrap">
+              <div className="pp-mockup">
+                <div className="pp-mockup__notch" />
+                <div className="pp-mockup__screen">
+                  <div className="pp-mockup__chrome">
+                    <span className="pp-mockup__chrome-url">insureco.com/signup</span>
+                  </div>
+                  <div className="pp-mockup__form-header">
+                    <p className="pp-mockup__form-title">Get a Quote</p>
+                  </div>
+                  <div className="pp-mockup__progress-area">
+                    <Component steps={STEPS} currentIndex={currentStep} />
+                  </div>
+                  <div className="pp-mockup__form-body">
+                    <div className="pp-mockup__field" />
+                    <div className="pp-mockup__field pp-mockup__field--short" />
+                    <div className="pp-mockup__field" />
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="preview-cons">
-              <h4 className="preview-section-title">Cons</h4>
-              <ul className="preview-list">
-                <li>Horizontal scrolling required on mobile with many steps</li>
-                <li>Tab labels get truncated on small screens</li>
-                <li>Not ideal for 6+ steps on mobile</li>
-                <li>Tabs semantically meant for content switching, not forms</li>
-              </ul>
-            </div>
-          </div>
-        </Tile>
-      </Column>
 
-      {/* Option 4: Custom Circular Mini-Stepper */}
-      <Column lg={16} md={8} sm={4}>
-        <Tile className="preview-option">
-          <div className="preview-option-header">
-            <Heading as="h3" className="preview-option-title">
-              Option 4: Circular Mini-Stepper (Context-Only)
-            </Heading>
-            <Tag type="red">Custom Component</Tag>
-          </div>
-          
-          <div className="preview-demo">
-            <CircularMiniStepper steps={steps} currentIndex={currentStep} />
-          </div>
-
-          <div className="preview-pros-cons">
-            <div className="preview-pros">
-              <h4 className="preview-section-title">Pros</h4>
-              <ul className="preview-list">
-                <li><strong>Most compact</strong> – shows only 2-3 steps at a time</li>
-                <li><strong>No scrolling</strong> – fits on any screen size</li>
-                <li>Clear focus on current step</li>
-                <li>Shows immediate context (where you've been, where you're going)</li>
-                <li>Clean, minimalist design</li>
-                <li>Perfect for mobile-first experiences</li>
-                <li>Scales well with any number of steps</li>
-              </ul>
+            {/* Pros / Cons */}
+            <div className="pp-verdict">
+              <div className="pp-verdict__pros">
+                <h4 className="pp-verdict__heading pp-verdict__heading--pros">Pros</h4>
+                <ul className="pp-verdict__list">
+                  {pros.map((p, i) => (
+                    <li key={i}>{p}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="pp-verdict__cons">
+                <h4 className="pp-verdict__heading pp-verdict__heading--cons">Cons</h4>
+                <ul className="pp-verdict__list">
+                  {cons.map((c, i) => (
+                    <li key={i}>{c}</li>
+                  ))}
+                </ul>
+              </div>
             </div>
-            <div className="preview-cons">
-              <h4 className="preview-section-title">Cons</h4>
-              <ul className="preview-list">
-                <li><strong>Custom component</strong> – requires maintenance</li>
-                <li>No overview of all steps at once</li>
-                <li>User can't see total progress visually</li>
-                <li>Need to implement accessibility from scratch</li>
-                <li>Additional CSS and component code</li>
-                <li>May feel less informative for users who want full context</li>
-              </ul>
-            </div>
-          </div>
-        </Tile>
-      </Column>
-
-      {/* Summary and Recommendation */}
-      <Column lg={16} md={8} sm={4}>
-        <Tile className="preview-recommendation">
-          <Heading as="h3" className="preview-recommendation-title">
-            Recommendation
-          </Heading>
-          <Stack gap={5}>
-            <p>
-              For a <strong>mobile-first multi-step form with 6-7+ steps</strong>, we recommend:
-            </p>
-            <div className="recommendation-primary">
-              <h4 className="recommendation-choice">
-                <Checkmark size={20} className="recommendation-icon" />
-                Option 4: Circular Mini-Stepper (Custom)
-              </h4>
-              <p>
-                This option best solves the mobile scrolling problem by showing only relevant context. 
-                While it requires custom code, the benefits for user experience outweigh the maintenance cost.
-                Users stay focused on the current step without feeling overwhelmed by a long list.
-              </p>
-            </div>
-            <div className="recommendation-secondary">
-              <h4 className="recommendation-choice">
-                Alternative: Option 2 (Progress Bar + Step List)
-              </h4>
-              <p>
-                If you prefer a Carbon-only solution, the ProgressBar combination provides good visual feedback
-                and uses standard components. However, it still requires vertical scrolling with many steps.
-              </p>
-            </div>
-          </Stack>
-        </Tile>
-      </Column>
+          </Tile>
+        </Column>
+      ))}
     </Grid>
   );
 }
