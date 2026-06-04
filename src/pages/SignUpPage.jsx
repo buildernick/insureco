@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { formatDateForInput } from '../utils/businessHelpers';
 import {
   Grid,
   Column,
@@ -203,7 +204,7 @@ export default function SignUpPage() {
             />
             <DatePicker
               datePickerType="single"
-              onChange={(dates) => updateFormData('dateOfBirth', dates?.[0] || '')}
+              onChange={(dates) => updateFormData('dateOfBirth', formatDateForInput(dates?.[0] || ''))}
             >
               <DatePickerInput
                 id="dateOfBirth"
