@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Grid,
@@ -19,7 +19,7 @@ import {
   TableToolbarContent,
   TableToolbarSearch,
 } from '@carbon/react';
-import { ArrowUp, ArrowDown, Analytics } from '@carbon/icons-react';
+import { ArrowUp, ArrowDown, Analytics, WarningAlt } from '@carbon/icons-react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import { monthlyData, assetData, calculateSummaryStats, formatCurrency, formatDate } from '../data/financialData';
 import './FinancialDashboard2.scss';
@@ -35,6 +35,17 @@ export default function FinancialDashboard2() {
   });
 
   const stats = calculateSummaryStats();
+
+  // Calculate high-risk assets (worst claims-to-premium ratios)
+  const highRiskAssets = useMemo(() => {
+    return assetData
+      .map(asset => ({
+        ...asset,
+        lossRatio: (asset.totalClaims / asset.premiumDue) * 100,
+      }))
+      .sort((a, b) => b.lossRatio - a.lossRatio)
+      .slice(0, 5);
+  }, []);
 
   // Table headers
   const headers = [
@@ -304,6 +315,60 @@ export default function FinancialDashboard2() {
                   </BarChart>
                 )}
               </ResponsiveContainer>
+            </div>
+          </div>
+        </Column>
+
+        {/* High Risk Assets */}
+        <Column lg={16} md={8} sm={4}>
+          <div className="high-risk-section-modern">
+            <div className="high-risk-header">
+              <div className="high-risk-title-group">
+                <WarningAlt size={24} />
+                <div>
+                  <h3>High Risk Assets</h3>
+                  <p className="high-risk-subtitle">Assets with the highest claims-to-premium ratios requiring immediate attention</p>
+                </div>
+              </div>
+            </div>
+            <div className="high-risk-grid-modern">
+              {highRiskAssets.map((asset) => (
+                <div
+                  key={asset.id}
+                  className="risk-card-modern"
+                  onClick={() => {
+                    if (asset.category === 'Property') {
+                      navigate(`/business/properties/${asset.id}`, { state: { asset } });
+                    } else {
+                      navigate(`/business/fleet/${asset.id}`, { state: { asset } });
+                    }
+                  }}
+                >
+                  <div className="risk-card-top">
+                    <span className={`risk-badge risk-badge--${asset.category.toLowerCase()}`}>{asset.category}</span>
+                    <span className="risk-region">{asset.region}</span>
+                  </div>
+                  <h4 className="risk-asset-name">{asset.assetName}</h4>
+                  <div className="risk-loss-ratio">
+                    <span className="risk-loss-ratio-value">{asset.lossRatio.toFixed(1)}%</span>
+                    <span className="risk-loss-ratio-label">Loss Ratio</span>
+                  </div>
+                  <div className="risk-bar-track">
+                    <div className="risk-bar-fill" style={{ width: `${Math.min(asset.lossRatio, 100)}%` }} />
+                  </div>
+                  <div className="risk-card-metrics">
+                    <div className="risk-metric-item">
+                      <span className="risk-metric-label">Claims</span>
+                      <span className="risk-metric-value">{formatCurrency(asset.totalClaims)}</span>
+                    </div>
+                    <div className="risk-metric-item">
+                      <span className="risk-metric-label">Premium</span>
+                      <span className="risk-metric-value">{formatCurrency(asset.premiumDue)}</span>
+                    </div>
+                  </div>
+                  <span className="risk-view-link">View Details →</span>
+                </div>
+              ))}
             </div>
           </div>
         </Column>
