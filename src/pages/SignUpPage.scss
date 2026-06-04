@@ -137,53 +137,31 @@
   width: 100%;
 }
 
-.chip-strip__step {
+.chip-strip__item {
   display: flex;
   align-items: center;
-  gap: var(--spacing-02);
   flex-shrink: 0;
 }
 
-.chip-strip__bubble {
-  flex-shrink: 0;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: var(--font-weight-semibold);
-  border: 2px solid var(--border-strong);
-  background: transparent;
-  color: var(--text-tertiary);
-  transition: all 0.25s ease;
-
-  svg {
-    fill: currentColor;
-  }
-}
-
-.chip-strip__step--done .chip-strip__bubble {
-  width: 24px;
-  height: 24px;
-  background: var(--interactive-primary);
-  border-color: var(--interactive-primary);
-  color: var(--text-on-color);
-}
-
-.chip-strip__step--current .chip-strip__bubble {
-  background: var(--interactive-primary);
-  border-color: var(--interactive-primary);
-  color: var(--text-on-color);
-  box-shadow: 0 0 0 3px rgba(218, 30, 40, 0.18);
-}
-
-.chip-strip__label {
-  font-size: 13px;
-  font-weight: var(--font-weight-semibold);
-  color: var(--interactive-primary);
+.chip-strip__tag {
   white-space: nowrap;
+  font-weight: var(--font-weight-semibold) !important;
+}
+
+// Current step: solid brand-red pill with white text
+.chip-strip__tag--current.cds--tag--red {
+  background-color: var(--interactive-primary) !important;
+  color: var(--text-on-color) !important;
+}
+
+// Done steps: slightly smaller, brand-green tint
+.chip-strip__tag--done {
+  opacity: 0.85;
+}
+
+// Future steps: muted
+.chip-strip__tag--future {
+  opacity: 0.6;
 }
 
 .chip-strip__connector {

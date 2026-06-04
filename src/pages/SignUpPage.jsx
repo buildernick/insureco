@@ -19,6 +19,7 @@ import {
   RadioTile,
   DatePicker,
   DatePickerInput,
+  Tag,
 } from '@carbon/react';
 import { ArrowRight, ArrowLeft, Checkmark, Car, Home as HomeIcon } from '@carbon/icons-react';
 import './SignUpPage.scss';
@@ -31,24 +32,40 @@ function ChipStrip({ steps, currentIndex }) {
         const isCurrent = index === currentIndex;
         return (
           <React.Fragment key={step.key}>
-            <div
+            <span
               role="listitem"
               aria-current={isCurrent ? 'step' : undefined}
-              className={[
-                'chip-strip__step',
-                isDone && 'chip-strip__step--done',
-                isCurrent && 'chip-strip__step--current',
-              ]
-                .filter(Boolean)
-                .join(' ')}
+              className="chip-strip__item"
             >
-              <div className="chip-strip__bubble">
-                {isDone ? <Checkmark size={14} /> : <span>{index + 1}</span>}
-              </div>
-              {isCurrent && (
-                <span className="chip-strip__label">{step.label}</span>
+              {isDone && (
+                <Tag
+                  type="green"
+                  renderIcon={Checkmark}
+                  size="sm"
+                  className="chip-strip__tag chip-strip__tag--done"
+                >
+                  {index + 1}
+                </Tag>
               )}
-            </div>
+              {isCurrent && (
+                <Tag
+                  type="red"
+                  size="sm"
+                  className="chip-strip__tag chip-strip__tag--current"
+                >
+                  {step.label}
+                </Tag>
+              )}
+              {!isDone && !isCurrent && (
+                <Tag
+                  type="gray"
+                  size="sm"
+                  className="chip-strip__tag chip-strip__tag--future"
+                >
+                  {index + 1}
+                </Tag>
+              )}
+            </span>
             {index < steps.length - 1 && (
               <div
                 className={`chip-strip__connector ${
