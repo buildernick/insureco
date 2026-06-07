@@ -256,6 +256,50 @@
   }
 }
 
+// HQ Address Section
+.hq-section {
+  padding: var(--spacing-10) var(--spacing-05);
+  background: var(--background-secondary);
+  text-align: center;
+
+  .hq-content {
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hq-icon {
+    color: var(--interactive-primary);
+    margin-bottom: var(--spacing-05);
+  }
+
+  .hq-heading {
+    font-size: var(--heading-h2-size);
+    font-weight: var(--heading-h2-weight);
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-05);
+  }
+
+  .hq-address {
+    font-style: normal;
+    line-height: var(--line-height-normal);
+  }
+
+  .hq-street {
+    font-size: var(--body-lg-size);
+    color: var(--text-primary);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--spacing-02);
+  }
+
+  .hq-city {
+    font-size: var(--body-lg-size);
+    color: var(--text-secondary);
+  }
+}
+
 // Call to Action Section
 .cta-section {
   padding: var(--spacing-10) var(--spacing-05);

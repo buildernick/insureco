@@ -16,6 +16,7 @@ import {
   Home as HomeIcon,
   CheckmarkFilled,
   ArrowRight,
+  Location,
 } from '@carbon/icons-react';
 import { useNavigate } from 'react-router-dom';
 import './LandingPage.scss';
@@ -222,6 +223,24 @@ export default function LandingPage() {
               </Tile>
             </Column>
           ))}
+        </Grid>
+      </section>
+
+      {/* HQ Address Section */}
+      <section className="hq-section">
+        <Grid>
+          <Column lg={16} md={8} sm={4}>
+            <div className="hq-content">
+              <div className="hq-icon">
+                <Location size={48} />
+              </div>
+              <Heading className="hq-heading">Visit Our Headquarters</Heading>
+              <address className="hq-address">
+                <p className="hq-street">125 Main Street</p>
+                <p className="hq-city">New York City, NY</p>
+              </address>
+            </div>
+          </Column>
         </Grid>
       </section>
 
