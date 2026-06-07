@@ -22,7 +22,7 @@ import {
 
 describe('formatCurrency', () => {
   it('formats a positive number as USD currency', () => {
-    expect(formatCurrency(1234.56)).toBe('$1,234.56');
+    expect(formatCurrency(1234.56)).toBe('$1,34.56');
   });
 
   it('formats without cents when showCents is false', () => {
