@@ -543,6 +543,7 @@ export default function MakePaymentPage() {
             renderIcon={ArrowLeft}
             onClick={handleBack}
             disabled={currentStep === 0}
+            className="btn--icon-left"
           >
             Back
           </Button>

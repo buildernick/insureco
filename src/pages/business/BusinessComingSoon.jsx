@@ -69,6 +69,7 @@ export default function BusinessComingSoon() {
                 kind="primary"
                 renderIcon={ArrowLeft}
                 onClick={() => navigate('/business/dashboard')}
+                className="btn--icon-left"
               >
                 Back to Business Dashboard
               </Button>
