@@ -307,6 +307,7 @@ export default function FinancialDashboard1() {
 
         {/* Asset Performance Table */}
         <Column lg={16} md={8} sm={4}>
+          <div className="table-card">
           <DataTable rows={rows} headers={headers}>
             {({
               rows,
@@ -325,7 +326,7 @@ export default function FinancialDashboard1() {
               >
                 <TableToolbar {...getToolbarProps()}>
                   <TableToolbarContent>
-                    <TableToolbarSearch onChange={onInputChange} />
+                    <TableToolbarSearch onChange={onInputChange} placeholder="Search assets..." />
                   </TableToolbarContent>
                 </TableToolbar>
                 <Table {...getTableProps()}>
@@ -356,6 +357,7 @@ export default function FinancialDashboard1() {
               </TableContainer>
             )}
           </DataTable>
+          </div>
         </Column>
       </Grid>
     </div>
