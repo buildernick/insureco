@@ -195,3 +195,93 @@
 .alo-filter__option-label {
   flex: 1;
 }
+
+// ── Filter search box ────────────────────────────────────────
+.alo-filter-search {
+  padding: 0 10px 4px;
+  margin-bottom: 4px;
+}
+
+.alo-filter-search__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.alo-filter-search__field {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgb(204, 204, 204);
+  border-radius: 2px;
+  background: #fff;
+  padding: 0 8px;
+  gap: 6px;
+  transition: border-color 0.15s ease;
+
+  &:focus-within {
+    border-color: var(--alo-color-off-black);
+  }
+}
+
+.alo-filter-search__icon {
+  width: 16px;
+  height: 16px;
+  fill: rgb(120, 120, 120);
+  flex-shrink: 0;
+}
+
+.alo-filter-search__input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--alo-font-family);
+  font-size: var(--alo-font-size-sm);
+  color: var(--alo-text-primary);
+  padding: 8px 0;
+  min-width: 0;
+
+  &::placeholder {
+    color: rgb(160, 160, 160);
+  }
+
+  // Remove browser-native clear button (we use our own)
+  &::-webkit-search-cancel-button { display: none; }
+}
+
+.alo-filter-search__clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  color: rgb(120, 120, 120);
+  flex-shrink: 0;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: var(--alo-color-off-black);
+  }
+}
+
+.alo-filter-search__clear-icon {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.alo-filter-search__no-results {
+  padding: 16px 10px;
+  font-size: var(--alo-font-size-sm);
+  color: var(--alo-text-secondary);
+  margin: 0;
+  line-height: var(--alo-line-height-normal);
+}
