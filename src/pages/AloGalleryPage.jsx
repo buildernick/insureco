@@ -17,89 +17,98 @@ const SAMPLE_TABS = [
   { label: 'Lookbook', href: 'https://www.aloyoga.com/pages/bag-collection' },
 ];
 
+// These image URLs come from the ALO nav data already in the codebase
+const IMG_ATELIER   = 'https://cdn.shopify.com/s/files/1/2185/2813/files/atelier_desktop_nav.jpg?v=1780526666';
+const IMG_BAG       = 'https://cdn.shopify.com/s/files/1/2185/2813/files/desktop_bag_campaign_image.jpg?v=1780592100';
+const IMG_FOOTWEAR  = 'https://cdn.shopify.com/s/files/1/2185/2813/files/atelier_footwear_desktop_nav.jpg?v=1780526724';
+const IMG_TRAIL     = 'https://cdn.builder.io/api/v1/image/assets%2Faa96744e7fe74e2a90d22918299c1f1d%2F95ea4cc14ccb4315b63f916f30049c99';
+const IMG_SUNSET    = 'https://cdn.builder.io/api/v1/image/assets%2Faa96744e7fe74e2a90d22918299c1f1d%2F3e6b0bb22344416b8d22e5ffbd93c8e5';
+const IMG_RUNNER    = 'https://cdn.builder.io/api/v1/image/assets%2Faa96744e7fe74e2a90d22918299c1f1d%2F91611194e967450a9c0949602f81ec2b';
+
 const SAMPLE_CARDS = [
   {
-    href: 'https://www.aloyoga.com/',
+    href: 'https://www.aloyoga.com/pages/bag-collection',
     mediaType: 'image',
-    mediaSrc: 'https://cdn.shopify.com/s/files/1/0376/4549/files/alo_bag_mini_voyage_black_1.jpg',
-    name: 'Mini Voyage Bag',
-    description: 'A compact companion for every journey.',
-    availability: 'Available in three sizes.',
+    mediaSrc: IMG_BAG,
+    name: 'The Bag Collection',
+    description: 'Designed with intentional living in mind.',
+    availability: 'Available now.',
   },
   {
-    href: 'https://www.aloyoga.com/',
+    href: 'https://www.aloyoga.com/pages/summer-atelier',
     mediaType: 'image',
-    mediaSrc: 'https://cdn.shopify.com/s/files/1/0376/4549/files/alo_bag_micro_voyage_black_1.jpg',
-    name: 'Micro Voyage Bag',
-    description: 'The smallest expression of the Voyage line.',
-    availability: 'Available in two colors.',
+    mediaSrc: IMG_ATELIER,
+    name: 'Atelier Campaign',
+    description: 'The next evolution of the Atelier line.',
+    availability: 'Limited availability.',
   },
   {
-    href: 'https://www.aloyoga.com/',
+    href: 'https://www.aloyoga.com/collections/shoes',
     mediaType: 'image',
-    mediaSrc: 'https://cdn.shopify.com/s/files/1/0376/4549/files/alo_bag_maxi_voyage_black_1.jpg',
-    name: 'Maxi Voyage Bag',
-    description: 'Generous capacity for intentional living.',
-    availability: 'One size.',
+    mediaSrc: IMG_FOOTWEAR,
+    name: 'Atelier Footwear',
+    description: 'Elevated silhouettes for every occasion.',
+    availability: 'Shop the collection.',
   },
 ];
 
 const SAMPLE_TILES = [
   {
-    href: 'https://www.aloyoga.com/',
-    imageSrc: 'https://cdn.shopify.com/s/files/1/0376/4549/files/alo_bag_mini_voyage_black_1.jpg',
-    imageAlt: 'Mini Voyage Bag in Black',
-    name: 'Mini Voyage Bag',
-    colorway: 'Black Leather',
-    price: '$1,200',
+    href: 'https://www.aloyoga.com/products/a0892u-alo-trail-white',
+    imageSrc: IMG_TRAIL,
+    imageAlt: 'ALO Trail Sneaker',
+    name: 'ALO Trail',
+    colorway: 'White',
+    price: '$198',
     badge: 'NEW',
     swatches: [
-      { color: '#000000', label: 'Black Leather' },
-      { color: '#8B7355', label: 'Tan Leather' },
-      { color: '#F5F5DC', label: 'Cream' },
+      { color: '#FFFFFF', label: 'White' },
+      { color: '#000000', label: 'Black' },
+      { color: '#C0B090', label: 'Sand' },
     ],
     extraColors: 2,
   },
   {
-    href: 'https://www.aloyoga.com/',
-    imageSrc: 'https://cdn.shopify.com/s/files/1/0376/4549/files/alo_bag_micro_voyage_black_1.jpg',
-    imageAlt: 'Micro Voyage Bag in Black',
-    name: 'Micro Voyage Bag',
+    href: 'https://www.aloyoga.com/products/a0891u-alo-sunset-sneaker-black-ivory',
+    imageSrc: IMG_SUNSET,
+    imageAlt: 'ALO Sunset Sneaker in Black Ivory',
+    name: 'ALO Sunset Sneaker',
+    colorway: 'Black / Ivory',
+    price: '$178',
+    badge: 'BEST SELLER',
+    swatches: [
+      { color: '#1A1A1A', label: 'Black / Ivory' },
+      { color: '#F5F0E8', label: 'White / Ivory' },
+    ],
+    extraColors: 3,
+  },
+  {
+    href: 'https://www.aloyoga.com/products/a0590u-alo-runner-white-white',
+    imageSrc: IMG_RUNNER,
+    imageAlt: 'ALO Runner in White',
+    name: 'ALO Runner',
+    colorway: 'White / White',
+    price: '$168',
+    badge: '',
+    swatches: [
+      { color: '#FFFFFF', label: 'White' },
+      { color: '#000000', label: 'Black' },
+    ],
+    extraColors: 1,
+  },
+  {
+    href: 'https://www.aloyoga.com/pages/bag-collection',
+    imageSrc: IMG_BAG,
+    imageAlt: 'ALO Voyage Bag',
+    name: 'Mini Voyage Bag',
     colorway: 'Black Leather',
-    price: '$850',
+    price: '$1,200',
     badge: '',
     swatches: [
       { color: '#000000', label: 'Black Leather' },
       { color: '#8B7355', label: 'Tan Leather' },
     ],
     extraColors: 1,
-  },
-  {
-    href: 'https://www.aloyoga.com/',
-    imageSrc: 'https://cdn.shopify.com/s/files/1/0376/4549/files/alo_bag_maxi_voyage_black_1.jpg',
-    imageAlt: 'Maxi Voyage Bag in Black',
-    name: 'Maxi Voyage Bag',
-    colorway: 'Black Leather',
-    price: '$1,600',
-    badge: 'BEST SELLER',
-    swatches: [
-      { color: '#000000', label: 'Black Leather' },
-    ],
-    extraColors: 0,
-  },
-  {
-    href: 'https://www.aloyoga.com/',
-    imageSrc: 'https://cdn.shopify.com/s/files/1/0376/4549/files/alo_bag_mini_voyage_black_1.jpg',
-    imageAlt: 'Voyage Tote in Black',
-    name: 'Voyage Tote',
-    colorway: 'Black',
-    price: '$980',
-    badge: '',
-    swatches: [
-      { color: '#000000', label: 'Black' },
-      { color: '#F5F5DC', label: 'Cream' },
-    ],
-    extraColors: 3,
   },
 ];
 
