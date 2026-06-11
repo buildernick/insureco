@@ -9,6 +9,7 @@ import ProductCard from '../alo/ProductCard';
 import ProductGrid from '../alo/ProductGrid';
 import AloCategoryGridCMS from '../alo/AloCategoryGridCMS';
 import AloPlpGridCMS from '../alo/AloPlpGridCMS';
+import CrystalWizard from '../alo/CrystalWizard';
 import './AloComponentGallery.scss';
 
 const SAMPLE_TABS = [
@@ -178,6 +179,7 @@ export default function AloComponentGallery() {
             ['PlpGrid', '#plp-grid'],
             ['ProductCard', '#product-card'],
             ['ProductGrid', '#product-grid'],
+            ['CrystalWizard', '#crystal-wizard'],
             ['AloCategoryGridCMS', '#category-grid-cms'],
             ['AloPlpGridCMS', '#plp-grid-cms'],
           ].map(([label, href]) => (
@@ -295,6 +297,14 @@ export default function AloComponentGallery() {
               <ProductCard key={card.href} {...card} />
             ))}
           </ProductGrid>
+        </GallerySection>
+
+        <GallerySection
+          id="crystal-wizard"
+          name="CrystalWizard"
+          description="A 3-step guided wizard that recommends an ALO Intention Crystal based on the user's intention (energy, serenity, awareness, love, protection, abundance) and their bag color. Slide transitions, powered by live CMS crystal data."
+        >
+          <CrystalWizard />
         </GallerySection>
 
         <GallerySection
