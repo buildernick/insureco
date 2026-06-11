@@ -40,6 +40,77 @@
   margin: 0;
 }
 
+// ── Filter search ────────────────────────────────────────────
+.alo-filter-search {
+  display: flex;
+  align-items: center;
+  margin: 0 10px 12px;
+  border: 1px solid rgb(204, 204, 204);
+  border-radius: 2px;
+  background: var(--alo-bg-page);
+  transition: border-color 0.15s;
+
+  &:focus-within {
+    border-color: var(--alo-color-off-black);
+  }
+}
+
+.alo-filter-search__icon {
+  display: flex;
+  align-items: center;
+  padding: 0 8px 0 10px;
+  color: var(--alo-text-secondary);
+  flex-shrink: 0;
+}
+
+.alo-filter-search__icon-svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  display: block;
+}
+
+.alo-filter-search__input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: var(--alo-font-family);
+  font-size: var(--alo-font-size-sm);
+  color: var(--alo-text-primary);
+  padding: 8px 4px;
+  min-width: 0;
+  outline: none;
+
+  &::placeholder {
+    color: var(--alo-text-secondary);
+  }
+
+  // Hide browser default clear button on search inputs
+  &::-webkit-search-cancel-button { display: none; }
+}
+
+.alo-filter-search__clear {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0 10px;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--alo-text-secondary);
+  display: flex;
+  align-items: center;
+
+  &:hover { color: var(--alo-text-primary); }
+}
+
+.alo-filter-panel__no-results {
+  padding: 16px 10px;
+  font-size: var(--alo-font-size-sm);
+  color: var(--alo-text-secondary);
+  margin: 0;
+}
+
 // ── Accordion section ───────────────────────────────────────
 .alo-filter__section {
   position: relative;
