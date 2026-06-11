@@ -201,6 +201,8 @@ const aloBuilderComponents = [
         enum: [
           { label: 'Bag', value: 'bag' },
           { label: 'Crystal', value: 'crystal' },
+          { label: 'Shoe', value: 'shoe' },
+          { label: 'Hat', value: 'hat' },
         ],
         showIf: "options.get('populateBy') === 'type'",
       },
@@ -242,6 +244,8 @@ const aloBuilderComponents = [
           { label: 'All Products', value: 'all' },
           { label: 'Bags', value: 'bag' },
           { label: 'Crystals', value: 'crystal' },
+          { label: 'Shoes', value: 'shoe' },
+          { label: 'Hats', value: 'hat' },
         ],
       },
     ],
