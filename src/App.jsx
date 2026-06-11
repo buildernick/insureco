@@ -26,12 +26,14 @@ import FinancialDashboard3 from "./pages/FinancialDashboard3";
 import FinancialDashboardOptions from "./pages/FinancialDashboardOptions";
 import BuilderPage from "./pages/BuilderPage";
 import AloCollectionPage from "./pages/AloCollectionPage";
+import AloComponentGallery from "./pages/AloComponentGallery";
 
 export default function App() {
   return (
     <Layout>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={<AloComponentGallery />} />
+        <Route path="/landing" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/signup/confirmation" element={<SignUpConfirmationPage />} />
