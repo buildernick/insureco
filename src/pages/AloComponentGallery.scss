@@ -1,0 +1,205 @@
+@use '../alo/alo-tokens';
+
+// ============================================
+// ALO Component Gallery Page
+// ============================================
+
+.alo-gallery {
+  font-family: var(--alo-font-family);
+  background: var(--alo-bg-page);
+  color: var(--alo-text-primary);
+  min-height: 100vh;
+}
+
+// ----------------------------------------
+// Hero / Page Header
+// ----------------------------------------
+
+.alo-gallery__hero {
+  padding: 64px var(--alo-nav-pad-x) 48px;
+  border-bottom: 1px solid rgb(222, 222, 222);
+  max-width: var(--alo-max-width-content);
+  margin: 0 auto;
+}
+
+.alo-gallery__title {
+  font-size: 2.5rem;
+  font-weight: var(--alo-font-weight-light);
+  letter-spacing: var(--alo-letter-spacing-wide);
+  text-transform: uppercase;
+  margin: 0 0 12px;
+  color: var(--alo-color-off-black);
+}
+
+.alo-gallery__subtitle {
+  font-size: var(--alo-font-size-md);
+  color: var(--alo-text-secondary);
+  margin: 0 0 32px;
+  line-height: var(--alo-line-height-normal);
+}
+
+// ----------------------------------------
+// Jump Navigation
+// ----------------------------------------
+
+.alo-gallery__jump-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.alo-gallery__jump-link {
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: var(--alo-color-off-black);
+  background: var(--alo-color-grey-light);
+  border: 1px solid rgb(222, 222, 222);
+  padding: 4px 10px;
+  border-radius: 3px;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    background: var(--alo-color-off-black);
+    color: var(--alo-color-white);
+  }
+}
+
+// ----------------------------------------
+// Sections
+// ----------------------------------------
+
+.alo-gallery__sections {
+  max-width: var(--alo-max-width-content);
+  margin: 0 auto;
+}
+
+.gallery-section {
+  padding: 56px 0;
+  border-bottom: 1px solid rgb(240, 240, 240);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.gallery-section__header {
+  padding: 0 var(--alo-nav-pad-x);
+  margin-bottom: 32px;
+}
+
+.gallery-section__meta {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.gallery-section__component-name {
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: monospace;
+  color: var(--alo-color-off-black);
+  background: var(--alo-color-grey-light);
+  border: 1px solid rgb(222, 222, 222);
+  padding: 4px 12px;
+  border-radius: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.gallery-section__description {
+  font-size: var(--alo-font-size-sm);
+  color: var(--alo-text-secondary);
+  line-height: var(--alo-line-height-normal);
+  margin: 0;
+  max-width: 680px;
+}
+
+.gallery-section__demo {
+  padding: 0 var(--alo-nav-pad-x);
+}
+
+.gallery-section__demo--full {
+  padding: 0;
+}
+
+// ----------------------------------------
+// PlpTile demo grid
+// ----------------------------------------
+
+.gallery-tile-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--alo-plp-grid-gap);
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+// ----------------------------------------
+// PlpFilterPanel demo
+// ----------------------------------------
+
+.gallery-filter-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 320px;
+  border: 1px solid rgb(222, 222, 222);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.gallery-filter-selection {
+  font-size: var(--alo-font-size-sm);
+  color: var(--alo-text-secondary);
+  padding: 0 16px 16px;
+  margin: 0;
+}
+
+// ----------------------------------------
+// ProductCard demo row
+// ----------------------------------------
+
+.gallery-product-card-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--alo-gap-cards);
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ----------------------------------------
+// Responsive padding adjustments
+// ----------------------------------------
+
+@media (max-width: 768px) {
+  .alo-gallery__hero {
+    padding: 40px 20px 32px;
+  }
+
+  .gallery-section__header {
+    padding: 0 20px;
+  }
+
+  .gallery-section__demo {
+    padding: 0 20px;
+  }
+
+  .gallery-section__meta {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .alo-gallery__title {
+    font-size: 1.75rem;
+  }
+}

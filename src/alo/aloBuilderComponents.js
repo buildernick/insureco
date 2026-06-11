@@ -1,4 +1,5 @@
 import AloNavBar from './AloNavBar';
+import CrystalWizard from './CrystalWizard';
 import AloCategoryGridCMS from './AloCategoryGridCMS';
 import AloPlpGridCMS from './AloPlpGridCMS';
 import AnnouncementBanner from './AnnouncementBanner';
@@ -172,6 +173,16 @@ const aloBuilderComponents = [
       },
     ],
   },
+  // ── Crystal Wizard ─────────────────────────────────────────────────────────
+  {
+    component: CrystalWizard,
+    name: 'AloCrystalWizard',
+    category: ALO,
+    friendlyName: 'ALO Crystal Finder Wizard',
+    description: '3-step guided quiz: select your intention, then bag color, then get a crystal recommendation from live CMS data.',
+    inputs: [],
+  },
+
   // ── CMS-driven category grid ────────────────────────────────────────────────
   {
     component: AloCategoryGridCMS,

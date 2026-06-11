@@ -1,0 +1,399 @@
+@use './alo-tokens';
+
+// ============================================
+// Crystal Wizard — ALO Intention Crystal Finder
+// ============================================
+
+.crystal-wizard {
+  font-family: var(--alo-font-family);
+  background: var(--alo-bg-page);
+  color: var(--alo-text-primary);
+  max-width: 760px;
+  margin: 0 auto;
+  border: 1px solid rgb(222, 222, 222);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+// ----------------------------------------
+// Progress dots
+// ----------------------------------------
+
+.crystal-wizard__progress {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px 32px 0;
+}
+
+.crystal-wizard__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgb(218, 218, 218);
+  transition: background 0.3s ease, transform 0.3s ease;
+
+  &--active {
+    background: var(--alo-color-off-black);
+    transform: scale(1.4);
+  }
+
+  &--done {
+    background: var(--alo-color-off-black);
+    opacity: 0.35;
+  }
+}
+
+// ----------------------------------------
+// Slide viewport + track
+// ----------------------------------------
+
+.crystal-wizard__viewport {
+  overflow: hidden;
+}
+
+.crystal-wizard__track {
+  display: flex;
+  width: 300%;
+  transition: transform 0.45s cubic-bezier(0.37, 0.01, 0, 0.98);
+  will-change: transform;
+}
+
+.crystal-wizard__slide {
+  width: 33.3333%;
+  flex-shrink: 0;
+}
+
+.crystal-wizard__slide-inner {
+  padding: 28px 40px 40px;
+
+  @media (max-width: 600px) {
+    padding: 24px 20px 32px;
+  }
+}
+
+// ----------------------------------------
+// Shared typography
+// ----------------------------------------
+
+.crystal-wizard__eyebrow {
+  font-size: var(--alo-font-size-xs);
+  font-weight: var(--alo-font-weight-medium);
+  letter-spacing: var(--alo-letter-spacing-wide);
+  text-transform: uppercase;
+  color: var(--alo-text-secondary);
+  margin: 0 0 8px;
+}
+
+.crystal-wizard__heading {
+  font-size: 1.6rem;
+  font-weight: var(--alo-font-weight-light);
+  letter-spacing: -0.01em;
+  line-height: var(--alo-line-height-tight);
+  margin: 0 0 8px;
+  color: var(--alo-color-off-black);
+}
+
+.crystal-wizard__subheading {
+  font-size: var(--alo-font-size-sm);
+  color: var(--alo-text-secondary);
+  line-height: var(--alo-line-height-normal);
+  margin: 0 0 28px;
+}
+
+// ----------------------------------------
+// Back button
+// ----------------------------------------
+
+.crystal-wizard__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--alo-font-family);
+  font-size: var(--alo-font-size-sm);
+  color: var(--alo-text-secondary);
+  padding: 0;
+  margin-bottom: 20px;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--alo-color-off-black);
+  }
+}
+
+.crystal-wizard__back-icon {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+// ----------------------------------------
+// Step 1: Intent grid
+// ----------------------------------------
+
+.crystal-wizard__intent-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+
+  @media (max-width: 500px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.crystal-wizard__intent-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 16px 14px;
+  background: #fff;
+  border: 1px solid rgb(222, 222, 222);
+  border-radius: 3px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+
+  &:hover {
+    border-color: var(--alo-color-off-black);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  }
+
+  &--selected {
+    border-color: var(--alo-color-off-black);
+    background: var(--alo-color-grey-light);
+  }
+}
+
+.crystal-wizard__intent-swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.crystal-wizard__intent-label {
+  font-size: var(--alo-font-size-md);
+  font-weight: var(--alo-font-weight-medium);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--alo-color-off-black);
+  line-height: 1.2;
+}
+
+.crystal-wizard__intent-desc {
+  font-size: var(--alo-font-size-xs);
+  color: var(--alo-text-secondary);
+  line-height: 1.4;
+}
+
+// ----------------------------------------
+// Step 2: Bag color grid
+// ----------------------------------------
+
+.crystal-wizard__color-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.crystal-wizard__color-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 10px 6px;
+  transition: border-color 0.18s ease;
+
+  &:hover {
+    border-color: rgb(180, 180, 180);
+  }
+
+  &--selected {
+    border-color: var(--alo-color-off-black);
+    background: var(--alo-color-grey-light);
+  }
+}
+
+.crystal-wizard__color-swatch {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  display: block;
+  flex-shrink: 0;
+}
+
+.crystal-wizard__color-label {
+  font-size: 0.7rem;
+  font-weight: var(--alo-font-weight-medium);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--alo-text-primary);
+  text-align: center;
+  line-height: 1.3;
+}
+
+// ----------------------------------------
+// Step 3: Recommendation
+// ----------------------------------------
+
+.crystal-wizard__result {}
+
+.crystal-wizard__result-layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 32px;
+  margin-top: 20px;
+
+  @media (max-width: 560px) {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.crystal-wizard__result-image-wrap {
+  border-radius: 3px;
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  background: var(--alo-color-grey-light);
+}
+
+.crystal-wizard__result-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.crystal-wizard__result-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.crystal-wizard__result-name {
+  font-size: 1.2rem;
+  font-weight: var(--alo-font-weight-light);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0;
+  color: var(--alo-color-off-black);
+}
+
+.crystal-wizard__result-colorway {
+  font-size: var(--alo-font-size-sm);
+  color: var(--alo-text-secondary);
+  margin: 0;
+}
+
+.crystal-wizard__result-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.crystal-wizard__result-tag {
+  font-size: var(--alo-font-size-xs);
+  font-weight: var(--alo-font-weight-medium);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--alo-color-off-black);
+  background: var(--alo-color-grey-light);
+  border: 1px solid rgb(222, 222, 222);
+  padding: 3px 9px;
+  border-radius: 2px;
+}
+
+.crystal-wizard__result-description {
+  font-size: var(--alo-font-size-sm);
+  color: var(--alo-text-primary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.crystal-wizard__result-pairing {
+  font-size: var(--alo-font-size-xs);
+  color: var(--alo-text-secondary);
+  line-height: 1.5;
+  margin: 0;
+  border-left: 2px solid rgb(222, 222, 222);
+  padding-left: 10px;
+
+  strong {
+    color: var(--alo-text-primary);
+    font-weight: var(--alo-font-weight-medium);
+  }
+}
+
+.crystal-wizard__result-price {
+  font-size: var(--alo-font-size-md);
+  font-weight: var(--alo-font-weight-medium);
+  color: var(--alo-color-off-black);
+  margin: 0;
+}
+
+.crystal-wizard__result-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.crystal-wizard__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--alo-color-off-black);
+  color: var(--alo-color-white);
+  font-family: var(--alo-font-family);
+  font-size: var(--alo-font-size-sm);
+  font-weight: var(--alo-font-weight-medium);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 12px 20px;
+  border-radius: 2px;
+  transition: background 0.18s ease;
+
+  &:hover {
+    background: var(--alo-color-grey-mid);
+  }
+}
+
+.crystal-wizard__link-icon {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+.crystal-wizard__restart {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--alo-font-family);
+  font-size: var(--alo-font-size-sm);
+  color: var(--alo-text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  padding: 0;
+  transition: color 0.18s ease;
+
+  &:hover {
+    color: var(--alo-color-off-black);
+  }
+}
