@@ -72,8 +72,14 @@ function FilterCheckbox({ id, value, label, swatch, checked, onChange }) {
 }
 
 export default function PlpFilterPanel({ groups = [], selectedColors = [], onColorToggle }) {
+  const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState('');
   const trimmed = query.trim().toLowerCase();
+
+  function handleToggleSearch() {
+    setSearchOpen((v) => !v);
+    if (searchOpen) setQuery('');
+  }
 
   const filteredGroups = useMemo(() => {
     if (!trimmed) return groups;
@@ -96,19 +102,27 @@ export default function PlpFilterPanel({ groups = [], selectedColors = [], onCol
       <div className="alo-filter-panel__sticky">
         <div className="alo-filter-panel__header">
           <h6 className="alo-filter-panel__title">Filters</h6>
+          <button
+            type="button"
+            className={`alo-filter-panel__search-toggle${searchOpen ? ' alo-filter-panel__search-toggle--active' : ''}`}
+            onClick={handleToggleSearch}
+            aria-label={searchOpen ? 'Close search' : 'Search filters'}
+            aria-expanded={searchOpen}
+          >
+            <SearchIcon />
+            <span>Search</span>
+          </button>
         </div>
 
-        <div className="alo-filter-search">
-          <span className="alo-filter-search__icon">
-            <SearchIcon />
-          </span>
+        <div className={`alo-filter-search${searchOpen ? ' alo-filter-search--open' : ''}`} aria-hidden={!searchOpen}>
           <input
             type="search"
             className="alo-filter-search__input"
-            placeholder="Search filters"
+            placeholder="Search filters…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             aria-label="Search filters"
+            tabIndex={searchOpen ? 0 : -1}
           />
           {query && (
             <button
@@ -116,6 +130,7 @@ export default function PlpFilterPanel({ groups = [], selectedColors = [], onCol
               className="alo-filter-search__clear"
               onClick={() => setQuery('')}
               aria-label="Clear search"
+              tabIndex={searchOpen ? 0 : -1}
             >
               ×
             </button>
