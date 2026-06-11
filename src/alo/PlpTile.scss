@@ -1,0 +1,210 @@
+@use './alo-tokens';
+
+.alo-plp-tile {
+  font-family: var(--alo-font-family);
+  display: flex;
+  flex-direction: column;
+
+  &:hover .alo-plp-tile__overlay {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+// ── Media area ──────────────────────────────────────────────
+.alo-plp-tile__media-wrap {
+  position: relative;
+}
+
+.alo-plp-tile__wishlist {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  padding: 14px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  line-height: 0;
+
+  svg {
+    display: block;
+  }
+
+  &--active path[fill] {
+    opacity: 1 !important;
+  }
+}
+
+.alo-plp-tile__image-link {
+  display: block;
+  width: 100%;
+  position: relative;
+  padding-top: var(--alo-plp-aspect-padding);
+  overflow: hidden;
+  background: var(--alo-color-grey-light);
+}
+
+.alo-plp-tile__image-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+}
+
+.alo-plp-tile__image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: var(--alo-transition-image);
+
+  .alo-plp-tile:hover & {
+    opacity: 0.92;
+  }
+}
+
+// Add to bag overlay
+.alo-plp-tile__overlay {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: calc(100% - 20px);
+  min-height: 58px;
+  background-color: var(--alo-plp-overlay-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+  z-index: 3;
+}
+
+.alo-plp-tile__add-to-bag {
+  color: var(--alo-color-white);
+  text-transform: uppercase;
+  font-size: var(--alo-font-size-sm);
+  font-weight: var(--alo-font-weight-medium);
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  padding: 0 var(--alo-spacing-md);
+  width: 100%;
+  text-align: center;
+  display: block;
+  line-height: 58px;
+}
+
+// ── Info area ───────────────────────────────────────────────
+.alo-plp-tile__info {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+}
+
+.alo-plp-tile__badge {
+  background-color: var(--alo-plp-badge-bg);
+  color: var(--alo-plp-badge-color);
+  font-size: var(--alo-plp-badge-size);
+  text-transform: uppercase;
+  padding: 4px 8px;
+  width: fit-content;
+  margin-top: 5px;
+  margin-bottom: 9px;
+}
+
+.alo-plp-tile__name-block {
+  margin-top: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.alo-plp-tile__name-link {
+  text-decoration: none;
+  color: var(--alo-text-primary);
+  transition: var(--alo-transition-link);
+
+  &:hover {
+    color: var(--alo-color-grey-mid);
+  }
+}
+
+.alo-plp-tile__name {
+  font-weight: var(--alo-font-weight-semibold);
+  font-size: var(--alo-font-size-md);
+  letter-spacing: 0.022px;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.alo-plp-tile__colorway {
+  font-size: var(--alo-font-size-md);
+  font-weight: var(--alo-font-weight-regular);
+  letter-spacing: 0.022px;
+  line-height: 1.4;
+  margin: 0;
+  color: var(--alo-text-primary);
+}
+
+.alo-plp-tile__price {
+  color: var(--alo-plp-price-color);
+  font-size: var(--alo-font-size-md);
+  letter-spacing: 0.3px;
+  line-height: 1.25;
+  margin-top: 4px;
+}
+
+// ── Color swatches ──────────────────────────────────────────
+.alo-plp-tile__swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 33px);
+  grid-template-rows: 33px;
+  grid-auto-rows: 0;
+  gap: 0 var(--alo-plp-swatch-gap);
+  align-items: center;
+  height: 33px;
+  overflow: hidden;
+  margin-top: 8px;
+  margin-bottom: 0;
+  padding-left: 2px;
+}
+
+.alo-plp-tile__swatch {
+  width: var(--alo-plp-swatch-size);
+  height: var(--alo-plp-swatch-size);
+  border-radius: 50%;
+  border: 1px solid var(--alo-plp-swatch-border);
+  cursor: pointer;
+  background-size: cover;
+  background-position: center;
+  padding: 0;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: var(--alo-color-grey-mid);
+  }
+}
+
+.alo-plp-tile__extra-colors {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-left: 5px;
+  color: var(--alo-text-primary);
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: var(--alo-transition-link);
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--alo-color-grey-mid);
+  }
+}
+
+.alo-plp-tile__plus-icon {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='9' height='9' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 0v20M20 10H0' stroke='%23000' stroke-width='3.333' stroke-miterlimit='50'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+}

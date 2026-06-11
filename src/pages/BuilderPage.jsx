@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-react';
 import builderComponents from '../components/builder/builderComponents';
+import aloBuilderComponents from '../alo/aloBuilderComponents';
+
+const allComponents = [...builderComponents, ...aloBuilderComponents];
 
 const BUILDER_API_KEY = import.meta.env.VITE_PUBLIC_BUILDER_KEY;
 
@@ -45,7 +48,7 @@ export default function BuilderPage() {
       model="page"
       apiKey={BUILDER_API_KEY}
       content={content}
-      customComponents={builderComponents}
+      customComponents={allComponents}
     />
   );
 }

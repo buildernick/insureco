@@ -1,0 +1,9 @@
+@use '../alo/alo-tokens';
+
+.alo-collection-page {
+  background-color: var(--alo-bg-page);
+  font-family: var(--alo-font-family);
+  color: var(--alo-text-primary);
+  width: 100%;
+  min-height: 100vh;
+}

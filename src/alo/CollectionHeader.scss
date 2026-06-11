@@ -1,0 +1,44 @@
+@use './alo-tokens';
+
+.alo-collection-header {
+  width: 100%;
+  background-color: var(--alo-bg-page);
+
+  &__inner {
+    max-width: var(--alo-max-width-content);
+    margin: 0 auto;
+    padding: var(--alo-spacing-2xl) var(--alo-spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--alo-spacing-md);
+  }
+
+  &__text-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--alo-spacing-md);
+    max-width: var(--alo-max-width-header-text);
+    width: 80%;
+    margin-right: auto;
+  }
+
+  &__title {
+    font-family: var(--alo-font-family);
+    font-size: var(--alo-font-size-md);
+    font-weight: var(--alo-font-weight-medium);
+    letter-spacing: var(--alo-letter-spacing-wide);
+    line-height: var(--alo-line-height-tight);
+    text-transform: uppercase;
+    color: var(--alo-text-primary);
+    margin: 0;
+  }
+
+  &__description {
+    font-family: var(--alo-font-family);
+    font-size: var(--alo-font-size-2xl);
+    font-weight: var(--alo-font-weight-regular);
+    line-height: var(--alo-line-height-normal);
+    color: var(--alo-text-primary);
+    margin: 0;
+  }
+}

@@ -1,0 +1,17 @@
+@use './alo-tokens';
+
+.alo-product-grid {
+  width: 100%;
+  background-color: var(--alo-bg-page);
+  margin-bottom: var(--alo-spacing-md);
+
+  &__row {
+    display: flex;
+    gap: var(--alo-gap-cards);
+    max-width: 1920px;
+    width: 100%;
+    margin: 0 auto;
+    padding: var(--alo-spacing-md);
+    align-items: flex-start;
+  }
+}

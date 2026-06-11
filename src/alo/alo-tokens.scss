@@ -1,0 +1,167 @@
+// ============================================
+// ALO Bag Collection — Design Tokens
+// ============================================
+// Fully isolated from InsureCo tokens.
+// All properties use the --alo- prefix.
+// Suitable for registration as a standalone
+// Builder.io design-token set.
+
+:root {
+  // ----------------------------------------
+  // Colors
+  // ----------------------------------------
+  --alo-color-white:        #ffffff;
+  --alo-color-black:        #000000;
+  --alo-color-off-black:    #161616;
+  --alo-color-grey-light:   #f4f4f4;
+  --alo-color-grey-mid:     #6f6f6f;
+
+  // Brand burgundy (announcement banner background)
+  --alo-color-burgundy:     rgb(132, 23, 47);
+
+  // ----------------------------------------
+  // Semantic / Role tokens
+  // ----------------------------------------
+  --alo-bg-page:            var(--alo-color-white);
+  --alo-bg-announcement:    var(--alo-color-burgundy);
+
+  --alo-text-primary:       var(--alo-color-off-black);
+  --alo-text-secondary:     var(--alo-color-grey-mid);
+  --alo-text-on-dark:       var(--alo-color-white);
+
+  --alo-link-color:         var(--alo-color-off-black);
+  --alo-link-hover-color:   var(--alo-color-grey-mid);
+
+  --alo-tab-active-color:   var(--alo-color-off-black);
+  --alo-tab-inactive-color: var(--alo-color-off-black);
+
+  // ----------------------------------------
+  // Typography
+  // ----------------------------------------
+  --alo-font-family:        proxima-nova, Helvetica, sans-serif;
+
+  --alo-font-size-xs:       0.75rem;   // 12px
+  --alo-font-size-sm:       0.875rem;  // 14px — announcement text
+  --alo-font-size-md:       1rem;      // 16px — body
+  --alo-font-size-lg:       1.25rem;   // 20px — tab nav labels
+  --alo-font-size-xl:       1.5rem;    // 24px — product name
+  --alo-font-size-2xl:      2rem;      // 32px — collection description tagline
+
+  --alo-font-weight-light:    300;
+  --alo-font-weight-regular:  400;
+  --alo-font-weight-medium:   500;
+  --alo-font-weight-semibold: 600;
+
+  --alo-letter-spacing-wide:  0.07em;  // used on H1 label (~1.12px @ 16px)
+  --alo-letter-spacing-tight: -0.03em; // used on blurb text (~-0.48px @ 16px)
+  --alo-letter-spacing-sm:    0.05em;  // used on announcement (0.7px @ 14px)
+
+  --alo-line-height-tight:  1.1;
+  --alo-line-height-normal: 1.4;
+
+  // ----------------------------------------
+  // Spacing
+  // ----------------------------------------
+  --alo-spacing-xs:   0.5rem;   //  8px
+  --alo-spacing-sm:   0.75rem;  // 12px
+  --alo-spacing-md:   1rem;     // 16px
+  --alo-spacing-lg:   1.5rem;   // 24px
+  --alo-spacing-xl:   2rem;     // 32px
+  --alo-spacing-2xl:  3rem;     // 48px
+
+  // Gap between product cards
+  --alo-gap-cards:    var(--alo-spacing-lg);  // 24px
+  // Gap between elements inside a card
+  --alo-gap-card-inner: 1.25rem;              // 20px
+
+  // ----------------------------------------
+  // Layout
+  // ----------------------------------------
+  --alo-max-width-content: 1592px;
+  --alo-max-width-header-text: 840px;
+  --alo-blurb-width: 175px;  // art-direction constraint for card blurbs
+
+  // Banner
+  --alo-banner-min-height: 46px;
+
+  // Aspect-ratio spacer for portrait product images/videos
+  --alo-media-aspect-padding: 109.4%;
+
+  // ----------------------------------------
+  // Motion
+  // ----------------------------------------
+  --alo-transition-image:   opacity 0.2s ease-in-out;
+  --alo-transition-link:    color 0.5s cubic-bezier(0.37, 0.01, 0, 0.98);
+  --alo-transition-opacity: opacity 0.3s linear;
+
+  // ----------------------------------------
+  // Radius
+  // ----------------------------------------
+  --alo-radius-video: 1px;   // subtle rounding on video elements
+
+  // ----------------------------------------
+  // Navigation
+  // ----------------------------------------
+  --alo-nav-bg:             var(--alo-color-white);
+  --alo-nav-border:         rgb(222, 222, 222);
+  --alo-nav-z:              200;
+
+  // Nav bar dimensions
+  --alo-nav-pad-x:          45px;     // left/right padding of nav bar
+  --alo-nav-pad-y:          15px;     // top/bottom padding of nav bar
+  --alo-nav-gap:            35px;     // gap between logo and nav links
+
+  // Nav link (top-level)
+  --alo-nav-link-size:      1.125rem; // 18px
+  --alo-nav-link-weight:    var(--alo-font-weight-medium);
+  --alo-nav-link-spacing:   0.05em;   // 0.9px @ 18px
+  --alo-nav-link-pad-y:     24px;     // padding-top / padding-bottom extends hover hit area
+  --alo-nav-items-gap:      30px;     // gap between nav items (grid)
+
+  // Nav badge (NEW pill on Atelier)
+  --alo-nav-badge-size:     0.75rem;  // 12px
+
+  // Right icons
+  --alo-nav-icons-gap:      32px;
+  --alo-nav-icons-pad-x:    var(--alo-nav-pad-x);
+
+  // Mega dropdown
+  --alo-dropdown-bg:        var(--alo-color-white);
+  --alo-dropdown-border:    var(--alo-nav-border);
+  --alo-dropdown-pad-top:   40px;
+  --alo-dropdown-pad-bottom:47px;
+  --alo-dropdown-pad-x:     var(--alo-nav-pad-x);
+  --alo-dropdown-pad-right-reserved: 30%; // right panel reserved for future content
+  --alo-dropdown-transition: opacity 0.3s ease-in-out;
+
+  // Dropdown column links
+  --alo-dropdown-col-gap:   32px;     // padding-left between columns 2+
+  --alo-dropdown-col-width: 16.6667%; // 1/6 of dropdown
+
+  // Dropdown link colors
+  --alo-dropdown-heading-color:   var(--alo-color-off-black);
+  --alo-dropdown-link-color:      rgb(51, 51, 51);
+  --alo-dropdown-link-hover:      var(--alo-color-off-black);
+  --alo-dropdown-link-spacing:    0.016em;  // 0.256px
+  --alo-dropdown-link-pad-y:      5px;
+
+  // Featured image panels (Shoes / Atelier)
+  --alo-featured-col-width: 83.3333%;  // right panel width
+  --alo-featured-img-max:   300px;
+  --alo-featured-img-gap:   12px;
+
+  // ----------------------------------------
+  // PLP Tile
+  // ----------------------------------------
+  --alo-plp-aspect-padding:    150%;           // 2:3 portrait ratio
+  --alo-plp-badge-bg:          rgb(242, 242, 242);
+  --alo-plp-badge-color:       var(--alo-color-off-black);
+  --alo-plp-badge-size:        var(--alo-font-size-xs);  // 12px
+  --alo-plp-overlay-bg:        rgb(59, 59, 59);
+  --alo-plp-price-color:       rgb(96, 94, 92);
+  --alo-plp-swatch-size:       26px;
+  --alo-plp-swatch-gap:        2px;
+  --alo-plp-swatch-border:     rgb(236, 236, 236);
+  --alo-plp-grid-gap:          var(--alo-spacing-sm);    // 12px between tiles
+  --alo-plp-grid-cols:         4;                        // desktop columns
+}

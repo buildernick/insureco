@@ -1,212 +1,26 @@
-// Layout Component Specific Styles
-@use '../styles/tokens' as *;
+.layout-skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 
-// Ensure header adapts to theme
-.cds--header {
-  background-color: var(--background-primary) !important;
-  border-bottom: 1px solid var(--border-subtle) !important;
-
-  // Remove default white/light backgrounds from Carbon header elements
-  a,
-  button,
-  .cds--header__name--prefix,
-  .cds--header__menu-title,
-  .cds--header__menu-arrow {
-    background-color: transparent !important;
-  }
-
-  // Header name/brand
-  .cds--header__name {
-    color: var(--text-primary) !important;
-    background-color: transparent !important;
-    transition: color var(--motion-hover);
-
-    &:hover {
-      color: var(--interactive-primary) !important;
-      background-color: var(--background-hover) !important;
-    }
-
-    &:focus {
-      color: var(--text-primary) !important;
-    }
-
-    // Prefix and main text - force remove any background
-    span,
-    .cds--header__name--prefix {
-      color: var(--text-primary) !important;
-      background-color: transparent !important;
-    }
-  }
-
-  // Navigation links
-  .cds--header__menu-item {
-    color: var(--text-primary) !important;
-    background-color: transparent !important;
-
-    &:hover {
-      background-color: var(--background-hover) !important;
-      color: var(--interactive-primary) !important;
-    }
-
-    button {
-      color: var(--text-primary) !important;
-      background-color: transparent !important;
-    }
-  }
-
-  // Navigation bar itself
-  .cds--header__nav,
-  .cds--header-panel,
-  .cds--header__menu-bar {
-    background-color: transparent !important;
-  }
-
-  // Header menu (dropdown) styles
-  .cds--header__menu {
-    // Menu trigger button
-    .cds--header__menu-trigger {
-      color: var(--text-primary) !important;
-      background-color: transparent !important;
-
-      &:hover {
-        background-color: var(--background-hover) !important;
-        color: var(--interactive-primary) !important;
-      }
-
-      &[aria-expanded="true"] {
-        background-color: var(--background-hover) !important;
-      }
-
-      // Arrow icon
-      svg {
-        fill: var(--text-primary) !important;
-      }
-    }
-
-    // Dropdown menu panel
-    .cds--header__menu-title {
-      color: var(--text-primary) !important;
-      background-color: transparent !important;
-
-      &:hover {
-        color: var(--interactive-primary) !important;
-      }
-    }
-
-    // Ensure menu items in dropdown are styled
-    .cds--header__menu-item {
-      a,
-      button {
-        color: var(--text-primary) !important;
-        background-color: transparent !important;
-
-        &:hover {
-          background-color: var(--background-hover) !important;
-          color: var(--interactive-primary) !important;
-        }
-      }
-    }
-  }
-
-  // Global action buttons (search, notifications, theme toggle, etc.)
-  .cds--header__action {
-    color: var(--text-primary);
-    background-color: transparent;
-
-    &:hover {
-      background-color: var(--background-hover);
-    }
-
-    &:focus {
-      border-color: var(--interactive-primary);
-    }
-
-    svg {
-      fill: var(--text-primary);
-    }
-  }
-
-  // Menu toggle button (hamburger)
-  .cds--header__menu-toggle {
-    color: var(--text-primary);
-
-    &:hover {
-      background-color: var(--background-hover);
-    }
-
-    svg {
-      fill: var(--text-primary);
-    }
+  &:focus {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    padding: 0.5rem 1rem;
+    background: #000;
+    color: #fff;
+    font-size: 0.875rem;
+    z-index: 9999;
+    overflow: visible;
   }
 }
 
-// Side navigation
-.cds--side-nav {
-  background-color: var(--background-secondary) !important;
-  border-right: 1px solid var(--border-subtle);
-
-  .cds--side-nav__link,
-  .cds--side-nav__menu-item {
-    color: var(--text-primary);
-
-    &:hover {
-      background-color: var(--background-hover);
-      color: var(--interactive-primary);
-    }
-  }
-
-  .cds--side-nav__link--current,
-  .cds--side-nav__link[aria-current="page"] {
-    background-color: var(--background-selected);
-    color: var(--interactive-primary);
-  }
-
-  // Side nav menu (collapsible sections like Business)
-  .cds--side-nav__menu {
-    // Menu title button
-    .cds--side-nav__menu-item {
-      color: var(--text-primary);
-      background-color: transparent;
-
-      &:hover {
-        background-color: var(--background-hover);
-        color: var(--interactive-primary);
-      }
-
-      // Arrow icon
-      svg {
-        fill: var(--text-primary);
-      }
-    }
-
-    // Submenu items
-    .cds--side-nav__menu-item {
-      button,
-      a {
-        color: var(--text-primary);
-        background-color: transparent;
-
-        &:hover {
-          background-color: var(--background-hover);
-          color: var(--interactive-primary);
-        }
-      }
-    }
-  }
-
-  // Expanded state styling
-  .cds--side-nav__menu[aria-expanded="true"] {
-    .cds--side-nav__menu-item {
-      background-color: var(--background-tertiary);
-    }
-  }
-}
-
-// Tooltips in header
-.cds--header__action .cds--popover-container {
-  .cds--popover-content {
-    background-color: var(--background-tertiary);
-    color: var(--text-primary);
-    border: 1px solid var(--border-subtle);
-  }
+.layout-main {
+  min-height: 100vh;
 }

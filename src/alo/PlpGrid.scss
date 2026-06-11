@@ -1,0 +1,51 @@
+@use './alo-tokens';
+
+.alo-plp-grid-section {
+  width: 100%;
+  background: var(--alo-bg-page);
+  padding: var(--alo-spacing-2xl) var(--alo-spacing-md);
+}
+
+.alo-plp-grid-section__inner {
+  max-width: var(--alo-max-width-content);
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+}
+
+.alo-plp-grid-section__sidebar {
+  flex-shrink: 0;
+}
+
+.alo-plp-grid-section__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.alo-plp-grid-section__title {
+  font-family: var(--alo-font-family);
+  font-size: var(--alo-font-size-md);
+  font-weight: var(--alo-font-weight-medium);
+  letter-spacing: var(--alo-letter-spacing-wide);
+  text-transform: uppercase;
+  color: var(--alo-text-primary);
+  margin: 0 0 var(--alo-spacing-lg);
+}
+
+.alo-plp-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--alo-plp-grid-cols), 1fr);
+  gap: var(--alo-spacing-lg) var(--alo-plp-grid-gap);
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}

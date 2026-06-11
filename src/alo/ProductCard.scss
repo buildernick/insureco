@@ -1,0 +1,101 @@
+@use './alo-tokens';
+
+.alo-product-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--alo-gap-card-inner);
+  width: 100%;
+  padding-bottom: var(--alo-spacing-sm);
+
+  &__media-link {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    overflow: hidden;
+    cursor: pointer;
+    text-decoration: none;
+    transition: var(--alo-transition-link);
+  }
+
+  &__media-wrapper {
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+  }
+
+  &__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: var(--alo-transition-image);
+  }
+
+  &__video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--alo-radius-video);
+    cursor: pointer;
+    z-index: 2;
+  }
+
+  // Aspect-ratio spacer — maintains 109.4% portrait proportion
+  // without needing explicit heights
+  &__media-spacer {
+    padding-top: var(--alo-media-aspect-padding);
+    width: 100%;
+    font-size: 0;
+    pointer-events: none;
+  }
+
+  &__name-link {
+    font-family: var(--alo-font-family);
+    font-size: var(--alo-font-size-xl);
+    line-height: 1.21;
+    text-transform: uppercase;
+    color: var(--alo-link-color);
+    text-decoration: none;
+    cursor: pointer;
+    transition: var(--alo-transition-link);
+
+    &:hover {
+      color: var(--alo-link-hover-color);
+    }
+  }
+
+  &__name {
+    font-size: var(--alo-font-size-xl);
+    line-height: 1.21;
+    text-transform: uppercase;
+  }
+
+  &__description {
+    font-family: var(--alo-font-family);
+    font-size: var(--alo-font-size-md);
+    font-weight: var(--alo-font-weight-light);
+    letter-spacing: var(--alo-letter-spacing-tight);
+    line-height: var(--alo-line-height-normal);
+    color: var(--alo-text-primary);
+    width: var(--alo-blurb-width);
+    margin: 0;
+  }
+
+  &__availability {
+    font-family: var(--alo-font-family);
+    font-size: var(--alo-font-size-md);
+    font-weight: var(--alo-font-weight-light);
+    letter-spacing: var(--alo-letter-spacing-tight);
+    line-height: var(--alo-line-height-normal);
+    color: var(--alo-text-primary);
+    margin: 0;
+  }
+}

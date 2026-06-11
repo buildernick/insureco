@@ -1,0 +1,293 @@
+@use './alo-tokens';
+
+// ─── Nav bar ─────────────────────────────────────────────────────────────────
+
+.alo-nav {
+  position: sticky;
+  top: 0;
+  z-index: var(--alo-nav-z);
+  background: var(--alo-nav-bg);
+  width: 100%;
+  font-family: var(--alo-font-family);
+}
+
+.alo-nav__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--alo-nav-border);
+  position: relative;
+}
+
+// ─── Left section (logo + links) ─────────────────────────────────────────────
+
+.alo-nav__left {
+  display: flex;
+  align-items: center;
+  gap: var(--alo-nav-gap);
+  padding: var(--alo-nav-pad-y) 0 var(--alo-nav-pad-y) var(--alo-nav-pad-x);
+}
+
+.alo-nav__logo-link {
+  display: inline-flex;
+  cursor: pointer;
+  transition: var(--alo-transition-link);
+  color: inherit;
+}
+
+.alo-nav__logo {
+  display: block;
+  width: 71px;
+  height: 48px;
+  overflow: hidden;
+}
+
+// Nav links list
+.alo-nav__links {
+  display: grid;
+  grid-auto-flow: column;
+  gap: var(--alo-nav-items-gap);
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.alo-nav__item {
+  display: list-item;
+  text-align: center;
+}
+
+.alo-nav__link {
+  display: inline-block;
+  position: relative;
+  font-size: var(--alo-nav-link-size);
+  font-weight: var(--alo-nav-link-weight);
+  letter-spacing: var(--alo-nav-link-spacing);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--alo-text-primary);
+  padding: var(--alo-nav-link-pad-y) 0;
+  cursor: pointer;
+  transition: var(--alo-transition-link);
+
+  &:hover {
+    color: var(--alo-color-grey-mid);
+  }
+}
+
+// "NEW" badge on Atelier
+.alo-nav__badge {
+  position: absolute;
+  left: 100%;
+  top: 16px;
+  font-size: var(--alo-nav-badge-size);
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+// ─── Right section (icon actions) ────────────────────────────────────────────
+
+.alo-nav__right {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: var(--alo-nav-icons-pad-x);
+  position: absolute;
+  right: 0;
+}
+
+.alo-nav__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--alo-nav-icons-gap);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.alo-nav__action-item {
+  display: flex;
+  align-items: center;
+}
+
+.alo-nav__action-item--loyalty {
+  gap: 8px;
+  border-bottom: 2px solid #000;
+  cursor: pointer;
+}
+
+.alo-nav__action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  color: inherit;
+  text-decoration: none;
+  transition: var(--alo-transition-link);
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.alo-nav__loyalty-label {
+  font-size: var(--alo-font-size-sm);
+  font-weight: var(--alo-font-weight-semibold);
+  letter-spacing: var(--alo-letter-spacing-sm);
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+// ─── Mega dropdown ────────────────────────────────────────────────────────────
+
+.alo-dropdown {
+  position: absolute;
+  left: 0;
+  right: 0;
+  // top is computed by how the nav bar stacks — because the nav is sticky and
+  // the dropdown uses absolute, it renders directly below the nav bar.
+  top: 100%;
+  background: var(--alo-dropdown-bg);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: var(--alo-dropdown-transition);
+  z-index: calc(var(--alo-nav-z) - 1);
+  margin-bottom: 47px;
+
+  &--active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+  }
+}
+
+.alo-dropdown__inner {
+  border-top: 1px solid var(--alo-dropdown-border);
+  border-bottom: 1px solid var(--alo-dropdown-border);
+  padding: var(--alo-dropdown-pad-top) var(--alo-dropdown-pad-x) var(--alo-dropdown-pad-bottom);
+  padding-right: var(--alo-dropdown-pad-right-reserved);
+}
+
+// ─── Multi-column layout ──────────────────────────────────────────────────────
+
+.alo-dropdown__columns {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.alo-dropdown__col {
+  flex-basis: var(--alo-dropdown-col-width);
+  max-width: var(--alo-dropdown-col-width);
+  width: 100%;
+  position: relative;
+  padding-left: var(--alo-dropdown-col-gap);
+
+  &--first {
+    padding-left: 0;
+  }
+}
+
+.alo-dropdown__col-heading {
+  display: block;
+  font-family: var(--alo-font-family);
+  font-weight: var(--alo-font-weight-medium);
+  letter-spacing: var(--alo-dropdown-link-spacing);
+  line-height: 1.2;
+  margin-bottom: 5px;
+  color: var(--alo-dropdown-heading-color);
+  text-decoration: none;
+
+  &--link {
+    cursor: pointer;
+    transition: var(--alo-transition-link);
+
+    &:hover {
+      color: var(--alo-color-grey-mid);
+    }
+  }
+}
+
+.alo-dropdown__col-list {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.alo-dropdown__col-item {
+  padding: var(--alo-dropdown-link-pad-y) 0;
+  font-family: var(--alo-font-family);
+  letter-spacing: var(--alo-dropdown-link-spacing);
+  line-height: 1.2;
+}
+
+.alo-dropdown__col-link {
+  color: var(--alo-dropdown-link-color);
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--alo-transition-link);
+
+  &:hover {
+    color: var(--alo-dropdown-link-hover);
+  }
+}
+
+// ─── Featured image layout (Shoes / Atelier) ─────────────────────────────────
+
+.alo-dropdown__featured-layout {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.alo-dropdown__featured-images {
+  flex-basis: var(--alo-featured-col-width);
+  max-width: var(--alo-featured-col-width);
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.alo-dropdown__featured-item {
+  flex-basis: 25%;
+  max-width: 25%;
+  padding: 0 var(--alo-featured-img-gap);
+  position: relative;
+}
+
+.alo-dropdown__featured-img-link {
+  display: inline-block;
+  cursor: pointer;
+  transition: var(--alo-transition-link);
+}
+
+.alo-dropdown__featured-img {
+  display: block;
+  max-width: var(--alo-featured-img-max);
+  max-height: var(--alo-featured-img-max);
+  width: 100%;
+  object-fit: cover;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.alo-dropdown__featured-name {
+  display: block;
+  margin-top: 8px;
+  color: var(--alo-dropdown-link-color);
+  font-family: var(--alo-font-family);
+  letter-spacing: var(--alo-dropdown-link-spacing);
+  line-height: 1.19;
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--alo-transition-link);
+
+  &:hover {
+    color: var(--alo-dropdown-link-hover);
+  }
+}

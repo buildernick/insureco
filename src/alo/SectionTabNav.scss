@@ -1,0 +1,48 @@
+@use './alo-tokens';
+
+.alo-section-tab-nav {
+  display: flex;
+  gap: var(--alo-spacing-md);
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+  position: relative;
+  background-color: var(--alo-bg-page);
+
+  &__tab {
+    font-family: var(--alo-font-family);
+    font-size: var(--alo-font-size-lg);
+    font-weight: var(--alo-font-weight-medium);
+    line-height: 1.4;
+    text-transform: uppercase;
+    text-underline-offset: 3px;
+    padding: var(--alo-spacing-md);
+    min-width: 160px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    user-select: none;
+    cursor: default;
+
+    &--active {
+      color: var(--alo-tab-active-color);
+      text-decoration: underline;
+      font-weight: var(--alo-font-weight-medium);
+      margin-left: auto;
+    }
+
+    &--inactive {
+      color: var(--alo-tab-inactive-color);
+      text-decoration: none;
+      cursor: pointer;
+      margin-right: auto;
+      transition: var(--alo-transition-link);
+      background-color: var(--alo-bg-page);
+
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+  }
+}
