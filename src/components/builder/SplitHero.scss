@@ -53,6 +53,12 @@
       margin-bottom: var(--spacing-03);
       font-size: var(--body-md-size);
       color: var(--text-primary);
+      cursor: default;
+      transition: transform 0.15s ease;
+
+      &:hover {
+        animation: bullet-bounce 0.4s ease;
+      }
 
       svg {
         color: var(--color-success);
@@ -96,6 +102,14 @@
     min-height: 400px;
     background: var(--background-tertiary);
   }
+}
+
+@keyframes bullet-bounce {
+  0%   { transform: translateY(0); }
+  30%  { transform: translateY(-6px); }
+  55%  { transform: translateY(0); }
+  75%  { transform: translateY(-3px); }
+  100% { transform: translateY(0); }
 }
 
 @media (max-width: $breakpoint-md) {
