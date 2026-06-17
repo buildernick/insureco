@@ -81,6 +81,11 @@
     }
 
     .kpi-content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border: 0px solid;
+
       .kpi-label {
         font-size: var(--body-text-small);
         color: var(--text-secondary);
@@ -112,7 +117,7 @@
     }
 
     &.kpi-card-modern--primary {
-      border-left: 4px solid #24a148;
+      border-left: 13px solid #24a148;
     }
 
     &.kpi-card-modern--danger {

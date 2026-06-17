@@ -276,6 +276,63 @@
     }
   }
 
+  // Asset Filter Bar
+  .asset-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-04);
+    flex-wrap: wrap;
+    margin-bottom: var(--spacing-05);
+  }
+
+  .asset-search-input {
+    padding: 12px 20px;
+    background: var(--field-background);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: var(--body-text-small);
+    min-width: 250px;
+    transition: all 0.2s ease;
+
+    &::placeholder {
+      color: var(--field-placeholder);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: var(--interactive-primary);
+    }
+  }
+
+  .asset-category-filters {
+    display: flex;
+    gap: var(--spacing-03);
+
+    .filter-btn {
+      padding: 8px 20px;
+      border-radius: 20px;
+      border: 1px solid var(--border-subtle);
+      background: var(--background-secondary);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 600;
+      font-size: var(--body-text-small);
+
+      &:hover {
+        background: var(--background-hover);
+        color: var(--text-primary);
+      }
+
+      &.filter-btn--active {
+        background: rgba(218, 30, 40, 0.1);
+        border-color: rgba(218, 30, 40, 0.4);
+        color: var(--interactive-primary);
+      }
+    }
+  }
+
   // Table Styling
   .clickable-row {
     cursor: pointer;

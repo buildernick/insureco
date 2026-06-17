@@ -28,6 +28,8 @@ export default function FinancialDashboard1() {
   const navigate = useNavigate();
   const [chartType, setChartType] = useState('line');
   const [showGross, setShowGross] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
   const [visibleSeries, setVisibleSeries] = useState({
     propertyPremiums: true,
     propertyClaims: true,
@@ -67,8 +69,16 @@ export default function FinancialDashboard1() {
     dueDate: formatDate(asset.dueDate),
     totalClaims: formatCurrency(asset.totalClaims),
     region: asset.region,
-    _raw: asset, // Keep raw data for navigation
+    _raw: asset,
   }));
+
+  const filteredRows = rows.filter(row => {
+    const matchesCategory = selectedCategory === 'all' || row.category.toLowerCase() === selectedCategory;
+    const matchesSearch = !searchTerm ||
+      row.assetName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      row.region.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   const toggleSeries = (series) => {
     setVisibleSeries(prev => ({ ...prev, [series]: !prev[series] }));
@@ -305,9 +315,42 @@ export default function FinancialDashboard1() {
           </div>
         </Column>
 
+        {/* Asset Filter Bar */}
+        <Column lg={16} md={8} sm={4}>
+          <div className="asset-filter-bar">
+            <input
+              type="text"
+              className="asset-search-input"
+              placeholder="Search assets..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <div className="asset-category-filters">
+              <button
+                className={`filter-btn ${selectedCategory === 'all' ? 'filter-btn--active' : ''}`}
+                onClick={() => setSelectedCategory('all')}
+              >
+                All
+              </button>
+              <button
+                className={`filter-btn ${selectedCategory === 'property' ? 'filter-btn--active' : ''}`}
+                onClick={() => setSelectedCategory('property')}
+              >
+                Property
+              </button>
+              <button
+                className={`filter-btn ${selectedCategory === 'auto' ? 'filter-btn--active' : ''}`}
+                onClick={() => setSelectedCategory('auto')}
+              >
+                Auto
+              </button>
+            </div>
+          </div>
+        </Column>
+
         {/* Asset Performance Table */}
         <Column lg={16} md={8} sm={4}>
-          <DataTable rows={rows} headers={headers}>
+          <DataTable rows={filteredRows} headers={headers}>
             {({
               rows,
               headers,
