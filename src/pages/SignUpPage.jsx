@@ -19,6 +19,7 @@ import {
   RadioTile,
   DatePicker,
   DatePickerInput,
+  Tag,
 } from '@carbon/react';
 import { ArrowRight, ArrowLeft, Checkmark, Car, Home as HomeIcon } from '@carbon/icons-react';
 import './SignUpPage.scss';
@@ -615,13 +616,13 @@ export default function SignUpPage() {
             <div className="signup-progress">
               <div className="progress-status-row">
                 {completedCount > 0 && (
-                  <span className="progress-badge">{completedCount} completed</span>
+                  <Tag type="green" size="sm">{completedCount} completed</Tag>
                 )}
                 {nextStepName && (
-                  <span className="progress-badge progress-badge--pill">Next: {nextStepName}</span>
+                  <Tag type="blue" size="sm">Next: {nextStepName}</Tag>
                 )}
                 {remainingCount > 0 && (
-                  <span className="progress-badge progress-badge--pill">{remainingCount} remaining</span>
+                  <Tag type="gray" size="sm">{remainingCount} remaining</Tag>
                 )}
               </div>
               <div className="progress-bar-wrapper">
