@@ -17,8 +17,6 @@ import {
   NumberInput,
   TileGroup,
   RadioTile,
-  ProgressIndicator,
-  ProgressStep,
   DatePicker,
   DatePickerInput,
 } from '@carbon/react';
@@ -165,7 +163,7 @@ export default function SignUpPage() {
           <Stack gap={6}>
             <Heading className="signup-step-heading">Personal Information</Heading>
             <p className="signup-step-description">
-              Your basic info
+              Let's start with some basic information about you.
             </p>
             <TextInput
               id="firstName"
@@ -608,25 +606,33 @@ export default function SignUpPage() {
           </p>
         </header>
 
-        <Tile className="signup-progress">
-          <ProgressIndicator currentIndex={currentStep} spaceEqually>
-            {steps.map((step, index) => (
-              <ProgressStep
-                key={step.key}
-                label={step.label}
-                description={
-                  index < currentStep
-                    ? 'Complete'
-                    : index === currentStep
-                    ? 'Current'
-                    : ''
-                }
-                complete={index < currentStep}
-                current={index === currentStep}
-              />
-            ))}
-          </ProgressIndicator>
-        </Tile>
+        {(() => {
+          const completedCount = currentStep;
+          const remainingCount = steps.length - currentStep - 1;
+          const nextStepName = currentStep < steps.length - 1 ? steps[currentStep + 1]?.label : null;
+          const progressPercent = steps.length > 1 ? Math.round((currentStep / (steps.length - 1)) * 100) : 100;
+          return (
+            <div className="signup-progress">
+              <div className="progress-status-row">
+                {completedCount > 0 && (
+                  <span className="progress-badge">{completedCount} completed</span>
+                )}
+                {nextStepName && (
+                  <span className="progress-badge progress-badge--pill">Next: {nextStepName}</span>
+                )}
+                {remainingCount > 0 && (
+                  <span className="progress-badge progress-badge--pill">{remainingCount} remaining</span>
+                )}
+              </div>
+              <div className="progress-bar-wrapper">
+                <div className="progress-bar-track">
+                  <div className="progress-bar-fill" style={{ width: `${progressPercent}%` }} />
+                </div>
+                <span className="progress-bar-label">{progressPercent}% Complete</span>
+              </div>
+            </div>
+          );
+        })()}
 
         <Form className="signup-form" onSubmit={handleSubmit}>
           <Stack gap={7} className="signup-step-content">

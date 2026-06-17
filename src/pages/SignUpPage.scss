@@ -3,8 +3,8 @@
 .signup-page {
   min-height: 100vh;
   padding: var(--spacing-03);
-  background: var(--background-primary);
-  overflow-x: hidden; // Prevent horizontal scroll
+  background: linear-gradient(135deg, #f4f4f4 70.71%, #fff 0%);
+  overflow-x: hidden;
   width: 100%;
   max-width: 100vw;
   box-sizing: border-box;
@@ -118,175 +118,77 @@
 
 .signup-progress {
   margin-bottom: var(--spacing-06);
-  padding: 0 var(--spacing-03) var(--spacing-04) var(--spacing-03);
-  border-radius: var(--radius-sm);
-  background: var(--background-secondary);
-  box-shadow:
-    0 1px 2px 0 rgba(0, 0, 0, 0.1),
-    0 1px 3px 0 rgba(0, 0, 0, 0.1);
-  overflow-x: auto; // Allow horizontal scroll for progress bar
-  -webkit-overflow-scrolling: touch;
-
-  @media (min-width: 480px) {
-    padding: 0 var(--spacing-04) var(--spacing-04) var(--spacing-04);
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-04);
 
   @media (min-width: 672px) {
-    padding: 0 var(--spacing-06) var(--spacing-05) var(--spacing-06);
-    margin-bottom: var(--spacing-09);
+    margin-bottom: var(--spacing-07);
   }
+}
 
-  // Carbon ProgressIndicator overrides for exact Figma match
-  .cds--progress-indicator {
-    gap: 0;
-    overflow-x: auto;
-    overflow-y: visible;
-    -webkit-overflow-scrolling: touch;
+.progress-status-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-03);
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
-    // Hide scrollbar but keep functionality
-    scrollbar-width: thin;
-    scrollbar-color: var(--border-subtle) transparent;
+.progress-badge {
+  font-family: var(--font-family-sans);
+  font-size: 12px;
+  font-weight: var(--font-weight-regular);
+  line-height: 16px;
+  letter-spacing: 0.32px;
+  color: var(--text-primary);
+  padding: 1px var(--spacing-03);
 
-    &::-webkit-scrollbar {
-      height: 4px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: var(--border-subtle);
-      border-radius: 2px;
-    }
+  &--pill {
+    background: #e0e0e0;
+    border-radius: 16px;
+    font-weight: var(--font-weight-semibold);
   }
+}
 
-  // Target the actual progress line element instead of using border-top
-  // This prevents the double-line issue
-  .cds--progress-step--current .cds--progress-line {
-    background-color: #0f62fe !important;
-  }
+.progress-bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-02);
+  width: 100%;
+  max-width: 560px;
+}
 
-  .cds--progress-step--incomplete .cds--progress-line {
-    background-color: var(--border-subtle) !important;
-  }
+.progress-bar-track {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: #e0e0e0;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
 
-  .cds--progress-step--complete .cds--progress-line {
-    background-color: #0f62fe !important;
-  }
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #a2191f 0%, #da1e28 100%);
+  transition: width 0.4s ease;
+}
 
-  // Make labels appear below icons
-  .cds--progress-step-button {
-    flex-direction: column !important;
-    align-items: center !important;
-    text-align: center !important;
-    gap: var(--spacing-03) !important;
-  }
-
-  // Icon and label layout
-  .cds--progress-step-button-icon {
-    margin: 0 !important;
-  }
-
-  // Current step styling
-  .cds--progress-step--current {
-    .cds--progress-label {
-      color: var(--text-primary) !important;
-      font-family: var(--font-family-sans);
-      font-size: 11px;
-      font-weight: var(--font-weight-semibold);
-      line-height: 1.2;
-      letter-spacing: 0.12px;
-
-      @media (min-width: 480px) {
-        font-size: var(--body-sm-size);
-        line-height: 1.29;
-        letter-spacing: 0.16px;
-      }
-    }
-
-    svg {
-      fill: #0f62fe;
-    }
-  }
-
-  // Incomplete step styling
-  .cds--progress-step--incomplete {
-    .cds--progress-label {
-      color: var(--text-primary) !important;
-      font-family: var(--font-family-sans);
-      font-size: 11px;
-      font-weight: var(--font-weight-regular);
-      line-height: 1.2;
-      letter-spacing: 0.12px;
-
-      @media (min-width: 480px) {
-        font-size: var(--body-sm-size);
-        line-height: 1.29;
-        letter-spacing: 0.16px;
-      }
-    }
-
-    svg {
-      fill: var(--text-primary);
-    }
-  }
-
-  // Complete step styling
-  .cds--progress-step--complete {
-    .cds--progress-label {
-      color: var(--text-primary) !important;
-      font-weight: var(--font-weight-semibold);
-    }
-
-    svg {
-      fill: #0f62fe;
-    }
-  }
-
-  // Optional label (description) styling - hide on mobile
-  .cds--progress-optional {
-    color: var(--text-secondary) !important;
-    font-family: var(--font-family-sans);
-    font-size: 10px;
-    font-weight: var(--font-weight-regular);
-    line-height: 1.2;
-    letter-spacing: 0.16px;
-    padding-left: 0 !important;
-    margin-top: var(--spacing-02);
-
-    @media (max-width: 671px) {
-      display: none; // Hide description on mobile to save space
-    }
-  }
-
-  // Ensure consistent spacing between steps
-  .cds--progress-step {
-    flex: 1 0 0;
-    min-width: 75px; // Further reduced for very small screens
-    padding: 10px 4px 0 4px; // Minimal horizontal padding on mobile
-
-    @media (min-width: 480px) {
-      min-width: 90px;
-      padding: 10px 8px 0 8px;
-    }
-
-    @media (min-width: 672px) {
-      min-width: 120px;
-      padding: 10px 12px 0 12px;
-    }
-
-    @media (min-width: 1056px) {
-      min-width: 140px;
-      padding: 10px 16px 0 16px;
-    }
-  }
+.progress-bar-label {
+  font-family: var(--font-family-sans);
+  font-size: 14px;
+  font-weight: var(--font-weight-regular);
+  color: var(--text-secondary);
+  text-align: center;
 }
 
 .signup-form {
   background: var(--background-secondary);
   border-radius: var(--radius-lg);
-  border-top: 5px solid var(--color-brand-red-60);
+  border-top: 1px solid var(--interactive-primary);
   padding: var(--spacing-04);
   box-shadow:
     0 0 0 0 var(--border-subtle),
@@ -403,7 +305,7 @@
 
 .signup-actions {
   padding-top: var(--spacing-06);
-  border-top: 2px solid var(--color-brand-red-20);
+  border-top: 1px solid var(--interactive-primary);
   margin-top: var(--spacing-06);
   flex-wrap: wrap;
 
