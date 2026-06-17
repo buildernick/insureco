@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Button } from '@carbon/react';
 import { CheckmarkFilled, ArrowRight } from '@carbon/icons-react';
 import { useNavigate } from 'react-router-dom';
@@ -15,6 +16,23 @@ export default function SplitHero({
   background = 'primary',
 }) {
   const navigate = useNavigate();
+  const [activeImage, setActiveImage] = useState(null);
+  const [activeAlt, setActiveAlt] = useState('');
+
+  const displayedImage = activeImage ?? image;
+  const displayedAlt = activeImage ? activeAlt : imageAlt;
+
+  const handleBulletEnter = (bullet) => {
+    if (bullet.image) {
+      setActiveImage(bullet.image);
+      setActiveAlt(bullet.imageAlt || '');
+    }
+  };
+
+  const handleBulletLeave = () => {
+    setActiveImage(null);
+    setActiveAlt('');
+  };
 
   const contentCol = (
     <div className="builder-split-hero__content">
@@ -25,7 +43,12 @@ export default function SplitHero({
       {bullets && bullets.length > 0 && (
         <ul className="builder-split-hero__bullets">
           {bullets.map((bullet, i) => (
-            <li key={i}>
+            <li
+              key={i}
+              onMouseEnter={() => handleBulletEnter(bullet)}
+              onMouseLeave={handleBulletLeave}
+              className={bullet.image ? 'builder-split-hero__bullet--has-image' : ''}
+            >
               <CheckmarkFilled size={20} />
               {bullet.text}
             </li>
@@ -46,8 +69,8 @@ export default function SplitHero({
 
   const imageCol = (
     <div className="builder-split-hero__image">
-      {image ? (
-        <img src={image} alt={imageAlt} loading="lazy" />
+      {displayedImage ? (
+        <img key={displayedImage} src={displayedImage} alt={displayedAlt} loading="lazy" />
       ) : (
         <div className="builder-split-hero__image-placeholder" />
       )}

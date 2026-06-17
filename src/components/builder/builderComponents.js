@@ -52,7 +52,11 @@ const builderComponents = [
       {
         name: 'bullets',
         type: 'list',
-        subFields: [{ name: 'text', type: 'string', defaultValue: 'Feature bullet point' }],
+        subFields: [
+          { name: 'text', type: 'string', defaultValue: 'Feature bullet point' },
+          { name: 'image', type: 'file', allowedFileTypes: ['jpeg', 'jpg', 'png', 'webp'] },
+          { name: 'imageAlt', type: 'string', defaultValue: '' },
+        ],
         defaultValue: [{ text: 'Coverage included' }],
       },
       { name: 'ctaText', type: 'string', defaultValue: 'Learn More' },
