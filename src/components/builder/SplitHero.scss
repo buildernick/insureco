@@ -45,38 +45,76 @@
     list-style: none;
     padding: 0;
     margin: 0 0 var(--spacing-06) 0;
+  }
 
-    li {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-03);
-      margin-bottom: var(--spacing-03);
-      font-size: var(--body-md-size);
-      color: var(--text-primary);
+  &__bullet-item {
+    margin-bottom: var(--spacing-02);
+    border-bottom: 1px solid var(--border-subtle);
 
-      &--active {
-        font-weight: var(--font-weight-semibold);
+    &:first-child {
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    &--clickable {
+      cursor: pointer;
+
+      &:hover .builder-split-hero__bullet-row {
         color: var(--interactive-primary);
-
-        svg {
-          color: var(--interactive-primary);
-        }
       }
 
-      &--clickable {
-        cursor: pointer;
-        transition: color 0.15s ease, transform 0.15s ease;
-
-        &:hover {
-          color: var(--interactive-primary);
-          transform: translateX(4px);
-        }
+      &:hover .builder-split-hero__bullet-icon {
+        color: var(--interactive-primary);
       }
+    }
 
-      svg {
-        color: var(--color-success);
-        flex-shrink: 0;
-      }
+    &--active .builder-split-hero__bullet-row {
+      color: var(--interactive-primary);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    &--active .builder-split-hero__bullet-icon {
+      color: var(--interactive-primary);
+    }
+  }
+
+  &__bullet-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-03);
+    padding: var(--spacing-04) 0;
+    font-size: var(--body-md-size);
+    color: var(--text-primary);
+    transition: color 0.15s ease;
+  }
+
+  &__bullet-icon {
+    flex-shrink: 0;
+    color: var(--text-secondary);
+    transition: color 0.15s ease;
+  }
+
+  &__bullet-text {
+    flex: 1;
+  }
+
+  &__bullet-subtitle {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.3s ease, padding 0.3s ease;
+    opacity: 0;
+    padding-bottom: 0;
+
+    p {
+      font-size: var(--body-sm-size);
+      line-height: var(--line-height-loose);
+      color: var(--text-secondary);
+      padding-left: calc(20px + var(--spacing-03));
+    }
+
+    &--open {
+      max-height: 200px;
+      opacity: 1;
+      padding-bottom: var(--spacing-04);
     }
   }
 

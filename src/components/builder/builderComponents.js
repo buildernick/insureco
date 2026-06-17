@@ -54,6 +54,7 @@ const builderComponents = [
         type: 'list',
         subFields: [
           { name: 'text', type: 'string', defaultValue: 'Feature bullet point' },
+          { name: 'subtitle', type: 'string', defaultValue: '' },
           { name: 'image', type: 'file', allowedFileTypes: ['jpeg', 'jpg', 'png', 'webp'] },
           { name: 'imageAlt', type: 'string', defaultValue: '' },
         ],

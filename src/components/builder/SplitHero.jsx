@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '@carbon/react';
-import { CheckmarkFilled, ArrowRight } from '@carbon/icons-react';
+import { Add, Subtract, ArrowRight } from '@carbon/icons-react';
 import { useNavigate } from 'react-router-dom';
 import './SplitHero.scss';
 
@@ -22,58 +22,52 @@ export default function SplitHero({
   const bulletsWithImages = bullets.filter((b) => b.image);
   const hasCycle = bulletsWithImages.length > 1;
 
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [shownImage, setShownImage] = useState(
-    () => bulletsWithImages[0]?.image ?? image
-  );
-  const [shownAlt, setShownAlt] = useState(
-    () => bulletsWithImages[0]?.imageAlt ?? imageAlt
-  );
+  // null = nothing expanded
+  const [activeIndex, setActiveIndex] = useState(null);
+  const [shownImage, setShownImage] = useState(() => image);
+  const [shownAlt, setShownAlt] = useState(() => imageAlt);
   const [fading, setFading] = useState(false);
   const intervalRef = useRef(null);
+  const timerIndexRef = useRef(0);
 
-  const goToIndex = (idx) => {
-    const target = bulletsWithImages[idx];
-    const nextImage = target?.image ?? image;
-    const nextAlt = target?.imageAlt ?? imageAlt;
-
+  const swapImage = (nextImage, nextAlt, nextIdx) => {
     setFading(true);
     setTimeout(() => {
-      setShownImage(nextImage);
-      setShownAlt(nextAlt);
-      setActiveIndex(idx);
+      setShownImage(nextImage || image);
+      setShownAlt(nextAlt || imageAlt);
+      setActiveIndex(nextIdx);
       setFading(false);
     }, FADE_DURATION);
   };
 
-  const startTimer = () => {
+  const startTimer = (fromIdx = 0) => {
     clearInterval(intervalRef.current);
     if (!hasCycle) return;
+    timerIndexRef.current = fromIdx;
     intervalRef.current = setInterval(() => {
-      setActiveIndex((prev) => {
-        const next = (prev + 1) % bulletsWithImages.length;
-        const target = bulletsWithImages[next];
-        setFading(true);
-        setTimeout(() => {
-          setShownImage(target?.image ?? image);
-          setShownAlt(target?.imageAlt ?? imageAlt);
-          setActiveIndex(next);
-          setFading(false);
-        }, FADE_DURATION);
-        return prev;
-      });
+      const next = (timerIndexRef.current + 1) % bulletsWithImages.length;
+      timerIndexRef.current = next;
+      const target = bulletsWithImages[next];
+      swapImage(target?.image, target?.imageAlt, next);
     }, Math.max(500, cycleInterval));
   };
 
   useEffect(() => {
-    startTimer();
+    startTimer(0);
     return () => clearInterval(intervalRef.current);
   }, [hasCycle, bulletsWithImages.length, cycleInterval]);
 
   const handleBulletClick = (cycleIdx) => {
-    if (cycleIdx === activeIndex) return;
-    goToIndex(cycleIdx);
-    startTimer();
+    // Toggle collapse if already active
+    if (cycleIdx === activeIndex) {
+      setActiveIndex(null);
+      swapImage(image, imageAlt, null);
+      startTimer(cycleIdx);
+      return;
+    }
+    const target = bulletsWithImages[cycleIdx];
+    swapImage(target?.image, target?.imageAlt, cycleIdx);
+    startTimer(cycleIdx);
   };
 
   const contentCol = (
@@ -86,19 +80,34 @@ export default function SplitHero({
         <ul className="builder-split-hero__bullets">
           {bullets.map((bullet, i) => {
             const cycleIdx = bulletsWithImages.indexOf(bullet);
-            const isActive = hasCycle && cycleIdx === activeIndex;
             const isClickable = cycleIdx !== -1;
+            const isActive = isClickable && cycleIdx === activeIndex;
+            const Icon = isActive ? Subtract : Add;
+
             return (
               <li
                 key={i}
                 className={[
-                  isActive ? 'builder-split-hero__bullet--active' : '',
-                  isClickable ? 'builder-split-hero__bullet--clickable' : '',
-                ].join(' ').trim()}
+                  'builder-split-hero__bullet-item',
+                  isActive ? 'builder-split-hero__bullet-item--active' : '',
+                  isClickable ? 'builder-split-hero__bullet-item--clickable' : '',
+                ].filter(Boolean).join(' ')}
                 onClick={isClickable ? () => handleBulletClick(cycleIdx) : undefined}
               >
-                <CheckmarkFilled size={20} />
-                {bullet.text}
+                <div className="builder-split-hero__bullet-row">
+                  <Icon size={20} className="builder-split-hero__bullet-icon" />
+                  <span className="builder-split-hero__bullet-text">{bullet.text}</span>
+                </div>
+                {bullet.subtitle && (
+                  <div
+                    className={[
+                      'builder-split-hero__bullet-subtitle',
+                      isActive ? 'builder-split-hero__bullet-subtitle--open' : '',
+                    ].filter(Boolean).join(' ')}
+                  >
+                    <p>{bullet.subtitle}</p>
+                  </div>
+                )}
               </li>
             );
           })}
