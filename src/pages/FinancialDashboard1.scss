@@ -149,7 +149,9 @@
     .high-risk-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: var(--spacing-05);
+      gap: 17px;
+      margin-top: -1px;
+      border: 8px solid;
     }
 
     .high-risk-card {
