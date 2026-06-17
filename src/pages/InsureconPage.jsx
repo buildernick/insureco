@@ -76,15 +76,11 @@ export default function InsureconPage() {
   const targetXRef = useRef(0);
 
   useEffect(() => {
-    const scroller = document.getElementById('main-content') ?? window;
-
     const getProgress = () => {
       if (!stageRef.current) return 0;
-      const scrollerTop = scroller === window ? 0 : scroller.getBoundingClientRect().top;
-      const stageTop = stageRef.current.getBoundingClientRect().top - scrollerTop;
-      const viewH = scroller === window ? window.innerHeight : scroller.clientHeight;
-      const scrollable = stageRef.current.offsetHeight - viewH;
-      return Math.max(0, Math.min(1, -stageTop / scrollable));
+      const rect = stageRef.current.getBoundingClientRect();
+      const scrollable = stageRef.current.offsetHeight - window.innerHeight;
+      return Math.max(0, Math.min(1, -rect.top / scrollable));
     };
 
     const tick = () => {
@@ -97,19 +93,16 @@ export default function InsureconPage() {
 
       track.style.transform = `translateX(${-x}px)`;
 
-      // Horizontal parallax on each slide background
-      const slideW = track.clientWidth;
+      // Horizontal parallax — each bg moves 25% slower than its slide
+      const slideW = window.innerWidth;
       bgRefs.current.forEach((bg, i) => {
         if (!bg) return;
-        const slideCenter = i * slideW;
-        const parallaxOffset = (x - slideCenter) * 0.25;
+        const parallaxOffset = (x - i * slideW) * 0.25;
         bg.style.transform = `translateX(${parallaxOffset}px)`;
       });
 
       // Active dot
-      if (slideW > 0) {
-        setActiveSlide(Math.min(N - 1, Math.round(x / slideW)));
-      }
+      setActiveSlide(Math.min(N - 1, Math.round(x / window.innerWidth)));
 
       if (Math.abs(targetXRef.current - currentXRef.current) > 0.5) {
         rafRef.current = requestAnimationFrame(tick);
@@ -120,27 +113,26 @@ export default function InsureconPage() {
       const track = trackRef.current;
       if (!track) return;
       const progress = getProgress();
-      const maxX = track.scrollWidth - track.clientWidth;
+      // maxX = (N-1) slides × viewport width
+      const maxX = window.innerWidth * (N - 1);
       targetXRef.current = progress * maxX;
       cancelAnimationFrame(rafRef.current);
       rafRef.current = requestAnimationFrame(tick);
     };
 
-    scroller.addEventListener('scroll', handleScroll, { passive: true });
-    // Seed position on mount
+    window.addEventListener('scroll', handleScroll, { passive: true });
     setTimeout(handleScroll, 50);
 
     return () => {
-      scroller.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', handleScroll);
       cancelAnimationFrame(rafRef.current);
     };
   }, []);
 
   // Lock body scroll when drawer is open
   useEffect(() => {
-    const scroller = document.getElementById('main-content');
-    if (scroller) scroller.style.overflow = drawerOpen ? 'hidden' : '';
-    return () => { if (scroller) scroller.style.overflow = ''; };
+    document.body.style.overflow = drawerOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
   }, [drawerOpen]);
 
   const handleSubmit = (e) => {

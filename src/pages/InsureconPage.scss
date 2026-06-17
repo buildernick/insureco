@@ -14,7 +14,10 @@ $drawer-w:   500px;
   background: $ic-bg;
   color: $ic-white;
   font-family: var(--font-family-sans);
-  overflow-x: hidden;
+  // overflow-x must NOT be set here — any overflow value (including hidden)
+  // creates a new containing block that traps position:sticky children,
+  // preventing the sticky stage from activating against the window scroll.
+  // The .insurecon__sticky element's own overflow:hidden clips the wide track.
 }
 
 // ── Shared button ──────────────────────────────────────────────────────────────
