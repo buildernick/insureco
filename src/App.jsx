@@ -26,6 +26,7 @@ import FinancialDashboard3 from "./pages/FinancialDashboard3";
 import FinancialDashboardOptions from "./pages/FinancialDashboardOptions";
 import BuilderPage from "./pages/BuilderPage";
 import ComponentGalleryPage from "./pages/ComponentGalleryPage";
+import InsureconPage from "./pages/InsureconPage";
 
 export default function App() {
   return (
@@ -59,6 +60,8 @@ export default function App() {
         <Route path="/business/payments" element={<BusinessComingSoon />} />
         <Route path="/business/file-claim" element={<FileClaimPage />} />
         <Route path="/business/make-payment" element={<MakePaymentPage />} />
+
+        <Route path="/insurecon" element={<InsureconPage />} />
 
         {/* Builder.io CMS catch-all — matches any URL not handled above */}
         <Route path="*" element={<BuilderPage />} />

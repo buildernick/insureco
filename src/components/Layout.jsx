@@ -31,8 +31,7 @@ export default function Layout({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Remove padding for landing page
-  const isLandingPage = location.pathname === '/';
+  const isLandingPage = ['/', '/insurecon'].includes(location.pathname);
 
   return (
     <HeaderContainer
