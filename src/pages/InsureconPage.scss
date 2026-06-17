@@ -464,6 +464,286 @@ $drawer-w:   500px;
   transition: width 0.15s ease;
 }
 
+// ── VENUE ──────────────────────────────────────────────────────────────────────
+.insurecon-venue {
+  background: #09090f;
+  padding: var(--spacing-13) var(--spacing-07);
+  border-top: 1px solid $ic-border;
+}
+
+.insurecon-venue__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-11);
+  align-items: center;
+}
+
+.insurecon-venue__eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: $ic-gold;
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--spacing-05);
+}
+
+.insurecon-venue__heading {
+  font-size: clamp(40px, 5vw, 68px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: $ic-white;
+  margin: 0 0 var(--spacing-06);
+}
+
+.insurecon-venue__heading-sub {
+  color: $ic-dim;
+  font-size: 0.6em;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.insurecon-venue__body {
+  font-size: var(--body-lg-size);
+  line-height: 1.7;
+  color: $ic-dim;
+  margin-bottom: var(--spacing-08);
+}
+
+.insurecon-venue__features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-05);
+}
+
+.insurecon-venue__feature {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--spacing-05);
+  border: 1px solid $ic-border;
+}
+
+.insurecon-venue__feature-value {
+  font-size: clamp(20px, 2.5vw, 28px);
+  font-weight: 800;
+  color: $ic-gold;
+  letter-spacing: -0.02em;
+}
+
+.insurecon-venue__feature-label {
+  font-size: var(--body-sm-size);
+  color: $ic-dim;
+  letter-spacing: 0.05em;
+}
+
+.insurecon-venue__visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.insurecon-venue__card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid $ic-border;
+  padding: var(--spacing-08);
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.insurecon-venue__card-glow {
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(201,169,110,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.insurecon-venue__card-name {
+  font-size: var(--heading-h3-size);
+  font-weight: 800;
+  color: $ic-white;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--spacing-02);
+}
+
+.insurecon-venue__card-address {
+  font-size: var(--body-sm-size);
+  color: $ic-dim;
+  line-height: 1.6;
+  margin-bottom: var(--spacing-07);
+}
+
+.insurecon-venue__card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-02);
+  margin-bottom: var(--spacing-07);
+}
+
+.insurecon-venue__tag {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: $ic-dim;
+  border: 1px solid $ic-border;
+  padding: 4px 10px;
+}
+
+.insurecon-venue__map-btn {
+  width: 100%;
+  justify-content: center;
+  text-decoration: none;
+}
+
+// ── PRICING ────────────────────────────────────────────────────────────────────
+.insurecon-pricing {
+  background: $ic-bg;
+  padding: var(--spacing-13) var(--spacing-07);
+  border-top: 1px solid $ic-border;
+}
+
+.insurecon-pricing__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.insurecon-pricing__eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: $ic-gold;
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--spacing-05);
+}
+
+.insurecon-pricing__heading {
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: $ic-white;
+  margin: 0 0 var(--spacing-04);
+}
+
+.insurecon-pricing__subheading {
+  font-size: var(--body-lg-size);
+  color: $ic-dim;
+  margin: 0 auto var(--spacing-10);
+  max-width: 560px;
+  line-height: 1.6;
+}
+
+.insurecon-pricing__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-05);
+  text-align: left;
+}
+
+.insurecon-pricing__card {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid $ic-border;
+  padding: var(--spacing-07);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: border-color 0.25s ease, background 0.25s ease;
+
+  &:hover {
+    border-color: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.04);
+  }
+
+  &--featured {
+    border-color: $ic-gold;
+    background: rgba(201,169,110,0.04);
+
+    &:hover {
+      border-color: lighten(#c9a96e, 10%);
+      background: rgba(201,169,110,0.08);
+    }
+  }
+}
+
+.insurecon-pricing__badge {
+  position: absolute;
+  top: -1px;
+  right: var(--spacing-06);
+  background: $ic-gold;
+  color: #0a0804;
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+}
+
+.insurecon-pricing__tier {
+  font-size: var(--body-sm-size);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: $ic-dim;
+  margin-bottom: var(--spacing-05);
+  font-weight: var(--font-weight-medium);
+
+  .insurecon-pricing__card--featured & { color: $ic-gold; }
+}
+
+.insurecon-pricing__price {
+  font-size: clamp(36px, 4vw, 52px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: $ic-white;
+  line-height: 1;
+  margin-bottom: var(--spacing-02);
+}
+
+.insurecon-pricing__cadence {
+  font-size: var(--body-sm-size);
+  color: $ic-dim;
+  margin-bottom: var(--spacing-07);
+}
+
+.insurecon-pricing__perks {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--spacing-08);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-04);
+
+  li {
+    display: flex;
+    gap: var(--spacing-03);
+    font-size: var(--body-sm-size);
+    color: $ic-dim;
+    line-height: 1.5;
+  }
+}
+
+.insurecon-pricing__check {
+  color: $ic-gold;
+  font-size: var(--body-sm-size);
+  flex-shrink: 0;
+  font-weight: 700;
+}
+
+.insurecon-pricing__cta {
+  width: 100%;
+  justify-content: center;
+  margin-top: auto;
+}
+
 // ── OVERLAY ────────────────────────────────────────────────────────────────────
 .insurecon-overlay {
   position: fixed;
@@ -737,6 +1017,11 @@ $drawer-w:   500px;
 }
 
 // ── Responsive ──────────────────────────────────────────────────────────────────
+@media (max-width: 1056px) {
+  .insurecon-pricing__grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
+  .insurecon-venue__inner { grid-template-columns: 1fr; gap: var(--spacing-08); }
+}
+
 @media (max-width: 672px) {
   .insurecon-drawer { width: 100vw; }
   .insurecon__hero-actions { flex-direction: column; }
@@ -745,4 +1030,7 @@ $drawer-w:   500px;
   .insurecon-section__stat-rule { width: 48px; height: 1px; }
   .insurecon-section__layout { padding: var(--spacing-10) var(--spacing-06); }
   .insurecon__meta-item { padding: 0 var(--spacing-05); }
+  .insurecon-venue__features { grid-template-columns: 1fr; }
+  .insurecon-venue { padding: var(--spacing-10) var(--spacing-06); }
+  .insurecon-pricing { padding: var(--spacing-10) var(--spacing-06); }
 }

@@ -277,6 +277,136 @@ export default function InsureconPage() {
         </div>
       </div>
 
+      {/* ── VENUE ──────────────────────────────────────────── */}
+      <section className="insurecon-venue">
+        <div className="insurecon-venue__inner">
+          <div className="insurecon-venue__text">
+            <p className="insurecon-venue__eyebrow">The Venue</p>
+            <h2 className="insurecon-venue__heading">
+              Mandalay Bay<br />
+              <span className="insurecon-venue__heading-sub">Las Vegas, Nevada</span>
+            </h2>
+            <p className="insurecon-venue__body">
+              Insurecon 2024 takes place at the iconic Mandalay Bay Resort &amp; Casino —
+              3.2 million square feet of world-class convention space in the heart of the Las Vegas Strip.
+            </p>
+            <ul className="insurecon-venue__features">
+              {[
+                { label: 'Convention Space', value: '2M+ sq ft' },
+                { label: 'Breakout Rooms', value: '350+' },
+                { label: 'Hotel Rooms', value: '3,309' },
+                { label: 'Restaurants &amp; Bars', value: '17' },
+              ].map((f) => (
+                <li key={f.label} className="insurecon-venue__feature">
+                  <span className="insurecon-venue__feature-value" dangerouslySetInnerHTML={{ __html: f.value }} />
+                  <span className="insurecon-venue__feature-label" dangerouslySetInnerHTML={{ __html: f.label }} />
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="insurecon-venue__visual">
+            <div className="insurecon-venue__card">
+              <div className="insurecon-venue__card-glow" />
+              <p className="insurecon-venue__card-name">Mandalay Bay</p>
+              <p className="insurecon-venue__card-address">3950 S Las Vegas Blvd<br />Las Vegas, NV 89119</p>
+              <div className="insurecon-venue__card-tags">
+                {['Convention Center', 'Casino Resort', 'Shark Reef Aquarium', 'Beach &amp; Wave Pool', 'House of Blues'].map((tag) => (
+                  <span key={tag} className="insurecon-venue__tag" dangerouslySetInnerHTML={{ __html: tag }} />
+                ))}
+              </div>
+              <a
+                href="https://www.mandalaybay.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="insurecon-btn insurecon-btn--ghost insurecon-venue__map-btn"
+              >
+                View Property →
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── PRICING ────────────────────────────────────────── */}
+      <section className="insurecon-pricing">
+        <div className="insurecon-pricing__inner">
+          <p className="insurecon-pricing__eyebrow">Registration</p>
+          <h2 className="insurecon-pricing__heading">Choose Your Pass</h2>
+          <p className="insurecon-pricing__subheading">
+            All passes include full access to the Insurecon expo floor and evening networking events.
+          </p>
+
+          <div className="insurecon-pricing__grid">
+            {/* Attendee */}
+            <div className="insurecon-pricing__card">
+              <p className="insurecon-pricing__tier">Attendee</p>
+              <p className="insurecon-pricing__price">$599</p>
+              <p className="insurecon-pricing__cadence">per person</p>
+              <ul className="insurecon-pricing__perks">
+                {[
+                  'All keynotes & general sessions',
+                  '200+ breakout sessions',
+                  'Expo floor access',
+                  'Evening networking events',
+                  'Digital session recordings',
+                ].map((perk) => (
+                  <li key={perk}><span className="insurecon-pricing__check">✓</span>{perk}</li>
+                ))}
+              </ul>
+              <button className="insurecon-btn insurecon-btn--ghost insurecon-pricing__cta" onClick={() => setDrawerOpen(true)}>
+                Register as Attendee
+              </button>
+            </div>
+
+            {/* Sponsor — featured */}
+            <div className="insurecon-pricing__card insurecon-pricing__card--featured">
+              <div className="insurecon-pricing__badge">Most Popular</div>
+              <p className="insurecon-pricing__tier">Sponsor</p>
+              <p className="insurecon-pricing__price">$10,000</p>
+              <p className="insurecon-pricing__cadence">per company</p>
+              <ul className="insurecon-pricing__perks">
+                {[
+                  'Everything in Attendee (×5 passes)',
+                  'Branded booth on expo floor',
+                  'Logo on all event materials',
+                  'Speaking slot consideration',
+                  'VIP dinner invitation',
+                  'Lead capture access',
+                ].map((perk) => (
+                  <li key={perk}><span className="insurecon-pricing__check">✓</span>{perk}</li>
+                ))}
+              </ul>
+              <button className="insurecon-btn insurecon-btn--primary insurecon-pricing__cta" onClick={() => setDrawerOpen(true)}>
+                Become a Sponsor
+              </button>
+            </div>
+
+            {/* Executive Sponsor */}
+            <div className="insurecon-pricing__card">
+              <p className="insurecon-pricing__tier">Executive Sponsor</p>
+              <p className="insurecon-pricing__price">$50,000</p>
+              <p className="insurecon-pricing__cadence">per company</p>
+              <ul className="insurecon-pricing__perks">
+                {[
+                  'Everything in Sponsor (×15 passes)',
+                  'Headline stage naming rights',
+                  'Keynote speaking slot',
+                  'Exclusive hosted dinner (50 guests)',
+                  'Premier booth placement',
+                  'Full attendee contact list',
+                  'Year-round brand visibility',
+                ].map((perk) => (
+                  <li key={perk}><span className="insurecon-pricing__check">✓</span>{perk}</li>
+                ))}
+              </ul>
+              <button className="insurecon-btn insurecon-btn--outline insurecon-pricing__cta" style={{ '--btn-accent': '#c9a96e' }} onClick={() => setDrawerOpen(true)}>
+                Contact Us
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── DRAWER OVERLAY ─────────────────────────────────── */}
       <div
         className={`insurecon-overlay ${drawerOpen ? 'insurecon-overlay--visible' : ''}`}
