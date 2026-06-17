@@ -67,8 +67,11 @@ export default function InsureconPage() {
   const sectionRefs = useRef([]);
   const heroRef = useRef(null);
 
-  // Intersection observer for section fade-in animations
+  // Both effects share the same scroll container (Carbon's main-content div)
   useEffect(() => {
+    const scroller = document.getElementById('main-content') || window;
+
+    // Intersection observer — fade sections in as they enter the viewport
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -77,25 +80,30 @@ export default function InsureconPage() {
           }
         });
       },
-      { threshold: 0.12 }
+      { root: scroller === window ? null : scroller, threshold: 0.12 }
     );
     sectionRefs.current.forEach((el) => el && observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
 
-  // JS parallax on section background elements
-  useEffect(() => {
+    // Parallax — move each section's background on scroll
     const handleScroll = () => {
       sectionRefs.current.forEach((el) => {
         if (!el) return;
         const rect = el.getBoundingClientRect();
-        const progress = -rect.top / window.innerHeight;
+        const viewH = window.innerHeight;
+        const progress = -rect.top / viewH;
         const bg = el.querySelector('.insurecon-section__bg');
         if (bg) bg.style.transform = `translateY(${progress * 60}px)`;
       });
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    scroller.addEventListener('scroll', handleScroll, { passive: true });
+    // Run once on mount so parallax positions are correct before first scroll
+    handleScroll();
+
+    return () => {
+      observer.disconnect();
+      scroller.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   // Lock body scroll when drawer open
