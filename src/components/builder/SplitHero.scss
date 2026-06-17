@@ -63,6 +63,16 @@
         }
       }
 
+      &--clickable {
+        cursor: pointer;
+        transition: color 0.15s ease, transform 0.15s ease;
+
+        &:hover {
+          color: var(--interactive-primary);
+          transform: translateX(4px);
+        }
+      }
+
       svg {
         color: var(--color-success);
         flex-shrink: 0;
@@ -92,7 +102,12 @@
       object-fit: cover;
       object-position: center;
       display: block;
-      animation: image-fade-in 0.35s ease;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+
+      &.builder-split-hero__img--fading {
+        opacity: 0;
+      }
 
       :root[data-carbon-theme="g90"] &,
       :root[data-carbon-theme="g100"] & {
@@ -106,11 +121,6 @@
     min-height: 400px;
     background: var(--background-tertiary);
   }
-}
-
-@keyframes image-fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
 }
 
 @media (max-width: $breakpoint-md) {

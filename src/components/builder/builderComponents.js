@@ -63,7 +63,7 @@ const builderComponents = [
       { name: 'ctaUrl', type: 'string', defaultValue: '/signup' },
       { name: 'image', type: 'file', allowedFileTypes: ['jpeg', 'jpg', 'png', 'webp'] },
       { name: 'imageAlt', type: 'string', defaultValue: '' },
-      { name: 'cycleInterval', type: 'number', defaultValue: 3000, helperText: 'Milliseconds between bullet/image transitions' },
+      { name: 'cycleInterval', type: 'number', defaultValue: 6000, helperText: 'Milliseconds between bullet/image transitions' },
       {
         name: 'imagePosition',
         type: 'string',

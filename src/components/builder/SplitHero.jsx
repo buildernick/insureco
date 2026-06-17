@@ -4,6 +4,8 @@ import { CheckmarkFilled, ArrowRight } from '@carbon/icons-react';
 import { useNavigate } from 'react-router-dom';
 import './SplitHero.scss';
 
+const FADE_DURATION = 300;
+
 export default function SplitHero({
   heading = 'Insurance Heading',
   description = 'Describe the product here.',
@@ -14,28 +16,65 @@ export default function SplitHero({
   imageAlt = '',
   imagePosition = 'right',
   background = 'primary',
-  cycleInterval = 3000,
+  cycleInterval = 6000,
 }) {
   const navigate = useNavigate();
   const bulletsWithImages = bullets.filter((b) => b.image);
   const hasCycle = bulletsWithImages.length > 1;
 
   const [activeIndex, setActiveIndex] = useState(0);
+  const [shownImage, setShownImage] = useState(
+    () => bulletsWithImages[0]?.image ?? image
+  );
+  const [shownAlt, setShownAlt] = useState(
+    () => bulletsWithImages[0]?.imageAlt ?? imageAlt
+  );
+  const [fading, setFading] = useState(false);
   const intervalRef = useRef(null);
 
-  useEffect(() => {
+  const goToIndex = (idx) => {
+    const target = bulletsWithImages[idx];
+    const nextImage = target?.image ?? image;
+    const nextAlt = target?.imageAlt ?? imageAlt;
+
+    setFading(true);
+    setTimeout(() => {
+      setShownImage(nextImage);
+      setShownAlt(nextAlt);
+      setActiveIndex(idx);
+      setFading(false);
+    }, FADE_DURATION);
+  };
+
+  const startTimer = () => {
+    clearInterval(intervalRef.current);
     if (!hasCycle) return;
-
     intervalRef.current = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % bulletsWithImages.length);
+      setActiveIndex((prev) => {
+        const next = (prev + 1) % bulletsWithImages.length;
+        const target = bulletsWithImages[next];
+        setFading(true);
+        setTimeout(() => {
+          setShownImage(target?.image ?? image);
+          setShownAlt(target?.imageAlt ?? imageAlt);
+          setActiveIndex(next);
+          setFading(false);
+        }, FADE_DURATION);
+        return prev;
+      });
     }, Math.max(500, cycleInterval));
+  };
 
+  useEffect(() => {
+    startTimer();
     return () => clearInterval(intervalRef.current);
   }, [hasCycle, bulletsWithImages.length, cycleInterval]);
 
-  const activeBullet = hasCycle ? bulletsWithImages[activeIndex] : bulletsWithImages[0];
-  const displayedImage = activeBullet?.image ?? image;
-  const displayedAlt = activeBullet?.imageAlt ?? imageAlt;
+  const handleBulletClick = (cycleIdx) => {
+    if (cycleIdx === activeIndex) return;
+    goToIndex(cycleIdx);
+    startTimer();
+  };
 
   const contentCol = (
     <div className="builder-split-hero__content">
@@ -48,10 +87,15 @@ export default function SplitHero({
           {bullets.map((bullet, i) => {
             const cycleIdx = bulletsWithImages.indexOf(bullet);
             const isActive = hasCycle && cycleIdx === activeIndex;
+            const isClickable = cycleIdx !== -1;
             return (
               <li
                 key={i}
-                className={isActive ? 'builder-split-hero__bullet--active' : ''}
+                className={[
+                  isActive ? 'builder-split-hero__bullet--active' : '',
+                  isClickable ? 'builder-split-hero__bullet--clickable' : '',
+                ].join(' ').trim()}
+                onClick={isClickable ? () => handleBulletClick(cycleIdx) : undefined}
               >
                 <CheckmarkFilled size={20} />
                 {bullet.text}
@@ -74,8 +118,13 @@ export default function SplitHero({
 
   const imageCol = (
     <div className="builder-split-hero__image">
-      {displayedImage ? (
-        <img key={displayedImage} src={displayedImage} alt={displayedAlt} loading="lazy" />
+      {shownImage ? (
+        <img
+          src={shownImage}
+          alt={shownAlt}
+          loading="lazy"
+          className={fading ? 'builder-split-hero__img--fading' : ''}
+        />
       ) : (
         <div className="builder-split-hero__image-placeholder" />
       )}
