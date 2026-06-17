@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@carbon/react';
 import { CheckmarkFilled, ArrowRight } from '@carbon/icons-react';
 import { useNavigate } from 'react-router-dom';
@@ -14,25 +14,28 @@ export default function SplitHero({
   imageAlt = '',
   imagePosition = 'right',
   background = 'primary',
+  cycleInterval = 3000,
 }) {
   const navigate = useNavigate();
-  const [activeImage, setActiveImage] = useState(null);
-  const [activeAlt, setActiveAlt] = useState('');
+  const bulletsWithImages = bullets.filter((b) => b.image);
+  const hasCycle = bulletsWithImages.length > 1;
 
-  const displayedImage = activeImage ?? image;
-  const displayedAlt = activeImage ? activeAlt : imageAlt;
+  const [activeIndex, setActiveIndex] = useState(0);
+  const intervalRef = useRef(null);
 
-  const handleBulletEnter = (bullet) => {
-    if (bullet.image) {
-      setActiveImage(bullet.image);
-      setActiveAlt(bullet.imageAlt || '');
-    }
-  };
+  useEffect(() => {
+    if (!hasCycle) return;
 
-  const handleBulletLeave = () => {
-    setActiveImage(null);
-    setActiveAlt('');
-  };
+    intervalRef.current = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % bulletsWithImages.length);
+    }, Math.max(500, cycleInterval));
+
+    return () => clearInterval(intervalRef.current);
+  }, [hasCycle, bulletsWithImages.length, cycleInterval]);
+
+  const activeBullet = hasCycle ? bulletsWithImages[activeIndex] : bulletsWithImages[0];
+  const displayedImage = activeBullet?.image ?? image;
+  const displayedAlt = activeBullet?.imageAlt ?? imageAlt;
 
   const contentCol = (
     <div className="builder-split-hero__content">
@@ -42,17 +45,19 @@ export default function SplitHero({
       )}
       {bullets && bullets.length > 0 && (
         <ul className="builder-split-hero__bullets">
-          {bullets.map((bullet, i) => (
-            <li
-              key={i}
-              onMouseEnter={() => handleBulletEnter(bullet)}
-              onMouseLeave={handleBulletLeave}
-              className={bullet.image ? 'builder-split-hero__bullet--has-image' : ''}
-            >
-              <CheckmarkFilled size={20} />
-              {bullet.text}
-            </li>
-          ))}
+          {bullets.map((bullet, i) => {
+            const cycleIdx = bulletsWithImages.indexOf(bullet);
+            const isActive = hasCycle && cycleIdx === activeIndex;
+            return (
+              <li
+                key={i}
+                className={isActive ? 'builder-split-hero__bullet--active' : ''}
+              >
+                <CheckmarkFilled size={20} />
+                {bullet.text}
+              </li>
+            );
+          })}
         </ul>
       )}
       {ctaText && (
