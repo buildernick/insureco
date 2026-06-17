@@ -1,15 +1,15 @@
 @use '../styles/tokens' as *;
 
 // ── Local palette ──────────────────────────────────────────────────────────────
-$ic-bg:          #07070f;
-$ic-surface:     #0e0e1a;
-$ic-gold:        #c9a96e;
-$ic-white:       #ffffff;
-$ic-dim:         rgba(255, 255, 255, 0.5);
-$ic-border:      rgba(255, 255, 255, 0.09);
-$drawer-w:       500px;
+$ic-bg:      #07070f;
+$ic-surface: #0e0e1a;
+$ic-gold:    #c9a96e;
+$ic-white:   #ffffff;
+$ic-dim:     rgba(255, 255, 255, 0.5);
+$ic-border:  rgba(255, 255, 255, 0.09);
+$drawer-w:   500px;
 
-// ── Root container ─────────────────────────────────────────────────────────────
+// ── Root ───────────────────────────────────────────────────────────────────────
 .insurecon {
   background: $ic-bg;
   color: $ic-white;
@@ -38,7 +38,6 @@ $drawer-w:       500px;
   &--primary {
     background: $ic-gold;
     color: #0a0804;
-
     &:hover {
       background: lighten(#c9a96e, 8%);
       box-shadow: 0 16px 48px rgba(201, 169, 110, 0.28);
@@ -49,11 +48,7 @@ $drawer-w:       500px;
     background: transparent;
     color: rgba(255,255,255,0.7);
     border: 1px solid $ic-border;
-
-    &:hover {
-      color: $ic-white;
-      border-color: rgba(255,255,255,0.3);
-    }
+    &:hover { color: $ic-white; border-color: rgba(255,255,255,0.3); }
   }
 
   &--outline {
@@ -61,7 +56,6 @@ $drawer-w:       500px;
     color: var(--btn-accent, $ic-gold);
     border: 1px solid var(--btn-accent, $ic-gold);
     margin-top: var(--spacing-08);
-
     &:hover {
       background: rgba(255,255,255,0.05);
       box-shadow: 0 0 0 1px var(--btn-accent, $ic-gold);
@@ -101,19 +95,15 @@ $drawer-w:       500px;
   pointer-events: none;
 
   &--top {
-    width: 800px;
-    height: 500px;
-    top: -150px;
-    left: 50%;
+    width: 800px; height: 500px;
+    top: -150px; left: 50%;
     transform: translateX(-50%);
     background: radial-gradient(ellipse, rgba(201,169,110,0.18) 0%, transparent 70%);
   }
 
   &--bottom {
-    width: 600px;
-    height: 400px;
-    bottom: -100px;
-    right: -100px;
+    width: 600px; height: 400px;
+    bottom: -100px; right: -100px;
     background: radial-gradient(ellipse, rgba(218,30,40,0.12) 0%, transparent 70%);
   }
 }
@@ -137,8 +127,7 @@ $drawer-w:       500px;
 }
 
 .insurecon__location-dot {
-  width: 6px;
-  height: 6px;
+  width: 6px; height: 6px;
   border-radius: 50%;
   background: $ic-gold;
   animation: dot-pulse 2s ease-in-out infinite;
@@ -156,12 +145,9 @@ $drawer-w:       500px;
   line-height: 0.95;
   margin: 0 0 var(--spacing-05);
   color: $ic-white;
-  text-shadow: 0 0 80px rgba(255,255,255,0.08);
 }
 
-.insurecon__wordmark-accent {
-  color: $ic-gold;
-}
+.insurecon__wordmark-accent { color: $ic-gold; }
 
 .insurecon__tagline {
   font-size: clamp(16px, 2vw, 20px);
@@ -183,12 +169,17 @@ $drawer-w:       500px;
   z-index: 1;
   display: flex;
   align-items: center;
-  gap: var(--spacing-07);
+  justify-content: center;
+  gap: 0;
   margin-top: var(--spacing-11);
   padding-top: var(--spacing-07);
   border-top: 1px solid $ic-border;
   flex-wrap: wrap;
-  justify-content: center;
+}
+
+.insurecon__hero-meta-group {
+  display: flex;
+  align-items: center;
 }
 
 .insurecon__meta-item {
@@ -196,6 +187,7 @@ $drawer-w:       500px;
   flex-direction: column;
   align-items: center;
   gap: 2px;
+  padding: 0 var(--spacing-07);
 }
 
 .insurecon__meta-value {
@@ -224,6 +216,17 @@ $drawer-w:       500px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-03);
+}
+
+.insurecon__scroll-hint-text {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $ic-dim;
 }
 
 .insurecon__scroll-bar {
@@ -240,46 +243,65 @@ $drawer-w:       500px;
   100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
 }
 
-// ── PARALLAX SECTIONS ──────────────────────────────────────────────────────────
-.insurecon-section {
+// ── HORIZONTAL SCROLL STAGE ────────────────────────────────────────────────────
+// Tall enough so each of the N slides gets one viewport-height of scroll travel
+.insurecon__stage {
+  height: 400vh; // N * 100vh
   position: relative;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(48px);
-  transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1), transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
-
-  &--visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  // Background color variants
-  &--gold   { background: #0c0a04; }
-  &--red    { background: #0c0204; }
-  &--blue   { background: #030a10; }
-  &--green  { background: #030c07; }
 }
 
+// Sticks to the top of the scroll container; clips the sliding track
+.insurecon__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+// Flex row holding all slides; width = N × 100vw
+.insurecon__track {
+  display: flex;
+  height: 100%;
+  width: 400vw; // N * 100vw
+  will-change: transform;
+}
+
+// Each individual slide
+.insurecon-section {
+  width: 100vw;
+  height: 100%;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+
+  &--gold  { background: #0c0a04; }
+  &--red   { background: #0c0204; }
+  &--blue  { background: #030a10; }
+  &--green { background: #030c07; }
+}
+
+// Parallax background — wider than the slide so it can shift left/right
 .insurecon-section__bg {
   position: absolute;
-  inset: -20%;
+  inset: 0;
+  width: 130%;
+  left: -15%;
   pointer-events: none;
   will-change: transform;
 
   .insurecon-section--gold & {
-    background: radial-gradient(ellipse 80% 60% at 30% 40%, rgba(201,169,110,0.12) 0%, transparent 70%);
+    background: radial-gradient(ellipse 70% 70% at 40% 50%, rgba(201,169,110,0.15) 0%, transparent 70%);
   }
   .insurecon-section--red & {
-    background: radial-gradient(ellipse 80% 60% at 70% 60%, rgba(218,30,40,0.14) 0%, transparent 70%);
+    background: radial-gradient(ellipse 70% 70% at 60% 50%, rgba(218,30,40,0.18) 0%, transparent 70%);
   }
   .insurecon-section--blue & {
-    background: radial-gradient(ellipse 80% 60% at 20% 50%, rgba(79,195,247,0.1) 0%, transparent 70%);
+    background: radial-gradient(ellipse 70% 70% at 30% 50%, rgba(79,195,247,0.13) 0%, transparent 70%);
   }
   .insurecon-section--green & {
-    background: radial-gradient(ellipse 80% 60% at 80% 40%, rgba(105,240,174,0.1) 0%, transparent 70%);
+    background: radial-gradient(ellipse 70% 70% at 70% 50%, rgba(105,240,174,0.12) 0%, transparent 70%);
   }
 }
 
@@ -299,12 +321,10 @@ $drawer-w:       500px;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: var(--spacing-13) var(--spacing-10);
+  padding: var(--spacing-10) var(--spacing-10);
 }
 
-.insurecon-section__content {
-  max-width: 620px;
-}
+.insurecon-section__content { max-width: 620px; }
 
 .insurecon-section__eyebrow {
   font-size: var(--body-sm-size);
@@ -370,24 +390,89 @@ $drawer-w:       500px;
   font-size: clamp(100px, 18vw, 240px);
   font-weight: 800;
   line-height: 1;
-  color: rgba(255,255,255,0.025);
+  color: rgba(255,255,255,0.03);
   user-select: none;
   pointer-events: none;
   letter-spacing: -0.05em;
+}
+
+// ── Slide navigation HUD ───────────────────────────────────────────────────────
+.insurecon__slide-nav {
+  position: absolute;
+  bottom: var(--spacing-07);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-03);
+  z-index: 10;
+}
+
+.insurecon__slide-counter {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: $ic-dim;
+  font-variant-numeric: tabular-nums;
+}
+
+.insurecon__slide-dots {
+  display: flex;
+  gap: var(--spacing-03);
+}
+
+.insurecon__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: $ic-border;
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: background 0.3s ease, transform 0.3s ease;
+
+  &--active {
+    background: $ic-gold;
+    border-color: $ic-gold;
+    transform: scale(1.4);
+  }
+}
+
+.insurecon__slide-label {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: $ic-dim;
+  transition: opacity 0.3s ease;
+}
+
+// Thin progress bar along the bottom edge
+.insurecon__progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: $ic-border;
+  z-index: 10;
+}
+
+.insurecon__progress-fill {
+  height: 100%;
+  background: $ic-gold;
+  transition: width 0.15s ease;
 }
 
 // ── OVERLAY ────────────────────────────────────────────────────────────────────
 .insurecon-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0);
+  background: rgba(0,0,0,0);
   backdrop-filter: blur(0px);
   z-index: 200;
   pointer-events: none;
   transition: background 0.35s ease, backdrop-filter 0.35s ease;
 
   &--visible {
-    background: rgba(0, 0, 0, 0.65);
+    background: rgba(0,0,0,0.65);
     backdrop-filter: blur(6px);
     pointer-events: all;
   }
@@ -396,9 +481,7 @@ $drawer-w:       500px;
 // ── DRAWER ─────────────────────────────────────────────────────────────────────
 .insurecon-drawer {
   position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
+  top: 0; right: 0; bottom: 0;
   width: $drawer-w;
   max-width: 100vw;
   background: $ic-surface;
@@ -444,17 +527,13 @@ $drawer-w:       500px;
   background: none;
   border: 1px solid $ic-border;
   color: $ic-dim;
-  width: 36px;
-  height: 36px;
+  width: 36px; height: 36px;
   border-radius: 50%;
   cursor: pointer;
   font-size: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
   transition: border-color 0.15s, color 0.15s;
-
   &:hover { border-color: $ic-white; color: $ic-white; }
 }
 
@@ -467,11 +546,7 @@ $drawer-w:       500px;
   gap: var(--spacing-08);
 }
 
-.insurecon-drawer__fieldset {
-  border: none;
-  padding: 0;
-  margin: 0;
-}
+.insurecon-drawer__fieldset { border: none; padding: 0; margin: 0; }
 
 .insurecon-drawer__legend {
   font-size: 11px;
@@ -504,13 +579,11 @@ $drawer-w:       500px;
     outline: none;
     box-sizing: border-box;
     transition: border-color 0.15s;
-
     &::placeholder { color: rgba(255,255,255,0.2); }
     &:focus { border-color: $ic-gold; }
   }
 }
 
-// Ticket cards
 .insurecon-drawer__ticket-list {
   display: flex;
   flex-direction: column;
@@ -529,20 +602,12 @@ $drawer-w:       500px;
 
   input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
 
-  &--active {
-    border-color: $ic-gold;
-    background: rgba(201,169,110,0.06);
-  }
-
-  &:hover:not(&--active) {
-    border-color: rgba(255,255,255,0.2);
-    background: rgba(255,255,255,0.02);
-  }
+  &--active { border-color: $ic-gold; background: rgba(201,169,110,0.06); }
+  &:hover:not(&--active) { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.02); }
 }
 
 .insurecon-drawer__ticket-radio-indicator {
-  width: 16px;
-  height: 16px;
+  width: 16px; height: 16px;
   border-radius: 50%;
   border: 2px solid $ic-border;
   flex-shrink: 0;
@@ -552,7 +617,6 @@ $drawer-w:       500px;
 
   .insurecon-drawer__ticket--active & {
     border-color: $ic-gold;
-
     &::after {
       content: '';
       position: absolute;
@@ -591,7 +655,6 @@ $drawer-w:       500px;
   line-height: 1.5;
 }
 
-// Sponsorship chips
 .insurecon-drawer__chip-row {
   display: flex;
   flex-wrap: wrap;
@@ -610,15 +673,8 @@ $drawer-w:       500px;
 
   input[type="radio"] { display: none; }
 
-  &--active {
-    border-color: $ic-gold;
-    background: rgba(201,169,110,0.08);
-  }
-
-  &:hover:not(&--active) {
-    border-color: rgba(255,255,255,0.25);
-    background: rgba(255,255,255,0.03);
-  }
+  &--active { border-color: $ic-gold; background: rgba(201,169,110,0.08); }
+  &:hover:not(&--active) { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.03); }
 }
 
 .insurecon-drawer__chip-label {
@@ -638,7 +694,6 @@ $drawer-w:       500px;
   flex-shrink: 0;
 }
 
-// Success state
 .insurecon-drawer__success {
   flex: 1;
   display: flex;
@@ -651,14 +706,11 @@ $drawer-w:       500px;
 }
 
 .insurecon-drawer__success-badge {
-  width: 72px;
-  height: 72px;
+  width: 72px; height: 72px;
   border-radius: 50%;
   border: 2px solid $ic-gold;
   background: rgba(201,169,110,0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   font-size: 28px;
   color: $ic-gold;
   margin-bottom: var(--spacing-03);
@@ -678,21 +730,16 @@ $drawer-w:       500px;
   line-height: 1.6;
   max-width: 300px;
   margin: 0;
-
   strong { color: $ic-white; }
 }
 
 // ── Responsive ──────────────────────────────────────────────────────────────────
 @media (max-width: 672px) {
   .insurecon-drawer { width: 100vw; }
-
-  .insurecon__hero-meta { gap: var(--spacing-05); }
-  .insurecon__meta-divider { display: none; }
-
-  .insurecon-section__layout { padding: var(--spacing-11) var(--spacing-06); }
-  .insurecon-section__stats { flex-direction: column; align-items: flex-start; gap: var(--spacing-05); }
-  .insurecon-section__stat-rule { width: 48px; height: 1px; }
-
   .insurecon__hero-actions { flex-direction: column; }
   .insurecon-btn { width: 100%; justify-content: center; }
+  .insurecon-section__stats { flex-direction: column; align-items: flex-start; gap: var(--spacing-05); }
+  .insurecon-section__stat-rule { width: 48px; height: 1px; }
+  .insurecon-section__layout { padding: var(--spacing-10) var(--spacing-06); }
+  .insurecon__meta-item { padding: 0 var(--spacing-05); }
 }
