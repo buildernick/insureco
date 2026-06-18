@@ -550,7 +550,7 @@ $drawer-w:   500px;
 
 .insurecon-venue__card {
   background: rgba(255,255,255,0.03);
-  border: 1px solid $ic-border;
+  border: 1px solid rgba(245, 166, 35, 1);
   padding: var(--spacing-08);
   width: 100%;
   position: relative;
@@ -594,7 +594,9 @@ $drawer-w:   500px;
   font-size: 11px;
   letter-spacing: 0.08em;
   color: $ic-dim;
-  border: 1px solid $ic-border;
+  border: 4px solid rgba(155, 155, 155, 1);
+  border-radius: 15px;
+  overflow: hidden;
   padding: 4px 10px;
 }
 
