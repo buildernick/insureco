@@ -164,7 +164,7 @@ export default function InsureconPage() {
           </h1>
           <p className="insurecon__tagline">The Premier Insurance Industry Conference</p>
           <div className="insurecon__hero-actions">
-            <button className="insurecon-btn insurecon-btn--primary">
+            <button className="insurecon-btn insurecon-btn--primary" onClick={() => setDrawerOpen(true)}>
               Register Now <span aria-hidden="true">→</span>
             </button>
             <button className="insurecon-btn insurecon-btn--ghost">
