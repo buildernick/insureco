@@ -75,9 +75,9 @@ export default function FinancialDashboard1() {
   };
 
   const handleRowClick = (row) => {
-    // Navigate to existing property or vehicle pages based on category
+    // Navigate to existing houses or vehicle pages based on category
     if (row._raw.category === 'Property') {
-      // Navigate to business property detail page
+      // Navigate to business houses detail page
       navigate(`/business/properties/${row._raw.id}`, { state: { asset: row._raw } });
     } else {
       // Navigate to business fleet vehicle detail page
@@ -91,9 +91,9 @@ export default function FinancialDashboard1() {
         {/* Page Header */}
         <Column lg={16} md={8} sm={4}>
           <div className="dashboard-header">
-            <h1>Insurance Financial Analytics Dashboard</h1>
+            <h1>My Dashboard</h1>
             <p className="dashboard-subtitle">
-              Comprehensive overview of premium collections and claim payouts across Auto and Property portfolios
+              Comprehensive overview of premium collections and claim payouts across Auto and Houses portfolios
             </p>
           </div>
         </Column>
@@ -123,7 +123,7 @@ export default function FinancialDashboard1() {
 
         <Column lg={4} md={4} sm={4}>
           <Tile className="kpi-card kpi-card--success">
-            <div className="kpi-label">Property Premiums</div>
+            <div className="kpi-label">Houses Premiums</div>
             <div className="kpi-value">{formatCurrency(stats.propertyPremiums)}</div>
             <div className="kpi-subtitle">
               Claims: {formatCurrency(stats.propertyClaims)}
@@ -153,14 +153,14 @@ export default function FinancialDashboard1() {
                     size="sm"
                     onClick={() => toggleSeries('propertyPremiums')}
                   >
-                    Property Premiums
+                    Houses Premiums
                   </Button>
                   <Button
                     kind={visibleSeries.propertyClaims ? 'danger' : 'ghost'}
                     size="sm"
                     onClick={() => toggleSeries('propertyClaims')}
                   >
-                    Property Claims
+                    Houses Claims
                   </Button>
                   <Button
                     kind={visibleSeries.autoPremiums ? 'primary' : 'ghost'}
@@ -198,10 +198,10 @@ export default function FinancialDashboard1() {
                     <Tooltip formatter={(value) => formatCurrency(value)} />
                     <Legend />
                     {visibleSeries.propertyPremiums && (
-                      <Line type="monotone" dataKey="propertyPremiums" stroke="#24a148" strokeWidth={2} name="Property Premiums" />
+                      <Line type="monotone" dataKey="propertyPremiums" stroke="#24a148" strokeWidth={2} name="Houses Premiums" />
                     )}
                     {visibleSeries.propertyClaims && (
-                      <Line type="monotone" dataKey="propertyClaims" stroke="#da1e28" strokeWidth={2} name="Property Claims" />
+                      <Line type="monotone" dataKey="propertyClaims" stroke="#da1e28" strokeWidth={2} name="Houses Claims" />
                     )}
                     {visibleSeries.autoPremiums && (
                       <Line type="monotone" dataKey="autoPremiums" stroke="#198038" strokeWidth={2} strokeDasharray="5 5" name="Auto Premiums" />
@@ -218,10 +218,10 @@ export default function FinancialDashboard1() {
                     <Tooltip formatter={(value) => formatCurrency(value)} />
                     <Legend />
                     {visibleSeries.propertyPremiums && (
-                      <Bar dataKey="propertyPremiums" fill="#24a148" name="Property Premiums" />
+                      <Bar dataKey="propertyPremiums" fill="#24a148" name="Houses Premiums" />
                     )}
                     {visibleSeries.propertyClaims && (
-                      <Bar dataKey="propertyClaims" fill="#da1e28" name="Property Claims" />
+                      <Bar dataKey="propertyClaims" fill="#da1e28" name="Houses Claims" />
                     )}
                     {visibleSeries.autoPremiums && (
                       <Bar dataKey="autoPremiums" fill="#198038" name="Auto Premiums" />
@@ -307,6 +307,7 @@ export default function FinancialDashboard1() {
 
         {/* Asset Performance Table */}
         <Column lg={16} md={8} sm={4}>
+          <div className="table-card">
           <DataTable rows={rows} headers={headers}>
             {({
               rows,
@@ -325,7 +326,7 @@ export default function FinancialDashboard1() {
               >
                 <TableToolbar {...getToolbarProps()}>
                   <TableToolbarContent>
-                    <TableToolbarSearch onChange={onInputChange} />
+                    <TableToolbarSearch onChange={onInputChange} placeholder="Search assets..." />
                   </TableToolbarContent>
                 </TableToolbar>
                 <Table {...getTableProps()}>
@@ -356,6 +357,7 @@ export default function FinancialDashboard1() {
               </TableContainer>
             )}
           </DataTable>
+          </div>
         </Column>
       </Grid>
     </div>
