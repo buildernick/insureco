@@ -331,29 +331,6 @@ export default function MapPage() {
           </RadioButtonGroup>
         </div>
 
-        {/* Summary Stats */}
-        <Tile className="stats-tile">
-          <Heading className="tile-heading">Summary</Heading>
-          <div className="stats-grid">
-            <div className="stat-item">
-              <span className="stat-label">Total Assets</span>
-              <span className="stat-value">{stats.total}</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-label">Active</span>
-              <span className="stat-value stat-active">{stats.active}</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-label">Monthly Premium</span>
-              <span className="stat-value stat-premium">{formatCurrency(stats.monthlyPremium)}</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-label">Open Claims</span>
-              <span className="stat-value stat-claims">{stats.openClaims}</span>
-            </div>
-          </div>
-        </Tile>
-
         {/* Cascading Filter */}
         <Tile className="filters-tile">
           <div className="filters-header">
@@ -378,6 +355,29 @@ export default function MapPage() {
               selectedFilters={selectedFilters}
               onFiltersChange={setSelectedFilters}
             />
+          </div>
+        </Tile>
+
+        {/* Summary Stats */}
+        <Tile className="stats-tile">
+          <Heading className="tile-heading">Summary</Heading>
+          <div className="stats-grid">
+            <div className="stat-item">
+              <span className="stat-label">Total Assets</span>
+              <span className="stat-value">{stats.total}</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-label">Active</span>
+              <span className="stat-value stat-active">{stats.active}</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-label">Monthly Premium</span>
+              <span className="stat-value stat-premium">{formatCurrency(stats.monthlyPremium)}</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-label">Open Claims</span>
+              <span className="stat-value stat-claims">{stats.openClaims}</span>
+            </div>
           </div>
         </Tile>
 
