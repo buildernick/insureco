@@ -108,6 +108,10 @@
   color: var(--text-primary) !important;
   background-color: transparent;
 
+  .cds--content-switcher__label {
+    color: var(--text-primary) !important;
+  }
+
   &:hover {
     background-color: var(--background-hover);
   }
@@ -120,6 +124,10 @@
 .cds--content-switcher--selected {
   background-color: var(--background-primary) !important;
   color: var(--text-primary) !important;
+
+  .cds--content-switcher__label {
+    color: var(--text-primary) !important;
+  }
 
   &:hover {
     background-color: var(--background-primary) !important;
