@@ -21,6 +21,7 @@ import {
 } from '@carbon/react';
 import { ArrowLeft, ArrowRight, Checkmark, Building } from '@carbon/icons-react';
 import StepBreadcrumb from '../../components/StepBreadcrumb';
+import { formatDateForInput } from '../../utils/businessHelpers';
 import './AddPropertyPage.scss';
 
 /**
@@ -376,7 +377,7 @@ export default function AddPropertyPage() {
 
               <DatePicker
                 datePickerType="single"
-                onChange={(dates) => handleInputChange('inspectionDate', dates[0] || '')}
+                onChange={(dates) => handleInputChange('inspectionDate', formatDateForInput(dates[0] || ''))}
               >
                 <DatePickerInput
                   id="inspection-date"
