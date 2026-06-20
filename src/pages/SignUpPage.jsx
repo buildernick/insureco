@@ -17,12 +17,49 @@ import {
   NumberInput,
   TileGroup,
   RadioTile,
-  ProgressIndicator,
-  ProgressStep,
   DatePicker,
   DatePickerInput,
 } from '@carbon/react';
 import { ArrowRight, ArrowLeft, Checkmark, Car, Home as HomeIcon } from '@carbon/icons-react';
+
+function CircularMiniStepper({ steps, currentIndex }) {
+  const visibleSteps = [];
+
+  if (currentIndex > 0) {
+    visibleSteps.push({ ...steps[currentIndex - 1], index: currentIndex - 1, status: 'previous' });
+  }
+  visibleSteps.push({ ...steps[currentIndex], index: currentIndex, status: 'current' });
+  if (currentIndex < steps.length - 1) {
+    visibleSteps.push({ ...steps[currentIndex + 1], index: currentIndex + 1, status: 'next' });
+  }
+
+  return (
+    <div className="circular-mini-stepper">
+      <div className="circular-mini-stepper__progress-text">
+        Step {currentIndex + 1} of {steps.length}
+      </div>
+      <div className="circular-mini-stepper__circles">
+        {visibleSteps.map((step, idx) => (
+          <React.Fragment key={step.index}>
+            <div className={`circular-mini-stepper__circle circular-mini-stepper__circle--${step.status}`}>
+              {step.status === 'previous' ? (
+                <Checkmark size={20} />
+              ) : (
+                <span className="circular-mini-stepper__number">{step.index + 1}</span>
+              )}
+            </div>
+            {idx < visibleSteps.length - 1 && (
+              <div className="circular-mini-stepper__connector" />
+            )}
+          </React.Fragment>
+        ))}
+      </div>
+      <div className="circular-mini-stepper__label">
+        {steps[currentIndex].label}
+      </div>
+    </div>
+  );
+}
 import './SignUpPage.scss';
 
 export default function SignUpPage() {
@@ -608,25 +645,9 @@ export default function SignUpPage() {
           </p>
         </header>
 
-        <Tile className="signup-progress">
-          <ProgressIndicator currentIndex={currentStep} spaceEqually>
-            {steps.map((step, index) => (
-              <ProgressStep
-                key={step.key}
-                label={step.label}
-                description={
-                  index < currentStep
-                    ? 'Complete'
-                    : index === currentStep
-                    ? 'Current'
-                    : ''
-                }
-                complete={index < currentStep}
-                current={index === currentStep}
-              />
-            ))}
-          </ProgressIndicator>
-        </Tile>
+        <div className="signup-progress">
+          <CircularMiniStepper steps={steps} currentIndex={currentStep} />
+        </div>
 
         <Form className="signup-form" onSubmit={handleSubmit}>
           <Stack gap={7} className="signup-step-content">
