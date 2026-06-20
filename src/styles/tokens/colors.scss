@@ -30,6 +30,20 @@ $color-brand-blue-90: #001d6c;
 $color-brand-blue-100: #001141;
 
 // ============================================
+// Brand Accent Colors (Greens)
+// ============================================
+$color-brand-green-10: #defbe6;
+$color-brand-green-20: #a7f0ba;
+$color-brand-green-30: #6fdc8c;
+$color-brand-green-40: #42be65;
+$color-brand-green-50: #24a148;
+$color-brand-green-60: #198038;
+$color-brand-green-70: #0e6027;
+$color-brand-green-80: #044317;
+$color-brand-green-90: #022d0d;
+$color-brand-green-100: #071908;
+
+// ============================================
 // Neutral Greys
 // ============================================
 $color-grey-10: #f4f4f4;
@@ -165,6 +179,18 @@ $dark-text-on-dark: $color-grey-10;  // Light text for dark backgrounds
   --color-brand-blue-80: #{$color-brand-blue-80};
   --color-brand-blue-90: #{$color-brand-blue-90};
   --color-brand-blue-100: #{$color-brand-blue-100};
+
+  // Brand colors - Green (static)
+  --color-brand-green-10: #{$color-brand-green-10};
+  --color-brand-green-20: #{$color-brand-green-20};
+  --color-brand-green-30: #{$color-brand-green-30};
+  --color-brand-green-40: #{$color-brand-green-40};
+  --color-brand-green-50: #{$color-brand-green-50};
+  --color-brand-green-60: #{$color-brand-green-60};
+  --color-brand-green-70: #{$color-brand-green-70};
+  --color-brand-green-80: #{$color-brand-green-80};
+  --color-brand-green-90: #{$color-brand-green-90};
+  --color-brand-green-100: #{$color-brand-green-100};
 
   // Semantic colors (static)
   --color-success: #{$color-success-60};
