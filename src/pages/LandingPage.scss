@@ -5,6 +5,49 @@
   background: var(--background-primary);
 }
 
+// New Product Announcement Banner
+.new-product-banner {
+  background: var(--interactive-primary);
+  color: var(--text-on-color);
+  padding: var(--spacing-03) var(--spacing-05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-03);
+  font-size: var(--body-sm-size);
+  flex-wrap: wrap;
+  text-align: center;
+
+  svg {
+    flex-shrink: 0;
+  }
+
+  strong {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  &__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-02);
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: var(--text-on-color);
+    font-size: var(--body-sm-size);
+    font-weight: var(--font-weight-semibold);
+    padding: var(--spacing-02) var(--spacing-04);
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background var(--motion-hover);
+    white-space: nowrap;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  }
+}
+
 // Hero Section
 .hero-section {
   padding: var(--spacing-13) var(--spacing-05);
@@ -215,6 +258,7 @@
 .home-insurance-section {
   background: var(--background-secondary);
 }
+
 
 // Testimonials Section
 .testimonials-section {

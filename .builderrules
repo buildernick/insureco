@@ -1,3 +1,12 @@
+## Components ##
+
+Our components are defined two ways:
+
+- Carbon Design system which is indexed
+- Our composite components documented on /component-gallery page. These are not custom components, they are our components too.
+
+** Importatn ** Try to use components from those sources first.  If not possible make new ones.  But when you make new ones, alert the user that a new component is being made.
+
 
 ## Unit Tests ##
 
