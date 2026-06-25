@@ -5,7 +5,8 @@ import {
   Column,
   Tile,
   Button,
-  Dropdown,
+  ContentSwitcher,
+  Switch,
   DataTable,
   TableContainer,
   Table,
@@ -178,15 +179,14 @@ export default function FinancialDashboard1() {
                     Auto Claims
                   </Button>
                 </div>
-                <Dropdown
-                  id="chart-type-dropdown"
-                  label="Chart Type"
-                  items={['Line', 'Bar']}
-                  selectedItem={chartType === 'line' ? 'Line' : 'Bar'}
-                  onChange={({ selectedItem }) => setChartType(selectedItem.toLowerCase())}
+                <ContentSwitcher
+                  selectedIndex={chartType === 'line' ? 0 : 1}
+                  onChange={({ name }) => setChartType(name)}
                   size="sm"
-                  hideLabel
-                />
+                >
+                  <Switch name="line" text="Line" />
+                  <Switch name="bar" text="Bar" />
+                </ContentSwitcher>
               </div>
             </div>
 
