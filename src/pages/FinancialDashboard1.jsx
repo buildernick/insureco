@@ -5,7 +5,6 @@ import {
   Column,
   Tile,
   Button,
-  Toggle,
   Dropdown,
   DataTable,
   TableContainer,
@@ -179,13 +178,14 @@ export default function FinancialDashboard1() {
                     Auto Claims
                   </Button>
                 </div>
-                <Toggle
-                  id="chart-type-toggle"
-                  labelA="Line"
-                  labelB="Bar"
-                  toggled={chartType === 'bar'}
-                  onToggle={(checked) => setChartType(checked ? 'bar' : 'line')}
+                <Dropdown
+                  id="chart-type-dropdown"
+                  label="Chart Type"
+                  items={['Line', 'Bar']}
+                  selectedItem={chartType === 'line' ? 'Line' : 'Bar'}
+                  onChange={({ selectedItem }) => setChartType(selectedItem.toLowerCase())}
                   size="sm"
+                  hideLabel
                 />
               </div>
             </div>
