@@ -22,6 +22,7 @@ import {
 import { ArrowUp, ArrowDown, Analytics } from '@carbon/icons-react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import { monthlyData, assetData, calculateSummaryStats, formatCurrency, formatDate } from '../data/financialData';
+import DashboardSwitcher from '../components/DashboardSwitcher';
 import './FinancialDashboard2.scss';
 
 export default function FinancialDashboard2() {
@@ -78,6 +79,7 @@ export default function FinancialDashboard2() {
       <Grid fullWidth>
         {/* Modern Header with Badge */}
         <Column lg={16} md={8} sm={4}>
+          <DashboardSwitcher />
           <div className="modern-header">
             <div className="header-content">
               <Tag type="blue" size="sm">Financial Analytics</Tag>
