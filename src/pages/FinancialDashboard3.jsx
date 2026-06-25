@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, RadialBarChart, RadialBar, PolarAngleAxis } from 'recharts';
 import { monthlyData, assetData, calculateSummaryStats, formatCurrency, formatDate } from '../data/financialData';
+import DashboardSwitcher from '../components/DashboardSwitcher';
 import './FinancialDashboard3.scss';
 
 export default function FinancialDashboard3() {
@@ -52,6 +53,9 @@ export default function FinancialDashboard3() {
 
   return (
     <div className="financial-dashboard-3">
+      <div className="dashboard-switcher-wrapper">
+        <DashboardSwitcher />
+      </div>
       {/* Hero Header */}
       <div className="hero-header">
         <div className="hero-background"></div>
