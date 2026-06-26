@@ -126,3 +126,112 @@ describe('SignUpPage — Step navigation', () => {
     expect(screen.getByLabelText(/last name/i)).toHaveValue('Smith');
   });
 });
+
+// Helper: navigate from step 1 through address and insurance type to reach the Car Details step
+const navigateToCarDetails = async (user) => {
+  // Step 1: Personal Info
+  await fillPersonalInfo(user);
+  await user.click(screen.getByRole('button', { name: /next/i }));
+
+  // Step 2: Address
+  await user.type(screen.getByLabelText(/street address/i), '123 Main St');
+  await user.type(screen.getByLabelText(/city/i), 'Springfield');
+  await user.selectOptions(screen.getByLabelText(/state/i), 'TX');
+  await user.type(screen.getByLabelText(/zip/i), '12345');
+  await user.click(screen.getByRole('button', { name: /next/i }));
+
+  // Step 3: Insurance Type — pick Car
+  await user.click(screen.getByRole('radio', { name: /car insurance/i }));
+  await user.click(screen.getByRole('button', { name: /next/i }));
+};
+
+describe('SignUpPage — Step: Car Details (new mileage fields)', () => {
+  beforeEach(() => {
+    mockNavigate.mockClear();
+    localStorage.clear();
+  });
+
+  it('renders the Current Mileage field', async () => {
+    const user = userEvent.setup();
+    renderSignUp();
+    await navigateToCarDetails(user);
+
+    expect(screen.getByLabelText(/current mileage/i)).toBeInTheDocument();
+  });
+
+  it('renders the Miles Driven Per Year field', async () => {
+    const user = userEvent.setup();
+    renderSignUp();
+    await navigateToCarDetails(user);
+
+    expect(screen.getByLabelText(/miles driven per year/i)).toBeInTheDocument();
+  });
+
+  it('shows "Only estimates are needed right now" hint text for Current Mileage', async () => {
+    const user = userEvent.setup();
+    renderSignUp();
+    await navigateToCarDetails(user);
+
+    const helperTexts = screen.getAllByText(/only estimates are needed right now/i);
+    expect(helperTexts.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it('shows the correct placeholder for Current Mileage', async () => {
+    const user = userEvent.setup();
+    renderSignUp();
+    await navigateToCarDetails(user);
+
+    expect(screen.getByPlaceholderText('e.g. 60,000 miles')).toBeInTheDocument();
+  });
+
+  it('shows the correct placeholder for Miles Driven Per Year', async () => {
+    const user = userEvent.setup();
+    renderSignUp();
+    await navigateToCarDetails(user);
+
+    expect(screen.getByPlaceholderText('e.g. 12,000 miles')).toBeInTheDocument();
+  });
+
+  it('accepts input in the Current Mileage field', async () => {
+    const user = userEvent.setup();
+    renderSignUp();
+    await navigateToCarDetails(user);
+
+    const mileageField = screen.getByLabelText(/current mileage/i);
+    await user.type(mileageField, '60000');
+    expect(mileageField).toHaveValue('60000');
+  });
+
+  it('accepts input in the Miles Driven Per Year field', async () => {
+    const user = userEvent.setup();
+    renderSignUp();
+    await navigateToCarDetails(user);
+
+    const milesPerYearField = screen.getByLabelText(/miles driven per year/i);
+    await user.type(milesPerYearField, '12000');
+    expect(milesPerYearField).toHaveValue('12000');
+  });
+
+  it('mileage values are shown in the Review step', async () => {
+    const user = userEvent.setup();
+    renderSignUp();
+    await navigateToCarDetails(user);
+
+    // Fill required car fields + new mileage fields
+    await user.type(screen.getByLabelText(/^make$/i), 'Toyota');
+    await user.type(screen.getByLabelText(/^model$/i), 'Corolla');
+    await user.selectOptions(screen.getByLabelText(/^year$/i), '2020');
+    await user.type(screen.getByLabelText(/current mileage/i), '60000');
+    await user.type(screen.getByLabelText(/miles driven per year/i), '12000');
+    await user.click(screen.getByRole('button', { name: /next/i }));
+
+    // Step: Coverage — fill required fields then advance to Review
+    await user.click(screen.getByLabelText(/basic/i));
+    await user.selectOptions(screen.getByLabelText(/deductible/i), '500');
+    await user.click(screen.getByRole('button', { name: /next/i }));
+
+    // Now on Review step
+    expect(screen.getByText(/current mileage/i)).toBeInTheDocument();
+    expect(screen.getByText(/miles per year/i)).toBeInTheDocument();
+  });
+});
