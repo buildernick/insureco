@@ -1,898 +1,660 @@
 @use '../styles/tokens' as *;
 
+// ============================================================
+// Sign Up Page - Multi-step form
+// Matches Figma design with responsive layout
+// ============================================================
+
 .signup-page {
   min-height: 100vh;
-  padding: var(--spacing-03);
-  background: var(--background-primary);
-  overflow-x: hidden; // Prevent horizontal scroll
-  width: 100%;
-  max-width: 100vw;
-  box-sizing: border-box;
-
-  // Mobile-first: More padding on larger screens
-  @media (min-width: 480px) {
-    padding: var(--spacing-05);
-  }
-
-  @media (min-width: 672px) {
-    padding: var(--spacing-07);
-  }
-
-  @media (min-width: 1056px) {
-    padding: var(--spacing-09);
-  }
-
-  // Force all children to respect container width
-  * {
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-}
-
-.signup-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100% !important;
-  overflow-x: hidden;
-  box-sizing: border-box;
-
-  // Ensure columns don't overflow on ANY screen size
-  .cds--col,
-  .cds--css-grid-column {
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  // Override Carbon Grid gutters on very small screens
-  @media (max-width: 479px) {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-
-    .cds--col {
-      padding-left: 0 !important;
-      padding-right: 0 !important;
-    }
-
-    // Ensure the grid itself doesn't overflow
-    .cds--grid {
-      padding-left: 0 !important;
-      padding-right: 0 !important;
-      margin-left: 0 !important;
-      margin-right: 0 !important;
-    }
-  }
-}
-
-.signup-header {
-  text-align: center;
-  margin-bottom: var(--spacing-05);
-  padding: var(--spacing-05) var(--spacing-04);
-  background: linear-gradient(135deg, #a2191f 70.71%, #da1e28 0%);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 4px 12px 0 rgba(218, 30, 40, 0.15);
-
-  @media (min-width: 480px) {
-    padding: var(--spacing-06) var(--spacing-05);
-  }
-
-  @media (min-width: 672px) {
-    margin-bottom: var(--spacing-09);
-    padding: var(--spacing-09) var(--spacing-07);
-  }
-}
-
-.signup-title {
-  font-size: var(--heading-h4-size);
-  font-weight: var(--font-weight-regular);
-  line-height: 1.2;
-  color: var(--text-on-color);
-  margin-bottom: var(--spacing-03);
-
-  @media (min-width: 480px) {
-    font-size: var(--heading-h3-size);
-  }
-
-  @media (min-width: 672px) {
-    font-size: var(--heading-h2-size);
-    font-weight: var(--font-weight-regular);
-  }
-}
-
-.signup-subtitle {
-  font-size: var(--body-sm-size);
-  font-weight: var(--font-weight-regular);
-  line-height: 1.5;
-  color: var(--text-on-color);
-  opacity: 0.95;
-  max-width: 600px;
-  margin: 0 auto;
-
-  @media (min-width: 480px) {
-    font-size: var(--body-md-size);
-  }
-
-  @media (min-width: 672px) {
-    font-size: var(--body-lg-size);
-  }
-}
-
-.signup-progress {
-  margin-bottom: var(--spacing-06);
-  padding: 0 var(--spacing-03) var(--spacing-04) var(--spacing-03);
-  border-radius: var(--radius-sm);
+  display: flex;
+  justify-content: center;
   background: var(--background-secondary);
-  box-shadow:
-    0 1px 2px 0 rgba(0, 0, 0, 0.1),
-    0 1px 3px 0 rgba(0, 0, 0, 0.1);
-  overflow-x: auto; // Allow horizontal scroll for progress bar
-  -webkit-overflow-scrolling: touch;
-
-  @media (min-width: 480px) {
-    padding: 0 var(--spacing-04) var(--spacing-04) var(--spacing-04);
-  }
+  padding: var(--spacing-05) var(--spacing-03);
 
   @media (min-width: 672px) {
-    padding: 0 var(--spacing-06) var(--spacing-05) var(--spacing-06);
-    margin-bottom: var(--spacing-09);
-  }
-
-  // Carbon ProgressIndicator overrides for exact Figma match
-  .cds--progress-indicator {
-    gap: 0;
-    overflow-x: auto;
-    overflow-y: visible;
-    -webkit-overflow-scrolling: touch;
-
-    // Hide scrollbar but keep functionality
-    scrollbar-width: thin;
-    scrollbar-color: var(--border-subtle) transparent;
-
-    &::-webkit-scrollbar {
-      height: 4px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: var(--border-subtle);
-      border-radius: 2px;
-    }
-  }
-
-  // Target the actual progress line element instead of using border-top
-  // This prevents the double-line issue
-  .cds--progress-step--current .cds--progress-line {
-    background-color: #0f62fe !important;
-  }
-
-  .cds--progress-step--incomplete .cds--progress-line {
-    background-color: var(--border-subtle) !important;
-  }
-
-  .cds--progress-step--complete .cds--progress-line {
-    background-color: #0f62fe !important;
-  }
-
-  // Make labels appear below icons
-  .cds--progress-step-button {
-    flex-direction: column !important;
-    align-items: center !important;
-    text-align: center !important;
-    gap: var(--spacing-03) !important;
-  }
-
-  // Icon and label layout
-  .cds--progress-step-button-icon {
-    margin: 0 !important;
-  }
-
-  // Current step styling
-  .cds--progress-step--current {
-    .cds--progress-label {
-      color: var(--text-primary) !important;
-      font-family: var(--font-family-sans);
-      font-size: 11px;
-      font-weight: var(--font-weight-semibold);
-      line-height: 1.2;
-      letter-spacing: 0.12px;
-
-      @media (min-width: 480px) {
-        font-size: var(--body-sm-size);
-        line-height: 1.29;
-        letter-spacing: 0.16px;
-      }
-    }
-
-    svg {
-      fill: #0f62fe;
-    }
-  }
-
-  // Incomplete step styling
-  .cds--progress-step--incomplete {
-    .cds--progress-label {
-      color: var(--text-primary) !important;
-      font-family: var(--font-family-sans);
-      font-size: 11px;
-      font-weight: var(--font-weight-regular);
-      line-height: 1.2;
-      letter-spacing: 0.12px;
-
-      @media (min-width: 480px) {
-        font-size: var(--body-sm-size);
-        line-height: 1.29;
-        letter-spacing: 0.16px;
-      }
-    }
-
-    svg {
-      fill: var(--text-primary);
-    }
-  }
-
-  // Complete step styling
-  .cds--progress-step--complete {
-    .cds--progress-label {
-      color: var(--text-primary) !important;
-      font-weight: var(--font-weight-semibold);
-    }
-
-    svg {
-      fill: #0f62fe;
-    }
-  }
-
-  // Optional label (description) styling - hide on mobile
-  .cds--progress-optional {
-    color: var(--text-secondary) !important;
-    font-family: var(--font-family-sans);
-    font-size: 10px;
-    font-weight: var(--font-weight-regular);
-    line-height: 1.2;
-    letter-spacing: 0.16px;
-    padding-left: 0 !important;
-    margin-top: var(--spacing-02);
-
-    @media (max-width: 671px) {
-      display: none; // Hide description on mobile to save space
-    }
-  }
-
-  // Ensure consistent spacing between steps
-  .cds--progress-step {
-    flex: 1 0 0;
-    min-width: 75px; // Further reduced for very small screens
-    padding: 10px 4px 0 4px; // Minimal horizontal padding on mobile
-
-    @media (min-width: 480px) {
-      min-width: 90px;
-      padding: 10px 8px 0 8px;
-    }
-
-    @media (min-width: 672px) {
-      min-width: 120px;
-      padding: 10px 12px 0 12px;
-    }
-
-    @media (min-width: 1056px) {
-      min-width: 140px;
-      padding: 10px 16px 0 16px;
-    }
+    padding: var(--spacing-07) var(--spacing-05);
   }
 }
 
-.signup-form {
-  background: var(--background-secondary);
-  border-radius: var(--radius-lg);
-  border-top: 5px solid var(--color-brand-red-60);
-  padding: var(--spacing-04);
-  box-shadow:
-    0 0 0 0 var(--border-subtle),
-    0 1px 2px 0 rgba(0, 0, 0, 0.1),
-    0 1px 3px 0 rgba(0, 0, 0, 0.1);
-  position: relative;
-  overflow: hidden; // Prevent content from overflowing the container
-
-  @media (min-width: 480px) {
-    padding: var(--spacing-06);
-  }
-
-  @media (min-width: 672px) {
-    padding: var(--spacing-08);
-  }
-
-  @media (min-width: 1056px) {
-    padding: var(--spacing-09);
-  }
-}
-
-.signup-step-content {
-  min-height: 400px;
-  max-width: 100% !important;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  width: 100% !important;
-  box-sizing: border-box !important;
-  overflow: visible !important; // Prevent clipping but allow proper flow
-
-  @media (min-width: 672px) {
-    min-height: 450px;
-  }
-
-  // Ensure all text elements wrap properly
-  p, span, div {
-    max-width: 100%;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-word;
-  }
-
-  // Ensure nested stacks don't overflow
-  .cds--stack {
-    max-width: 100% !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-}
-
-.signup-step-heading {
-  font-size: var(--heading-h5-size);
-  font-weight: var(--font-weight-regular);
-  line-height: 1.2;
-  color: var(--text-primary);
-  margin: 0 0 var(--spacing-03) 0;
-  padding-bottom: var(--spacing-02);
-  border-bottom: 1px solid var(--interactive-primary);
-  display: block; // Changed from inline-block to ensure proper wrapping
-  max-width: 100%;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-  hyphens: auto;
-
-  @media (min-width: 480px) {
-    font-size: var(--heading-h4-size);
-    padding-bottom: var(--spacing-03);
-    margin-bottom: var(--spacing-04);
-    display: inline-block; // Can use inline-block on larger screens
-  }
-
-  @media (min-width: 672px) {
-    font-size: var(--heading-h3-size);
-    font-weight: var(--font-weight-regular);
-    padding-bottom: var(--spacing-04);
-  }
-}
-
-.signup-step-description {
-  font-size: var(--body-sm-size);
-  font-weight: var(--font-weight-regular);
-  line-height: 1.5;
-  color: var(--text-primary);
-  margin: 0;
-  max-width: 100%;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-  hyphens: auto;
-  white-space: normal;
-  display: block;
+.signup-outer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-05);
   width: 100%;
-
-  @media (min-width: 672px) {
-    font-size: var(--body-md-size);
-  }
-}
-
-.signup-checkbox-group {
-  border: 2px solid var(--color-brand-red-20);
+  max-width: 703px;
+  background: linear-gradient(135deg, #f4f4f4 70.71%, #fff 0%);
   padding: var(--spacing-05);
-  margin: 0;
   border-radius: var(--radius-md);
-  background: var(--background-primary);
-
-  legend {
-    margin-bottom: var(--spacing-04);
-    color: var(--interactive-primary);
-    font-weight: var(--font-weight-semibold);
-    padding: 0 var(--spacing-03);
-  }
-}
-
-.signup-actions {
-  padding-top: var(--spacing-06);
-  border-top: 2px solid var(--color-brand-red-20);
-  margin-top: var(--spacing-06);
-  flex-wrap: wrap;
-
-  // On smaller screens (tablet/medium): horizontal layout with Next to the right
-  // Spacer pushes Next button to the right side
-
-  // On very small screens (mobile): stack vertically with Next on top
-  @media (max-width: 480px) {
-    flex-direction: column !important;
-    gap: var(--spacing-04);
-    align-items: stretch;
-  }
-
-  // Make buttons full-width on very small screens to prevent icon/text overlap
-  button {
-    // Ensure minimum width to prevent icon overlap on all screens
-    min-width: 120px;
-    white-space: nowrap;
-
-    @media (max-width: 480px) {
-      width: 100%;
-      max-width: none;
-      min-width: auto;
-    }
-
-    // Next/Submit button appears first (on top) on very small screens
-    &.cds--btn--primary {
-      @media (max-width: 480px) {
-        order: 1;
-      }
-    }
-
-    // Back button appears second (below Next) on very small screens
-    &.cds--btn--secondary {
-      @media (max-width: 480px) {
-        order: 2;
-      }
-    }
-  }
-}
-
-.signup-actions-spacer {
-  flex: 1;
-
-  // Hide spacer on very small screens (stacked layout)
-  @media (max-width: 480px) {
-    display: none;
-  }
-
-  // Show spacer on larger screens to push Next to the right
-  @media (min-width: 481px) {
-    display: block;
-  }
-}
-
-.signup-review-section {
-  padding: var(--spacing-05);
-  border-left: 3px solid var(--interactive-primary);
-  background: var(--background-primary);
-  transition: all 0.2s ease;
-
-  &:hover {
-    box-shadow: 0 2px 8px rgba(218, 30, 40, 0.1);
-    transform: translateX(2px);
-  }
 
   @media (min-width: 672px) {
-    padding: var(--spacing-06);
+    padding: var(--spacing-05) var(--spacing-08);
   }
 }
 
-.signup-review-title {
-  font-size: var(--body-lg-size);
-  font-weight: var(--font-weight-semibold);
-  color: var(--interactive-primary);
-  margin: 0 0 var(--spacing-04) 0;
-  padding-bottom: var(--spacing-03);
-  border-bottom: 2px solid var(--color-brand-red-20);
+// ──────────────────────────────────────────────────────────────
+// Hero Banner
+// ──────────────────────────────────────────────────────────────
+.signup-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-03);
+  padding: var(--spacing-07) var(--spacing-05);
+  border-radius: 8px;
+  background: linear-gradient(135deg, #a2191f 70.71%, #da1e28 0%);
+  box-shadow: 0 4px 12px 0 rgba(218, 30, 40, 0.15);
+  text-align: center;
+}
+
+.signup-hero__title {
+  color: #fff;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 0;
+
+  @media (min-width: 672px) {
+    font-size: 2rem;
+  }
+}
+
+.signup-hero__subtitle {
+  color: rgba(255, 255, 255, 0.95);
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 400px;
+}
+
+// ──────────────────────────────────────────────────────────────
+// Progress Step Bar
+// ──────────────────────────────────────────────────────────────
+.signup-progress {
+  padding: var(--spacing-04) var(--spacing-05);
+  border-radius: 4px;
+  border-top: 1px solid var(--interactive-primary);
+  background: var(--background-secondary);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+// ──────────────────────────────────────────────────────────────
+// Warning Banner
+// ──────────────────────────────────────────────────────────────
+.signup-warning {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-05);
+  padding: 13px var(--spacing-07);
+  border: 1px solid #000;
+  background: #fff4b4;
+  border-radius: 2px;
+}
+
+.signup-warning__content {
   display: flex;
   align-items: center;
   gap: var(--spacing-03);
+}
 
-  &::before {
-    content: '';
-    display: inline-block;
-    width: 4px;
-    height: 20px;
-    background: var(--interactive-primary);
-    border-radius: var(--radius-sm);
+.signup-warning__text {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.571;
+  color: #946c00;
+}
+
+.signup-warning__dismiss {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.571;
+  color: #946c00;
+  padding: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  &:hover {
+    text-decoration: underline;
   }
 
-  @media (min-width: 672px) {
-    font-size: var(--heading-h5-size);
-
-    &::before {
-      height: 24px;
-    }
+  &:focus-visible {
+    outline: 2px solid #946c00;
+    outline-offset: 2px;
   }
 }
 
-.signup-review-grid {
-  display: grid;
+// ──────────────────────────────────────────────────────────────
+// Form Card
+// ──────────────────────────────────────────────────────────────
+.signup-form-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-07);
+  border-top: 5px solid #fb0c0c;
+  background: var(--background-secondary);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.signup-form-card__body {
+  padding: var(--spacing-06) var(--spacing-06) 0;
+}
+
+.signup-form-card__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
   gap: var(--spacing-04);
-  margin: 0;
-  font-style: normal;
+  padding: var(--spacing-06) var(--spacing-06) var(--spacing-06);
+  border-top: 1px solid var(--interactive-primary);
 
-  @media (min-width: 672px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-05);
-  }
-
-  // Support for div, dl, and p elements
-  div,
-  p {
-    font-size: var(--body-sm-size);
-    color: var(--text-primary);
-    margin: 0;
-
-    @media (min-width: 672px) {
-      font-size: var(--body-md-size);
-    }
-  }
-
-  // Definition list styling (dl/dt/dd)
-  dt {
-    color: var(--text-secondary);
-    font-weight: var(--font-weight-semibold);
-    display: block;
-    margin-bottom: var(--spacing-02);
-
-    @media (min-width: 672px) {
-      display: inline;
-      margin-bottom: 0;
-      margin-right: var(--spacing-02);
-    }
-  }
-
-  dd {
-    font-size: var(--body-sm-size);
-    color: var(--text-primary);
-    margin: 0;
-
-    @media (min-width: 672px) {
-      font-size: var(--body-md-size);
-      display: inline;
-    }
+  // When cancel is shown, push it to the left and right group to the right
+  &:has(.signup-btn-cancel) {
+    justify-content: space-between;
   }
 }
 
-// Carbon component overrides for better mobile experience
-.signup-form {
-  // Ensure proper box-sizing to prevent overflow
-  * {
-    box-sizing: border-box !important;
-    max-width: 100%;
-  }
+.signup-form-card__actions-right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-04);
+}
 
-  // Force all direct children to respect container width
-  > * {
-    max-width: 100% !important;
-    width: 100% !important;
-  }
+// ──────────────────────────────────────────────────────────────
+// Step Content
+// ──────────────────────────────────────────────────────────────
+.signup-step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-05);
+}
 
-  // Make form inputs easier to tap on mobile
+.signup-step__header {
+  padding-bottom: var(--spacing-03);
+  border-bottom: 1px solid #fc0404;
+}
+
+.signup-step__title {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.signup-step__description {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+// ──────────────────────────────────────────────────────────────
+// Form Fields Stack
+// ──────────────────────────────────────────────────────────────
+.signup-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-06);
+
+  // Carbon text input overrides for this page
   .cds--text-input,
   .cds--select-input,
-  .cds--number input,
-  .cds--date-picker__input {
-    max-width: 100% !important;
-    width: 100% !important;
-    min-width: 0 !important; // Critical: allows inputs to shrink on narrow screens
-    box-sizing: border-box !important;
-
-    @media (max-width: 671px) {
-      min-height: 48px;
-      font-size: 16px; // Prevent iOS zoom on focus
-    }
-
-    // Red focus state
-    &:focus {
-      outline: 2px solid var(--interactive-primary);
-      outline-offset: 2px;
-    }
-  }
-
-  // Red underline on focus for inputs
-  .cds--text-input__field-wrapper {
-    &:focus-within {
-      &::after {
-        background-color: var(--interactive-primary);
-      }
-    }
-  }
-
-  // Better spacing for radio buttons on mobile
-  .cds--radio-button-group {
-    @media (max-width: 671px) {
-      .cds--radio-button-wrapper {
-        margin-bottom: var(--spacing-04);
-      }
-    }
-  }
-
-  // Red accent for selected radio buttons
-  .cds--radio-button:checked + .cds--radio-button__label {
-    .cds--radio-button__appearance {
-      border-color: var(--interactive-primary);
-
-      &::before {
-        background-color: var(--interactive-primary);
-      }
-    }
-  }
-
-  // Red accent for checked checkboxes
-  .cds--checkbox:checked + .cds--checkbox-label {
-    .cds--checkbox-label-text::before {
-      background-color: var(--interactive-primary);
-      border-color: var(--interactive-primary);
-    }
-  }
-
-  // Stack labels and inputs better on mobile
-  .cds--form-item {
-    max-width: 100%;
-    width: 100%;
-
-    @media (max-width: 671px) {
-      margin-bottom: var(--spacing-05);
-    }
-  }
-
-  // Ensure all input wrappers don't overflow
-  .cds--text-input-wrapper,
-  .cds--text-input__field-wrapper,
-  .cds--select-input__wrapper,
-  .cds--number__input-wrapper,
-  .cds--date-picker__input,
-  .cds--date-picker-container {
-    max-width: 100% !important;
-    width: 100% !important;
-    min-width: 0 !important; // Critical: allows inputs to shrink below default min-width
-    box-sizing: border-box !important;
-  }
-
-  // Extra specificity for nested field wrappers
-  .cds--text-input-wrapper .cds--text-input__field-wrapper {
-    max-width: 100% !important;
-    width: 100% !important;
-    min-width: 0 !important;
-  }
-
-  // Ensure form-item containers don't have min-width
-  .cds--form-item {
-    min-width: 0 !important;
-  }
-
-  // Carbon Stack component width constraint
-  .cds--stack {
-    max-width: 100% !important;
-    width: 100% !important;
-    min-width: 0 !important; // Allow shrinking on narrow screens
-    box-sizing: border-box !important;
-    overflow: visible; // Allow content to flow normally
-
-    // Ensure stack items don't overflow
-    > * {
-      max-width: 100% !important;
-      min-width: 0 !important; // Critical for narrow screens
-      box-sizing: border-box !important;
-    }
-  }
-
-  // Specifically target the step content stack
-  .signup-step-content.cds--stack {
-    max-width: 100% !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    overflow: visible;
-  }
-
-  // DatePicker specific overrides for narrow screens
-  .cds--date-picker,
-  .cds--date-picker-container,
-  .cds--date-picker-input__wrapper,
-  .cds--date-picker__input {
-    max-width: 100% !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    box-sizing: border-box !important;
+  .cds--number input {
+    background-color: var(--field-background) !important;
+    color: var(--field-text) !important;
+    border-bottom-color: var(--border-strong) !important;
   }
 
   .cds--label {
-    font-size: var(--body-sm-size);
-    font-weight: var(--font-weight-semibold);
-    color: var(--text-primary);
-    max-width: 100%;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-
-    @media (min-width: 672px) {
-      font-size: var(--body-md-size);
-    }
+    color: var(--text-primary) !important;
   }
 
-  // Checkbox spacing on mobile
-  .cds--checkbox-wrapper {
-    @media (max-width: 671px) {
-      margin-bottom: var(--spacing-04);
-    }
-  }
-
-  .cds--checkbox-label {
-    font-size: var(--body-sm-size);
-
-    @media (min-width: 672px) {
-      font-size: var(--body-md-size);
-    }
+  .cds--helper-text {
+    color: var(--text-helper, #6f6f6f) !important;
   }
 }
 
-// Ensure proper touch targets on mobile
-@media (max-width: 671px) {
-  .cds--btn {
-    min-height: 48px;
-    padding: var(--spacing-04) var(--spacing-05);
-  }
-
-  .cds--radio-button__appearance {
-    width: 24px;
-    height: 24px;
-  }
-
-  .cds--checkbox-label::before {
-    width: 24px;
-    height: 24px;
-  }
+// ──────────────────────────────────────────────────────────────
+// Insurance Type Selection Tiles
+// ──────────────────────────────────────────────────────────────
+.signup-insurance-tiles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-04);
 }
 
-// ============================================
-// Insurance Type Tile Selection Styles
-// ============================================
-
-.signup-tile-group {
-  margin-top: var(--spacing-05);
-
-  // Hide the default legend visually but keep for accessibility
-  legend {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
-  }
-}
-
-.signup-radio-tile {
-  margin-bottom: var(--spacing-05);
-  border: 2px solid var(--border-subtle);
-  transition: all 0.2s ease;
-  cursor: pointer;
-
-  // Mobile-first: Full width on small screens
-  @media (max-width: 671px) {
-    min-height: 100px;
-  }
-
-  @media (min-width: 672px) {
-    min-height: 120px;
-  }
-
-  // Hover state
-  &:hover {
-    border-color: var(--interactive-primary);
-    box-shadow: 0 2px 8px rgba(218, 30, 40, 0.15);
-    transform: translateY(-2px);
-  }
-
-  // Selected state (Carbon applies .cds--tile--is-selected)
-  &.cds--tile--is-selected {
-    border-color: var(--interactive-primary);
-    border-width: 3px;
-    background: var(--background-selected);
-    box-shadow:
-      0 2px 8px rgba(218, 30, 40, 0.2),
-      inset 0 0 0 1px var(--interactive-primary);
-
-    .tile-icon,
-    .tile-icon-group svg {
-      color: var(--interactive-primary);
-    }
-
-    .tile-text h4 {
-      color: var(--interactive-primary);
-    }
-  }
-
-  // Focus state for accessibility
-  &:focus-within {
-    outline: 2px solid var(--interactive-primary);
-    outline-offset: 2px;
-  }
-
-  // Disabled state
-  &.cds--tile--disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-
-    &:hover {
-      transform: none;
-      box-shadow: none;
-    }
-  }
-}
-
-// Tile content layout
-.tile-content {
+.signup-insurance-tile {
   display: flex;
   align-items: center;
   gap: var(--spacing-05);
   padding: var(--spacing-05);
+  background: var(--background-primary);
+  border: 2px solid var(--border-subtle);
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 
-  @media (max-width: 671px) {
-    flex-direction: column;
-    text-align: center;
-    gap: var(--spacing-04);
+  &:hover {
+    border-color: var(--interactive-primary);
+    box-shadow: 0 0 0 1px var(--interactive-primary);
   }
 
-  @media (min-width: 672px) {
-    flex-direction: row;
-    padding: var(--spacing-06);
+  &:focus-visible {
+    outline: 2px solid var(--interactive-primary);
+    outline-offset: 2px;
+  }
+
+  &--selected {
+    border-color: var(--interactive-primary);
+    box-shadow: 0 0 0 1px var(--interactive-primary);
+    background: var(--background-selected, #fff1f1);
   }
 }
 
-// Icon styling
-.tile-icon {
-  flex-shrink: 0;
-  color: var(--text-secondary);
-  transition: color 0.2s ease;
-
-  @media (max-width: 671px) {
-    margin: 0 auto;
-  }
-}
-
-.tile-icon-group {
+.signup-insurance-tile__icons {
   display: flex;
-  gap: var(--spacing-03);
+  align-items: center;
+  gap: var(--spacing-02);
   flex-shrink: 0;
-  color: var(--text-secondary);
-  transition: color 0.2s ease;
+  color: var(--text-primary);
+}
 
-  @media (max-width: 671px) {
-    justify-content: center;
-    margin: 0 auto;
+.signup-insurance-tile__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-02);
+}
+
+.signup-insurance-tile__title {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+.signup-insurance-tile__desc {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.43;
+  color: var(--text-secondary);
+}
+
+// ──────────────────────────────────────────────────────────────
+// Button overrides - ensure correct theming
+// ──────────────────────────────────────────────────────────────
+.signup-form-card__actions {
+  .cds--btn--primary {
+    background-color: var(--interactive-primary) !important;
   }
 
-  svg {
-    transition: color 0.2s ease;
+  .cds--btn--secondary {
+    background-color: #393939 !important;
+  }
+
+  .cds--btn--tertiary {
+    border-color: var(--Button-button-tertiary, #0f62fe) !important;
+    color: var(--Button-button-tertiary, #0f62fe) !important;
   }
 }
 
-// Text content styling
-.tile-text {
-  flex: 1;
+// ──────────────────────────────────────────────────────────────
+// Coverage selection error state
+// ──────────────────────────────────────────────────────────────
+.signup-insurance-tiles--invalid {
+  .signup-insurance-tile {
+    border-color: var(--color-error, #da1e28);
+  }
+}
 
-  h4 {
-    font-size: var(--body-lg-size);
-    font-weight: var(--font-weight-semibold);
-    color: var(--text-primary);
-    margin: 0 0 var(--spacing-02) 0;
-    transition: color 0.2s ease;
+.signup-coverage-error {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-02);
+  color: var(--text-error, #da1e28);
+  font-size: 0.75rem;
+  line-height: 1.333;
+  margin-top: var(--spacing-02);
+}
 
-    @media (min-width: 672px) {
-      font-size: var(--heading-h5-size);
+.signup-coverage-error__icon {
+  flex-shrink: 0;
+  fill: var(--text-error, #da1e28);
+}
+
+// Date picker error state wrapper
+.signup-date-wrapper {
+  // Pass-through; error is handled by DatePickerInput's invalid prop
+}
+
+// ──────────────────────────────────────────────────────────────
+// Two-column content area (form + estimate panel)
+// ──────────────────────────────────────────────────────────────
+.signup-content-area {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-05);
+
+  @media (min-width: 960px) {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--spacing-06);
+  }
+
+  // Form card takes all remaining width in two-column layout
+  .signup-form-card {
+    @media (min-width: 960px) {
+      flex: 1;
+      min-width: 0;
     }
   }
+}
 
-  p {
-    font-size: var(--body-sm-size);
-    color: var(--text-secondary);
-    margin: 0;
+// Expand outer container to accommodate the estimate panel sidebar
+.signup-outer {
+  @media (min-width: 960px) {
+    max-width: 1040px;
+  }
+}
 
-    @media (min-width: 672px) {
-      font-size: var(--body-md-size);
+// ──────────────────────────────────────────────────────────────
+// Estimate Panel (desktop sidebar)
+// ──────────────────────────────────────────────────────────────
+.estimate-panel {
+  display: none; // Hidden on mobile — mobile bar is used instead
+
+  @media (min-width: 960px) {
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 1rem;
+    border-top: 5px solid var(--interactive-primary);
+    background: var(--background-primary);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.estimate-panel__header {
+  padding: var(--spacing-05) var(--spacing-05) var(--spacing-04);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.estimate-panel__title {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-primary);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.estimate-panel__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-05);
+  padding: var(--spacing-05);
+}
+
+.estimate-panel__placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-02);
+  padding: var(--spacing-05) 0;
+}
+
+.estimate-panel__placeholder-text {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.estimate-panel__placeholder-hint {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.estimate-panel__price-block {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-02);
+  flex-wrap: wrap;
+}
+
+.estimate-panel__price-range {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--interactive-primary);
+}
+
+.estimate-panel__price-period {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+// ── Shared breakdown rows (used by panel and mobile bar) ──────
+.estimate-panel__breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-03);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--spacing-04);
+}
+
+.estimate-panel__breakdown-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-03);
+
+  &--discount {
+    .estimate-panel__breakdown-label {
+      color: var(--color-success, #198038);
+    }
+
+    .estimate-panel__breakdown-amount {
+      color: var(--color-success, #198038);
+      font-weight: 600;
+    }
+  }
+}
+
+.estimate-panel__breakdown-label {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.estimate-panel__breakdown-amount {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+// ── Confidence indicator ──────────────────────────────────────
+.estimate-panel__confidence {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-02);
+}
+
+.estimate-panel__confidence-label {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.estimate-panel__confidence-track {
+  height: 4px;
+  background: var(--border-subtle);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.estimate-panel__confidence-fill {
+  height: 100%;
+  background: var(--interactive-primary);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+// ── Disclaimer ────────────────────────────────────────────────
+.estimate-panel__disclaimer {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 0.6875rem;
+  color: var(--text-tertiary, var(--text-secondary));
+  line-height: 1.45;
+  margin: 0;
+  font-style: italic;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--spacing-04);
+}
+
+// ──────────────────────────────────────────────────────────────
+// Mobile Estimate Bar (inside form card, hidden on desktop)
+// ──────────────────────────────────────────────────────────────
+.estimate-mobile-bar {
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--background-primary);
+
+  @media (min-width: 960px) {
+    display: none; // Hidden on desktop — sidebar panel is used instead
+  }
+}
+
+.estimate-mobile-bar__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-04);
+  width: 100%;
+  padding: var(--spacing-04) var(--spacing-06);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+
+  &:focus-visible {
+    outline: 2px solid var(--interactive-primary);
+    outline-offset: -2px;
+  }
+}
+
+.estimate-mobile-bar__summary {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.estimate-mobile-bar__label {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.estimate-mobile-bar__price {
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--interactive-primary);
+}
+
+.estimate-mobile-bar__period {
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-left: 2px;
+}
+
+.estimate-mobile-bar__chevron {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+
+  &--flipped {
+    transform: rotate(180deg);
+  }
+}
+
+.estimate-mobile-bar__expanded {
+  padding: var(--spacing-04) var(--spacing-06) var(--spacing-05);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-04);
+
+  .estimate-panel__breakdown {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .estimate-panel__disclaimer {
+    border-top: none;
+    padding-top: 0;
+  }
+}
+
+// ──────────────────────────────────────────────────────────────
+// Responsive adjustments
+// ──────────────────────────────────────────────────────────────
+@media (max-width: 480px) {
+  .signup-form-card__actions {
+    flex-direction: column;
+    align-items: stretch;
+
+    &:has(.signup-btn-cancel) {
+      align-items: stretch;
+    }
+
+    .signup-btn-cancel,
+    .signup-form-card__actions-right {
+      width: 100%;
+    }
+
+    .signup-form-card__actions-right {
+      flex-direction: column;
+      align-items: stretch;
+
+      .cds--btn {
+        width: 100%;
+        max-width: 100%;
+      }
     }
   }
 }
