@@ -5,7 +5,7 @@ import {
   Column,
   Tile,
   Button,
-  Dropdown,
+  IconButton,
   DataTable,
   TableContainer,
   Table,
@@ -18,7 +18,7 @@ import {
   TableToolbarContent,
   TableToolbarSearch,
 } from '@carbon/react';
-import { ArrowUp, ArrowDown, WarningAlt } from '@carbon/icons-react';
+import { ArrowUp, ArrowDown, WarningAlt, ChartLine, ChartBar } from '@carbon/icons-react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { monthlyData, assetData, calculateSummaryStats, formatCurrency, formatDate } from '../data/financialData';
 import DashboardSwitcher from '../components/DashboardSwitcher';
@@ -178,15 +178,24 @@ export default function FinancialDashboard1() {
                     Auto Claims
                   </Button>
                 </div>
-                <Dropdown
-                  id="chart-type-dropdown"
-                  label="Chart Type"
-                  items={['Line', 'Bar']}
-                  selectedItem={chartType === 'line' ? 'Line' : 'Bar'}
-                  onChange={({ selectedItem }) => setChartType(selectedItem.toLowerCase())}
-                  size="sm"
-                  hideLabel
-                />
+                <div className="chart-type-toggle">
+                  <IconButton
+                    label="Line chart"
+                    kind={chartType === 'line' ? 'primary' : 'ghost'}
+                    size="sm"
+                    onClick={() => setChartType('line')}
+                  >
+                    <ChartLine size={16} />
+                  </IconButton>
+                  <IconButton
+                    label="Bar chart"
+                    kind={chartType === 'bar' ? 'primary' : 'ghost'}
+                    size="sm"
+                    onClick={() => setChartType('bar')}
+                  >
+                    <ChartBar size={16} />
+                  </IconButton>
+                </div>
               </div>
             </div>
 
