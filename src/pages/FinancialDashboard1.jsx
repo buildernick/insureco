@@ -5,7 +5,8 @@ import {
   Column,
   Tile,
   Button,
-  IconButton,
+  ContentSwitcher,
+  IconSwitch,
   DataTable,
   TableContainer,
   Table,
@@ -179,22 +180,18 @@ export default function FinancialDashboard1() {
                   </Button>
                 </div>
                 <div className="chart-type-toggle">
-                  <IconButton
-                    label="Line chart"
-                    kind={chartType === 'line' ? 'primary' : 'ghost'}
+                  <ContentSwitcher
                     size="sm"
-                    onClick={() => setChartType('line')}
+                    selectedIndex={chartType === 'line' ? 0 : 1}
+                    onChange={({ name }) => setChartType(name)}
                   >
-                    <ChartLine size={16} />
-                  </IconButton>
-                  <IconButton
-                    label="Bar chart"
-                    kind={chartType === 'bar' ? 'primary' : 'ghost'}
-                    size="sm"
-                    onClick={() => setChartType('bar')}
-                  >
-                    <ChartBar size={16} />
-                  </IconButton>
+                    <IconSwitch name="line" text="Line chart">
+                      <ChartLine size={16} />
+                    </IconSwitch>
+                    <IconSwitch name="bar" text="Bar chart">
+                      <ChartBar size={16} />
+                    </IconSwitch>
+                  </ContentSwitcher>
                 </div>
               </div>
             </div>
