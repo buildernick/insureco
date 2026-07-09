@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { formatDateForInput } from '../../utils/businessHelpers';
 import {
   Grid,
   Column,
@@ -227,7 +228,7 @@ export default function FileClaimPage() {
 
               <DatePicker
                 datePickerType="single"
-                onChange={(dates) => handleInputChange('incidentDate', dates[0] || '')}
+                onChange={(dates) => handleInputChange('incidentDate', formatDateForInput(dates[0] || ''))}
               >
                 <DatePickerInput
                   id="incident-date"
