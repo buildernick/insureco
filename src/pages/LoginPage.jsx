@@ -25,6 +25,11 @@ export default function LoginPage() {
     navigate('/dashboard');
   };
 
+  const handleForgotPassword = (e) => {
+    e.preventDefault();
+    navigate('/forgot-password');
+  };
+
   return (
     <Grid className="login-page">
       <Column sm={4} md={8} lg={{ span: 8, offset: 4 }} xlg={{ span: 6, offset: 5 }}>
@@ -69,7 +74,7 @@ export default function LoginPage() {
                   />
 
                   <div className="login-options">
-                    <Link href="#" className="forgot-password-link">
+                    <Link href="/forgot-password" onClick={handleForgotPassword} className="forgot-password-link">
                       Forgot password?
                     </Link>
                   </div>
