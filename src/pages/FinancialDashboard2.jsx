@@ -15,9 +15,6 @@ import {
   TableHeader,
   TableBody,
   TableCell,
-  TableToolbar,
-  TableToolbarContent,
-  TableToolbarSearch,
 } from '@carbon/react';
 import { ArrowUp, ArrowDown, Analytics } from '@carbon/icons-react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from 'recharts';
@@ -27,6 +24,8 @@ import './FinancialDashboard2.scss';
 export default function FinancialDashboard2() {
   const navigate = useNavigate();
   const [chartType, setChartType] = useState('line');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
   const [visibleSeries, setVisibleSeries] = useState({
     propertyPremiums: true,
     propertyClaims: true,
@@ -46,8 +45,16 @@ export default function FinancialDashboard2() {
     { key: 'region', header: 'Region' },
   ];
 
+  // Filter assets based on category and search
+  const filteredAssetData = assetData.filter((asset) => {
+    const matchesCategory = selectedCategory === 'all' || asset.category.toLowerCase() === selectedCategory;
+    const matchesSearch = asset.assetName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         asset.region.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
   // Format table rows with enhanced styling
-  const rows = assetData.map((asset) => ({
+  const rows = filteredAssetData.map((asset) => ({
     id: asset.id,
     assetName: asset.assetName,
     category: asset.category,
@@ -310,6 +317,38 @@ export default function FinancialDashboard2() {
 
         {/* Modern Table */}
         <Column lg={16} md={8} sm={4}>
+          <div className="section-header">
+            <h2>Asset Performance</h2>
+            <div className="table-controls">
+              <input
+                type="text"
+                className="search-input-wild"
+                placeholder="Search assets..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <div className="category-filters">
+                <button
+                  className={`filter-btn ${selectedCategory === 'all' ? 'filter-btn--active' : ''}`}
+                  onClick={() => setSelectedCategory('all')}
+                >
+                  All
+                </button>
+                <button
+                  className={`filter-btn ${selectedCategory === 'property' ? 'filter-btn--active' : ''}`}
+                  onClick={() => setSelectedCategory('property')}
+                >
+                  Property
+                </button>
+                <button
+                  className={`filter-btn ${selectedCategory === 'auto' ? 'filter-btn--active' : ''}`}
+                  onClick={() => setSelectedCategory('auto')}
+                >
+                  Auto
+                </button>
+              </div>
+            </div>
+          </div>
           <div className="table-card-modern">
             <DataTable rows={rows} headers={headers}>
               {({
@@ -319,22 +358,12 @@ export default function FinancialDashboard2() {
                 getRowProps,
                 getTableProps,
                 getTableContainerProps,
-                getToolbarProps,
-                onInputChange,
               }) => (
                 <TableContainer
                   title="Asset Performance Ledger"
                   description="Click on any row to view detailed asset information"
                   {...getTableContainerProps()}
                 >
-                  <TableToolbar {...getToolbarProps()}>
-                    <TableToolbarContent>
-                      <TableToolbarSearch 
-                        onChange={onInputChange}
-                        placeholder="Search assets..."
-                      />
-                    </TableToolbarContent>
-                  </TableToolbar>
                   <Table {...getTableProps()} className="modern-table">
                     <TableHead>
                       <TableRow>
