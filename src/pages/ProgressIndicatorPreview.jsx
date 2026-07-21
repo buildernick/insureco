@@ -115,6 +115,7 @@ export default function ProgressIndicatorPreview() {
                 onClick={handleBack}
                 disabled={currentStep === 0}
                 renderIcon={ArrowLeft}
+                className="btn--icon-left"
               >
                 Back
               </Button>

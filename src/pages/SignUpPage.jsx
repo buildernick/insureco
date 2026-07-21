@@ -640,6 +640,7 @@ export default function SignUpPage() {
                 onClick={handleBack}
                 renderIcon={ArrowLeft}
                 iconDescription="Go back"
+                className="btn--icon-left"
               >
                 Back
               </Button>
