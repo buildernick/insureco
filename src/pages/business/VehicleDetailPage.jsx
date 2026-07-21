@@ -74,10 +74,9 @@ export default function VehicleDetailPage() {
         <div className="header-content">
           <Button
             kind="ghost"
-            renderIcon={ArrowLeft}
-            iconDescription="Back"
             onClick={() => navigate('/business/fleet')}
           >
+            <ArrowLeft style={{ marginRight: '0.5rem' }} />
             Back
           </Button>
           <div className="header-title">

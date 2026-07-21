@@ -638,9 +638,8 @@ export default function SignUpPage() {
               <Button
                 kind="secondary"
                 onClick={handleBack}
-                renderIcon={ArrowLeft}
-                iconDescription="Go back"
               >
+                <ArrowLeft style={{ marginRight: '0.5rem' }} />
                 Back
               </Button>
             )}
