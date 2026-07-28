@@ -17,8 +17,7 @@ import {
   NumberInput,
   TileGroup,
   RadioTile,
-  ProgressIndicator,
-  ProgressStep,
+  ProgressBar,
   DatePicker,
   DatePickerInput,
 } from '@carbon/react';
@@ -104,6 +103,7 @@ export default function SignUpPage() {
 
   const steps = getSteps();
   const currentStepData = steps[currentStep];
+  const progressPercentage = ((currentStep + 1) / steps.length) * 100;
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
@@ -609,23 +609,15 @@ export default function SignUpPage() {
         </header>
 
         <Tile className="signup-progress">
-          <ProgressIndicator currentIndex={currentStep} spaceEqually>
-            {steps.map((step, index) => (
-              <ProgressStep
-                key={step.key}
-                label={step.label}
-                description={
-                  index < currentStep
-                    ? 'Complete'
-                    : index === currentStep
-                    ? 'Current'
-                    : ''
-                }
-                complete={index < currentStep}
-                current={index === currentStep}
-              />
-            ))}
-          </ProgressIndicator>
+          <div className="signup-progress-bar-wrapper">
+            <ProgressBar
+              label="Sign-up Progress"
+              helperText={`Step ${currentStep + 1} of ${steps.length}: ${currentStepData.label}`}
+              value={progressPercentage}
+              max={100}
+              status={currentStep === steps.length - 1 ? 'finished' : 'active'}
+            />
+          </div>
         </Tile>
 
         <Form className="signup-form" onSubmit={handleSubmit}>
