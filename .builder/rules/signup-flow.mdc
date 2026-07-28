@@ -45,7 +45,7 @@ The entire flow is designed with mobile as the primary target:
 - **Larger touch targets** (48px minimum)
 - **16px font size** on inputs to prevent iOS zoom
 - **Stacked layout** for form fields
-- **Simplified progress indicator** with smaller labels
+- **Progress bar with a vertical step status list** that fits narrow screens without horizontal scrolling
 - **Column layout** that transitions to rows on desktop
 
 ### Conditional Step Navigation
@@ -58,12 +58,14 @@ Steps are dynamically shown/hidden based on user selections:
 
 ### Progress Tracking
 
-Uses Carbon's `ProgressIndicator` component:
+Uses Carbon's `ProgressBar` component with a custom vertical step status list:
 
-- Shows current step
-- Marks completed steps
-- Displays step labels
-- Responsive: adapts labels for mobile screens
+- Shows overall completion as a percentage-based bar
+- Displays the current step number, total step count, and label as helper text
+- Marks completed steps with checkmarks and strikethrough labels
+- Highlights the current step with semantic theme tokens
+- Lists only the steps active for the selected insurance type
+- Fits mobile screens without horizontal scrolling
 
 ### Form Validation
 
@@ -159,7 +161,7 @@ The Insurance Type step uses **TileGroup + RadioTile** components from Carbon De
 ## Carbon Components Used
 
 - `Grid`, `Column` - Responsive layout
-- `ProgressIndicator`, `ProgressStep` - Step tracking
+- `ProgressBar` - Overall completion tracking
 - `Form`, `Stack` - Form structure
 - `TextInput` - Text fields
 - `NumberInput` - Numeric fields (year, square feet, value)
@@ -181,7 +183,7 @@ From `@carbon/icons-react`:
 
 ### Mobile-First Breakpoints
 
-```scss
+
 // Base styles: Mobile (< 672px)
 // Tablet: 672px - 1055px
 // Desktop: 1056px+
@@ -194,7 +196,7 @@ From `@carbon/icons-react`:
 3. **Full Width**: Buttons and inputs span full container width
 4. **Generous Spacing**: Larger padding and gaps for easier interaction
 5. **Stacked Layout**: Single column form layout
-6. **Simplified Progress**: Smaller labels in progress indicator
+6. **Readable Progress**: Vertical step status list avoids horizontal scrolling
 
 ### Desktop Enhancements
 
@@ -232,7 +234,7 @@ From `@carbon/icons-react`:
 - Proper form labels (Carbon provides)
 - Required field validation
 - Focus management on step navigation
-- Screen reader friendly progress indicator
+- Screen reader friendly Carbon progress bar with descriptive helper text
 - High contrast in both light and dark modes
 - Keyboard navigation support (Carbon default)
 
