@@ -617,21 +617,6 @@ export default function SignUpPage() {
               max={100}
               status={currentStep === steps.length - 1 ? 'finished' : 'active'}
             />
-            <div className="signup-progress-steps">
-              {steps.map((step, index) => (
-                <div
-                  key={step.key}
-                  className={`signup-progress-step ${
-                    index < currentStep ? 'signup-progress-step--complete' : ''
-                  } ${index === currentStep ? 'signup-progress-step--current' : ''}`}
-                >
-                  <div className="signup-progress-step-marker">
-                    {index < currentStep ? <Checkmark size={12} /> : index + 1}
-                  </div>
-                  <span className="signup-progress-step-label">{step.label}</span>
-                </div>
-              ))}
-            </div>
           </div>
         </Tile>
 
