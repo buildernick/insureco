@@ -159,15 +159,6 @@ export default function FacetedFilterButton({
                 })}
               </div>
 
-              <div className="options-footer">
-                <button
-                  className="clear-all-button"
-                  onClick={handleClearAll}
-                  disabled={(selectedFilters[activeFacet] || []).length === 0}
-                >
-                  Clear All
-                </button>
-              </div>
             </div>
           )}
         </div>
