@@ -15,9 +15,6 @@ import {
   TableHeader,
   TableBody,
   TableCell,
-  TableToolbar,
-  TableToolbarContent,
-  TableToolbarSearch,
 } from '@carbon/react';
 import { ArrowUp, ArrowDown, Analytics } from '@carbon/icons-react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from 'recharts';
@@ -28,6 +25,8 @@ import './FinancialDashboard2.scss';
 export default function FinancialDashboard2() {
   const navigate = useNavigate();
   const [chartType, setChartType] = useState('line');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
   const [visibleSeries, setVisibleSeries] = useState({
     propertyPremiums: true,
     propertyClaims: true,
@@ -47,8 +46,17 @@ export default function FinancialDashboard2() {
     { key: 'region', header: 'Region' },
   ];
 
+  const filteredAssets = assetData.filter((asset) => {
+    const matchesCategory = selectedCategory === 'all' || asset.category.toLowerCase() === selectedCategory;
+    const normalizedSearch = searchTerm.toLowerCase();
+    const matchesSearch = asset.assetName.toLowerCase().includes(normalizedSearch) ||
+      asset.region.toLowerCase().includes(normalizedSearch);
+
+    return matchesCategory && matchesSearch;
+  });
+
   // Format table rows with enhanced styling
-  const rows = assetData.map((asset) => ({
+  const rows = filteredAssets.map((asset) => ({
     id: asset.id,
     assetName: asset.assetName,
     category: asset.category,
@@ -321,22 +329,48 @@ export default function FinancialDashboard2() {
                 getRowProps,
                 getTableProps,
                 getTableContainerProps,
-                getToolbarProps,
-                onInputChange,
               }) => (
                 <TableContainer
                   title="Asset Performance Ledger"
                   description="Click on any row to view detailed asset information"
                   {...getTableContainerProps()}
                 >
-                  <TableToolbar {...getToolbarProps()}>
-                    <TableToolbarContent>
-                      <TableToolbarSearch 
-                        onChange={onInputChange}
-                        placeholder="Search assets..."
-                      />
-                    </TableToolbarContent>
-                  </TableToolbar>
+                  <div className="asset-filter-controls">
+                    <input
+                      type="search"
+                      className="asset-filter-search"
+                      aria-label="Search assets"
+                      placeholder="Search assets..."
+                      value={searchTerm}
+                      onChange={(event) => setSearchTerm(event.target.value)}
+                    />
+                    <div className="asset-category-filters" aria-label="Filter assets by category">
+                      <button
+                        type="button"
+                        className={`asset-category-filter ${selectedCategory === 'all' ? 'asset-category-filter--active' : ''}`}
+                        aria-pressed={selectedCategory === 'all'}
+                        onClick={() => setSelectedCategory('all')}
+                      >
+                        All
+                      </button>
+                      <button
+                        type="button"
+                        className={`asset-category-filter ${selectedCategory === 'property' ? 'asset-category-filter--active' : ''}`}
+                        aria-pressed={selectedCategory === 'property'}
+                        onClick={() => setSelectedCategory('property')}
+                      >
+                        Property
+                      </button>
+                      <button
+                        type="button"
+                        className={`asset-category-filter ${selectedCategory === 'auto' ? 'asset-category-filter--active' : ''}`}
+                        aria-pressed={selectedCategory === 'auto'}
+                        onClick={() => setSelectedCategory('auto')}
+                      >
+                        Auto
+                      </button>
+                    </div>
+                  </div>
                   <Table {...getTableProps()} className="modern-table">
                     <TableHead>
                       <TableRow>

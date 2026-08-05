@@ -208,6 +208,69 @@
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
+    .asset-filter-controls {
+      display: flex;
+      gap: var(--spacing-04);
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      padding: 0 var(--spacing-05) var(--spacing-05);
+    }
+
+    .asset-filter-search {
+      min-width: 250px;
+      padding: 12px 20px;
+      background: var(--field-background);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      color: var(--field-text);
+      font-size: 0.875rem;
+      transition: all 0.2s ease;
+
+      &::placeholder {
+        color: var(--field-placeholder);
+      }
+
+      &:focus {
+        outline: 2px solid var(--interactive-primary);
+        outline-offset: -2px;
+        background: var(--field-background);
+        border-color: var(--interactive-primary);
+      }
+    }
+
+    .asset-category-filters {
+      display: flex;
+      gap: var(--spacing-03);
+    }
+
+    .asset-category-filter {
+      padding: 8px 20px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      background: var(--background-secondary);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-weight: var(--font-weight-semibold);
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: var(--background-hover);
+        color: var(--text-primary);
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--interactive-primary);
+        outline-offset: 2px;
+      }
+
+      &.asset-category-filter--active {
+        background: var(--interactive-primary);
+        border-color: var(--interactive-primary);
+        color: var(--text-on-color);
+      }
+    }
+
     .modern-table-row {
       cursor: pointer;
       transition: background-color 0.15s ease;
@@ -234,6 +297,15 @@
       align-items: flex-start !important;
 
       .series-toggles {
+        width: 100%;
+      }
+    }
+
+    .table-card-modern .asset-filter-controls {
+      align-items: stretch;
+      flex-direction: column;
+
+      .asset-filter-search {
         width: 100%;
       }
     }
