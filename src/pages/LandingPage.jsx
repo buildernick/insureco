@@ -96,7 +96,7 @@ export default function LandingPage() {
                   Get a Demo
                 </Button>
                 <Button
-                  kind="tertiary"
+                  kind="primary"
                   size="lg"
                   onClick={() => setDemoModalOpen(true)}
                 >
