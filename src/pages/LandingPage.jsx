@@ -95,6 +95,13 @@ export default function LandingPage() {
                 >
                   Get a Demo
                 </Button>
+                <Button
+                  kind="tertiary"
+                  size="lg"
+                  onClick={() => setDemoModalOpen(true)}
+                >
+                  Contact Us
+                </Button>
               </div>
             </div>
           </Column>
