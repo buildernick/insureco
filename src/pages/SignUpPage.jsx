@@ -23,6 +23,7 @@ import {
   DatePickerInput,
 } from '@carbon/react';
 import { ArrowRight, ArrowLeft, Checkmark, Car, Home as HomeIcon } from '@carbon/icons-react';
+import { formatDateForInput } from '../utils/businessHelpers';
 import './SignUpPage.scss';
 
 export default function SignUpPage() {
@@ -203,7 +204,7 @@ export default function SignUpPage() {
             />
             <DatePicker
               datePickerType="single"
-              onChange={(dates) => updateFormData('dateOfBirth', dates?.[0] || '')}
+              onChange={(dates) => updateFormData('dateOfBirth', formatDateForInput(dates?.[0] || ''))}
             >
               <DatePickerInput
                 id="dateOfBirth"

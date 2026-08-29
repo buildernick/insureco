@@ -22,7 +22,7 @@ import {
 import { ArrowLeft, ArrowRight, Checkmark, DocumentAdd } from '@carbon/icons-react';
 import StepBreadcrumb from '../../components/StepBreadcrumb';
 import { mockProperties, mockVehicles } from '../../data/businessMockData';
-import { formatVehicleName } from '../../utils/businessHelpers';
+import { formatVehicleName, formatDateForInput } from '../../utils/businessHelpers';
 import './FileClaimPage.scss';
 
 /**
@@ -227,7 +227,7 @@ export default function FileClaimPage() {
 
               <DatePicker
                 datePickerType="single"
-                onChange={(dates) => handleInputChange('incidentDate', dates[0] || '')}
+                onChange={(dates) => handleInputChange('incidentDate', formatDateForInput(dates[0] || ''))}
               >
                 <DatePickerInput
                   id="incident-date"
