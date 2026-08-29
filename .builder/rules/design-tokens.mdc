@@ -67,6 +67,11 @@ The primary brand color is **red**, reflecting the InsureCo insurance brand:
 - Brand red scale: `$color-brand-red-10` through `$color-brand-red-100`
 - Primary brand color: `$color-brand-red-60` (#da1e28)
 
+### Additional Brand Colors
+Extended brand color palettes for versatility:
+- **Green scale**: `$color-brand-green-10` through `$color-brand-green-100` - Available for accent and alternative CTAs
+- **Blue scale**: `$color-brand-blue-10` through `$color-brand-blue-100` - Available for informational elements
+
 ### Neutral Palette
 Grey scale from light to dark:
 - `$color-grey-10` (#f4f4f4) to `$color-grey-100` (#161616)
@@ -271,7 +276,7 @@ Progressive elevation from subtle to dramatic:
 
 ### Usage
 CSS custom properties automatically adapt to the active theme:
-```scss
+
 .card {
   box-shadow: var(--card-shadow); // Adapts to light/dark theme
   
@@ -279,7 +284,7 @@ CSS custom properties automatically adapt to the active theme:
     box-shadow: var(--card-shadow-hover);
   }
 }
-```
+
 
 ## Motion Tokens
 
