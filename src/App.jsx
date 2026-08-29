@@ -24,6 +24,8 @@ import FinancialDashboard1 from "./pages/FinancialDashboard1";
 import FinancialDashboard2 from "./pages/FinancialDashboard2";
 import FinancialDashboard3 from "./pages/FinancialDashboard3";
 import FinancialDashboardOptions from "./pages/FinancialDashboardOptions";
+import PetInsurancePage from "./pages/PetInsurancePage";
+import ComponentGallery from "./pages/ComponentGallery";
 
 export default function App() {
   return (
@@ -38,6 +40,8 @@ export default function App() {
         <Route path="/financial-dashboard-1" element={<FinancialDashboard1 />} />
         <Route path="/financial-dashboard-2" element={<FinancialDashboard2 />} />
         <Route path="/financial-dashboard-3" element={<FinancialDashboard3 />} />
+        <Route path="/pet-insurance" element={<PetInsurancePage />} />
+        <Route path="/component-gallery" element={<ComponentGallery />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/theme-preview" element={<ThemePreviewPage />} />
         <Route path="/progress-preview" element={<ProgressIndicatorPreview />} />
