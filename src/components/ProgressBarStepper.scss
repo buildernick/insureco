@@ -1,0 +1,132 @@
+@use '../styles/tokens' as *;
+
+// ============================================
+// ProgressBarStepper Component
+// Option 2: Progress Bar with Step Counter
+// ============================================
+
+.progress-bar-stepper {
+  width: 100%;
+  max-width: 600px;
+}
+
+// ============================================
+// Step List (below progress bar)
+// ============================================
+
+.progress-bar-stepper__steps {
+  margin-top: var(--spacing-06);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-03);
+}
+
+// ============================================
+// Individual Step Item
+// ============================================
+
+.progress-bar-stepper__step {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-03);
+  padding: var(--spacing-03);
+  border-radius: var(--radius-sm);
+  transition: background-color 0.2s ease;
+
+  // Completed step state
+  &--complete {
+    background: rgba(36, 161, 72, 0.1);
+
+    .progress-bar-stepper__step-marker {
+      background: var(--color-success);
+      color: var(--text-on-color);
+      border-color: var(--color-success);
+    }
+
+    .progress-bar-stepper__step-label {
+      color: var(--text-primary);
+      text-decoration: line-through;
+      opacity: 0.7;
+    }
+  }
+
+  // Current step state (highlighted)
+  &--current {
+    background: var(--background-selected);
+
+    .progress-bar-stepper__step-marker {
+      background: var(--interactive-primary);
+      color: var(--text-on-color);
+      border-color: var(--interactive-primary);
+      box-shadow: 0 0 0 3px var(--background-selected);
+    }
+
+    .progress-bar-stepper__step-label {
+      color: var(--interactive-primary);
+      font-weight: var(--font-weight-semibold);
+    }
+  }
+}
+
+// ============================================
+// Step Marker (circle with number or checkmark)
+// ============================================
+
+.progress-bar-stepper__step-marker {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: var(--font-weight-semibold);
+  background: transparent;
+  border: 2px solid var(--border-strong);
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+
+  svg {
+    fill: currentColor;
+  }
+}
+
+// ============================================
+// Step Label
+// ============================================
+
+.progress-bar-stepper__step-label {
+  font-size: var(--body-sm-size);
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+// ============================================
+// Responsive Adjustments
+// ============================================
+
+@media (max-width: 671px) {
+  .progress-bar-stepper {
+    max-width: 100%;
+  }
+
+  .progress-bar-stepper__steps {
+    margin-top: var(--spacing-05);
+    gap: var(--spacing-02);
+  }
+
+  .progress-bar-stepper__step {
+    padding: var(--spacing-02);
+  }
+
+  .progress-bar-stepper__step-marker {
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+  }
+
+  .progress-bar-stepper__step-label {
+    font-size: 12px;
+  }
+}
