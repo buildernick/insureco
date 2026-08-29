@@ -8,7 +8,6 @@ import SignUpConfirmationPage from "./pages/SignUpConfirmationPage";
 import DashboardHome from "./pages/DashboardHome";
 import AboutPage from "./pages/AboutPage";
 import ThemePreviewPage from "./pages/ThemePreviewPage";
-import ProgressIndicatorPreview from "./pages/ProgressIndicatorPreview";
 import BusinessComingSoon from "./pages/business/BusinessComingSoon";
 import BusinessDashboard from "./pages/business/BusinessDashboard";
 import PropertiesPage from "./pages/business/PropertiesPage";
@@ -40,7 +39,6 @@ export default function App() {
         <Route path="/financial-dashboard-3" element={<FinancialDashboard3 />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/theme-preview" element={<ThemePreviewPage />} />
-        <Route path="/progress-preview" element={<ProgressIndicatorPreview />} />
 
         {/* Business Routes */}
         <Route path="/business" element={<Navigate to="/business/dashboard" replace />} />
