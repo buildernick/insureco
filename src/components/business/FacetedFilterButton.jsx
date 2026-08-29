@@ -5,26 +5,33 @@ import './FacetedFilterButton.scss';
 
 /**
  * FacetedFilterButton - Cascading filter matching Figma design
- * 
+ *
  * Features:
- * - Collapsed button shows "Filter [Type]" with filter icon
- * - Expanded view has two panels:
- *   - Left: filter categories (Status, Vehicle Type, Department)
- *   - Right: checkboxes for selected category
+ * - Collapsed button shows "Filter [Type]" with filter icon and chevron
+ * - Expanded view has three panels:
+ *   - Left: filter categories (with down/right chevrons)
+ *   - Middle: checkboxes for selected category with item counts
+ *   - Right: "Clear All" action column
  * - Click outside to close
+ *
+ * Props:
+ * - label: string — trigger button label (default: 'Filter Vehicles')
+ * - facets: Array<{ key, label, options: Array<{ value, label, count? }> }>
+ * - selectedFilters: { [facetKey]: string[] }
+ * - onFiltersChange: (updatedFilters) => void
+ * - disabled: boolean
  */
 export default function FacetedFilterButton({
   label = 'Filter Vehicles',
   facets = [],
   selectedFilters = {},
   onFiltersChange,
-  disabled = false
+  disabled = false,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeFacet, setActiveFacet] = useState(null);
   const containerRef = useRef(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (containerRef.current && !containerRef.current.contains(event.target)) {
@@ -39,112 +46,95 @@ export default function FacetedFilterButton({
     }
   }, [isOpen]);
 
-  // Toggle dropdown
   const handleToggle = () => {
     if (!disabled) {
-      setIsOpen(!isOpen);
-      if (!isOpen && facets.length > 0) {
-        // Auto-select first facet when opening
+      const opening = !isOpen;
+      setIsOpen(opening);
+      if (opening && facets.length > 0) {
         setActiveFacet(facets[0].key);
-      } else if (isOpen) {
+      } else {
         setActiveFacet(null);
       }
     }
   };
 
-  // Select a facet to show options
   const handleFacetClick = (facetKey) => {
     setActiveFacet(facetKey);
   };
 
-  // Toggle checkbox for a specific option
   const handleOptionToggle = (facetKey, optionValue) => {
     const currentValues = selectedFilters[facetKey] || [];
     const updatedValues = currentValues.includes(optionValue)
-      ? currentValues.filter(v => v !== optionValue)
+      ? currentValues.filter((v) => v !== optionValue)
       : [...currentValues, optionValue];
-    
-    const updatedFilters = {
-      ...selectedFilters,
-      [facetKey]: updatedValues
-    };
-    
-    onFiltersChange(updatedFilters);
+
+    onFiltersChange?.({ ...selectedFilters, [facetKey]: updatedValues });
   };
 
-  // Clear all filters for the active facet
   const handleClearAll = () => {
     if (!activeFacet) return;
-    
-    const updatedFilters = {
-      ...selectedFilters,
-      [activeFacet]: []
-    };
-    
-    onFiltersChange(updatedFilters);
+    onFiltersChange?.({ ...selectedFilters, [activeFacet]: [] });
   };
 
-  // Get active facet data
-  const activeFacetData = facets.find(f => f.key === activeFacet);
+  const activeFacetData = facets.find((f) => f.key === activeFacet);
+  const activeSelectionCount = activeFacet ? (selectedFilters[activeFacet] || []).length : 0;
 
   return (
-    <div className="faceted-filter-button" ref={containerRef}>
-      {/* Collapsed Button */}
+    <div className="faceted-filter" ref={containerRef}>
+      {/* Collapsed trigger button */}
       <button
-        className={`filter-toggle-button ${isOpen ? 'active' : ''}`}
+        className={`faceted-filter__trigger ${isOpen ? 'faceted-filter__trigger--open' : ''}`}
         onClick={handleToggle}
         disabled={disabled}
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
-        <Filter size={16} className="filter-icon" />
-        <span className="filter-label">{label}</span>
-        <ChevronDown size={16} className="chevron-icon" />
+        <Filter size={16} className="faceted-filter__trigger-icon" />
+        <span className="faceted-filter__trigger-label">{label}</span>
+        <ChevronDown size={16} className="faceted-filter__trigger-chevron" />
       </button>
 
-      {/* Cascading Filter Panel */}
+      {/* Expanded filter panel */}
       {isOpen && (
-        <div className="filter-panel">
-          {/* Left: Filter Categories */}
-          <div className="filter-categories">
-            <div className="categories-header">
-              <span className="header-label">FILTER BY</span>
+        <div className="faceted-filter__panel" role="dialog" aria-label="Filter options">
+          {/* Left: category list */}
+          <div className="faceted-filter__categories">
+            <div className="faceted-filter__panel-header">
+              <span className="faceted-filter__panel-header-label">FILTER BY</span>
             </div>
-            
+
             {facets.map((facet) => {
               const isActive = activeFacet === facet.key;
-              const hasSelections = (selectedFilters[facet.key] || []).length > 0;
-              
               return (
                 <button
                   key={facet.key}
-                  className={`category-item ${isActive ? 'active' : ''}`}
+                  className={`faceted-filter__category-btn ${isActive ? 'faceted-filter__category-btn--active' : ''}`}
                   onClick={() => handleFacetClick(facet.key)}
+                  aria-pressed={isActive}
                 >
-                  <span className="category-label">{facet.label}</span>
+                  <span className="faceted-filter__category-label">{facet.label}</span>
                   {isActive ? (
-                    <ChevronRight size={16} className="category-icon" />
+                    <ChevronRight size={16} className="faceted-filter__category-chevron" />
                   ) : (
-                    <ChevronDown size={16} className="category-icon" />
+                    <ChevronDown size={16} className="faceted-filter__category-chevron" />
                   )}
                 </button>
               );
             })}
           </div>
 
-          {/* Right: Options for Active Category */}
+          {/* Middle: options for active category */}
           {activeFacetData && (
-            <div className="filter-options">
-              <div className="options-header">
-                <span className="header-label">{activeFacetData.label}</span>
+            <div className="faceted-filter__options">
+              <div className="faceted-filter__panel-header">
+                <span className="faceted-filter__panel-header-label">{activeFacetData.label}</span>
               </div>
 
-              <div className="options-list">
+              <div className="faceted-filter__options-list">
                 {activeFacetData.options.map((option) => {
                   const isChecked = (selectedFilters[activeFacet] || []).includes(option.value);
-                  
                   return (
-                    <div key={option.value} className="option-row">
+                    <div key={option.value} className="faceted-filter__option-row">
                       <Checkbox
                         id={`filter-${activeFacet}-${option.value}`}
                         labelText={option.label}
@@ -152,22 +142,26 @@ export default function FacetedFilterButton({
                         onChange={() => handleOptionToggle(activeFacet, option.value)}
                       />
                       {option.count !== undefined && (
-                        <span className="option-count">({option.count})</span>
+                        <span className="faceted-filter__option-count">({option.count})</span>
                       )}
                     </div>
                   );
                 })}
               </div>
+            </div>
+          )}
 
-              <div className="options-footer">
-                <button
-                  className="clear-all-button"
-                  onClick={handleClearAll}
-                  disabled={(selectedFilters[activeFacet] || []).length === 0}
-                >
-                  Clear All
-                </button>
-              </div>
+          {/* Right: Clear All column */}
+          {activeFacetData && (
+            <div className="faceted-filter__clear-col">
+              <button
+                className="faceted-filter__clear-btn"
+                onClick={handleClearAll}
+                disabled={activeSelectionCount === 0}
+                aria-label={`Clear all ${activeFacetData.label} filters`}
+              >
+                Clear All
+              </button>
             </div>
           )}
         </div>
