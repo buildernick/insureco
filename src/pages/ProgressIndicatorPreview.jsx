@@ -17,50 +17,8 @@ import {
   Tag
 } from '@carbon/react';
 import { ArrowLeft, ArrowRight, Checkmark } from '@carbon/icons-react';
+import CircularMiniStepper from '../components/CircularMiniStepper';
 import './ProgressIndicatorPreview.scss';
-
-// Custom Circular Mini-Stepper Component
-function CircularMiniStepper({ steps, currentIndex, className = '' }) {
-  const visibleSteps = [];
-  
-  // Show: previous (if exists), current, next (if exists)
-  if (currentIndex > 0) {
-    visibleSteps.push({ ...steps[currentIndex - 1], index: currentIndex - 1, status: 'previous' });
-  }
-  visibleSteps.push({ ...steps[currentIndex], index: currentIndex, status: 'current' });
-  if (currentIndex < steps.length - 1) {
-    visibleSteps.push({ ...steps[currentIndex + 1], index: currentIndex + 1, status: 'next' });
-  }
-
-  return (
-    <div className={`circular-mini-stepper ${className}`}>
-      <div className="circular-mini-stepper__progress-text">
-        Step {currentIndex + 1} of {steps.length}
-      </div>
-      <div className="circular-mini-stepper__circles">
-        {visibleSteps.map((step, idx) => (
-          <React.Fragment key={step.index}>
-            <div
-              className={`circular-mini-stepper__circle circular-mini-stepper__circle--${step.status}`}
-            >
-              {step.status === 'previous' ? (
-                <Checkmark size={20} />
-              ) : (
-                <span className="circular-mini-stepper__number">{step.index + 1}</span>
-              )}
-            </div>
-            {idx < visibleSteps.length - 1 && (
-              <div className="circular-mini-stepper__connector" />
-            )}
-          </React.Fragment>
-        ))}
-      </div>
-      <div className="circular-mini-stepper__label">
-        {steps[currentIndex].label}
-      </div>
-    </div>
-  );
-}
 
 export default function ProgressIndicatorPreview() {
   const [currentStep, setCurrentStep] = useState(2);
