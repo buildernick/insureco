@@ -6,9 +6,10 @@ alwaysApply: false
 
 # Dashboard Asset Filters
 
-The Modern Sleek dashboard (`FinancialDashboard2`) filters its Asset Performance Ledger with a controlled search field and All, Property, and Auto category pills.
+- `FinancialDashboard2` (Modern Sleek) filters its Asset Performance Ledger table with a controlled search field and All, Property, and Auto category pills.
+- `FinancialDashboard1` (Conservative) replaced its ledger table with an "Asset Performance" section: header, search, category pills, and a grid of asset cards ported from `FinancialDashboard3`. Card colors use theme tokens (the dashboard 3 originals are dark-only).
 
 - Keep search and category filtering combined so each result satisfies both controls.
 - Preserve the rounded search field and pill-shaped category buttons.
 - Use semantic theme tokens for control colors and maintain visible focus states in light and dark themes.
-- Keep the controls stacked at the existing 1056px responsive breakpoint.
+- Keep the controls stacked at the existing responsive breakpoint (1056px on dashboard 2, 672px on dashboard 1).

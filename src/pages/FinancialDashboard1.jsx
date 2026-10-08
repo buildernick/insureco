@@ -6,17 +6,6 @@ import {
   Tile,
   Button,
   Dropdown,
-  DataTable,
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableHeader,
-  TableBody,
-  TableCell,
-  TableToolbar,
-  TableToolbarContent,
-  TableToolbarSearch,
 } from '@carbon/react';
 import { ArrowUp, ArrowDown, WarningAlt } from '@carbon/icons-react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -28,6 +17,8 @@ export default function FinancialDashboard1() {
   const navigate = useNavigate();
   const [chartType, setChartType] = useState('line');
   const [showGross, setShowGross] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
   const [visibleSeries, setVisibleSeries] = useState({
     propertyPremiums: true,
     propertyClaims: true,
@@ -48,40 +39,24 @@ export default function FinancialDashboard1() {
       .slice(0, 5); // Top 5 highest risk assets
   }, []);
 
-  // Table headers configuration
-  const headers = [
-    { key: 'assetName', header: 'Asset Name' },
-    { key: 'category', header: 'Category' },
-    { key: 'premiumDue', header: 'Premium Due' },
-    { key: 'dueDate', header: 'Due Date' },
-    { key: 'totalClaims', header: 'Total Claims' },
-    { key: 'region', header: 'Region' },
-  ];
+  const filteredAssets = assetData.filter((asset) => {
+    const matchesCategory = selectedCategory === 'all' || asset.category.toLowerCase() === selectedCategory;
+    const normalizedSearch = searchTerm.toLowerCase();
+    const matchesSearch = asset.assetName.toLowerCase().includes(normalizedSearch) ||
+      asset.region.toLowerCase().includes(normalizedSearch);
 
-  // Format table rows
-  const rows = assetData.map((asset) => ({
-    id: asset.id,
-    assetName: asset.assetName,
-    category: asset.category,
-    premiumDue: formatCurrency(asset.premiumDue),
-    dueDate: formatDate(asset.dueDate),
-    totalClaims: formatCurrency(asset.totalClaims),
-    region: asset.region,
-    _raw: asset, // Keep raw data for navigation
-  }));
+    return matchesCategory && matchesSearch;
+  });
 
   const toggleSeries = (series) => {
     setVisibleSeries(prev => ({ ...prev, [series]: !prev[series] }));
   };
 
-  const handleRowClick = (row) => {
-    // Navigate to existing property or vehicle pages based on category
-    if (row._raw.category === 'Property') {
-      // Navigate to business property detail page
-      navigate(`/business/properties/${row._raw.id}`, { state: { asset: row._raw } });
+  const handleAssetClick = (asset) => {
+    if (asset.category === 'Property') {
+      navigate(`/business/properties/${asset.id}`, { state: { asset } });
     } else {
-      // Navigate to business fleet vehicle detail page
-      navigate(`/business/fleet/${row._raw.id}`, { state: { asset: row._raw } });
+      navigate(`/business/fleet/${asset.id}`, { state: { asset } });
     }
   };
 
@@ -307,57 +282,69 @@ export default function FinancialDashboard1() {
           </div>
         </Column>
 
-        {/* Asset Performance Table */}
+        {/* Asset Performance */}
         <Column lg={16} md={8} sm={4}>
-          <DataTable rows={rows} headers={headers}>
-            {({
-              rows,
-              headers,
-              getHeaderProps,
-              getRowProps,
-              getTableProps,
-              getTableContainerProps,
-              getToolbarProps,
-              onInputChange,
-            }) => (
-              <TableContainer
-                title="Asset Performance Ledger"
-                description="Detailed breakdown of premium and claims by individual asset"
-                {...getTableContainerProps()}
-              >
-                <TableToolbar {...getToolbarProps()}>
-                  <TableToolbarContent>
-                    <TableToolbarSearch onChange={onInputChange} />
-                  </TableToolbarContent>
-                </TableToolbar>
-                <Table {...getTableProps()}>
-                  <TableHead>
-                    <TableRow>
-                      {headers.map((header) => (
-                        <TableHeader {...getHeaderProps({ header })} key={header.key}>
-                          {header.header}
-                        </TableHeader>
-                      ))}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {rows.map((row) => (
-                      <TableRow
-                        {...getRowProps({ row })}
-                        key={row.id}
-                        onClick={() => handleRowClick(row)}
-                        className="clickable-row"
-                      >
-                        {row.cells.map((cell) => (
-                          <TableCell key={cell.id}>{cell.value}</TableCell>
-                        ))}
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            )}
-          </DataTable>
+          <div className="asset-performance-section">
+            <div className="asset-performance-header">
+              <h2>Asset Performance</h2>
+              <div className="asset-filter-controls">
+                <input
+                  type="search"
+                  className="asset-filter-search"
+                  aria-label="Search assets"
+                  placeholder="Search assets..."
+                  value={searchTerm}
+                  onChange={(event) => setSearchTerm(event.target.value)}
+                />
+                <div className="asset-category-filters" aria-label="Filter assets by category">
+                  {['all', 'property', 'auto'].map((category) => (
+                    <button
+                      key={category}
+                      type="button"
+                      className={`asset-category-filter ${selectedCategory === category ? 'asset-category-filter--active' : ''}`}
+                      aria-pressed={selectedCategory === category}
+                      onClick={() => setSelectedCategory(category)}
+                    >
+                      {category === 'all' ? 'All' : category === 'property' ? 'Property' : 'Auto'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="asset-grid">
+              {filteredAssets.map((asset) => (
+                <div
+                  key={asset.id}
+                  className={`asset-card asset-card--${asset.category.toLowerCase()}`}
+                  onClick={() => handleAssetClick(asset)}
+                >
+                  <div className="asset-card-header">
+                    <span className="asset-category">{asset.category}</span>
+                    <span className="asset-region">{asset.region}</span>
+                  </div>
+                  <h3 className="asset-name">{asset.assetName}</h3>
+                  <div className="asset-details">
+                    <div className="detail-item">
+                      <span className="detail-label">Premium Due</span>
+                      <span className="detail-value detail-value--green">{formatCurrency(asset.premiumDue)}</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="detail-label">Due Date</span>
+                      <span className="detail-value">{formatDate(asset.dueDate)}</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="detail-label">Total Claims</span>
+                      <span className="detail-value detail-value--red">{formatCurrency(asset.totalClaims)}</span>
+                    </div>
+                  </div>
+                  <div className="asset-card-footer">
+                    <span className="view-details">View Details →</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </Column>
       </Grid>
     </div>
