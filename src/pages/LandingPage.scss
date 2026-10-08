@@ -60,6 +60,15 @@
     gap: var(--spacing-05);
     justify-content: center;
     flex-wrap: wrap;
+
+    .cds--btn--primary {
+      background-color: var(--color-brand-blue-60);
+      color: var(--text-on-color);
+
+      &:hover {
+        background-color: var(--color-brand-blue-70);
+      }
+    }
   }
 }
 
