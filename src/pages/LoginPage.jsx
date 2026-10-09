@@ -10,6 +10,8 @@ import {
   Heading,
   Stack,
   Link,
+  Modal,
+  InlineNotification,
 } from '@carbon/react';
 import { Login, ArrowRight } from '@carbon/icons-react';
 import './LoginPage.scss';
@@ -18,6 +20,23 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isRecoveryOpen, setIsRecoveryOpen] = useState(false);
+  const [recoveryEmail, setRecoveryEmail] = useState('');
+  const [magicLinkSent, setMagicLinkSent] = useState(false);
+
+  const openRecovery = (e) => {
+    e.preventDefault();
+    setRecoveryEmail(email);
+    setMagicLinkSent(false);
+    setIsRecoveryOpen(true);
+  };
+
+  const closeRecovery = () => setIsRecoveryOpen(false);
+
+  const sendMagicLink = () => {
+    // Mock - no backend call yet
+    setMagicLinkSent(true);
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -69,7 +88,7 @@ export default function LoginPage() {
                   />
 
                   <div className="login-options">
-                    <Link href="#" className="forgot-password-link">
+                    <Link href="#" className="forgot-password-link" onClick={openRecovery}>
                       Forgot password?
                     </Link>
                   </div>
@@ -107,6 +126,53 @@ export default function LoginPage() {
           </Tile>
         </div>
       </Column>
+      <Modal
+        open={isRecoveryOpen}
+        size="sm"
+        modalHeading="Forgot your password?"
+        modalLabel="Account recovery"
+        primaryButtonText="Send Magic Link"
+        secondaryButtonText="Cancel"
+        primaryButtonDisabled={!recoveryEmail.trim() || magicLinkSent}
+        onRequestClose={closeRecovery}
+        onRequestSubmit={sendMagicLink}
+        onSecondarySubmit={closeRecovery}
+      >
+        <Stack gap={5}>
+          <p>
+            Enter the email address associated with your account and we'll send
+            you a magic link to sign in.
+          </p>
+          <TextInput
+            id="recovery-email"
+            labelText="Email Address"
+            placeholder="you@example.com"
+            type="email"
+            value={recoveryEmail}
+            onChange={(e) => setRecoveryEmail(e.target.value)}
+            data-modal-primary-focus
+          />
+          {magicLinkSent && (
+            <InlineNotification
+              kind="success"
+              lowContrast
+              hideCloseButton
+              title="Magic link sent."
+              subtitle="Check your inbox to sign in."
+            />
+          )}
+          <p>
+            Need more help?{' '}
+            <Link
+              href="https://support.insureco.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Visit our support site
+            </Link>
+          </p>
+        </Stack>
+      </Modal>
     </Grid>
   );
 }
