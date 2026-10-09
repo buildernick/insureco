@@ -72,14 +72,10 @@
 }
 
 .login-title {
-  font-size: var(--heading-h3-size);
+  font-size: 44px;
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   margin: 0 0 var(--spacing-03) 0;
-
-  @media (min-width: 672px) {
-    font-size: var(--heading-h2-size);
-  }
 }
 
 .login-subtitle {
@@ -117,6 +113,10 @@
   width: 100%;
   justify-content: center;
   margin-top: var(--spacing-05);
+
+  &.cds--btn--primary {
+    background-color: rgba(33, 13, 212, 1);
+  }
 }
 
 .login-footer {
