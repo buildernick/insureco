@@ -115,7 +115,11 @@
   margin-top: var(--spacing-05);
 
   &.cds--btn--primary {
-    background-color: rgba(33, 13, 212, 1);
+    background-color: var(--color-brand-blue-60);
+
+    &:hover {
+      background-color: var(--color-brand-blue-70);
+    }
   }
 }
 
