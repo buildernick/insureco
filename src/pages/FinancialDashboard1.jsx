@@ -17,6 +17,8 @@ import {
   TableToolbar,
   TableToolbarContent,
   TableToolbarSearch,
+  ContentSwitcher,
+  Switch,
 } from '@carbon/react';
 import { ArrowUp, ArrowDown, WarningAlt } from '@carbon/icons-react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -28,6 +30,7 @@ export default function FinancialDashboard1() {
   const navigate = useNavigate();
   const [chartType, setChartType] = useState('line');
   const [showGross, setShowGross] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [visibleSeries, setVisibleSeries] = useState({
     propertyPremiums: true,
     propertyClaims: true,
@@ -59,7 +62,9 @@ export default function FinancialDashboard1() {
   ];
 
   // Format table rows
-  const rows = assetData.map((asset) => ({
+  const rows = assetData
+    .filter((asset) => selectedCategory === 'all' || asset.category.toLowerCase() === selectedCategory)
+    .map((asset) => ({
     id: asset.id,
     assetName: asset.assetName,
     category: asset.category,
@@ -327,6 +332,16 @@ export default function FinancialDashboard1() {
               >
                 <TableToolbar {...getToolbarProps()}>
                   <TableToolbarContent>
+                    <ContentSwitcher
+                      size="md"
+                      className="category-switcher"
+                      selectedIndex={['all', 'property', 'auto'].indexOf(selectedCategory)}
+                      onChange={({ name }) => setSelectedCategory(name)}
+                    >
+                      <Switch name="all" text="All" />
+                      <Switch name="property" text="Property" />
+                      <Switch name="auto" text="Auto" />
+                    </ContentSwitcher>
                     <TableToolbarSearch onChange={onInputChange} />
                   </TableToolbarContent>
                 </TableToolbar>
