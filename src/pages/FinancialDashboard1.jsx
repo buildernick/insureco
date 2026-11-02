@@ -21,13 +21,13 @@ import {
 import { ArrowUp, ArrowDown, WarningAlt } from '@carbon/icons-react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { monthlyData, assetData, calculateSummaryStats, formatCurrency, formatDate } from '../data/financialData';
-import DashboardSwitcher from '../components/DashboardSwitcher';
 import './FinancialDashboard1.scss';
 
 export default function FinancialDashboard1() {
   const navigate = useNavigate();
   const [chartType, setChartType] = useState('line');
   const [showGross, setShowGross] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [visibleSeries, setVisibleSeries] = useState({
     propertyPremiums: true,
     propertyClaims: true,
@@ -59,7 +59,9 @@ export default function FinancialDashboard1() {
   ];
 
   // Format table rows
-  const rows = assetData.map((asset) => ({
+  const rows = assetData
+    .filter((asset) => selectedCategory === 'all' || asset.category.toLowerCase() === selectedCategory)
+    .map((asset) => ({
     id: asset.id,
     assetName: asset.assetName,
     category: asset.category,
@@ -90,7 +92,6 @@ export default function FinancialDashboard1() {
       <Grid fullWidth>
         {/* Page Header */}
         <Column lg={16} md={8} sm={4}>
-          <DashboardSwitcher />
           <div className="dashboard-header">
             <h1>Insurance Financial Analytics Dashboard</h1>
             <p className="dashboard-subtitle">
@@ -327,6 +328,22 @@ export default function FinancialDashboard1() {
               >
                 <TableToolbar {...getToolbarProps()}>
                   <TableToolbarContent>
+                    <div className="category-filters">
+                      {[
+                        { key: 'all', label: 'All' },
+                        { key: 'property', label: 'Property' },
+                        { key: 'auto', label: 'Auto' },
+                      ].map(({ key, label }) => (
+                        <Button
+                          key={key}
+                          size="md"
+                          kind={selectedCategory === key ? 'primary' : 'ghost'}
+                          onClick={() => setSelectedCategory(key)}
+                        >
+                          {label}
+                        </Button>
+                      ))}
+                    </div>
                     <TableToolbarSearch onChange={onInputChange} />
                   </TableToolbarContent>
                 </TableToolbar>
