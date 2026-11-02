@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  ContentSwitcher,
-  Switch,
   ProgressIndicator,
   ProgressStep,
   ProgressBar,
@@ -51,30 +49,18 @@ export function CircularMiniStepper({ steps, currentIndex, className = '' }) {
   );
 }
 
-const OPTIONS = [
+export const PROGRESS_VARIANT_OPTIONS = [
   'Vertical',
   'Progress Bar',
   'Tabs',
   'Mini-Stepper',
 ];
 
-export default function ProgressVariants({ steps, currentIndex }) {
-  const [variant, setVariant] = useState(0);
+export default function ProgressVariants({ steps, currentIndex, variant = 0 }) {
   const progressPercentage = ((currentIndex + 1) / steps.length) * 100;
 
   return (
     <div className="progress-variants">
-      <ContentSwitcher
-        size="sm"
-        selectedIndex={variant}
-        onChange={({ index }) => setVariant(index)}
-        style={{ marginBottom: 'var(--spacing-05)' }}
-      >
-        {OPTIONS.map((name, i) => (
-          <Switch key={name} name={name} text={`${i + 1}. ${name}`} />
-        ))}
-      </ContentSwitcher>
-
       {variant === 0 && (
         <ProgressIndicator currentIndex={currentIndex} vertical>
           {steps.map((step, index) => (

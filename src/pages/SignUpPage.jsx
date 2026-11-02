@@ -21,12 +21,14 @@ import {
   DatePickerInput,
 } from '@carbon/react';
 import { ArrowRight, ArrowLeft, Checkmark, Car, Home as HomeIcon } from '@carbon/icons-react';
-import ProgressVariants from '../components/ProgressVariants';
+import ProgressVariants, { PROGRESS_VARIANT_OPTIONS } from '../components/ProgressVariants';
 import './SignUpPage.scss';
 
 export default function SignUpPage() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
+  const [progressVariant, setProgressVariant] = useState(0);
+  const variantCount = PROGRESS_VARIANT_OPTIONS.length;
   const [formData, setFormData] = useState({
     // Step 1: Personal Info
     firstName: '',
@@ -600,6 +602,28 @@ export default function SignUpPage() {
   return (
     <Grid className="signup-page signup-container">
       <Column sm={4} md={8} lg={{ span: 12, offset: 2 }} xlg={{ span: 10, offset: 3 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-04)', flexWrap: 'wrap', marginBottom: 'var(--spacing-05)' }}>
+          <Button
+            kind="tertiary"
+            size="sm"
+            renderIcon={ArrowLeft}
+            onClick={() => setProgressVariant((progressVariant - 1 + variantCount) % variantCount)}
+          >
+            Previous Option
+          </Button>
+          <span>
+            Option {progressVariant + 1} of {variantCount}: {PROGRESS_VARIANT_OPTIONS[progressVariant]}
+          </span>
+          <Button
+            kind="tertiary"
+            size="sm"
+            renderIcon={ArrowRight}
+            onClick={() => setProgressVariant((progressVariant + 1) % variantCount)}
+          >
+            Next Option
+          </Button>
+        </div>
+
         <header className="signup-header">
           <Heading className="signup-title">Sign Up for InsureCo</Heading>
           <p className="signup-subtitle">
@@ -608,7 +632,7 @@ export default function SignUpPage() {
         </header>
 
         <Tile className="signup-progress">
-          <ProgressVariants steps={steps} currentIndex={currentStep} />
+          <ProgressVariants steps={steps} currentIndex={currentStep} variant={progressVariant} />
         </Tile>
 
         <Form className="signup-form" onSubmit={handleSubmit}>
