@@ -64,6 +64,9 @@
     // Color variants
     &.kpi-card--primary {
       border-left: 4px solid #24a148;
+      border-radius: 18px;
+      overflow: hidden;
+      margin-top: -1px;
     }
 
     &.kpi-card--danger {
