@@ -21,9 +21,6 @@ import FileClaimPage from "./pages/business/FileClaimPage";
 import MakePaymentPage from "./pages/business/MakePaymentPage";
 import MapPage from "./pages/business/MapPage";
 import FinancialDashboard1 from "./pages/FinancialDashboard1";
-import FinancialDashboard2 from "./pages/FinancialDashboard2";
-import FinancialDashboard3 from "./pages/FinancialDashboard3";
-import FinancialDashboardOptions from "./pages/FinancialDashboardOptions";
 
 export default function App() {
   return (
@@ -34,10 +31,10 @@ export default function App() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/signup/confirmation" element={<SignUpConfirmationPage />} />
         <Route path="/dashboard" element={<DashboardHome />} />
-        <Route path="/financial-dashboards" element={<FinancialDashboardOptions />} />
+        <Route path="/financial-dashboards" element={<FinancialDashboard1 />} />
         <Route path="/financial-dashboard-1" element={<FinancialDashboard1 />} />
-        <Route path="/financial-dashboard-2" element={<FinancialDashboard2 />} />
-        <Route path="/financial-dashboard-3" element={<FinancialDashboard3 />} />
+        <Route path="/financial-dashboard-2" element={<Navigate to="/financial-dashboard-1" replace />} />
+        <Route path="/financial-dashboard-3" element={<Navigate to="/financial-dashboard-1" replace />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/theme-preview" element={<ThemePreviewPage />} />
         <Route path="/progress-preview" element={<ProgressIndicatorPreview />} />

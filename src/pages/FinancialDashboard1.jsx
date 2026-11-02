@@ -23,7 +23,6 @@ import {
 import { ArrowUp, ArrowDown, WarningAlt } from '@carbon/icons-react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { monthlyData, assetData, calculateSummaryStats, formatCurrency, formatDate } from '../data/financialData';
-import DashboardSwitcher from '../components/DashboardSwitcher';
 import './FinancialDashboard1.scss';
 
 export default function FinancialDashboard1() {
@@ -95,7 +94,6 @@ export default function FinancialDashboard1() {
       <Grid fullWidth>
         {/* Page Header */}
         <Column lg={16} md={8} sm={4}>
-          <DashboardSwitcher />
           <div className="dashboard-header">
             <h1>Insurance Financial Analytics Dashboard</h1>
             <p className="dashboard-subtitle">
