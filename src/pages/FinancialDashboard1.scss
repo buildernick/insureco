@@ -64,6 +64,10 @@
     // Color variants
     &.kpi-card--primary {
       border-left: 4px solid #24a148;
+      border-radius: 17px;
+      overflow: hidden;
+      opacity: 1;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 1);
     }
 
     &.kpi-card--danger {
@@ -73,6 +77,10 @@
     &.kpi-card--success {
       border-left: 4px solid #198038;
     }
+  }
+
+  .cds--data-table-header__title {
+    font-weight: 600;
   }
 
   // Chart Section
