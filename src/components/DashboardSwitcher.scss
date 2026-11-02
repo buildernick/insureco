@@ -1,0 +1,28 @@
+@use '../styles/tokens' as *;
+
+.dashboard-switcher {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-04);
+  margin-bottom: var(--spacing-06);
+
+  &__label {
+    font-size: var(--body-text-small);
+    color: var(--text-secondary);
+    white-space: nowrap;
+    font-weight: var(--font-weight-semibold);
+  }
+}
+
+.dashboard-switcher-wrapper .dashboard-switcher__label {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.dashboard-switcher .cds--content-switcher-btn.cds--content-switcher--selected {
+  background-color: var(--interactive-primary) !important;
+  color: #ffffff !important;
+
+  .cds--content-switcher__label {
+    color: #ffffff !important;
+  }
+}
