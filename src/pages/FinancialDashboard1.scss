@@ -24,7 +24,7 @@
     padding: var(--spacing-05);
     margin-bottom: var(--spacing-05);
     min-height: 140px;
-    border-radius: 17px;
+    border-radius: 0;
     overflow: hidden;
     opacity: 1;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 1);
@@ -87,6 +87,7 @@
   .chart-tile {
     padding: var(--spacing-05);
     margin-bottom: var(--spacing-05);
+    border-radius: 0;
 
     .chart-header {
       display: flex;
@@ -165,6 +166,7 @@
       cursor: pointer;
       transition: all 0.2s ease;
       border-left: 4px solid #da1e28;
+      border-radius: 0;
 
       &:hover {
         transform: translateY(-2px);
