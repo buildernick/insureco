@@ -19,8 +19,11 @@
     }
   }
 
-  .category-switcher {
-    max-width: 18rem;
+  .category-filters {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-02);
+    margin-right: var(--spacing-03);
   }
 
   // KPI Cards

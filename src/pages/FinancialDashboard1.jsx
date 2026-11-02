@@ -17,8 +17,6 @@ import {
   TableToolbar,
   TableToolbarContent,
   TableToolbarSearch,
-  ContentSwitcher,
-  Switch,
 } from '@carbon/react';
 import { ArrowUp, ArrowDown, WarningAlt } from '@carbon/icons-react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -330,16 +328,22 @@ export default function FinancialDashboard1() {
               >
                 <TableToolbar {...getToolbarProps()}>
                   <TableToolbarContent>
-                    <ContentSwitcher
-                      size="md"
-                      className="category-switcher"
-                      selectedIndex={['all', 'property', 'auto'].indexOf(selectedCategory)}
-                      onChange={({ name }) => setSelectedCategory(name)}
-                    >
-                      <Switch name="all" text="All" />
-                      <Switch name="property" text="Property" />
-                      <Switch name="auto" text="Auto" />
-                    </ContentSwitcher>
+                    <div className="category-filters">
+                      {[
+                        { key: 'all', label: 'All' },
+                        { key: 'property', label: 'Property' },
+                        { key: 'auto', label: 'Auto' },
+                      ].map(({ key, label }) => (
+                        <Button
+                          key={key}
+                          size="md"
+                          kind={selectedCategory === key ? 'primary' : 'ghost'}
+                          onClick={() => setSelectedCategory(key)}
+                        >
+                          {label}
+                        </Button>
+                      ))}
+                    </div>
                     <TableToolbarSearch onChange={onInputChange} />
                   </TableToolbarContent>
                 </TableToolbar>
