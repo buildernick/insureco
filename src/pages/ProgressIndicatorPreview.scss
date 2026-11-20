@@ -239,52 +239,6 @@
 // Option 3: Tabs as Stepper
 // ============================================
 
-.tabs-stepper {
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-
-.tabs-stepper-tab {
-  display: flex !important;
-  align-items: center;
-  gap: var(--spacing-02);
-  min-width: max-content;
-
-  &--complete {
-    .tabs-stepper-tab-marker {
-      background: var(--color-success) !important;
-      border-color: var(--color-success) !important;
-      color: var(--text-on-color) !important;
-    }
-  }
-}
-
-.tabs-stepper-tab-marker {
-  flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: var(--font-weight-semibold);
-  background: var(--background-secondary);
-  border: 2px solid var(--border-strong);
-  color: var(--text-secondary);
-  transition: all 0.2s ease;
-
-  svg {
-    fill: currentColor;
-  }
-}
-
-.tabs-stepper-tab-label {
-  @media (max-width: 671px) {
-    font-size: 12px;
-  }
-}
-
 .tabs-content-placeholder {
   padding: var(--spacing-05);
   text-align: center;

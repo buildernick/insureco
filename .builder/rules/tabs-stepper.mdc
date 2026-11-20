@@ -1,0 +1,12 @@
+---
+description: TabsStepper component (Carbon Tabs as a horizontal stepper)
+globs:
+alwaysApply: false
+---
+# TabsStepper
+
+`src/components/TabsStepper.jsx` + `TabsStepper.scss`. Extracted from "Option 3: Tabs as Stepper" on `/progress-preview`, which now uses it.
+
+Props: `steps` ([{key,label}]), `currentIndex`, `ariaLabel`, `renderPanel(step, index)`.
+
+Built on Carbon `Tabs`; only the current tab is enabled, completed steps show a success-colored checkmark marker. Scrolls horizontally on mobile with many steps. Uses global tokens only.

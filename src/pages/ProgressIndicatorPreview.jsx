@@ -9,14 +9,10 @@ import {
   ProgressIndicator,
   ProgressStep,
   ProgressBar,
-  Tabs,
-  TabList,
-  Tab,
-  TabPanels,
-  TabPanel,
   Tag
 } from '@carbon/react';
 import { ArrowLeft, ArrowRight, Checkmark } from '@carbon/icons-react';
+import TabsStepper from '../components/TabsStepper';
 import './ProgressIndicatorPreview.scss';
 
 // Custom Circular Mini-Stepper Component
@@ -250,33 +246,16 @@ export default function ProgressIndicatorPreview() {
           </div>
           
           <div className="preview-demo">
-            <Tabs selectedIndex={currentStep}>
-              <TabList aria-label="Sign-up steps" className="tabs-stepper">
-                {steps.map((step, index) => (
-                  <Tab
-                    key={step.key}
-                    disabled={index !== currentStep}
-                    className={`tabs-stepper-tab ${
-                      index < currentStep ? 'tabs-stepper-tab--complete' : ''
-                    }`}
-                  >
-                    <span className="tabs-stepper-tab-marker">
-                      {index < currentStep ? <Checkmark size={16} /> : index + 1}
-                    </span>
-                    <span className="tabs-stepper-tab-label">{step.label}</span>
-                  </Tab>
-                ))}
-              </TabList>
-              <TabPanels>
-                {steps.map((step) => (
-                  <TabPanel key={step.key}>
-                    <p className="tabs-content-placeholder">
-                      {step.label} form content would go here
-                    </p>
-                  </TabPanel>
-                ))}
-              </TabPanels>
-            </Tabs>
+            <TabsStepper
+              steps={steps}
+              currentIndex={currentStep}
+              ariaLabel="Sign-up steps"
+              renderPanel={(step) => (
+                <p className="tabs-content-placeholder">
+                  {step.label} form content would go here
+                </p>
+              )}
+            />
           </div>
 
           <div className="preview-pros-cons">
