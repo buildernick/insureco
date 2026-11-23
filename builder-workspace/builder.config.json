@@ -1,0 +1,31 @@
+{
+  "command": "npm run dev",
+  "serverUrl": "http://localhost:5173",
+  "commitMode": "draft-prs",
+  "workspace": {
+    "folders": [
+      {
+        "path": ".."
+      }
+    ]
+  },
+  "allowedCommands": [
+    "npm *",
+    "pnpm *",
+    "yarn *",
+    "git diff *",
+    "git log *",
+    "git status *",
+    "echo *",
+    "cd *",
+    "find *",
+    "ls *",
+    "curl *"
+  ],
+  "repoIndexingConfig": {
+    "designSystems": [
+      "IBM Carbon 1.83",
+      "Cloudscape Design 3.0.0"
+    ]
+  }
+}

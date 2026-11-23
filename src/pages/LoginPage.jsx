@@ -10,8 +10,6 @@ import {
   Heading,
   Stack,
   Link,
-  Modal,
-  InlineNotification,
 } from '@carbon/react';
 import { Login, ArrowRight } from '@carbon/icons-react';
 import './LoginPage.scss';
@@ -20,18 +18,10 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [resetOpen, setResetOpen] = useState(false);
-  const [resetEmail, setResetEmail] = useState('');
-  const [resetSent, setResetSent] = useState(false);
-
   const openReset = (e) => {
     e.preventDefault();
-    setResetEmail(email);
-    setResetSent(false);
-    setResetOpen(true);
+    navigate('/reset-password', { state: { email } });
   };
-
-  const resetEmailValid = /^\S+@\S+\.\S+$/.test(resetEmail);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -83,7 +73,7 @@ export default function LoginPage() {
                   />
 
                   <div className="login-options">
-                    <Link href="#" className="forgot-password-link" onClick={openReset}>
+                    <Link href="/reset-password" className="forgot-password-link" onClick={openReset}>
                       Forgot password?
                     </Link>
                   </div>
@@ -121,40 +111,6 @@ export default function LoginPage() {
           </Tile>
         </div>
       </Column>
-      <Modal
-        open={resetOpen}
-        modalHeading={resetSent ? 'Check your email' : 'Reset your password'}
-        modalLabel="Forgot password"
-        primaryButtonText={resetSent ? 'Back to sign in' : 'Send reset link'}
-        secondaryButtonText={resetSent ? undefined : 'Cancel'}
-        primaryButtonDisabled={!resetSent && !resetEmailValid}
-        onRequestClose={() => setResetOpen(false)}
-        onRequestSubmit={() => (resetSent ? setResetOpen(false) : setResetSent(true))}
-        size="sm"
-      >
-        {resetSent ? (
-          <InlineNotification
-            kind="success"
-            lowContrast
-            hideCloseButton
-            title="Reset link sent"
-            subtitle={`If an account exists for ${resetEmail}, you'll receive a password reset link shortly.`}
-          />
-        ) : (
-          <Stack gap={5}>
-            <p>Enter the email address associated with your account and we'll send you a link to reset your password.</p>
-            <TextInput
-              id="reset-email"
-              labelText="Email Address"
-              placeholder="you@example.com"
-              type="email"
-              value={resetEmail}
-              onChange={(e) => setResetEmail(e.target.value)}
-              data-modal-primary-focus
-            />
-          </Stack>
-        )}
-      </Modal>
     </Grid>
   );
 }

@@ -72,6 +72,14 @@ export default function LandingPage() {
         <Grid>
           <Column lg={16} md={8} sm={4}>
             <div className="hero-content">
+              <Button
+                className="hero-top-cta"
+                kind="primary"
+                size="lg"
+                onClick={() => navigate('/signup')}
+              >
+                Click Here
+              </Button>
               <Heading className="hero-heading">
                 Protect Your Future with Confidence
               </Heading>
