@@ -10,6 +10,7 @@ import {
   Heading,
   Stack,
   Link,
+  Modal,
 } from '@carbon/react';
 import { Login, ArrowRight } from '@carbon/icons-react';
 import './LoginPage.scss';
@@ -18,6 +19,27 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [resetOpen, setResetOpen] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetSent, setResetSent] = useState(false);
+
+  const openReset = (e) => {
+    e.preventDefault();
+    setResetEmail(email);
+    setResetSent(false);
+    setResetOpen(true);
+  };
+
+  const closeReset = () => setResetOpen(false);
+
+  const submitReset = () => {
+    if (resetSent) {
+      closeReset();
+      return;
+    }
+    if (!resetEmail.trim()) return;
+    setResetSent(true);
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -69,7 +91,7 @@ export default function LoginPage() {
                   />
 
                   <div className="login-options">
-                    <Link href="#" className="forgot-password-link">
+                    <Link href="#" className="forgot-password-link" onClick={openReset}>
                       Forgot password?
                     </Link>
                   </div>
@@ -107,6 +129,37 @@ export default function LoginPage() {
           </Tile>
         </div>
       </Column>
+
+      <Modal
+        open={resetOpen}
+        modalHeading="Reset your password"
+        primaryButtonText={resetSent ? 'Done' : 'Send reset link'}
+        secondaryButtonText={resetSent ? undefined : 'Cancel'}
+        primaryButtonDisabled={!resetSent && !resetEmail.trim()}
+        onRequestClose={closeReset}
+        onRequestSubmit={submitReset}
+        onSecondarySubmit={closeReset}
+        size="xs"
+      >
+        {resetSent ? (
+          <p>
+            We sent you a mail. Check the inbox for {resetEmail} for a link to reset your password.
+          </p>
+        ) : (
+          <Stack gap={5}>
+            <p>Enter the email address for your account and we'll send you a link to reset your password.</p>
+            <TextInput
+              id="reset-email"
+              labelText="Email Address"
+              placeholder="you@example.com"
+              type="email"
+              value={resetEmail}
+              onChange={(e) => setResetEmail(e.target.value)}
+              data-modal-primary-focus
+            />
+          </Stack>
+        )}
+      </Modal>
     </Grid>
   );
 }
