@@ -21,25 +21,62 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [resetOpen, setResetOpen] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
-  const [resetSent, setResetSent] = useState(false);
+  const [resetStep, setResetStep] = useState('email'); // 'email' | 'pin' | 'done'
+  const [pin, setPin] = useState('');
+  const [resetError, setResetError] = useState('');
+  const [resetLoading, setResetLoading] = useState(false);
 
   const openReset = (e) => {
     e.preventDefault();
     setResetEmail(email);
-    setResetSent(false);
+    setResetStep('email');
+    setPin('');
+    setResetError('');
     setResetOpen(true);
   };
 
   const closeReset = () => setResetOpen(false);
 
-  const submitReset = () => {
-    if (resetSent) {
+  const post = async (url, body) => {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || 'Something went wrong');
+    return data;
+  };
+
+  const submitReset = async () => {
+    if (resetStep === 'done') {
       closeReset();
       return;
     }
-    if (!resetEmail.trim()) return;
-    setResetSent(true);
+    setResetError('');
+    setResetLoading(true);
+    try {
+      if (resetStep === 'email') {
+        if (!resetEmail.trim()) return;
+        await post('/api/forgot-password', { email: resetEmail });
+        setResetStep('pin');
+      } else {
+        await post('/api/verify-otp', { email: resetEmail, pin });
+        setResetStep('done');
+      }
+    } catch (err) {
+      setResetError(err.message);
+    } finally {
+      setResetLoading(false);
+    }
   };
+
+  const primaryDisabled =
+    resetLoading ||
+    (resetStep === 'email' && !resetEmail.trim()) ||
+    (resetStep === 'pin' && pin.length !== 6);
+
+  const primaryText = { email: 'Send PIN', pin: 'Verify PIN', done: 'Done' }[resetStep];
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -133,21 +170,37 @@ export default function LoginPage() {
       <Modal
         open={resetOpen}
         modalHeading="Reset your password"
-        primaryButtonText={resetSent ? 'Done' : 'Send reset link'}
-        secondaryButtonText={resetSent ? undefined : 'Cancel'}
-        primaryButtonDisabled={!resetSent && !resetEmail.trim()}
+        primaryButtonText={primaryText}
+        secondaryButtonText={resetStep === 'done' ? undefined : 'Cancel'}
+        primaryButtonDisabled={primaryDisabled}
         onRequestClose={closeReset}
         onRequestSubmit={submitReset}
         onSecondarySubmit={closeReset}
         size="xs"
       >
-        {resetSent ? (
-          <p>
-            We sent you a mail. Check the inbox for {resetEmail} for a link to reset your password.
-          </p>
-        ) : (
+        {resetStep === 'done' && (
+          <p>Your PIN was verified. You can now choose a new password.</p>
+        )}
+        {resetStep === 'pin' && (
           <Stack gap={5}>
-            <p>Enter the email address for your account and we'll send you a link to reset your password.</p>
+            <p>We sent a one-time PIN to {resetEmail}. Enter it below to continue.</p>
+            <TextInput
+              id="reset-pin"
+              labelText="One-time PIN"
+              placeholder="6-digit PIN"
+              inputMode="numeric"
+              maxLength={6}
+              value={pin}
+              onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))}
+              invalid={!!resetError}
+              invalidText={resetError}
+              data-modal-primary-focus
+            />
+          </Stack>
+        )}
+        {resetStep === 'email' && (
+          <Stack gap={5}>
+            <p>Enter the email address for your account and we'll send you a one-time PIN to reset your password.</p>
             <TextInput
               id="reset-email"
               labelText="Email Address"
@@ -155,6 +208,8 @@ export default function LoginPage() {
               type="email"
               value={resetEmail}
               onChange={(e) => setResetEmail(e.target.value)}
+              invalid={!!resetError}
+              invalidText={resetError}
               data-modal-primary-focus
             />
           </Stack>
