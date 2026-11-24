@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Grid,
@@ -14,6 +14,77 @@ import {
 } from '@carbon/react';
 import { Login, ArrowRight } from '@carbon/icons-react';
 import './LoginPage.scss';
+
+const PIN_LENGTH = 6;
+
+function PinInput({ value, onChange, invalid, invalidText }) {
+  const refs = useRef([]);
+  const digits = Array.from({ length: PIN_LENGTH }, (_, i) => value[i] || '');
+
+  const update = (index, digit) => {
+    const next = digits.slice();
+    next[index] = digit;
+    onChange(next.join(''));
+  };
+
+  const handleChange = (index, e) => {
+    const entered = e.target.value.replace(/\D/g, '');
+    if (!entered) {
+      update(index, '');
+      return;
+    }
+    update(index, entered.slice(-1));
+    if (index < PIN_LENGTH - 1) refs.current[index + 1]?.focus();
+  };
+
+  const handleKeyDown = (index, e) => {
+    if (e.key === 'Backspace' && !digits[index] && index > 0) {
+      update(index - 1, '');
+      refs.current[index - 1]?.focus();
+    } else if (e.key === 'ArrowLeft' && index > 0) {
+      refs.current[index - 1]?.focus();
+    } else if (e.key === 'ArrowRight' && index < PIN_LENGTH - 1) {
+      refs.current[index + 1]?.focus();
+    }
+  };
+
+  const handlePaste = (e) => {
+    const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, PIN_LENGTH);
+    if (!pasted) return;
+    e.preventDefault();
+    onChange(pasted);
+    refs.current[Math.min(pasted.length, PIN_LENGTH - 1)]?.focus();
+  };
+
+  return (
+    <fieldset className="pin-input">
+      <legend className="cds--label">One-time PIN</legend>
+      <div className="pin-input-boxes">
+        {digits.map((digit, i) => (
+          <TextInput
+            key={i}
+            id={`reset-pin-${i}`}
+            ref={(el) => (refs.current[i] = el)}
+            className="pin-input-box"
+            labelText={`Digit ${i + 1} of ${PIN_LENGTH}`}
+            hideLabel
+            inputMode="numeric"
+            autoComplete={i === 0 ? 'one-time-code' : 'off'}
+            maxLength={1}
+            value={digit}
+            invalid={invalid}
+            onChange={(e) => handleChange(i, e)}
+            onKeyDown={(e) => handleKeyDown(i, e)}
+            onPaste={handlePaste}
+            onFocus={(e) => e.target.select()}
+            data-modal-primary-focus={i === 0 ? true : undefined}
+          />
+        ))}
+      </div>
+      {invalid && invalidText && <div className="cds--form-requirement pin-input-error">{invalidText}</div>}
+    </fieldset>
+  );
+}
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -184,17 +255,11 @@ export default function LoginPage() {
         {resetStep === 'pin' && (
           <Stack gap={5}>
             <p>We sent a one-time PIN to {resetEmail}. Enter it below to continue.</p>
-            <TextInput
-              id="reset-pin"
-              labelText="One-time PIN"
-              placeholder="6-digit PIN"
-              inputMode="numeric"
-              maxLength={6}
+            <PinInput
               value={pin}
-              onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))}
+              onChange={setPin}
               invalid={!!resetError}
               invalidText={resetError}
-              data-modal-primary-focus
             />
           </Stack>
         )}
