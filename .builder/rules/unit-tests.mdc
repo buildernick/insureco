@@ -152,4 +152,4 @@ Always `await` userEvent calls — they are async.
 
 ## Coverage
 
-Run `npm run test:run` to see coverage. The report shows per-file statement/branch/function/line coverage. Current overall coverage is low (~10%) because most pages and business components are not yet tested.
+Run `npm run test:run` to see coverage. The report shows per-file statement/branch/function/line coverage. Overall line coverage is ~32%. `src/__tests__/data/` covers the mock/financial data modules, and `src/__tests__/pages/PagesSmoke.test.jsx` smoke-renders most pages (it stubs `ResizeObserver`/`matchMedia` for charts, and passes `confirmationNumber` route state for SignUpConfirmationPage). Business detail/add/claim/payment/map pages and business components are still untested.
